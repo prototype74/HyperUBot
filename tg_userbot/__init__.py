@@ -15,7 +15,7 @@ basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level
 
 LOGS = getLogger(__name__)
 
-if version_info[0] < 3 and version_info[1] < 8:
+if version_info[0] < 3 and version_info[1] < 8: #for now python 3.8, we will see if I make it backwards compatible
     LOGS.error("Required Python 3.8")
     quit(1)
 
