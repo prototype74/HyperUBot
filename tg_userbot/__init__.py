@@ -1,6 +1,6 @@
 from telethon import TelegramClient
 from telethon.sessions import StringSession
-from logging import basicConfig
+from logging import basicConfig, DEBUG
 
 from sys import version_info #check python version
 
