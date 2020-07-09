@@ -1,6 +1,6 @@
 from telethon import TelegramClient
 from telethon.sessions import StringSession
-from logging import basicConfig, DEBUG, getLogger
+from logging import basicConfig, DEBUG, getLogger, INFO
 
 from sys import version_info #check python version
 
@@ -10,8 +10,8 @@ from tg_userbot.config import ConfigClass #For now, config file only!
 
 load_dotenv("config.env")
 
-#For now, always debug
-basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=DEBUG)
+#For now, static
+basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=INFO)
 
 LOGS = getLogger(__name__)
 
