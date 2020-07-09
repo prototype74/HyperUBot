@@ -1,0 +1,26 @@
+from telethon import TelegramClient
+from telethon.sessions import StringSession
+from logging import basicConfig
+
+from sys import version_info #check python version
+
+from dotenv import load_dotenv
+
+from tg_userbot.config import ConfigClass #For now, config file only!
+
+load_dotenv("config.env")
+
+#For now, always debug
+basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=DEBUG)
+
+LOGS = getLogger(__name__)
+
+if version_info[0] < 3 and version_info[1] < 8:
+    LOGS.error("Required Python 3.8")
+    quit(1)
+
+#For now, config file only!
+API_KEY = ConfigClass.API_KEY
+API_HASH = ConfigClass.API_HASH
+
+bot = TelegramClient("tguserbot", API_KEY, API_HASH)
