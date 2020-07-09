@@ -2,6 +2,8 @@ from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
 from sys import argv
 from tg_userbot import bot
 
+from tg_userbot.modules import ALL_MODULES
+
 try:
     bot.start()
 except PhoneNumberInvalidError:
