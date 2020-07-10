@@ -11,6 +11,11 @@ from telethon.errors.rpcerrorlist import UserIdInvalidError
 BANNED_RIGHTS = ChatBannedRights(until_date=None, view_messages=True, send_messages=True, send_media=True, send_stickers=True, send_gifs=True, send_games=True, send_inline=True, embed_links=True)
 UNBANNED_RIGHTS = ChatBannedRights(until_date=None, send_messages=None, send_media=None, send_stickers=None, send_gifs=None, send_games=None, send_inline=None, embed_links=None)
 
+# Done: Ban and Unban
+# Missing: Kick, Mute, Unmute, Promote, Demote
+# Maybe: remove deleted accounts, admin and user lists
+# Tested: None
+
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
 async def ban(banning):
     chat = banning.get_chat()
