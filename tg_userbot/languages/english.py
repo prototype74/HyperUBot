@@ -11,3 +11,6 @@ class adminText(object): # Admin module
     UNBANNING_USER = "`Unbanning user...`"
     UNBANNED_SUCCESSFULLY = "Successfully unbanned!"
     USERID_INVALID = "Invalid UserID!"
+
+class testModuleText(object): #test module
+    TEST_MESSAGE = "`This is a test message! I am operational!`"
