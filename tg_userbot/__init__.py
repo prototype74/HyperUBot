@@ -1,5 +1,5 @@
 from telethon import TelegramClient
-from telethon.sessions import StringSession
+from telethon.sessions import StringSession #not yet implemented!
 from logging import basicConfig, DEBUG, getLogger
 
 from sys import version_info #check python version
@@ -23,4 +23,5 @@ if version_info[0] < 3 or version_info[1] < 6: #for now python 3.6
 API_KEY = ConfigClass.API_KEY
 API_HASH = ConfigClass.API_HASH
 
+#add something for stringsession
 bot = TelegramClient("tguserbot", API_KEY, API_HASH)
