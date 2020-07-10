@@ -1,4 +1,5 @@
 # My stuff
+from tg_userbot.languages.english import adminText as lang # language file, better solution soon!
 from tg_userbot.watcher import watcher
 
 # Telethon Stuff
@@ -16,25 +17,25 @@ async def ban(banning):
     admin = chat.admin_rights
     creator = chat.creator
     if not admin and not creator:
-        await banning.edit("`Not admin!`")
+        await banning.edit(lang.NOT_ADMIN)
         return
     user = await get_user_from_event(banning)
     if not user:
         return
-    await banning.edit("`Banning user...`")
+    await banning.edit(lang.BANNING_USER)
     try:
         await banning.client(EditBannedRequest(banning.chat_id, user.id, BANNED_RIGHTS))
     except:
-        await banning.edit("`No Perms!`")
+        await banning.edit(lang.NO_PERMS)
         return
     try:
         reply = await banning.get_reply_message()
         if reply:
             await reply.delete()
     except BadRequestError:
-        await banning.edit("`No message del Perms!`")
+        await banning.edit(lang.NO_MSG_DEL_PERMS)
         return
-    await bon.edit("`{}` was banned!".format(str(user.id)))
+    await banning.edit(lang.BANNED_SUCCESSFULLY.format(str(user.id)))
     return
 
 @watcher(outgoing=True, pattern=r"^\.unban(?: |$)(.*)")
@@ -43,15 +44,15 @@ async def unban(unbanner):
     admin = chat.admin_rights
     creator = chat.creator
     if not admin and not creator:
-        await unbanner.edit("`Not admin!`")
+        await unbanner.edit(lang.NO_PERMS)
         return
     user = await get_user_from_event(unbanner)
     if not user:
         return
-    await unbanner.edit("`Unbanning user...`")
+    await unbanner.edit(lang.UNBANNING_USER)
     try:
         await unbanner.client(EditBannedRequest(unbon.chat_id, user.id, UNBANNED_RIGHTS))
-        await unbanner.edit("`Unbanned Successfully`")
+        await unbanner.edit(lang.UNBANNED_SUCCESSFULLY)
     except UserIdInvalidError:
-        await unbanner.edit("`UserID Invalid`")
+        await unbanner.edit(lang.USERID_INVALID)
     return
