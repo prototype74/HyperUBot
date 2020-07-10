@@ -1,5 +1,5 @@
 from tg_userbot.watcher import watcher
-from tg_userbot.languages.english import testModuleText as msgRep
+from tg_userbot.language_processor import testModuleText as msgRep
 
 @watcher(outgoing=True, pattern=r"^\.test$")
 async def tester(msg):

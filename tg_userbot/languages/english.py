@@ -1,5 +1,7 @@
-# This is the english language file! As an early version, if you want to translate, copy this file
-# then rename all the imports in the modules for your language. I will think of a better implementation
+# This is the english language file! As an early version,
+# if you want to translate, copy this file then rename all
+# the imports in the language processor module
+# for your language. I will think of a better implementation
 # system in future revisions. - Penim
 
 class adminText(object): # Admin module

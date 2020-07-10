@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot.languages.english import adminText as msgRep # language file, better solution soon!
+from tg_userbot.language_processor import adminText as msgRep # language file, better solution soon!
 from tg_userbot.watcher import watcher
 
 # Telethon Stuff
