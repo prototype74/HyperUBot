@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot.language_processor import adminText as msgRep # language_processor, yay
+from tg_userbot.language_processor import AdminText as msgRep # language_processor, yay
 from tg_userbot.watcher import watcher
 
 # Telethon Stuff
@@ -7,12 +7,16 @@ from telethon.errors import BadRequestError
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.errors.rpcerrorlist import UserIdInvalidError
 
+# Misc
+from asyncio import sleep
+
 # Various vars for ease of customization
 BANNED_RIGHTS = ChatBannedRights(until_date=None, view_messages=True, send_messages=True, send_media=True, send_stickers=True, send_gifs=True, send_games=True, send_inline=True, embed_links=True)
 UNBANNED_RIGHTS = ChatBannedRights(until_date=None, send_messages=None, send_media=None, send_stickers=None, send_gifs=None, send_games=None, send_inline=None, embed_links=None)
+KICK_RIGHTS = ChatBannedRights(until_date=None, view_messages=True)
 
-# Done: Ban and Unban
-# Missing: Kick, Mute, Unmute, Promote, Demote
+# Done: Ban, Unban, Kick
+# Missing: Mute, Unmute, Promote, Demote
 # Maybe: remove deleted accounts, admin and user lists
 # Tested: None
 
@@ -60,4 +64,27 @@ async def unban(unbanner):
         await unbanner.edit(msgRep.UNBANNED_SUCCESSFULLY)
     except UserIdInvalidError:
         await unbanner.edit(msgRep.USERID_INVALID)
+    return
+
+@watcher(outgoing=True, pattern=r"^\.kick(?: |$)(.*)")
+async def kick(kicker):
+    chat = await kicker.get_chat()
+    admin = chat.admin_rights
+    creator = chat.creator
+    if not admin and not creator:
+        await kicker.edit(msgRep.NOT_ADMIN)
+        return
+    user = await get_user_from_event(kicker)
+    if not user:
+        await kicker.edit(msgRep.FAILED_FETCH_USER)
+        return
+    await kicker.edit(msgRep.KICKING_USER)
+    try:
+        await kicker.client(EditBannedRequest(kicker.chat_id, user.id, KICK_RIGHTS))
+        await sleep(1) # sync
+    except BadRequestError:
+        await kicker.edit(msgRep.NO_PERMS)
+        return
+    await kicker.client(EditBannedRequest(kicker.chat_id, user.id, ChatBannedRights(until_date=None)))
+    await kicker.edit(msgRep.KICKED_SUCCESSFULLY.format(str(user.id)))
     return

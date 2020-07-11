@@ -4,7 +4,7 @@
 # for your language. I will think of a better implementation
 # system in future revisions. - Penim
 
-class adminText(object): # Admin module
+class AdminText(object): # Admin module
     NOT_ADMIN = "`I am not admin!`"
     BANNING_USER = "`Banning user...`"
     NO_PERMS = "`I do not have sufficient permissions to execute this action!`"
@@ -13,6 +13,9 @@ class adminText(object): # Admin module
     UNBANNING_USER = "`Unbanning user...`"
     UNBANNED_SUCCESSFULLY = "Successfully unbanned!"
     USERID_INVALID = "Invalid UserID!"
+    FAILED_FETCH_USER = "`Couldn't fetch user.`"
+    KICKING_USER = "`Kicking user...`"
+    KICKED_SUCCESSFULLY = "{} has been kicked!"
 
-class testModuleText(object): #test module
+class TestModuleText(object): #test module
     TEST_MESSAGE = "`This is a test message! I am operational!`"
