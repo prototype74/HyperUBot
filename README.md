@@ -1,4 +1,4 @@
-# tguserbotReboot
+# tguserbot-X
 The reboot of the tguserbot project
 
 Copyright (C) 2020 Nuno Penim
