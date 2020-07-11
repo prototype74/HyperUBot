@@ -6,6 +6,7 @@ from tg_userbot.watcher import watcher
 from telethon.errors import BadRequestError
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.errors.rpcerrorlist import UserIdInvalidError
+from telethon.tl.types import ChatAdminRights, ChatBannedRights, User
 
 # Misc
 from asyncio import sleep
@@ -14,6 +15,9 @@ from asyncio import sleep
 BANNED_RIGHTS = ChatBannedRights(until_date=None, view_messages=True, send_messages=True, send_media=True, send_stickers=True, send_gifs=True, send_games=True, send_inline=True, embed_links=True)
 UNBANNED_RIGHTS = ChatBannedRights(until_date=None, send_messages=None, send_media=None, send_stickers=None, send_gifs=None, send_games=None, send_inline=None, embed_links=None)
 KICK_RIGHTS = ChatBannedRights(until_date=None, view_messages=True)
+MUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=True)
+UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
+ADMIN_RIGHTS = ChatAdminRights(add_admins=False, invite_users=True, change_info=False, ban_users=True, delete_messages=True, pin_messages=True)
 
 # Done: Ban, Unban, Kick
 # Missing: Mute, Unmute, Promote, Demote
