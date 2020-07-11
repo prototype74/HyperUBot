@@ -18,7 +18,6 @@ KICK_RIGHTS = ChatBannedRights(until_date=None, view_messages=True)
 # Done: Ban, Unban, Kick
 # Missing: Mute, Unmute, Promote, Demote
 # Maybe: remove deleted accounts, admin and user lists
-# Tested: None
 
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
 async def ban(banning):
