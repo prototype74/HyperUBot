@@ -20,7 +20,7 @@ UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
 ADMIN_RIGHTS = ChatAdminRights(add_admins=False, invite_users=True, change_info=False, ban_users=True, delete_messages=True, pin_messages=True)
 DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=None, ban_users=None, delete_messages=None, pin_messages=None)
 
-# Done: Ban, Unban, Kick, Promote (missing translations), Demote(missing translations)
+# Done: Ban, Unban, Kick, Promote, Demote
 # Missing: Mute, Unmute, RM DL ACC, Pins
 # Maybe: admin list, user list
 
@@ -97,7 +97,7 @@ async def kick(kicker):
 async def promote(promt):
     chat = await promt.get_chat()
     if isinstance(chat, User):
-        await promt.edit("`Only-Chats-Groups`")
+        await promt.edit(msgRep.ONLY_CHAN_GROUPS)
         return
     admin = chat.admin_rights
     creator = chat.creator
@@ -117,20 +117,20 @@ async def promote(promt):
     else:
         return
     if not isinstance(user, User):
-        await promt.edit("`NOT-A-USER`")
+        await promt.edit(msgRep.NOT_USER)
         return
     try:
         async for member in promt.client.iter_participants(promt.chat_id, filter=ChannelParticipantsAdmins):
             if user.id == member.id:
                 if user.is_self:
-                    await promt.edit("`PROMT-SELF`")
+                    await promt.edit(msgRep.PROMT_SELF)
                 else:
-                    await promt.edit("`ADM-ALR`")
+                    await promt.edit(msgRep.ADM_ALRD)
                 return
     except ChatAdminRequiredError:
-        await promt.edit("`NEED-ADM`")
+        await promt.edit(msgRep.NOT_ADMIN)
         return
-    await promt.edit("`PROMTING`")
+    await promt.edit(msgRep.PROMTING_USER)
     try:
         if creator:
             await promt.client(
@@ -138,12 +138,12 @@ async def promote(promt):
         else:
             admin.add_admins = False
             if all(getattr(admin, right) is False for right in vars(admin)):
-                return await promt.edit("`NO-ADD-ADMIN-RIGHT`")
+                return await promt.edit(msgRep.NO_ADD_ADM_RIGHT)
             await promt.client(
                 EditAdminRequest(promt.chat_id, user.id, admin, rank))
-        await promt.edit("`PRMT-SUCC`")
+        await promt.edit(msgRep.PRMT_SUCCESS)
     except AdminsTooMuchError:
-        await promt.edit("`TOO-MANY-ADM`")
+        await promt.edit(msgRep.TOO_MANY_ADM)
         return
     except BadRequestError:
         await promt.edit(msgRep.NO_PERMS)
@@ -154,7 +154,7 @@ async def promote(promt):
 async def demote(dmt):
     chat = await dmt.get_chat()
     if isinstance(chat, User):
-        await dmt.edit("`Only-Chats-Groups`")
+        await dmt.edit(msgRep.ONLY_CHAN_GROUPS)
         return
     admin = chat.admin_rights
     creator = chat.creator
@@ -174,25 +174,25 @@ async def demote(dmt):
     else:
         return
     if not isinstance(user, User):
-        await dmt.edit("`NOT-A-USER`")
+        await dmt.edit(msgRep.NOT_USER)
         return
     try:
         admins_list = []
         async for member in dmt.client.iter_participants(dmt.chat_id, filter=ChannelParticipantsAdmins):
             admins_list.append(member.id)
         if user.id not in admins_list:
-            await dmt.edit("`ALREADY-NOT-ADM`")
+            await dmt.edit(msgRep.ALREADY_NOT_ADM)
             return
     except ChatAdminRequiredError:
-        await promt.edit("`NEED-ADM`")
+        await promt.edit(msgRep.NOT_ADMIN)
         return
     if user.is_self:
-        await dmt.edit("`MYSELF`")
+        await dmt.edit(msgRep.DMT_MYSELF)
         return
-    await dmt.edit("`DMTING`")
+    await dmt.edit(msgRep.DMTING_USER)
     try:
         await dmt.client(EditAdminRequest(dmt.chat_id, user.id, DEMOTE_RIGHTS, rank))
-        await dmod.edit("`DMTED`")
+        await dmod.edit(msgRep.DMTED_SUCCESSFULLY)
     except BadRequestError:
         await dmt.edit(msgRep.NO_PERMS)
         return

@@ -5,17 +5,29 @@
 # system in future revisions. - Penim
 
 class AdminText(object): # Admin module
-    NOT_ADMIN = "`I am not admin!`"
+    NOT_ADMIN = "I am not admin! I need admin permissions to perform this action!"
     BANNING_USER = "`Banning user...`"
-    NO_PERMS = "`I do not have sufficient permissions to execute this action!`"
-    NO_MSG_DEL_PERMS = "`I do not have permissions to delete messages, so I cannot delete whatever this user wrote.`"
+    NO_PERMS = "I do not have sufficient permissions to execute this action!"
+    NO_MSG_DEL_PERMS = "I do not have permissions to delete messages, so I cannot delete whatever this user sent."
     BANNED_SUCCESSFULLY = "`{}` was banned!"
     UNBANNING_USER = "`Unbanning user...`"
     UNBANNED_SUCCESSFULLY = "Successfully unbanned!"
     USERID_INVALID = "Invalid UserID!"
-    FAILED_FETCH_USER = "`Couldn't fetch user.`"
+    FAILED_FETCH_USER = "Couldn't fetch user."
     KICKING_USER = "`Kicking user...`"
     KICKED_SUCCESSFULLY = "{} has been kicked!"
+    ONLY_CHAN_GROUPS = "I can only act in Groups or channels!"
+    NOT_USER = "This entity is not a User!"
+    PROMT_SELF = "I can't promote myself!"
+    ADM_ALRD = "This user is already Admin!"
+    PROMTING_USER = "`Promoting user...`"
+    NO_ADD_ADM_RIGHT = "I am admin, but I do not have permission to add other admins!"
+    PRMT_SUCCESS = "Successfully promoted!"
+    TOO_MANY_ADM = "There are too many administrators in this chat!"
+    ALREADY_NOT_ADM = "This user is already not an Admin!"
+    DMT_MYSELF = "I can't demote myself!"
+    DMTING_USER = "`Demoting user...`"
+    DMTED_SUCCESSFULLY = "Successfully demoted!"
 
 class TestModuleText(object): #test module
     TEST_MESSAGE = "`This is a test message! I am operational!`"
