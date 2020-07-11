@@ -20,8 +20,8 @@ UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
 ADMIN_RIGHTS = ChatAdminRights(add_admins=False, invite_users=True, change_info=False, ban_users=True, delete_messages=True, pin_messages=True)
 DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=None, ban_users=None, delete_messages=None, pin_messages=None)
 
-# Done: Ban, Unban, Kick
-# Missing: Mute, Unmute, Demote, RM DL ACC, Pins
+# Done: Ban, Unban, Kick, Promote (missing translations), Demote(missing translations)
+# Missing: Mute, Unmute, RM DL ACC, Pins
 # Maybe: admin list, user list
 
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
@@ -127,7 +127,7 @@ async def promote(promt):
                 else:
                     await promt.edit("`ADM-ALR`")
                 return
-    except ChatAdminRequiredError as err:
+    except ChatAdminRequiredError:
         await promt.edit("`NEED-ADM`")
         return
     await promt.edit("`PROMTING`")
@@ -150,3 +150,50 @@ async def promote(promt):
         return
     return
 
+@watcher(outgoing=True, pattern=r"^\.demote(?: |$)(.*)")
+async def demote(dmt):
+    chat = await dmt.get_chat()
+    if isinstance(chat, User):
+        await dmt.edit("`Only-Chats-Groups`")
+        return
+    admin = chat.admin_rights
+    creator = chat.creator
+    if not admin and not creator:
+        await dmt.edit(msgRep.NOT_ADMIN)
+        return
+    get_user = await get_user_from_event(promt)
+    if isinstance(get_user, tuple):
+        user, rank = get_user
+    else:
+        user = get_user
+        rank = ""
+    if not rank:
+        rank = ""
+    if user:
+        pass
+    else:
+        return
+    if not isinstance(user, User):
+        await dmt.edit("`NOT-A-USER`")
+        return
+    try:
+        admins_list = []
+        async for member in dmt.client.iter_participants(dmt.chat_id, filter=ChannelParticipantsAdmins):
+            admins_list.append(member.id)
+        if user.id not in admins_list:
+            await dmt.edit("`ALREADY-NOT-ADM`")
+            return
+    except ChatAdminRequiredError:
+        await promt.edit("`NEED-ADM`")
+        return
+    if user.is_self:
+        await dmt.edit("`MYSELF`")
+        return
+    await dmt.edit("`DMTING`")
+    try:
+        await dmt.client(EditAdminRequest(dmt.chat_id, user.id, DEMOTE_RIGHTS, rank))
+        await dmod.edit("`DMTED`")
+    except BadRequestError:
+        await dmt.edit(msgRep.NO_PERMS)
+        return
+    return
