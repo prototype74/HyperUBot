@@ -34,5 +34,19 @@ class AdminText(object): # Admin module
     DEL_ALL_SUCCESFULLY = en.AdminText.DEL_ALL_SUCCESFULLY
     DEL_SOME_SUCCESSFULLY = en.AdminText.DEL_SOME_SUCCESSFULLY
 
+class StatusText(object):
+    UBOT = en.StatusText.UBOT
+    SYSTEM_STATUS = en.StatusText.SYSTEM_STATUS
+    ONLINE = en.StatusText.ONLINE
+    VER_TEXT = en.StatusText.VER_TEXT
+    USR_TEXT = en.StatusText.USR_TEXT
+    RTT = en.StatusText.RTT
+    TELETON_VER = en.StatusText.TELETON_VER
+    PYTHON_VER = en.StatusText.PYTHON_VER
+    GITAPI_VER = en.StatusText.GITAPI_VER
+    CASAPI_VER = en.StatusText.CASAPI_VER
+    ERROR = en.StatusText.ERROR
+
+# Remove before official release!
 class TestModuleText(object): #test module
     TEST_MESSAGE = en.testModuleText.TEST_MESSAGE

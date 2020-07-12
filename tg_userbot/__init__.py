@@ -25,3 +25,7 @@ API_HASH = ConfigClass.API_HASH
 
 #add something for stringsession
 bot = TelegramClient("tguserbot", API_KEY, API_HASH)
+
+#SYSVARS
+PROJECT = "tguserbot-X"
+VERSION = "0.0.1-DEV_PREV"

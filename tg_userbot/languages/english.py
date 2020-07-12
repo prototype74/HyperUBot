@@ -36,5 +36,18 @@ class AdminText(object): # Admin module
     DEL_ALL_SUCCESFULLY = "Successfully removed `{}` deleted accounts!"
     DEL_SOME_SUCCESSFULLY = "Successfully removed `{}` deleted accounts! `{}` admin accounts could not be removed!"
 
+class StatusText(object):
+    UBOT = "Userbot Project: "
+    SYSTEM_STATUS = "System Status: "
+    ONLINE = "Online!"
+    VER_TEXT = "Version: "
+    USR_TEXT = "User: "
+    RTT = "RTT: "
+    TELETON_VER = "Telethon version: "
+    PYTHON_VER = "Python version: "
+    GITAPI_VER = "GitHub API Version: "
+    CASAPI_VER = "CAS API Version: "
+    ERROR = "ERROR!"
+
 class TestModuleText(object): #test module
     TEST_MESSAGE = "`This is a test message! I am operational!`"
