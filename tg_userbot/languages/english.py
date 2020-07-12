@@ -48,6 +48,7 @@ class StatusText(object):
     GITAPI_VER = "GitHub API Version: "
     CASAPI_VER = "CAS API Version: "
     COMMIT_NUM = "Revision: "
+    ERROR = "ERROR!"
 
 class GeneralMessages(object):
     ERROR = "ERROR!"

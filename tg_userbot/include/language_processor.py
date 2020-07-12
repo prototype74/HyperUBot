@@ -46,6 +46,7 @@ class StatusText(object):
     GITAPI_VER = en.StatusText.GITAPI_VER
     CASAPI_VER = en.StatusText.CASAPI_VER
     COMMIT_NUM = en.StatusText.COMMIT_NUM
+    ERROR = en.StatusText.ERROR
 
 class GeneralMessages(object):
     ERROR = en.GeneralMessages.ERROR
