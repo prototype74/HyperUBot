@@ -18,17 +18,17 @@ def rttCalc(): # To implement!
 @watcher(outgoing=True, pattern=r"^\.status$")
 async def statuschecker(stat):
     rtt = rttCalc()
-    reply = msgRep.SYSTEM_STATUS + msgRep.ONLINE + "\n"
-    reply += msgRep.UBOT + PROJECT + "\n"
-    reply += msgRep.VER_TEXT + VERSION + "\n"
+    reply = msgRep.SYSTEM_STATUS + msgRep.ONLINE + "\n\n"
+    reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"
+    reply += msgRep.VER_TEXT + "`" + VERSION + "`" + "\n"
     if rtt:
-        reply += msgRep.RTT + str(rtt) + "\n"
+        reply += msgRep.RTT + "`" + str(rtt) + "`" + "\n"
     else:
-        reply += msgRep.RTT + msgRep.ERROR + "\n"
+        reply += msgRep.RTT + "`" + msgRep.ERROR + "`" + "\n"
     reply += "\n"
-    reply += msgRep.TELETON_VER + str(version.__version__) + "\n"
-    reply += msgRep.PYTHON_VER + str(python_version()) + "\n"
-    reply += msgRep.GITAPI_VER + msgRep.ERROR + "\n"
-    reply += msgRep.CASAPI_VER + msgRep.ERROR + "\n"
+    reply += msgRep.TELETON_VER + "`" + str(version.__version__) + "`" + "\n"
+    reply += msgRep.PYTHON_VER + "`" + str(python_version()) + "`" + "\n"
+    reply += msgRep.GITAPI_VER + "`" + msgRep.ERROR + "`" + "\n"
+    reply += msgRep.CASAPI_VER + "`" + msgRep.ERROR + "`" + "\n"
     await stat.edit(reply)
     return
