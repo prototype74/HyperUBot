@@ -10,6 +10,7 @@ from telethon import version
 from platform import python_version, uname
 from asyncio import create_subprocess_exec as asyncrunapp
 from asyncio.subprocess import PIPE as asyncPIPE
+from shutil import which
 
 #Module Global Variables
 USER = uname().node # Maybe add a username in future
