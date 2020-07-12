@@ -26,7 +26,7 @@ DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=
 
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
 async def ban(banning):
-    chat = banning.get_chat()
+    chat = await banning.get_chat()
     admin = chat.admin_rights
     creator = chat.creator
     if not admin and not creator:
