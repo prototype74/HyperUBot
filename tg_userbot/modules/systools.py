@@ -15,7 +15,7 @@ USER = uname().node # Maybe add a username in future
 
 @watcher(outgoing=True, pattern=r"^\.status$")
 async def statuschecker(stat):
-    commit = getGitReview()
+    commit = await getGitReview()
     rtt = pinger("1.1.1.1") #cloudfare's
     reply = msgRep.SYSTEM_STATUS + "`" + msgRep.ONLINE + "`" + "\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"

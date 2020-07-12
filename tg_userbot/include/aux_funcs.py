@@ -76,7 +76,7 @@ def pinger(address):
     else:
         return str(ping_time) + " ms"
 
-def getGitReview():
+async def getGitReview():
     commit = msgsLang.ERROR
     if which("git") is not None:
         ver = await asyncr("git", "describe", "--all", "--long", stdout=asyncPIPE, stderr=asyncPIPE)
