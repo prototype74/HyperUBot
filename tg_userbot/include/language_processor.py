@@ -1,4 +1,4 @@
-import tg_userbot.languages.english as en
+import tg_userbot.translations.english as en
 
 # Language processor!
 
