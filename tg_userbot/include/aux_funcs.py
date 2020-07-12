@@ -7,7 +7,7 @@ from tg_userbot.include.language_processor import GeneralMessages as msgsLang
 # Misc imports
 import os
 from subprocess import check_output
-from asyncio import create_subprocess_exec as asyncrunapp
+from asyncio import create_subprocess_exec as asyncr
 from asyncio.subprocess import PIPE as asyncPIPE
 from shutil import which
 
@@ -79,9 +79,9 @@ def pinger(address):
 def getGitReview():
     commit = msgsLang.ERROR
     if which("git") is not None:
-        ver = await asyncrunapp("git", "describe", "--all", "--long", stdout=asyncPIPE, stderr=asyncPIPE)
+        ver = await asyncr("git", "describe", "--all", "--long", stdout=asyncPIPE, stderr=asyncPIPE)
         stdout, stderr = await ver.communicate()
         verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
         verdiv = verout.split("-")
         commit = verdiv[2]
-    return str(commit)
+    return commit
