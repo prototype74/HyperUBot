@@ -18,7 +18,7 @@ def rttCalc(): # To implement!
 @watcher(outgoing=True, pattern=r"^\.status$")
 async def statuschecker(stat):
     rtt = rttCalc()
-    reply = msgRep.SYSTEM_STATUS + msgRep.ONLINE + "\n\n"
+    reply = msgRep.SYSTEM_STATUS + "`" + msgRep.ONLINE + "`" + "\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"
     reply += msgRep.VER_TEXT + "`" + VERSION + "`" + "\n"
     if rtt:
