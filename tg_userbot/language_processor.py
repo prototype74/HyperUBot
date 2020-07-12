@@ -49,4 +49,4 @@ class StatusText(object):
 
 # Remove before official release!
 class TestModuleText(object): #test module
-    TEST_MESSAGE = en.testModuleText.TEST_MESSAGE
+    TEST_MESSAGE = en.TestModuleText.TEST_MESSAGE
