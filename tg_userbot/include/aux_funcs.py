@@ -1,10 +1,15 @@
 # Auxiliary functions used in the entire project, to keep the code clean.
 # Nuno Penim, 2020
 
-# Imports
+# My imports
+from tg_userbot.include.language_processor import GeneralMessages as msgsLang
+
+# Misc imports
 import os
 from subprocess import check_output
-
+from asyncio import create_subprocess_exec as asyncrunapp
+from asyncio.subprocess import PIPE as asyncPIPE
+from shutil import which
 
 # Admin tools
 async def get_user_from_event(event):
@@ -16,7 +21,7 @@ async def get_user_from_event(event):
         if user.isnumeric():
             user = int(user)
         if not user:
-            await event.edit(msgRep.GET_USER_FROM_EVENT_FAIL)
+            await event.edit(msgsLang.GET_USER_FROM_EVENT_FAIL)
             return
         if event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
@@ -70,3 +75,13 @@ def pinger(address):
         return "<" + str(ping_time) + " ms"
     else:
         return str(ping_time) + " ms"
+
+async def getGitReview():
+    commit = msgsLang.ERROR
+    if which("git") is not None:
+        ver = await asyncrunapp("git", "describe", "--all", "--long", stdout=asyncPIPE, stderr=asyncPIPE)
+        stdout, stderr = await ver.communicate()
+        verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
+        verdiv = verout.split("-")
+        commit = verdiv[2]
+    return commit

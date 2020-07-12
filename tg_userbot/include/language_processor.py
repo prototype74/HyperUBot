@@ -33,7 +33,6 @@ class AdminText(object): # Admin module
     NO_BAN_PERMS = en.AdminText.NO_BAN_PERMS
     DEL_ALL_SUCCESFULLY = en.AdminText.DEL_ALL_SUCCESFULLY
     DEL_SOME_SUCCESSFULLY = en.AdminText.DEL_SOME_SUCCESSFULLY
-    GET_USER_FROM_EVENT_FAIL = en.AdminText.GET_USER_FROM_EVENT_FAIL
 
 class StatusText(object):
     UBOT = en.StatusText.UBOT
@@ -46,8 +45,11 @@ class StatusText(object):
     PYTHON_VER = en.StatusText.PYTHON_VER
     GITAPI_VER = en.StatusText.GITAPI_VER
     CASAPI_VER = en.StatusText.CASAPI_VER
-    ERROR = en.StatusText.ERROR
     COMMIT_NUM = en.StatusText.COMMIT_NUM
+
+class GeneralMessages(object):
+    ERROR = en.GeneralMessages.ERROR
+    GET_USER_FROM_EVENT_FAIL = en.GeneralMessages.GET_USER_FROM_EVENT_FAIL
 
 # Remove before official release!
 class TestModuleText(object): #test module

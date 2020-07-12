@@ -35,7 +35,6 @@ class AdminText(object): # Admin module
     NO_BAN_PERMS = "I have no permissions to ban users!"
     DEL_ALL_SUCCESFULLY = "Successfully removed `{}` deleted accounts!"
     DEL_SOME_SUCCESSFULLY = "Successfully removed `{}` deleted accounts! `{}` admin accounts could not be removed!"
-    GET_USER_FROM_EVENT_FAIL = "Pass the user's username, id or reply!"
 
 class StatusText(object):
     UBOT = "Userbot Project: "
@@ -49,7 +48,10 @@ class StatusText(object):
     GITAPI_VER = "GitHub API Version: "
     CASAPI_VER = "CAS API Version: "
     COMMIT_NUM = "Revision: "
+
+class GeneralMessages(object):
     ERROR = "ERROR!"
+    GET_USER_FROM_EVENT_FAIL = "Invalid user specified!"
 
 class TestModuleText(object): #test module
     TEST_MESSAGE = "`This is a test message! I am operational!`"

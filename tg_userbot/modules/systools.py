@@ -2,29 +2,20 @@
 from tg_userbot import VERSION, PROJECT
 from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import StatusText as msgRep
-from tg_userbot.include.aux_funcs import pinger
+from tg_userbot.include.aux_funcs import pinger, getGitReview
 
 # Telethon stuff
 from telethon import version
 
 # Misc Imports
 from platform import python_version, uname
-from asyncio import create_subprocess_exec as asyncrunapp
-from asyncio.subprocess import PIPE as asyncPIPE
-from shutil import which
 
 # Module Global Variables
 USER = uname().node # Maybe add a username in future
 
 @watcher(outgoing=True, pattern=r"^\.status$")
 async def statuschecker(stat):
-    commit = msgRep.ERROR
-    if which("git") is not None:
-        ver = await asyncrunapp("git", "describe", "--all", "--long", stdout=asyncPIPE, stderr=asyncPIPE)
-        stdout, stderr = await ver.communicate()
-        verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
-        verdiv = verout.split("-")
-        commit = verdiv[2]
+    commit = getGitReview()
     rtt = pinger("1.1.1.1") #cloudfare's
     reply = msgRep.SYSTEM_STATUS + "`" + msgRep.ONLINE + "`" + "\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"
