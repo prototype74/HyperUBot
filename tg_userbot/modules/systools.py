@@ -1,4 +1,5 @@
 #My stuff
+from tg_userbot.watcher import watcher
 from tg_userbot import VERSION, PROJECT
 from tg_userbot.language_processor import StatusText as msgRep
 
