@@ -26,6 +26,13 @@ class AdminText(object): # Admin module
     DMT_MYSELF = en.AdminText.DMT_MYSELF
     DMTING_USER = en.AdminText.DMTING_USER
     DMTED_SUCCESSFULLY = en.AdminText.DMTED_SUCCESSFULLY
+    NO_DEl_USERS = en.AdminText.NO_DEl_USERS
+    SEARCHING_DEL_USERS = en.AdminText.SEARCHING_DEL_USERS
+    FOUND_DEL_ACCS = en.AdminText.FOUND_DEL_ACCS
+    DELETING_ACCS = en.AdminText.DELETING_ACCS
+    NO_BAN_PERMS = en.AdminText.NO_BAN_PERMS
+    DEL_ALL_SUCCESFULLY = en.AdminText.DEL_ALL_SUCCESFULLY
+    DEL_SOME_SUCCESSFULLY = en.AdminText.DEL_SOME_SUCCESSFULLY
 
 class TestModuleText(object): #test module
     TEST_MESSAGE = en.testModuleText.TEST_MESSAGE

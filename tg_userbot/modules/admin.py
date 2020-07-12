@@ -3,9 +3,9 @@ from tg_userbot.language_processor import AdminText as msgRep # language_process
 from tg_userbot.watcher import watcher
 
 # Telethon Stuff
-from telethon.errors import BadRequestError
+from telethon.errors import BadRequestError, UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError
 from telethon.tl.functions.channels import EditBannedRequest
-from telethon.errors.rpcerrorlist import UserIdInvalidError, ChatAdminRequiredError, AdminsTooMuchError
+from telethon.errors.rpcerrorlist import UserIdInvalidError
 from telethon.tl.types import ChatAdminRights, ChatBannedRights, User, ChannelParticipantsAdmins
 
 # Misc
@@ -20,8 +20,8 @@ UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
 ADMIN_RIGHTS = ChatAdminRights(add_admins=False, invite_users=True, change_info=False, ban_users=True, delete_messages=True, pin_messages=True)
 DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=None, ban_users=None, delete_messages=None, pin_messages=None)
 
-# Done: Ban, Unban, Kick, Promote, Demote
-# Missing: Mute, Unmute, RM DL ACC, Pins
+# Done: Ban, Unban, Kick, Promote, Demote, RM DL ACC
+# Missing: Mute, Unmute, Pins
 # Maybe: admin list, user list
 
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
@@ -196,4 +196,49 @@ async def demote(dmt):
     except BadRequestError:
         await dmt.edit(msgRep.NO_PERMS)
         return
+    return
+
+@watcher(outgoing=True, pattern=r"^\.delusers(?: |$)(.*)")
+async def delusers(deleter):
+    con = deleter.pattern_match.group(1) # gets argument, if any
+    del_u = 0
+    del_status = msgRep.NO_DEl_USERS
+    if not deleter.is_group:
+        await deleter.edit(msgRep.ONLY_CHAN_GROUPS)
+        return
+    if con != "clean":
+        await deleter.edit(msgRep.SEARCHING_DEL_USERS)
+        async for user in deleter.client.iter_participants(deleter.chat_id):
+            if user.deleted:
+                del_u += 1
+        if del_u > 0:
+            del_status = msgRep.FOUND_DEL_ACCS.format(str(del_u))
+        await deleter.edit(del_status)
+        return
+    chat = await deleter.get_chat()
+    admin = chat.admin_rights
+    creator = chat.creator
+    if not admin and not creator:
+        await deleter.edit(msgRep.NOT_ADMIN)
+        return
+    await deleter.edit(msgRep.DELETING_ACCS)
+    del_u = 0
+    del_a = 0
+    async for user in deleter.client.iter_participants(show.chat_id):
+        if user.deleted:
+            try:
+                await deleter.client(EditBannedRequest(show.chat_id, user.id, BANNED_RIGHTS))
+            except ChatAdminRequiredError:
+                await show.edit(msgRep.NO_BAN_PERMS)
+                return
+            except UserAdminInvalidError:
+                del_u -= 1
+                del_a += 1
+            await deleter.client(EditBannedRequest(deleter.chat_id, user.id, UNBAN_RIGHTS))
+            del_u += 1
+    if del_u > 0:
+        del_status = msgRep.DEL_ALL_SUCCESFULLY.format(str(del_u))
+    if del_a > 0:
+        del_status = msgRep.DEL_SOME_SUCCESSFULLY.format(str(del_u), str(del_a))
+    await deleter.edit(del_status)
     return

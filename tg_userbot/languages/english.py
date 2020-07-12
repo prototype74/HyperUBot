@@ -16,7 +16,7 @@ class AdminText(object): # Admin module
     FAILED_FETCH_USER = "Couldn't fetch user."
     KICKING_USER = "`Kicking user...`"
     KICKED_SUCCESSFULLY = "{} has been kicked!"
-    ONLY_CHAN_GROUPS = "I can only act in Groups or channels!"
+    ONLY_CHAN_GROUPS = "I can only perform this action in Groups or channels!"
     NOT_USER = "This entity is not a User!"
     PROMT_SELF = "I can't promote myself!"
     ADM_ALRD = "This user is already Admin!"
@@ -28,6 +28,13 @@ class AdminText(object): # Admin module
     DMT_MYSELF = "I can't demote myself!"
     DMTING_USER = "`Demoting user...`"
     DMTED_SUCCESSFULLY = "Successfully demoted!"
+    NO_DEl_USERS = "No deleted accounts detected!"
+    SEARCHING_DEL_USERS = "`Searching for deleted accounts...`"
+    FOUND_DEL_ACCS = "Found `{}` deleted accounts! Use .delusers clean to clean them!"
+    DELETING_ACCS = "`Removing deleted accounts...`"
+    NO_BAN_PERMS = "I have no permissions to ban users!"
+    DEL_ALL_SUCCESFULLY = "Successfully removed `{}` deleted accounts!"
+    DEL_SOME_SUCCESSFULLY = "Successfully removed `{}` deleted accounts! `{}` admin accounts could not be removed!"
 
 class TestModuleText(object): #test module
     TEST_MESSAGE = "`This is a test message! I am operational!`"
