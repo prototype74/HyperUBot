@@ -8,6 +8,8 @@ from telethon import version
 
 #Misc Imports
 from platform import python_version, uname
+from asyncio import create_subprocess_exec as asyncrunapp
+from asyncio.subprocess import PIPE as asyncPIPE
 
 #Module Global Variables
 USER = uname().node # Maybe add a username in future
@@ -17,10 +19,18 @@ def rttCalc(): # To implement!
 
 @watcher(outgoing=True, pattern=r"^\.status$")
 async def statuschecker(stat):
+    commit = msgRep.ERROR
+    if which("git") is not None:
+        ver = await asyncrunapp("git", "describe", "--all", "--long", stdout=asyncPIPE, stderr=asyncPIPE)
+        stdout, stderr = await ver.communicate()
+        verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
+        verdiv = verout.split("-")
+        commit = verdiv[2]
     rtt = rttCalc()
     reply = msgRep.SYSTEM_STATUS + "`" + msgRep.ONLINE + "`" + "\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"
     reply += msgRep.VER_TEXT + "`" + VERSION + "`" + "\n"
+    reply += msgRep.COMMIT_NUM + "`" + commit + "`" + "\n"
     if rtt:
         reply += msgRep.RTT + "`" + str(rtt) + "`" + "\n"
     else:

@@ -47,6 +47,7 @@ class StatusText(object):
     GITAPI_VER = en.StatusText.GITAPI_VER
     CASAPI_VER = en.StatusText.CASAPI_VER
     ERROR = en.StatusText.ERROR
+    COMMIT_NUM = en.StatusText.COMMIT_NUM
 
 # Remove before official release!
 class TestModuleText(object): #test module

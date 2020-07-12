@@ -48,6 +48,7 @@ class StatusText(object):
     PYTHON_VER = "Python version: "
     GITAPI_VER = "GitHub API Version: "
     CASAPI_VER = "CAS API Version: "
+    COMMIT_NUM = "Revision: "
     ERROR = "ERROR!"
 
 class TestModuleText(object): #test module
