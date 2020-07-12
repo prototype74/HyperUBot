@@ -76,7 +76,7 @@ def pinger(address):
     else:
         return str(ping_time) + " ms"
 
-async def getGitReview():
+def getGitReview():
     commit = msgsLang.ERROR
     if which("git") is not None:
         ver = await asyncrunapp("git", "describe", "--all", "--long", stdout=asyncPIPE, stderr=asyncPIPE)
@@ -84,4 +84,4 @@ async def getGitReview():
         verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
         verdiv = verout.split("-")
         commit = verdiv[2]
-    return commit
+    return str(commit)
