@@ -1,6 +1,7 @@
 # My stuff
-from tg_userbot.language_processor import AdminText as msgRep # language_processor, yay
-from tg_userbot.watcher import watcher
+from tg_userbot.include.language_processor import AdminText as msgRep # language_processor, yay
+from tg_userbot.include.watcher import watcher
+from tg_userbot.include.aux_funcs import get_user_from_event, get_user_from_id
 
 # Telethon Stuff
 from telethon.errors import BadRequestError, UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError
@@ -242,38 +243,3 @@ async def delusers(deleter):
         del_status = msgRep.DEL_SOME_SUCCESSFULLY.format(str(del_u), str(del_a))
     await deleter.edit(del_status)
     return
-
-# "Forked" From PaperPlane Extended!
-async def get_user_from_event(event):
-    if event.reply_to_msg_id:
-        previous_message = await event.get_reply_message()
-        user_obj = await event.client.get_entity(previous_message.from_id)
-    else:
-        user = event.pattern_match.group(1)
-        if user.isnumeric():
-            user = int(user)
-        if not user:
-            await event.edit(msgRep.GET_USER_FROM_EVENT_FAIL)
-            return
-        if event.message.entities is not None:
-            probable_user_mention_entity = event.message.entities[0]
-            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
-                user_id = probable_user_mention_entity.user_id
-                user_obj = await event.client.get_entity(user_id)
-                return user_obj
-        try:
-            user_obj = await event.client.get_entity(user)
-        except (TypeError, ValueError) as err:
-            await event.edit(str(err))
-            return None
-    return user_obj
-
-async def get_user_from_id(user, event):
-    if isinstance(user, str):
-        user = int(user)
-    try:
-        user_obj = await event.client.get_entity(user)
-    except (TypeError, ValueError) as err:
-        await event.edit(str(err))
-        return None
-    return user_obj

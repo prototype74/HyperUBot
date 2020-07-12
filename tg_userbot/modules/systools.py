@@ -1,7 +1,8 @@
 # My stuff
-from tg_userbot.watcher import watcher
 from tg_userbot import VERSION, PROJECT
-from tg_userbot.language_processor import StatusText as msgRep
+from tg_userbot.include.watcher import watcher
+from tg_userbot.include.language_processor import StatusText as msgRep
+from tg_userbot.include.aux_funcs import pinger
 
 # Telethon stuff
 from telethon import version
@@ -15,9 +16,6 @@ from shutil import which
 # Module Global Variables
 USER = uname().node # Maybe add a username in future
 
-def rttCalc(): # To implement!
-    return None
-
 @watcher(outgoing=True, pattern=r"^\.status$")
 async def statuschecker(stat):
     commit = msgRep.ERROR
@@ -27,7 +25,7 @@ async def statuschecker(stat):
         verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
         verdiv = verout.split("-")
         commit = verdiv[2]
-    rtt = rttCalc()
+    rtt = pinger("1.1.1.1") #cloudfare's
     reply = msgRep.SYSTEM_STATUS + "`" + msgRep.ONLINE + "`" + "\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"
     reply += msgRep.VER_TEXT + "`" + VERSION + "`" + "\n"
