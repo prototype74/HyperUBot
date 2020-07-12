@@ -1,18 +1,18 @@
-#My stuff
+# My stuff
 from tg_userbot.watcher import watcher
 from tg_userbot import VERSION, PROJECT
 from tg_userbot.language_processor import StatusText as msgRep
 
-#Telethon stuff
+# Telethon stuff
 from telethon import version
 
-#Misc Imports
+# Misc Imports
 from platform import python_version, uname
 from asyncio import create_subprocess_exec as asyncrunapp
 from asyncio.subprocess import PIPE as asyncPIPE
 from shutil import which
 
-#Module Global Variables
+# Module Global Variables
 USER = uname().node # Maybe add a username in future
 
 def rttCalc(): # To implement!
