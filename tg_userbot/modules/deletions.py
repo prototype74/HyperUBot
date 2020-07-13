@@ -8,6 +8,7 @@ from telethon.errors import rpcbaseerrors
 # Misc imports
 from asyncio import sleep
 
+@watcher(outgoing=True, pattern="^\.purge$")
 async def purger(purg):
     chat = await purg.get_input_chat()
     msgs = []
