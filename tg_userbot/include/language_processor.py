@@ -48,6 +48,9 @@ class StatusText(object):
     COMMIT_NUM = en.StatusText.COMMIT_NUM
     ERROR = en.StatusText.ERROR
 
+class DeletionsText(object):
+    PURGE_COMPLETE = en.DeletionsText.PURGE_COMPLETE
+
 class GeneralMessages(object):
     ERROR = en.GeneralMessages.ERROR
     GET_USER_FROM_EVENT_FAIL = en.GeneralMessages.GET_USER_FROM_EVENT_FAIL

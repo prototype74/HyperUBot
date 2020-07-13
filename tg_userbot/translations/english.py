@@ -50,6 +50,9 @@ class StatusText(object):
     COMMIT_NUM = "Revision: "
     ERROR = "ERROR!"
 
+class DeletionsText(object):
+    PURGE_COMPLETE = "Purge complete! Deleted `{}` messages!"
+
 class GeneralMessages(object):
     ERROR = "ERROR!"
     GET_USER_FROM_EVENT_FAIL = "Invalid user specified!"
