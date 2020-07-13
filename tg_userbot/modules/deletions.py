@@ -8,7 +8,7 @@ from telethon.errors import rpcbaseerrors
 # Misc imports
 from asyncio import sleep
 
-@watcher(outgoing=True, pattern="^\.purge$")
+@watcher(outgoing=True, pattern=r"^\.purge$")
 async def purger(purg):
     chat = await purg.get_input_chat()
     msgs = []
@@ -25,3 +25,13 @@ async def purger(purg):
     done = await purg.client.send_message(purg.chat_id, msgRep.PURGE_COMPLETE.format(str(count)))
     await sleep(3)
     await done.delete()
+
+@watcher(outgoing=True, pattern=r"^\.del$")
+async def deleteThis(rep):
+    msg_src = await rep.get_reply_message()
+    if rep.reply_to_msg_id:
+        try:
+            await msg_src.delete()
+            await rep.delete()
+        except rpcbaseerrors.BadRequestError:
+            await rep.edit(msgRep.DEL_FAILED)
