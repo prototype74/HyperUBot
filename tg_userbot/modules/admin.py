@@ -2,6 +2,7 @@
 from tg_userbot.include.language_processor import AdminText as msgRep # language_processor, yay
 from tg_userbot.include.watcher import watcher
 from tg_userbot.include.aux_funcs import get_user_from_event, get_user_from_id
+from tg_userbot import BOTLOG, BOTLOG_CHATID
 
 # Telethon Stuff
 from telethon.errors import BadRequestError, UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError
@@ -20,9 +21,10 @@ MUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=True)
 UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
 ADMIN_RIGHTS = ChatAdminRights(add_admins=False, invite_users=True, change_info=False, ban_users=True, delete_messages=True, pin_messages=True)
 DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=None, ban_users=None, delete_messages=None, pin_messages=None)
+USER_URL = "tg://user?id="
 
 # Done: Ban, Unban, Kick, Promote, Demote, RM DL ACC
-# Missing: Mute, Unmute, Pins
+# Missing: Mute, Unmute, Pins, Logs on Promote and Demote
 # Maybe: admin list, user list
 
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
@@ -50,6 +52,8 @@ async def ban(banning):
         await banning.edit(msgRep.NO_MSG_DEL_PERMS)
         return
     await banning.edit(msgRep.BANNED_SUCCESSFULLY.format(str(user.id)))
+    if BOTLOG:
+        await banning.client.send_message(BOTLOG_CHATID, msgRep.BANLOG.format(user.first_name, user.id, banning.chat.title, banning.chat.id))
     return
 
 @watcher(outgoing=True, pattern=r"^\.unban(?: |$)(.*)")
@@ -67,6 +71,8 @@ async def unban(unbanner):
     try:
         await unbanner.client(EditBannedRequest(unbon.chat_id, user.id, UNBANNED_RIGHTS))
         await unbanner.edit(msgRep.UNBANNED_SUCCESSFULLY)
+        if BOTLOG:
+            await unbanner.client.send_message(BOTLOG_CHATID, msgRep.UNBANLOG.format(user.first_name, user.id, unbanner.chat.title, unbanner.chat.id))
     except UserIdInvalidError:
         await unbanner.edit(msgRep.USERID_INVALID)
     return
@@ -92,6 +98,8 @@ async def kick(kicker):
         return
     await kicker.client(EditBannedRequest(kicker.chat_id, user.id, ChatBannedRights(until_date=None)))
     await kicker.edit(msgRep.KICKED_SUCCESSFULLY.format(str(user.id)))
+    if BOTLOG:
+        await kicker.client.send_message(BOTLOG_CHATID, msgRep.KICKLOG.format(user.first_name, user.id, kicker.chat.title, kicker.chat.id))
     return
 
 @watcher(outgoing=True, pattern=r"^\.promote(?: |$)(.*)")
@@ -242,4 +250,6 @@ async def delusers(deleter):
     if del_a > 0:
         del_status = msgRep.DEL_SOME_SUCCESSFULLY.format(str(del_u), str(del_a))
     await deleter.edit(del_status)
+    if BOTLOG:
+        await deleter.client.send_message(BOTLOG_CHATID, msgRep.CLEAN_DELACC_LOG.format(del_u))
     return

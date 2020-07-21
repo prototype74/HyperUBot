@@ -35,6 +35,10 @@ class AdminText(object): # Admin module
     NO_BAN_PERMS = "I have no permissions to ban users!"
     DEL_ALL_SUCCESFULLY = "Successfully removed `{}` deleted accounts!"
     DEL_SOME_SUCCESSFULLY = "Successfully removed `{}` deleted accounts! `{}` admin accounts could not be removed!"
+    BANLOG = "#BAN\nUser: [{}]({})\nChat: [{}]({})"
+    UNBANLOG = "#UNBAN\nUser: [{}]({})\nChat: [{}]({})"
+    KICKLOG = "#KICK\nUser: [{}]({})\nChat: [{}]({})"
+    CLEAN_DELACC_LOG = "#DELUSERS\nRemoved `{}` deleted accounts!"
 
 class StatusText(object):
     UBOT = "Userbot Project: "

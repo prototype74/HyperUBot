@@ -33,6 +33,10 @@ class AdminText(object): # Admin module
     NO_BAN_PERMS = en.AdminText.NO_BAN_PERMS
     DEL_ALL_SUCCESFULLY = en.AdminText.DEL_ALL_SUCCESFULLY
     DEL_SOME_SUCCESSFULLY = en.AdminText.DEL_SOME_SUCCESSFULLY
+    BANLOG = en.AdminText.BANLOG
+    UNBANLOG = en.AdminText.UNBANLOG
+    KICKLOG = en.AdminText.KICKLOG
+    CLEAN_DELACC_LOG = en.AdminText.CLEAN_DELACC_LOG
 
 class StatusText(object):
     UBOT = en.StatusText.UBOT
