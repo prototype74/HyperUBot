@@ -1,6 +1,9 @@
 class ConfigClass(object):
     API_KEY = None
     API_HASH = None
+    BOTLOG = False
+    BOTLOG_CHATID = None
+    STRING_SESSION = None
 
 # TO-DO:
 # 1 - Make this sample_config.py
