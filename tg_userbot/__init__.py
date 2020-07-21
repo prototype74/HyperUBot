@@ -27,6 +27,7 @@ if ENV:
 else:
     from tg_userbot.config import ConfigClass  # Import here, otherwise error, if ENV!
 
+    #Add some checks for API_KEY and API_HASH, they are requirements!
     API_KEY = ConfigClass.API_KEY
     API_HASH = ConfigClass.API_HASH
     BOTLOG = ConfigClass.BOTLOG
