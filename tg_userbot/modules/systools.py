@@ -9,6 +9,7 @@ from telethon import version
 
 # Misc Imports
 from platform import python_version, uname
+from asyncio import sleep
 
 # Module Global Variables
 USER = uname().node # Maybe add a username in future
@@ -32,3 +33,9 @@ async def statuschecker(stat):
     reply += msgRep.CASAPI_VER + "`" + msgRep.ERROR + "`" + "\n"
     await stat.edit(reply)
     return
+
+@watcher(outgoing=True, pattern=r"^\.kickme$")
+async def kickme(leave):
+    await leave.edit("`Leaving chat`")
+    await sleep(0.1) #wait to avoid bad stuff
+    await leave.client.kick_participant(leave.chat_id, 'me')
