@@ -152,9 +152,9 @@ async def promote(promt):
     except AdminsTooMuchError:
         await promt.edit(msgRep.TOO_MANY_ADM)
         return
-    #except BadRequestError:
-    #    await promt.edit(msgRep.NO_PERMS)
-    #    return
+    except BadRequestError:
+        await promt.edit(msgRep.NO_PERMS)
+        return
     return
 
 @watcher(outgoing=True, pattern=r"^\.demote(?: |$)(.*)")
