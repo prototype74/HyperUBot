@@ -147,8 +147,8 @@ async def promote(promt):
             admin.add_admins = False
             if all(getattr(admin, right) is False for right in vars(admin)):
                 return await promt.edit(msgRep.NO_ADD_ADM_RIGHT)
-            # await promt.client(EditAdminRequest(promt.chat_id, user.id, admin, rank))
-            await prompt.client.edit_admin(chat, user, is_admin = True)
+            await promt.client(EditAdminRequest(promt.chat_id, user.id, admin, rank))
+            # await prompt.client.edit_admin(chat, user, is_admin = True)
         await promt.edit(msgRep.PRMT_SUCCESS)
     except AdminsTooMuchError:
         await promt.edit(msgRep.TOO_MANY_ADM)
