@@ -69,7 +69,7 @@ async def unban(unbanner):
         return
     await unbanner.edit(msgRep.UNBANNING_USER)
     try:
-        await unbanner.client(EditBannedRequest(unbon.chat_id, user.id, UNBANNED_RIGHTS))
+        await unbanner.client(EditBannedRequest(unbanner.chat_id, user.id, UNBANNED_RIGHTS))
         await unbanner.edit(msgRep.UNBANNED_SUCCESSFULLY)
         if BOTLOG:
             await unbanner.client.send_message(BOTLOG_CHATID, msgRep.UNBANLOG.format(user.first_name, USER_URL + str(user.id), unbanner.chat.title, unbanner.chat.id))
