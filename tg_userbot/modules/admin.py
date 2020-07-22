@@ -142,21 +142,19 @@ async def promote(promt):
     await promt.edit(msgRep.PROMTING_USER)
     try:
         if creator:
-            await promt.client(
-                EditAdminRequest(promt.chat_id, user.id, ADMIN_RIGHTS, rank))
+            await promt.client(EditAdminRequest(promt.chat_id, user.id, ADMIN_RIGHTS, rank))
         else:
             admin.add_admins = False
             if all(getattr(admin, right) is False for right in vars(admin)):
                 return await promt.edit(msgRep.NO_ADD_ADM_RIGHT)
-            await promt.client(
-                EditAdminRequest(promt.chat_id, user.id, admin, rank))
+            await promt.client(EditAdminRequest(promt.chat_id, user.id, admin, rank))
         await promt.edit(msgRep.PRMT_SUCCESS)
     except AdminsTooMuchError:
         await promt.edit(msgRep.TOO_MANY_ADM)
         return
-    except BadRequestError:
-        await promt.edit(msgRep.NO_PERMS)
-        return
+    #except BadRequestError:
+    #    await promt.edit(msgRep.NO_PERMS)
+    #    return
     return
 
 @watcher(outgoing=True, pattern=r"^\.demote(?: |$)(.*)")
