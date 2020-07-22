@@ -231,10 +231,10 @@ async def delusers(deleter):
     await deleter.edit(msgRep.DELETING_ACCS)
     del_u = 0
     del_a = 0
-    async for user in deleter.client.iter_participants(show.chat_id):
+    async for user in deleter.client.iter_participants(deleter.chat_id):
         if user.deleted:
             try:
-                await deleter.client(EditBannedRequest(show.chat_id, user.id, BANNED_RIGHTS))
+                await deleter.client(EditBannedRequest(deleter.chat_id, user.id, BANNED_RIGHTS))
             except ChatAdminRequiredError:
                 await show.edit(msgRep.NO_BAN_PERMS)
                 return
