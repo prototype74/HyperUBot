@@ -12,8 +12,8 @@ basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level
 
 LOGS = getLogger(__name__)
 
-if version_info[0] < 3 or version_info[1] < 6: #for now python 3.6
-    LOGS.error("Required Python 3.6")
+if version_info[0] < 3 or version_info[1] < 8:
+    LOGS.error("Required Python 3.8!")
     quit(1)
 
 ENV = bool(os.environ.get('ENV', False)) #check if environment vars
