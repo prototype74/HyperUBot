@@ -4,6 +4,9 @@
 # My imports
 from tg_userbot.include.language_processor import GeneralMessages as msgsLang
 
+# Telethon imports
+from telethon.tl.types import MessageEntityMentionName
+
 # Misc imports
 import os
 from subprocess import check_output
