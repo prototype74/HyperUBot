@@ -169,7 +169,7 @@ async def demote(dmt):
     if not admin and not creator:
         await dmt.edit(msgRep.NOT_ADMIN)
         return
-    get_user = await get_user_from_event(promt)
+    get_user = await get_user_from_event(dmt)
     if isinstance(get_user, tuple):
         user, rank = get_user
     else:
