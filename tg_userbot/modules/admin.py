@@ -200,7 +200,7 @@ async def demote(dmt):
     await dmt.edit(msgRep.DMTING_USER)
     try:
         await dmt.client(EditAdminRequest(dmt.chat_id, user.id, DEMOTE_RIGHTS, rank))
-        await dmod.edit(msgRep.DMTED_SUCCESSFULLY)
+        await dmt.edit(msgRep.DMTED_SUCCESSFULLY)
     except BadRequestError:
         await dmt.edit(msgRep.NO_PERMS)
         return
