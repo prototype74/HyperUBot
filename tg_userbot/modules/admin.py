@@ -6,7 +6,7 @@ from tg_userbot import BOTLOG, BOTLOG_CHATID
 
 # Telethon Stuff
 from telethon.errors import BadRequestError, UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError
-from telethon.tl.functions.channels import EditBannedRequest
+from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
 from telethon.errors.rpcerrorlist import UserIdInvalidError
 from telethon.tl.types import ChatAdminRights, ChatBannedRights, User, ChannelParticipantsAdmins
 
