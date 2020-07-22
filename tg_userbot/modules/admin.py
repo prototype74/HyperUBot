@@ -241,7 +241,7 @@ async def delusers(deleter):
             except UserAdminInvalidError:
                 del_u -= 1
                 del_a += 1
-            await deleter.client(EditBannedRequest(deleter.chat_id, user.id, UNBAN_RIGHTS))
+            await deleter.client(EditBannedRequest(deleter.chat_id, user.id, UNBANNED_RIGHTS))
             del_u += 1
     if del_u > 0:
         del_status = msgRep.DEL_ALL_SUCCESFULLY.format(str(del_u))
