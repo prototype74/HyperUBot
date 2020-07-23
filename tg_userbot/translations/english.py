@@ -39,6 +39,8 @@ class AdminText(object): # Admin module
     UNBANLOG = "#UNBAN\nUser: [{}]({})\nChat: [{}]({})"
     KICKLOG = "#KICK\nUser: [{}]({})\nChat: [{}]({})"
     CLEAN_DELACC_LOG = "#DELUSERS\nRemoved `{}` deleted accounts!"
+    PROMT_LOG = "#PROMOTE\nUser: [{}]({})\nChat: [{}]({})"
+    DMT_LOG = "#DEMOTE\nUser: [{}]({})\nChat: [{}]({})"
 
 class StatusText(object):
     UBOT = "Userbot Project: "

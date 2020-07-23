@@ -23,8 +23,8 @@ ADMIN_RIGHTS = ChatAdminRights(add_admins=False, invite_users=True, change_info=
 DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=None, ban_users=None, delete_messages=None, pin_messages=None)
 USER_URL = "tg://user?id="
 
-# Done: Ban, Unban, Kick, Promote, Demote, RM DL ACC
-# Missing: Mute, Unmute, Pins, Logs on Promote and Demote
+# Done: Ban, Unban, Kick, Promote, Demote, RM DL ACC, Logging
+# Missing: Mute, Unmute, Pins
 # Maybe: admin list, user list
 
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
@@ -155,6 +155,8 @@ async def promote(promt):
     except BadRequestError:
         await promt.edit(msgRep.NO_PERMS)
         return
+    if BOTLOG:
+        await promt.client.send_message(BOTLOG_CHATID, msgRep.PROMT_LOG.format(user.first_name, USER_URL + str(user.id), promt.chat.title, promt.chat.id))
     return
 
 @watcher(outgoing=True, pattern=r"^\.demote(?: |$)(.*)")
@@ -203,6 +205,8 @@ async def demote(dmt):
     except BadRequestError:
         await dmt.edit(msgRep.NO_PERMS)
         return
+    if BOTLOG:
+        await dmt.client.send_message(BOTLOG_CHATID, msgRep.DMT_LOG.format(user.first_name, USER_URL + str(user.id), promt.chat.title, promt.chat.id))
     return
 
 @watcher(outgoing=True, pattern=r"^\.delusers(?: |$)(.*)")
