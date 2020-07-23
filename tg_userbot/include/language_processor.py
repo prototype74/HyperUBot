@@ -59,6 +59,7 @@ class StatusText(object):
 class DeletionsText(object):
     PURGE_COMPLETE = text.DeletionsText.PURGE_COMPLETE
     DEL_FAILED = text.DeletionsText.DEL_FAILED
+    PURGE_LOG = text.DeletionsText.PURGE_LOG
 
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR

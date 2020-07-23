@@ -1,6 +1,7 @@
 # My stuff
 from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import DeletionsText as msgRep
+from tg_userbot import BOTLOG, BOTLOG_CHATID
 
 # Telethon stuff
 from telethon.errors import rpcbaseerrors
@@ -23,6 +24,8 @@ async def purger(purg):
     if msgs:
         await purg.client.delete_messages(chat, msgs)
     done = await purg.client.send_message(purg.chat_id, msgRep.PURGE_COMPLETE.format(str(count)))
+    if BOTLOG:
+        await purg.client.send_message(BOTLOG_CHATID, msgRep.PURGE_LOG.format(str(count)))
     await sleep(3)
     await done.delete()
 

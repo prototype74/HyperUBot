@@ -59,6 +59,7 @@ class StatusText(object):
 class DeletionsText(object):
     PURGE_COMPLETE = "Purge complete! Deleted `{}` messages!"
     DEL_FAILED = "I cannot delete this message!"
+    PURGE_LOG = "#PURGE\nPurged {} messages successfully!"
 
 class GeneralMessages(object):
     ERROR = "ERROR!"
