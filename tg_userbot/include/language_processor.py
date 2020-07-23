@@ -72,6 +72,3 @@ class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR
     GET_USER_FROM_EVENT_FAIL = text.GeneralMessages.GET_USER_FROM_EVENT_FAIL
 
-# Remove before official release!
-class TestModuleText(object): #test module
-    TEST_MESSAGE = text.TestModuleText.TEST_MESSAGE

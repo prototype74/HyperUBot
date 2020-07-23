@@ -65,5 +65,3 @@ class GeneralMessages(object):
     ERROR = "ERROR!"
     GET_USER_FROM_EVENT_FAIL = "Invalid user specified!"
 
-class TestModuleText(object): #test module
-    TEST_MESSAGE = "`This is a test message! I am operational!`"
