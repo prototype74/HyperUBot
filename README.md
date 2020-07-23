@@ -5,6 +5,6 @@ Copyright (C) 2020 Nuno Penim
 
 All rights reserved, under construction.
 
-> Licensed under the DBAD license.
+> Licensed under [DBADPL-B](https://github.com/nunopenim/DBADPL-B)
 
 # Reminder to make an instalation guide and add Termux support too. Maybe Heroku
