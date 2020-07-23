@@ -1,6 +1,13 @@
+from tg_userbot import LANG
 
+# Language selector logic
 
-import tg_userbot.translations.english as text
+if LANG == "en":
+    import tg_userbot.translations.english as text
+elif LANG == "pt":
+    import tg_userbot.translations.english as text # No portuguese yet ;)
+else:
+    import tg_userbot.translations.english as text # defaults to english
 
 # Language processor!
 

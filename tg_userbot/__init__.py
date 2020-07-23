@@ -24,6 +24,7 @@ if ENV:
     BOTLOG = os.environ.get("BOTLOG", False)
     BOTLOG_CHATID = int(os.environ.get("BOTLOG_CHATID", "0"))
     STRING_SESSION = os.environ.get("STRING_SESSION", None)
+    LANG = os.environ.get("LANG", "en")
 else:
     from tg_userbot.config import ConfigClass  # Import here, otherwise error, if ENV!
 
@@ -33,6 +34,7 @@ else:
     BOTLOG = ConfigClass.BOTLOG
     BOTLOG_CHATID = ConfigClass.BOTLOG_CHATID
     STRING_SESSION = ConfigClass.STRING_SESSION
+    LANG = ConfigClass.LANG
 
 #add something for stringsession
 if STRING_SESSION:

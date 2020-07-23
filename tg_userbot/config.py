@@ -4,6 +4,7 @@ class ConfigClass(object):
     BOTLOG = False
     BOTLOG_CHATID = None
     STRING_SESSION = None
+    LANG = "en"
 
 # TO-DO:
 # 1 - Make this sample_config.py
