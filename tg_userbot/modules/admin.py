@@ -193,7 +193,7 @@ async def demote(dmt):
             await dmt.edit(msgRep.ALREADY_NOT_ADM)
             return
     except ChatAdminRequiredError:
-        await promt.edit(msgRep.NOT_ADMIN)
+        await dmt.edit(msgRep.NOT_ADMIN)
         return
     if user.is_self:
         await dmt.edit(msgRep.DMT_MYSELF)
@@ -206,7 +206,7 @@ async def demote(dmt):
         await dmt.edit(msgRep.NO_PERMS)
         return
     if BOTLOG:
-        await dmt.client.send_message(BOTLOG_CHATID, msgRep.DMT_LOG.format(user.first_name, USER_URL + str(user.id), promt.chat.title, promt.chat.id))
+        await dmt.client.send_message(BOTLOG_CHATID, msgRep.DMT_LOG.format(user.first_name, USER_URL + str(user.id), dmt.chat.title, dmt.chat.id))
     return
 
 @watcher(outgoing=True, pattern=r"^\.delusers(?: |$)(.*)")
@@ -240,7 +240,7 @@ async def delusers(deleter):
             try:
                 await deleter.client(EditBannedRequest(deleter.chat_id, user.id, BANNED_RIGHTS))
             except ChatAdminRequiredError:
-                await show.edit(msgRep.NO_BAN_PERMS)
+                await deleter.edit(msgRep.NO_BAN_PERMS)
                 return
             except UserAdminInvalidError:
                 del_u -= 1
