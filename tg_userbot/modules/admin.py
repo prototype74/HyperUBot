@@ -23,9 +23,12 @@ ADMIN_RIGHTS = ChatAdminRights(add_admins=False, invite_users=True, change_info=
 DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=None, ban_users=None, delete_messages=None, pin_messages=None)
 USER_URL = "tg://user?id="
 
-# Done: Ban, Unban, Kick, Promote, Demote, RM DL ACC, Logging
-# Missing: Mute, Unmute, Pins
+# Done: Ban, Unban, Kick, Promote, Demote, RM DL ACC, Logging, Mute, Unmute
+# Missing: Pins, Mute and Unmute language processing
 # Maybe: admin list, user list
+
+# Keep in mind for mute and unmute messages:
+# {user.first_name}, {user.id}, {muter.chat.title}, {muter.chat_id}
 
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
 async def ban(banning):
@@ -255,3 +258,45 @@ async def delusers(deleter):
     if BOTLOG:
         await deleter.client.send_message(BOTLOG_CHATID, msgRep.CLEAN_DELACC_LOG.format(str(del_u)))
     return
+
+@watcher(outgoing=True, pattern=r"^\.mute(?: |$)(.*)")
+async def mute(muter):
+    chat = await muter.get_chat()
+    admin = chat.admin_rights
+    creator = chat.creator
+    if not admin and not creator:
+        await muter.edit(msgRep.NOT_ADMIN)
+        return
+    user = await get_user_from_event(muter)
+    if not user:
+        return
+    await muter.edit("MUTING_USR")
+    try:
+        await muter.client(EditBannedRequest(muter.chat_id, user.id, MUTE_RIGHTS))
+    except BadRequestError:
+        await muter.edit(msgRep.NO_PERMS)
+        return
+    await muter.edit("USER_MUTED")
+    if BOTLOG:
+        await muter.client.send_message(BOTLOG_CHATID, "MUTE_LOG")
+
+@watcher(outgoing=True, pattern=r"^\.unmute(?: |$)(.*)")
+async def unmute(unmuter):
+    chat = await unmuter.get_chat()
+    admin = chat.admin_rights
+    creator = chat.creator
+    if not admin and not creator:
+        await unmuter.edit(msgRep.NOT_ADMIN)
+        return
+    user = await get_user_from_event(unmuter)
+    if not user:
+        return
+    await unmuter.edit("UNMUTING_USR")
+    try:
+        await unmuter.client(EditBannedRequest(unmuter.chat_id, user.id, UNMUTE_RIGHTS))
+    except BadRequestError:
+        await unmuter.edit(msgRep.NO_PERMS)
+        return
+    await unmuter.edit("USER_UNMUTED")
+    if BOTLOG:
+        await unmuter.client.send_message(BOTLOG_CHATID, "UNMUTE_LOG")
