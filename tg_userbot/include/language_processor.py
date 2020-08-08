@@ -63,7 +63,7 @@ class StatusText(object):
     COMMIT_NUM = text.StatusText.COMMIT_NUM
     ERROR = text.StatusText.ERROR
     DAYS = text.StatusText.DAYS
-    BOT_UPTIMETXT = text.StatusText.UPTIMETXT
+    BOT_UPTIMETXT = text.StatusText.BOT_UPTIMETXT
 
 class DeletionsText(object):
     PURGE_COMPLETE = text.DeletionsText.PURGE_COMPLETE
