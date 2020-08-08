@@ -62,6 +62,8 @@ class StatusText(object):
     CASAPI_VER = text.StatusText.CASAPI_VER
     COMMIT_NUM = text.StatusText.COMMIT_NUM
     ERROR = text.StatusText.ERROR
+    DAYS = text.StatusText.DAYS
+    BOT_UPTIMETXT = text.StatusText.UPTIMETXT
 
 class DeletionsText(object):
     PURGE_COMPLETE = text.DeletionsText.PURGE_COMPLETE

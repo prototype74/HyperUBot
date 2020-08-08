@@ -55,6 +55,8 @@ class StatusText(object):
     CASAPI_VER = "CAS API Version: "
     COMMIT_NUM = "Revision: "
     ERROR = "ERROR!"
+    DAYS = "days"
+    BOT_UPTIMETXT = "Bot uptime: "
 
 class DeletionsText(object):
     PURGE_COMPLETE = "Purge complete! Deleted `{}` messages!"
