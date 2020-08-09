@@ -4,8 +4,6 @@ from tg_userbot import LANG
 
 if LANG == "en":
     import tg_userbot.translations.english as text
-elif LANG == "pt":
-    import tg_userbot.translations.english as text # No portuguese yet ;)
 else:
     import tg_userbot.translations.english as text # defaults to english
 
