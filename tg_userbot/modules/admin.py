@@ -315,9 +315,10 @@ async def pin(msg):
     is_silent = True
     if options.lower() == "loud":
         is_silent = False
-    await msg.client(UpdatePinnedMessageRequest(msg.to_id, to_pin, is_silent))
-    #except BadRequestError:
-    #    await msg.edit(msgRep.NO_PERMS)
-    #    return
+    try:
+        await msg.client(UpdatePinnedMessageRequest(msg.to_id, to_pin, is_silent))
+    except BadRequestError:
+        await msg.edit(msgRep.NO_PERMS)
+        return
     await msg.edit(msgRep.PINNED_SUCCESSFULLY)
     return
