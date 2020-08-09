@@ -1,11 +1,11 @@
 # To Do list for my reference
 
-# Done:
+## Done:
  - Admin module (although needs an adjustment here and there).
  - Systools module's .status command
  - Deletions (.del and .purge)
 
-# Missing and urgent:
+## Missing and urgent:
  - Chatinfo module
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
@@ -19,7 +19,7 @@
  - WebTools (ping and such)
  - Update module
 
-# Missing, but *maybe* to be added:
+## Missing, but *maybe* to be added:
  - Memes (mock, vaporwave, etc...)
  - Misc (coinflip, random, dice...)
  - Weather
