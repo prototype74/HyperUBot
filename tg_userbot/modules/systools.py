@@ -10,7 +10,7 @@ from telethon import version
 # Misc Imports
 from platform import python_version, uname
 from asyncio import sleep
-from datetime import datetime
+import datetime
 import time
 import psutil
 
@@ -21,7 +21,7 @@ STARTTIME = datetime.now()
 @watcher(outgoing=True, pattern=r"^\.status$")
 async def statuschecker(stat):
     global STARTTIME
-    uptimebot = datetime.now() - STARTTIME
+    uptimebot = datetime.datetime.now() - STARTTIME
     uptime_hours = uptimebot.seconds // 3600  # (60 * 60)
     uptime_mins = uptimebot.seconds // 60 % 60
     uptime_secs = uptimebot.seconds % 60
