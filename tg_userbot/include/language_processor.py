@@ -70,6 +70,7 @@ class StatusText(object):
     ERROR = text.StatusText.ERROR
     DAYS = text.StatusText.DAYS
     BOT_UPTIMETXT = text.StatusText.BOT_UPTIMETXT
+    MAC_UPTIMETXT = text.StatusText.MAC_UPTIMETXT
 
 class DeletionsText(object):
     PURGE_COMPLETE = text.DeletionsText.PURGE_COMPLETE
