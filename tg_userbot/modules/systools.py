@@ -3,6 +3,8 @@ from tg_userbot import VERSION, PROJECT
 from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import StatusText as msgRep
 from tg_userbot.include.aux_funcs import pinger, getGitReview
+import tg_userbot.include.cas_api as cas
+import tg_userbot.include.git_api as git
 
 # Telethon stuff
 from telethon import version
@@ -52,8 +54,8 @@ async def statuschecker(stat):
     reply += "\n"
     reply += msgRep.TELETON_VER + "`" + str(version.__version__) + "`" + "\n"
     reply += msgRep.PYTHON_VER + "`" + str(python_version()) + "`" + "\n"
-    reply += msgRep.GITAPI_VER + "`" + msgRep.ERROR + "`" + "\n"
-    reply += msgRep.CASAPI_VER + "`" + msgRep.ERROR + "`" + "\n"
+    reply += msgRep.GITAPI_VER + "`" + git.vercheck() + "`" + "\n"
+    reply += msgRep.CASAPI_VER + "`" + cas.vercheck() + "`" + "\n"
     await stat.edit(reply)
     return
 
