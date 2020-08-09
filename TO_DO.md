@@ -19,6 +19,7 @@
  - WebTools (ping and such)
  - Update module
  - Finding Windows testers and MacOS bois.
+ - Finding translators to every language (currently have english, portuguese, spanish, german, turkish, tagalog, nepali, indonesian, vietnamese, huh... let me think)
 
 ## Missing, but *maybe* to be added:
  - Memes (mock, vaporwave, etc...)
