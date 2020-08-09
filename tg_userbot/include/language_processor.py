@@ -6,8 +6,12 @@ from importlib import import_module
 try:
     text = import_module("tg_userbot.translations." + LANG)
 except:
-    print("There was a problem loading the language file. Make sure it exists! Should have the same name as the LANG variable in config.py. Bot exiting!")
-    exit(1)
+    print("There was a problem loading the language file. Make sure it exists! Should have the same name as the LANG variable in config.py. Attempting to load default language")
+    try:
+        text = import_module("tg_userbot.translations.en")
+    except:
+        print("English language file not found, bot quitting!")
+        exit(1)
 
 # Language processor!
 
