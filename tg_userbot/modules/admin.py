@@ -24,9 +24,7 @@ ADMIN_RIGHTS = ChatAdminRights(add_admins=False, invite_users=True, change_info=
 DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=None, ban_users=None, delete_messages=None, pin_messages=None)
 USER_URL = "tg://user?id="
 
-# Done: Ban, Unban, Kick, Promote, Demote, RM DL ACC, Logging, Mute, Unmute
-# Missing: Pins
-# Maybe: admin list, user list
+# Maybe add: admin list, user list
 
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
 async def ban(banning):
