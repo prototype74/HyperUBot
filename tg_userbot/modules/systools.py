@@ -27,10 +27,10 @@ async def statuschecker(stat):
     uptime_secs = uptimebot.seconds % 60
     uptimeSTR = f"{uptimebot.days} " + msgRep.DAYS + f", {uptime_hours:02}:{uptime_mins:02}:{uptime_secs:02}"
     uptimemachine = time.time() - psutil.boot_time()
-    uptime_machine_hours = uptimemachine.seconds // 3600
-    uptime_machine_mins = uptimemachine.seconds // 60 % 60
-    uptime_machine_secs = uptimemachine % 60
-    uptimeMacSTR = f"{uptimemachine.days} " + msgRep.DAYS + f", {uptime_machine_hours:02}:{uptime_machine_mins:02}:{uptime_machine_secs:02}"
+    uptime_machine_hours = int(uptimemachine / 3600)
+    uptime_machine_minutes = int(uptimemachine % 3600)
+    uptime_machine_seconds = int(uptimemachine % 3600 % 60)
+    uptimeMacSTR = f"{uptime_machine_hours:02}:{uptime_machine_minutes:02}:{uptime_machine_seconds:02}"
     commit = await getGitReview()
     rtt = pinger("1.1.1.1") #cloudfare's
     reply = msgRep.SYSTEM_STATUS + "`" + msgRep.ONLINE + "`" + "\n\n"
