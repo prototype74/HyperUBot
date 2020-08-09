@@ -3,7 +3,11 @@ from importlib import import_module
 
 # Language selector logic
 
-text = import_module("tg_userbot.translations." + LANG)
+try:
+    text = import_module("tg_userbot.translations." + LANG)
+except:
+    print("There was a problem loading the language file. Make sure it exists! Should have the same name as the LANG variable in config.py. Bot exiting!")
+    exit(1)
 
 # Language processor!
 
