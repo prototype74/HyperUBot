@@ -45,6 +45,8 @@ class AdminText(object): # Admin module
     USER_MUTED = "Successfully muted!"
     UNMUTING_USR = "`Unmuting user...`"
     USER_UNMUTED = "Successfully unmuted!"
+    MUTE_LOG = "#MUTE\nUser: [{}]({})\nChat: [{}]({})"
+    UNMUTE_LOG = "#UNMUTE\nUser: [{}]({})\nChat: [{}]({})"
 
 class StatusText(object):
     UBOT = "Userbot Project: "

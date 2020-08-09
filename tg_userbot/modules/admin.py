@@ -24,11 +24,8 @@ DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=
 USER_URL = "tg://user?id="
 
 # Done: Ban, Unban, Kick, Promote, Demote, RM DL ACC, Logging, Mute, Unmute
-# Missing: Pins, Mute and Unmute language processing
+# Missing: Pins
 # Maybe: admin list, user list
-
-# Keep in mind for mute and unmute messages:
-# {user.first_name}, {user.id}, {muter.chat.title}, {muter.chat_id}
 
 @watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
 async def ban(banning):
@@ -278,7 +275,7 @@ async def mute(muter):
         return
     await muter.edit(msgRep.USER_MUTED)
     if BOTLOG:
-        await muter.client.send_message(BOTLOG_CHATID, "MUTE_LOG")
+        await muter.client.send_message(BOTLOG_CHATID, msgRep.MUTE_LOG.format(user.first_name, USER_URL + str(user.id), muter.chat.title, muter.chat_id))
 
 @watcher(outgoing=True, pattern=r"^\.unmute(?: |$)(.*)")
 async def unmute(unmuter):
@@ -299,4 +296,4 @@ async def unmute(unmuter):
         return
     await unmuter.edit(msgRep.USER_UNMUTED)
     if BOTLOG:
-        await unmuter.client.send_message(BOTLOG_CHATID, "UNMUTE_LOG")
+        await unmuter.client.send_message(BOTLOG_CHATID, msgRep.UNMUTE_LOG.format(user.first_name, USER_URL + str(user.id), unmuter.chat.title, unmuter.chat_id))

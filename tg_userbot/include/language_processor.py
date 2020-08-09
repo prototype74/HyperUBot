@@ -50,6 +50,8 @@ class AdminText(object): # Admin module
     USER_MUTED = text.AdminText.USER_MUTED
     UNMUTING_USR = text.AdminText.UNMUTING_USR
     USER_UNMUTED = text.AdminText.USER_UNMUTED
+    MUTE_LOG = text.AdminText.MUTE_LOG
+    UNMUTE_LOG = text.AdminText.UNMUTE_LOG
 
 class StatusText(object):
     UBOT = text.StatusText.UBOT
