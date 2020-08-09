@@ -47,6 +47,8 @@ class AdminText(object): # Admin module
     USER_UNMUTED = "Successfully unmuted!"
     MUTE_LOG = "#MUTE\nUser: [{}]({})\nChat: [{}]({})"
     UNMUTE_LOG = "#UNMUTE\nUser: [{}]({})\nChat: [{}]({})"
+    MSG_NOT_FOUND_PIN = "`Reply to a message to pin it!`"
+    PINNED_SUCCESSFULLY = "Sucessfully pinned!"
 
 class StatusText(object):
     UBOT = "Userbot Project: "

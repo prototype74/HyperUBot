@@ -9,6 +9,7 @@ from telethon.errors import BadRequestError, UserAdminInvalidError, ChatAdminReq
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
 from telethon.errors.rpcerrorlist import UserIdInvalidError
 from telethon.tl.types import ChatAdminRights, ChatBannedRights, User, ChannelParticipantsAdmins
+from telethon.tl.functions.messages import UpdatePinnedMessageRequest
 
 # Misc
 from asyncio import sleep
@@ -276,6 +277,7 @@ async def mute(muter):
     await muter.edit(msgRep.USER_MUTED)
     if BOTLOG:
         await muter.client.send_message(BOTLOG_CHATID, msgRep.MUTE_LOG.format(user.first_name, USER_URL + str(user.id), muter.chat.title, muter.chat_id))
+    return
 
 @watcher(outgoing=True, pattern=r"^\.unmute(?: |$)(.*)")
 async def unmute(unmuter):
@@ -297,3 +299,28 @@ async def unmute(unmuter):
     await unmuter.edit(msgRep.USER_UNMUTED)
     if BOTLOG:
         await unmuter.client.send_message(BOTLOG_CHATID, msgRep.UNMUTE_LOG.format(user.first_name, USER_URL + str(user.id), unmuter.chat.title, unmuter.chat_id))
+    return
+
+@watcher(outgoing=True, pattern=r"^\.pin(?: |$)(.*)")
+async def pin(msg):
+    chat = await msg.get_chat()
+    admin = chat.admin_rights
+    creator = chat.creator
+    if not admin and not creator:
+        await msg.edit(msgRep.NOT_ADMIN)
+        return
+    to_pin = msg.reply_to_msg_id
+    if not to_pin:
+        await msg.edit(msgRep.MSG_NOT_FOUND_PIN)
+        return
+    options = msg.pattern_match.group(1)
+    is_silent = True
+    if options.lower() == "loud":
+        is_silent = False
+    try:
+        await msg.client(UpdatePinnedMessageRequest(msg.to_id, to_pin, is_silent))
+    except BadRequestError:
+        await msg.edit(msgRep.NO_PERMS)
+        return
+    await msg.edit(msgRep.PINNED_SUCCESSFULLY)
+    return

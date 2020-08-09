@@ -52,6 +52,8 @@ class AdminText(object): # Admin module
     USER_UNMUTED = text.AdminText.USER_UNMUTED
     MUTE_LOG = text.AdminText.MUTE_LOG
     UNMUTE_LOG = text.AdminText.UNMUTE_LOG
+    MSG_NOT_FOUND_PIN = text.AdminText.MSG_NOT_FOUND_PIN
+    PINNED_SUCCESSFULLY = text.AdminText.PINNED_SUCCESSFULLY
 
 class StatusText(object):
     UBOT = text.StatusText.UBOT
