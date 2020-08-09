@@ -3,12 +3,7 @@ from importlib import import_module
 
 # Language selector logic
 
-#if LANG == "en":
-#    import tg_userbot.translations.english as text
-#else:
-#    import tg_userbot.translations.english as text # defaults to english
-
-text = import_module("tg_userbot.translations.english")
+text = import_module("tg_userbot.translations." + LANG)
 
 # Language processor!
 
