@@ -46,6 +46,10 @@ class AdminText(object): # Admin module
     CLEAN_DELACC_LOG = text.AdminText.CLEAN_DELACC_LOG
     PROMT_LOG = text.AdminText.PROMT_LOG
     DMT_LOG = text.AdminText.DMT_LOG
+    MUTING_USR = text.AdminText.MUTING_USR
+    USER_MUTED = text.AdminText.USER_MUTED
+    UNMUTING_USR = text.AdminText.UNMUTING_USR
+    USER_UNMUTED = text.AdminText.USER_UNMUTED
 
 class StatusText(object):
     UBOT = text.StatusText.UBOT

@@ -41,6 +41,10 @@ class AdminText(object): # Admin module
     CLEAN_DELACC_LOG = "#DELUSERS\nRemoved `{}` deleted accounts!"
     PROMT_LOG = "#PROMOTE\nUser: [{}]({})\nChat: [{}]({})"
     DMT_LOG = "#DEMOTE\nUser: [{}]({})\nChat: [{}]({})"
+    MUTING_USR = "`Muting user...`"
+    USER_MUTED = "Successfully muted!"
+    UNMUTING_USR = "`Unmuting user...`"
+    USER_UNMUTED = "Successfully unmuted!"
 
 class StatusText(object):
     UBOT = "Userbot Project: "

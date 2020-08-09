@@ -270,13 +270,13 @@ async def mute(muter):
     user = await get_user_from_event(muter)
     if not user:
         return
-    await muter.edit("MUTING_USR")
+    await muter.edit(msgRep.MUTING_USR)
     try:
         await muter.client(EditBannedRequest(muter.chat_id, user.id, MUTE_RIGHTS))
     except BadRequestError:
         await muter.edit(msgRep.NO_PERMS)
         return
-    await muter.edit("USER_MUTED")
+    await muter.edit(msgRep.USER_MUTED)
     if BOTLOG:
         await muter.client.send_message(BOTLOG_CHATID, "MUTE_LOG")
 
@@ -291,12 +291,12 @@ async def unmute(unmuter):
     user = await get_user_from_event(unmuter)
     if not user:
         return
-    await unmuter.edit("UNMUTING_USR")
+    await unmuter.edit(msgRep.UNMUTING_USR)
     try:
         await unmuter.client(EditBannedRequest(unmuter.chat_id, user.id, UNMUTE_RIGHTS))
     except BadRequestError:
         await unmuter.edit(msgRep.NO_PERMS)
         return
-    await unmuter.edit("USER_UNMUTED")
+    await unmuter.edit(msgRep.USER_UNMUTED)
     if BOTLOG:
         await unmuter.client.send_message(BOTLOG_CHATID, "UNMUTE_LOG")
