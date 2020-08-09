@@ -18,6 +18,7 @@
  - Terminal (bash and python interpreters)
  - WebTools (ping and such)
  - Update module
+ - Finding Windows testers and MacOS bois.
 
 ## Missing, but *maybe* to be added:
  - Memes (mock, vaporwave, etc...)
