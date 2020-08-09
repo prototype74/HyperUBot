@@ -11,6 +11,7 @@ from telethon import version
 from platform import python_version, uname
 from asyncio import sleep
 from datetime import datetime
+import time
 import psutil
 
 # Module Global Variables
@@ -25,7 +26,7 @@ async def statuschecker(stat):
     uptime_mins = uptimebot.seconds // 60 % 60
     uptime_secs = uptimebot.seconds % 60
     uptimeSTR = f"{uptimebot.days} " + msgRep.DAYS + f", {uptime_hours:02}:{uptime_mins:02}:{uptime_secs:02}"
-    uptimemachine = datetime.now() - psutil.boot_time()
+    uptimemachine = time.time() - psutil.boot_time()
     uptime_machine_hours = uptimemachine.seconds // 3600
     uptime_machine_mins = uptimemachine.seconds // 60 % 60
     uptime_machine_secs = uptimemachine % 60
