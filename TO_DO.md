@@ -28,4 +28,4 @@
  - Terminal (maybe interpreters for more languages)
  - Scrappers (currency converter)
  - quot.ly (maybe????)
- - More stuff...
+ - Default language, hidden somewhere so users dont tamper with it?
