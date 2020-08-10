@@ -88,6 +88,8 @@ class ChatInfoText(object):
     NO_BOLD = text.ChatInfoText.NO_BOLD
     YES = text.ChatInfoText.YES
     NO = text.ChatInfoText.NO
+    CHATINFO = text.ChatInfoText.CHATINFO
+    CHAT_ID = text.ChatInfoText.CHAT_ID
 
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR
