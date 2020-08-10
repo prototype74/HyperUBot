@@ -82,6 +82,7 @@ class ChatInfoText(object):
     CHATINFO = "<b>CHAT INFO:</b>\n"
     CHAT_ID = "ID: <code>{}</code>\n"
     CHATTYPE = "Chat type: {}\n"
+    CHAT_NAME = "Chat name: {}\n"
 
 class GeneralMessages(object):
     ERROR = "ERROR!"

@@ -93,6 +93,7 @@ class ChatInfoText(object):
     CHATINFO = text.ChatInfoText.CHATINFO
     CHAT_ID = text.ChatInfoText.CHAT_ID
     CHATTYPE = text.ChatInfoText.CHATTYPE
+    CHAT_NAME = text.ChatInfoText.CHAT_NAME
 
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR

@@ -85,7 +85,7 @@ async def fetch_info(chat, event):
         dc_id = "Unknown"
         location = str(e)
 
-    # Prototype's spaghetti, hopefully well salted
+    # Prototype's spaghetti, although already salted by me
     description = chat.full_chat.about
     members = chat.full_chat.participants_count if hasattr(chat.full_chat, "participants_count") else chat_obj_info.participants_count
     admins = chat.full_chat.admins_count if hasattr(chat.full_chat, "admins_count") else None
@@ -129,7 +129,7 @@ async def fetch_info(chat, event):
     caption += msgRep.CHAT_ID.format(chat_obj_info.id)
     caption += msgRep.CHATTYPE.format(chat_type)
     if chat_title is not None:
-        caption += f"Chat name: {chat_title}\n"
+        caption += msgRep.CHAT_NAME.format(chat_title)
     if former_title is not None:  # Meant is the very first title
         caption += f"Former name: {former_title}\n"
     if username is not None:
