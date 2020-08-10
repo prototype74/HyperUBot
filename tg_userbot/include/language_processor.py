@@ -83,7 +83,12 @@ class DeletionsText(object):
     DEL_FAILED = text.DeletionsText.DEL_FAILED
     PURGE_LOG = text.DeletionsText.PURGE_LOG
 
+class ChatInfoText(object):
+    YES_BOLD = text.ChatInfoText.YES_BOLD
+    NO_BOLD = text.ChatInfoText.NO_BOLD
+    YES = text.ChatInfoText.YES
+    NO = text.ChatInfoText.NO
+
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR
     GET_USER_FROM_EVENT_FAIL = text.GeneralMessages.GET_USER_FROM_EVENT_FAIL
-

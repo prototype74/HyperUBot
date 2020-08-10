@@ -72,6 +72,12 @@ class DeletionsText(object):
     DEL_FAILED = "I cannot delete this message!"
     PURGE_LOG = "#PURGE\nPurged {} messages successfully!"
 
+class ChatInfoText(object):
+    YES_BOLD = "<b>Yes</b>"
+    NO_BOLD = "<b>No</b>"
+    YES = "Yes"
+    NO = "No"
+
 class GeneralMessages(object):
     ERROR = "ERROR!"
     GET_USER_FROM_EVENT_FAIL = "Invalid user specified!"
