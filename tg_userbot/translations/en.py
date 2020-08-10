@@ -73,6 +73,8 @@ class DeletionsText(object):
     PURGE_LOG = "#PURGE\nPurged {} messages successfully!"
 
 class ChatInfoText(object):
+    CHAT_ANALYSIS = "`Analysing the chat...`"
+    EXCEPTION = "`An unexpected error has occurred!`"
     YES_BOLD = "<b>Yes</b>"
     NO_BOLD = "<b>No</b>"
     YES = "Yes"

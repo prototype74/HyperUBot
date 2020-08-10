@@ -84,6 +84,8 @@ class DeletionsText(object):
     PURGE_LOG = text.DeletionsText.PURGE_LOG
 
 class ChatInfoText(object):
+    CHAT_ANALYSIS = text.ChatInfoText.CHAT_ANALYSIS
+    EXCEPTION = text.ChatInfoText.EXCEPTION
     YES_BOLD = text.ChatInfoText.YES_BOLD
     NO_BOLD = text.ChatInfoText.NO_BOLD
     YES = text.ChatInfoText.YES

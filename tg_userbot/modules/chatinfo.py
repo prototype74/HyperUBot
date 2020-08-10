@@ -16,14 +16,14 @@ from emoji import emojize
 
 @watcher(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True)
 async def info(event):
-    await event.edit("`Analysing the chat...`")
+    await event.edit(msgRep.CHAT_ANALYSIS)
     chat = await get_chatinfo(event)
     caption = await fetch_info(chat, event)
     try:
         await event.edit(caption, parse_mode="html")
     except Exception as e:
         print("Exception:", e)
-        await event.edit("`An unexpected error has occurred.`")
+        await event.edit(msgRep.EXCEPTION)
     return
 
 
@@ -126,7 +126,7 @@ async def fetch_info(chat, event):
             bots += 1
 
     caption = msgRep.CHATINFO
-    caption += msgRep.CHAT_ID.format(chat_obj_info.id)
+    caption += msgRep.CHAT_ID.format(("-100" + str(chat_obj_info.id)))
     if chat_title is not None:
         caption += f"{chat_type} name: {chat_title}\n"
     if former_title is not None:  # Meant is the very first title
