@@ -127,15 +127,16 @@ async def fetch_info(chat, event):
 
     caption = msgRep.CHATINFO
     caption += msgRep.CHAT_ID.format(chat_obj_info.id)
+    caption += msgRep.CHATTYPE.format(chat_type)
     if chat_title is not None:
-        caption += f"{chat_type} name: {chat_title}\n"
+        caption += f"Chat name: {chat_title}\n"
     if former_title is not None:  # Meant is the very first title
         caption += f"Former name: {former_title}\n"
     if username is not None:
-        caption += f"{chat_type} type: Public\n"
+        caption += f"Chat type: Public\n"
         caption += f"Link: {username}\n"
     else:
-        caption += f"{chat_type} type: Private\n"
+        caption += f"Chat type: Private\n"
     if creator_username is not None:
         caption += f"Creator: {creator_username}\n"
     elif creator_valid:
@@ -147,7 +148,7 @@ async def fetch_info(chat, event):
     caption += f"Data Centre ID: {dc_id}\n"
     if exp_count is not None:
         chat_level = int((1 + sqrt(1 + 7 * exp_count / 14)) / 2)
-        caption += f"{chat_type} level: <code>{chat_level}</code>\n"
+        caption += f"Chat level: <code>{chat_level}</code>\n"
     if messages_viewable is not None:
         caption += f"Viewable messages: <code>{messages_viewable}</code>\n"
     if deleted_messages:
@@ -169,7 +170,7 @@ async def fetch_info(chat, event):
     if banned_users is not None:
         caption += f"Banned users: <code>{banned_users}</code>\n"
     if group_stickers is not None:
-        caption += f"{chat_type} stickers: <a href=\"t.me/addstickers/{chat.full_chat.stickerset.short_name}\">{group_stickers}</a>\n"
+        caption += f"Chat stickers: <a href=\"t.me/addstickers/{chat.full_chat.stickerset.short_name}\">{group_stickers}</a>\n"
     caption += "\n"
     if not broadcast:
         caption += f"Slow mode: {slowmode}"
