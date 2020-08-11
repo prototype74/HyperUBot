@@ -31,3 +31,7 @@
  - Scrappers (currency converter)
  - quot.ly (maybe????)
  - Default language, hidden somewhere so users dont tamper with it?
+
+## Final changes:
+ - Make sure the language processor is not using the temporary scheme I made.
+ - Check for "incriminating" comments or stuff that looks bad.
