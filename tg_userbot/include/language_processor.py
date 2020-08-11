@@ -1,10 +1,13 @@
 from tg_userbot import LANG
 from importlib import import_module
 
+# Temp
+import tg_userbot.translations.en as text
+
 # Language selector logic
 
 try:
-    text = import_module("tg_userbot.translations." + LANG)
+    text1 = import_module("tg_userbot.translations." + LANG)
 except:
     print("There was a problem loading the language file. Make sure it exists! Should have the same name as the LANG variable in config.py. Attempting to load default language")
     try:
@@ -94,6 +97,13 @@ class ChatInfoText(object):
     CHAT_ID = text.ChatInfoText.CHAT_ID
     CHATTYPE = text.ChatInfoText.CHATTYPE
     CHAT_NAME = text.ChatInfoText.CHAT_NAME
+    FORMER_NAME = text.ChatInfoText.FORMER_NAME
+    CHAT_TYPE_PUBLIC = text.ChatInfoText.CHAT_TYPE_PUBLIC
+    CHAT_TYPE_PRIVATE = text.ChatInfoText.CHAT_TYPE_PRIVATE
+    CREATOR = text.ChatInfoText.CREATOR
+    CREATOR_WITH_URL = text.ChatInfoText.CREATOR_WITH_URL
+    CREATED_NOT_NULL = text.ChatInfoText.CREATED_NOT_NULL
+    CREATED_NULL = text.ChatInfoText.CREATED_NULL
 
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR

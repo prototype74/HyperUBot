@@ -83,6 +83,13 @@ class ChatInfoText(object):
     CHAT_ID = "ID: <code>{}</code>\n"
     CHATTYPE = "Chat type: {}\n"
     CHAT_NAME = "Chat name: {}\n"
+    FORMER_NAME = "Former name: {}\n"
+    CHAT_TYPE_PUBLIC = "Chat type: Public\n"
+    CHAT_TYPE_PRIVATE = "Chat type: Private\n"
+    CREATOR = "Creator: {}\n"
+    CREATOR_WITH_URL = "Creator: <a href=\"tg://user?id={}\">{creator_firstname}</a>\n"
+    CREATED_NOT_NULL = "Created: <code>{} - {} {}</code>\n"
+    CREATED_NULL = "Created: <code>{} - {} {}</code> {}\n"
 
 class GeneralMessages(object):
     ERROR = "ERROR!"

@@ -131,20 +131,20 @@ async def fetch_info(chat, event):
     if chat_title is not None:
         caption += msgRep.CHAT_NAME.format(chat_title)
     if former_title is not None:  # Meant is the very first title
-        caption += f"Former name: {former_title}\n"
+        caption += msgRep.FORMER_NAME.format(former_title)
     if username is not None:
-        caption += f"Chat type: Public\n"
+        caption += msgRep.CHAT_TYPE_PUBLIC
         caption += f"Link: {username}\n"
     else:
-        caption += f"Chat type: Private\n"
+        caption += msgRep.CHAT_TYPE_PRIVATE
     if creator_username is not None:
-        caption += f"Creator: {creator_username}\n"
+        caption += msgRep.CREATOR.format(creator_username)
     elif creator_valid:
-        caption += f"Creator: <a href=\"tg://user?id={creator_id}\">{creator_firstname}</a>\n"
+        caption += msgRep.CREATOR_WITH_URL.format(creator_id, creator_firstname)
     if created is not None:
-        caption += f"Created: <code>{created.date().strftime('%b %d, %Y')} - {created.time()} {created.tzinfo}</code>\n"
+        caption += msgRep.CREATED_NOT_NULL.format(created.date().strftime('%b %d, %Y'), created.time(), created.tzinfo)
     else:
-        caption += f"Created: <code>{chat_obj_info.date.date().strftime('%b %d, %Y')} - {chat_obj_info.date.time()} {chat_obj_info.date.tzinfo}</code> {warn_emoji}\n"
+        caption += msgRep.CREATED_NULL.format(chat_obj_info.date.date().strftime('%b %d, %Y'), chat_obj_info.date.time(), chat_obj_info.date.tzinfo, warn_emoji)
     caption += f"Data Centre ID: {dc_id}\n"
     if exp_count is not None:
         chat_level = int((1 + sqrt(1 + 7 * exp_count / 14)) / 2)
