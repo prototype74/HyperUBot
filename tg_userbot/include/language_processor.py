@@ -128,6 +128,10 @@ class ChatInfoText(object):
     VERFIED = text.ChatInfoText.VERFIED
     DESCRIPTION = text.ChatInfoText.DESCRIPTION
 
+class UserText(object):
+    LEAVING = text.UserText.LEAVING
+    KICKME_LOG = text.UserText.KICKME_LOG
+
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR
     GET_USER_FROM_EVENT_FAIL = text.GeneralMessages.GET_USER_FROM_EVENT_FAIL

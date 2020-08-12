@@ -114,6 +114,10 @@ class ChatInfoText(object):
     VERFIED = "Verified by Telegram: {}\n\n"
     DESCRIPTION = "Description: \n<code>{}</code>\n"
 
+class UserText(object):
+    LEAVING = "`Leaving chat...`"
+    KICKME_LOG = "#KICKME\nSuccessfully left [{}]({})!"
+
 class GeneralMessages(object):
     ERROR = "ERROR!"
     GET_USER_FROM_EVENT_FAIL = "Invalid user specified!"
