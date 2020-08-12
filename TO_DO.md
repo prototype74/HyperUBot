@@ -4,13 +4,12 @@
  - Admin module
  - Deletions module
  - Chatinfo module
- - Systools module's .status command
+ - Systools module
  - User module's .kickme command
 
 ## Missing and urgent:
  - Finishing user module (info)
- - Finishing systools module (shutdown)
- - Admin info from Prototype
+ - Admin info from prototype74
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
  - Help module
@@ -34,8 +33,7 @@
  - Terminal (maybe interpreters for more languages)
  - Scrappers (currency converter)
  - quot.ly (maybe????)
- - Default language, hidden somewhere so users dont tamper with it?
 
 ## Final changes:
- - Make sure the language processor is not using the temporary scheme I made.
+ - Make sure the language processor is not using the temporary scheme I made to make pyCharm happy.
  - Check for "incriminating" comments or stuff that looks bad.
