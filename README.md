@@ -7,4 +7,6 @@ All rights reserved, under construction.
 
 > Licensed under [DBADPL-B](https://github.com/nunopenim/DBADPL-B)
 
-# Reminder to make an instalation guide and add Termux support too. Maybe Heroku
+## Reminder to make an instalation guide and add Termux support too. Maybe Heroku
+
+## Also reminder to add special thanks, contributors and translators!
