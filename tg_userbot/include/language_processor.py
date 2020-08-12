@@ -2,7 +2,7 @@ from tg_userbot import LANG
 from importlib import import_module
 
 # Temp because pyCharm needs for autocompletion and I am being a Lazy S.O.B. again
-# import tg_userbot.translations.en as text
+import tg_userbot.translations.en as text
 
 # Language selector logic
 
@@ -104,6 +104,29 @@ class ChatInfoText(object):
     CREATOR_WITH_URL = text.ChatInfoText.CREATOR_WITH_URL
     CREATED_NOT_NULL = text.ChatInfoText.CREATED_NOT_NULL
     CREATED_NULL = text.ChatInfoText.CREATED_NULL
+    DCID = text.ChatInfoText.DCID
+    CHAT_LEVEL = text.ChatInfoText.CHAT_LEVEL
+    VIEWABLE_MSG = text.ChatInfoText.VIEWABLE_MSG
+    DELETED_MSG = text.ChatInfoText.DELETED_MSG
+    SENT_MSG = text.ChatInfoText.SENT_MSG
+    SENT_MSG_PRED = text.ChatInfoText.SENT_MSG_PRED
+    MEMBERS = text.ChatInfoText.MEMBERS
+    ADMINS = text.ChatInfoText.ADMINS
+    BOT_COUNT = text.ChatInfoText.BOT_COUNT
+    ONLINE_MEM = text.ChatInfoText.ONLINE_MEM
+    RESTRICTED_COUNT = text.ChatInfoText.RESTRICTED_COUNT
+    BANNEDCOUNT = text.ChatInfoText.BANNEDCOUNT
+    GRUP_STICKERS = text.ChatInfoText.GRUP_STICKERS
+    SLW_MODE = text.ChatInfoText.SLW_MODE
+    SLW_MODE_TIME = text.ChatInfoText.SLW_MODE_TIME
+    SPER_GRP = text.ChatInfoText.SPER_GRP
+    RESTR = text.ChatInfoText.RESTR
+    PFORM = text.ChatInfoText.PFORM
+    REASON = text.ChatInfoText.REASON
+    TEXT = text.ChatInfoText.TEXT
+    SCAM = text.ChatInfoText.SCAM
+    VERFIED = text.ChatInfoText.VERFIED
+    DESCRIPTION = text.ChatInfoText.DESCRIPTION
 
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR

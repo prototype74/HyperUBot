@@ -145,53 +145,53 @@ async def fetch_info(chat, event):
         caption += msgRep.CREATED_NOT_NULL.format(created.date().strftime('%b %d, %Y'), created.time(), created.tzinfo)
     else:
         caption += msgRep.CREATED_NULL.format(chat_obj_info.date.date().strftime('%b %d, %Y'), chat_obj_info.date.time(), chat_obj_info.date.tzinfo, warn_emoji)
-    caption += f"Data Centre ID: {dc_id}\n"
+    caption += msgRep.DCID.format(dc_id)
     if exp_count is not None:
         chat_level = int((1 + sqrt(1 + 7 * exp_count / 14)) / 2)
-        caption += f"Chat level: <code>{chat_level}</code>\n"
+        caption += msgRep.CHAT_LEVEL.format(chat_level)
     if messages_viewable is not None:
-        caption += f"Viewable messages: <code>{messages_viewable}</code>\n"
+        caption += msgRep.VIEWABLE_MSG.format(messages_viewable)
     if deleted_messages:
-        caption += f"Deleted messages: <code>{deleted_messages}</code>\n"
+        caption += msgRep.DELETED_MSG.format(deleted_messages)
     if messages_sent:
-        caption += f"Messages sent: <code>{messages_sent}</code>\n"
+        caption += msgRep.SENT_MSG.format(messages_sent)
     elif messages_sent_alt:
-        caption += f"Messages sent: <code>{messages_sent_alt}</code> {warn_emoji}\n"
+        caption += msgRep.SENT_MSG_PRED.format(messages_sent_alt, warn_emoji)
     if members is not None:
-        caption += f"Members: <code>{members}</code>\n"
+        caption += msgRep.MEMBERS.format(members)
     if admins is not None:
-        caption += f"Administrators: <code>{admins}</code>\n"
+        caption += msgRep.ADMINS.format(admins)
     if bots_list:
-        caption += f"Bots: <code>{bots}</code>\n"
+        caption += msgRep.BOT_COUNT.format(bots)
     if members_online:
-        caption += f"Currently online: <code>{members_online}</code>\n"
+        caption += msgRep.ONLINE_MEM.format(members_online)
     if restrcited_users is not None:
-        caption += f"Restricted users: <code>{restrcited_users}</code>\n"
+        caption += msgRep.RESTRICTED_COUNT.format(restrcited_users)
     if banned_users is not None:
-        caption += f"Banned users: <code>{banned_users}</code>\n"
+        caption += msgRep.BANNEDCOUNT.format(banned_users)
     if group_stickers is not None:
-        caption += f"Chat stickers: <a href=\"t.me/addstickers/{chat.full_chat.stickerset.short_name}\">{group_stickers}</a>\n"
+        caption += msgRep.GRUP_STICKERS.format(chat.full_chat.stickerset.short_name, group_stickers)
     caption += "\n"
     if not broadcast:
-        caption += f"Slow mode: {slowmode}"
+        caption += msgRep.SLW_MODE.format(slowmode)
         if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled:
-            caption += f", <code>{slowmode_time}s</code>\n\n"
+            caption += msgRep.SLW_MODE_TIME.format(slowmode_time)
         else:
             caption += "\n\n"
     if not broadcast:
-        caption += f"Supergroup: {supergroup}\n\n"
+        caption += msgRep.SPER_GRP.format(supergroup)
     if hasattr(chat_obj_info, "restricted"):
-        caption += f"Restricted: {restricted}\n"
+        caption += msgRep.RESTR.format(restricted)
         if chat_obj_info.restricted:
-            caption += f"> Platform: {chat_obj_info.restriction_reason[0].platform}\n"
-            caption += f"> Reason: {chat_obj_info.restriction_reason[0].reason}\n"
-            caption += f"> Text: {chat_obj_info.restriction_reason[0].text}\n\n"
+            caption += msgRep.PFORM.format(chat_obj_info.restriction_reason[0].platform)
+            caption += msgRep.REASON.format(chat_obj_info.restriction_reason[0].reason)
+            caption += msgRep.TEXT.format(chat_obj_info.restriction_reason[0].text)
         else:
             caption += "\n"
     if hasattr(chat_obj_info, "scam") and chat_obj_info.scam:
-        caption += "Scam: <b>Yes</b>\n\n"
+        caption += msgRep.SCAM
     if hasattr(chat_obj_info, "verified"):
-        caption += f"Verified by Telegram: {verified}\n\n"
+        caption += msgRep.VERFIED.format(verified)
     if description:
-        caption += f"Description: \n<code>{description}</code>\n"
+        caption += msgRep.DESCRIPTION.format(description)
     return caption
