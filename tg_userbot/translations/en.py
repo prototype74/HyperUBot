@@ -66,6 +66,8 @@ class StatusText(object):
     DAYS = "days"
     BOT_UPTIMETXT = "Bot uptime: "
     MAC_UPTIMETXT = "Server uptime: "
+    SHUTDOWN = "`Powering off...`"
+    SHUTDOWN_LOG = "#SHUTDOWN\nBot is powering off under user request!"
 
 class DeletionsText(object):
     PURGE_COMPLETE = "Purge complete! Deleted `{}` messages!"

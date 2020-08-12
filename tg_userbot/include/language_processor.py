@@ -80,6 +80,8 @@ class StatusText(object):
     DAYS = text.StatusText.DAYS
     BOT_UPTIMETXT = text.StatusText.BOT_UPTIMETXT
     MAC_UPTIMETXT = text.StatusText.MAC_UPTIMETXT
+    SHUTDOWN = text.StatusText.SHUTDOWN
+    SHUTDOWN_LOG = text.StatusText.SHUTDOWN_LOG
 
 class DeletionsText(object):
     PURGE_COMPLETE = text.DeletionsText.PURGE_COMPLETE
