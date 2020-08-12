@@ -5,14 +5,15 @@
  - Deletions module
  - Chatinfo module
  - Systools module's .status command
+ - User module's .kickme command
 
 ## Missing and urgent:
- - Finishing systools module
+ - Finishing user module (info)
+ - Finishing systools module (shutdown)
  - Admin info from Prototype
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
  - Help module
- - User module (info and kickme)
  - QR Codes module
  - Scrappers (translator and tts)
  - Spam module
@@ -24,6 +25,7 @@
  - Finding translators to every language (currently have english, portuguese, spanish, german, turkish, tagalog, nepali, indonesian, vietnamese, huh... let me think)
 
 ## Missing, but *maybe* to be added:
+ - Systools module (maybe neofetch thing)
  - Memes (mock, vaporwave, etc...)
  - Misc (coinflip, random, dice...)
  - Weather
