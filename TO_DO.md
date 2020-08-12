@@ -1,12 +1,14 @@
 # To Do list for my reference
 
 ## Done:
- - Admin module (although needs an adjustment here and there).
+ - Admin module
+ - Deletions module
+ - Chatinfo module
  - Systools module's .status command
- - Deletions (.del and .purge)
 
 ## Missing and urgent:
- - Chatinfo module
+ - Finishing systools module
+ - Admin info from Prototype
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
  - Help module
@@ -18,7 +20,7 @@
  - Terminal (bash and python interpreters)
  - WebTools (ping and such)
  - Update module
- - Finding Windows testers and MacOS bois.
+ - Finding Windows and MacOS bois.
  - Finding translators to every language (currently have english, portuguese, spanish, german, turkish, tagalog, nepali, indonesian, vietnamese, huh... let me think)
 
 ## Missing, but *maybe* to be added:
