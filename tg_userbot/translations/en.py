@@ -179,6 +179,9 @@ class HelpDesignations(object):
     CHATINFO_HELP = "`.chatinfo` [optional: <reply/tag/chat id/invite link>] \
                  \nUsage: Gets info about a chat. Some info might be limited due to missing permissions."
 
-    DELETIONS_HELP = "N/A"
+    DELETIONS_HELP = "`.purge`\
+         \nUsage: Purges all messages starting from the reply.\
+         \n\n`.del`\
+         \nUsage: Deletes the message replied to"
     SYSTOOLS_HELP = "N/A"
     USER_HELP = "N/A"
