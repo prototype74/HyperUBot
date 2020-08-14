@@ -189,4 +189,9 @@ class HelpDesignations(object):
     \n\n`.shutdown`\
     \nUsage: Type .shutdown to shutdown the bot."
 
-    USER_HELP = "N/A"
+    USER_HELP = "`.info <username>` or as a reply to someones text\
+        \nUsage: Gets info of an user.\
+        \n\n`.stats`\
+        \nUsage: Gets your stats.\
+        \n\n`.kickme`\
+        \nUsage: Makes you leave the group."
