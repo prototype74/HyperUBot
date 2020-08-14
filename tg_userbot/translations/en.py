@@ -189,7 +189,7 @@ class HelpDesignations(object):
     \n\n`.shutdown`\
     \nUsage: Type .shutdown to shutdown the bot."
 
-    USER_HELP = "`.info <username>` or as a reply to someones text\
+    USER_HELP = "`.info ` [optional: username]\
         \nUsage: Gets info of an user.\
         \n\n`.stats`\
         \nUsage: Gets your stats.\
