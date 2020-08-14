@@ -2,7 +2,7 @@ from tg_userbot import LANG
 from importlib import import_module
 
 # Temp because pyCharm needs for autocompletion and I am being a Lazy S.O.B. again
-# import tg_userbot.translations.en as text
+import tg_userbot.translations.en as text
 
 # Language selector logic
 
@@ -139,6 +139,23 @@ class UserText(object):
     STATS_SUPER_GROUPS = text.UserText.STATS_SUPER_GROUPS
     STATS_CHANNELS = text.UserText.STATS_CHANNELS
     STATS_BOTS = text.UserText.STATS_BOTS
+    FETCH_INFO = text.UserText.FETCH_INFO
+    NO_PROF_PIC = text.UserText.NO_PROF_PIC
+    UNKNOWN = text.UserText.UNKNOWN
+    USR_NO_BIO = text.UserText.USR_NO_BIO
+    USR_INFO = text.UserText.USR_NO_BIO
+    FIRST_NAME = text.UserText.FIRST_NAME
+    LAST_NAME = text.UserText.LAST_NAME
+    USERNAME = text.UserText.USERNAME
+    DCID = text.UserText.DCID
+    PROF_PIC_COUNT = text.UserText.PROF_PIC_COUNT
+    PROF_LINK = text.UserText.PROF_LINK
+    ISBOT = text.UserText.ISBOT
+    ISRESTRICTED = text.UserText.ISRESTRICTED
+    ISVERIFIED = text.UserText.ISVERIFIED
+    USR_ID = text.UserText.USR_ID
+    BIO = text.UserText.BIO
+    COMMON = text.UserText.COMMON
 
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR
