@@ -24,8 +24,8 @@ async def info(event):
     except Exception as e:
         print("Exception:", e)
         await event.edit(msgRep.EXCEPTION)
+        print("Report this to userbot creator!")
     return
-
 
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
@@ -47,19 +47,18 @@ async def get_chatinfo(event):
         try:
             chat_info = await event.client(GetFullChannelRequest(chat))
         except ChannelInvalidError:
-            await event.edit("`Invalid channel/group`")
+            await event.edit(msgRep.INVALID_CH_GRP)
             return None
         except ChannelPrivateError:
-            await event.edit("`This is a private channel/group or I am banned from there`")
+            await event.edit(msgRep.PRV_BAN)
             return None
         except ChannelPublicGroupNaError:
-            await event.edit("`Channel or supergroup doesn't exist`")
+            await event.edit(msgRep.NOT_EXISTS)
             return None
         except (TypeError, ValueError) as err:
             await event.edit(str(err))
             return None
     return chat_info
-
 
 async def fetch_info(chat, event):
     chat_obj_info = await event.client.get_entity(chat.full_chat.id)
@@ -72,6 +71,7 @@ async def fetch_info(chat, event):
     except Exception as e:
         msg_info = None
         print("Exception:", e)
+        print("Report this to userbot creator!")
     first_msg_valid = True if msg_info and msg_info.messages and msg_info.messages[0].id == 1 else False
     creator_valid = True if first_msg_valid and msg_info.users else False
     creator_id = msg_info.users[0].id if creator_valid else None
@@ -82,7 +82,7 @@ async def fetch_info(chat, event):
     try:
         dc_id, location = get_input_location(chat.full_chat.chat_photo)
     except Exception as e:
-        dc_id = "Unknown"
+        dc_id = msgRep.UNKNOWN
         location = str(e)
 
     # Prototype's spaghetti, although already salted by me

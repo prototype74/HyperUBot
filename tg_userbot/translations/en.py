@@ -115,6 +115,10 @@ class ChatInfoText(object):
     SCAM = "Scam: <b>Yes</b>\n\n"
     VERFIED = "Verified by Telegram: {}\n\n"
     DESCRIPTION = "Description: \n<code>{}</code>\n"
+    UNKNOWN = "Unknown"
+    INVALID_CH_GRP = "Invalid channel/group!"
+    PRV_BAN = "This is a private channel/group or I am banned from there!"
+    NOT_EXISTS = "Channel or supergroup doesn't exist!"
 
 class UserText(object):
     LEAVING = "`Leaving chat...`"

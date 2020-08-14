@@ -129,6 +129,10 @@ class ChatInfoText(object):
     SCAM = text.ChatInfoText.SCAM
     VERFIED = text.ChatInfoText.VERFIED
     DESCRIPTION = text.ChatInfoText.DESCRIPTION
+    UNKNOWN = text.ChatInfoText.UNKNOWN
+    INVALID_CH_GRP = text.ChatInfoText.INVALID_CH_GRP
+    PRV_BAN = text.ChatInfoText.PRV_BAN
+    NOT_EXISTS = text.ChatInfoText.NOT_EXISTS
 
 class UserText(object):
     LEAVING = text.UserText.LEAVING
