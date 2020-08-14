@@ -147,7 +147,7 @@ class UserText(object):
     NO_PROF_PIC = text.UserText.NO_PROF_PIC
     UNKNOWN = text.UserText.UNKNOWN
     USR_NO_BIO = text.UserText.USR_NO_BIO
-    USR_INFO = text.UserText.USR_NO_BIO
+    USR_INFO = text.UserText.USR_INFO
     FIRST_NAME = text.UserText.FIRST_NAME
     LAST_NAME = text.UserText.LAST_NAME
     USERNAME = text.UserText.USERNAME
