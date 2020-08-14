@@ -2,7 +2,7 @@ from tg_userbot import LANG
 from importlib import import_module
 
 # Temp because pyCharm needs for autocompletion and I am being a Lazy S.O.B. again
-import tg_userbot.translations.en as text
+# import tg_userbot.translations.en as text
 
 # Language selector logic
 
