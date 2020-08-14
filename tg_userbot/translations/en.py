@@ -119,6 +119,12 @@ class ChatInfoText(object):
 class UserText(object):
     LEAVING = "`Leaving chat...`"
     KICKME_LOG = "#KICKME\nSuccessfully left [{}]({})!"
+    STATS_PROCESSING = "`Computing stats...`"
+    STATS_USERS = "Users: **{}**\n"
+    STATS_GROUPS = "Groups: **{}**\n"
+    STATS_SUPER_GROUPS = "Super Groups: **{}**\n"
+    STATS_CHANNELS = "Channels: **{}**\n"
+    STATS_BOTS = "Bots: **{}**\n"
 
 class GeneralMessages(object):
     ERROR = "ERROR!"

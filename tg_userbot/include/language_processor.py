@@ -133,6 +133,12 @@ class ChatInfoText(object):
 class UserText(object):
     LEAVING = text.UserText.LEAVING
     KICKME_LOG = text.UserText.KICKME_LOG
+    STATS_PROCESSING = text.UserText.STATS_PROCESSING
+    STATS_USERS = text.UserText.STATS_USERS
+    STATS_GROUPS = text.UserText.STATS_GROUPS
+    STATS_SUPER_GROUPS = text.UserText.STATS_SUPER_GROUPS
+    STATS_CHANNELS = text.UserText.STATS_CHANNELS
+    STATS_BOTS = text.UserText.STATS_BOTS
 
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR
