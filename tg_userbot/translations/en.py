@@ -182,6 +182,7 @@ class HelpDesignations(object):
     DELETIONS_HELP = "`.purge`\
          \nUsage: Purges all messages starting from the reply.\
          \n\n`.del`\
-         \nUsage: Deletes the message replied to"
+         \nUsage: Deletes the message replied to."
+
     SYSTOOLS_HELP = "N/A"
     USER_HELP = "N/A"
