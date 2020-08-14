@@ -157,7 +157,25 @@ class HelpText(object):
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
-    ADMIN_HELP = "N/A"
+    ADMIN_HELP = "`.ban` \
+                 \nUsage: Reply to someone's message with .ban to ban them. \
+                 \n\n`.unban` \
+                 \nUsage: Reply to someone's message with .unban to unban them. \
+                 \n\n`.kick` \
+                 \nUsage: Reply to someone's message with .kick to kick them. \
+                 \n\n`.promote` \
+                 \nUsage: Reply to someone's message with .promote to promote them. \
+                 \n\n`.demote` \
+                 \nUsage: Reply to someone's message with .demote to demote them. \
+                 \n\n`.delusers`\
+                 \nUsage: Searches for deleted accounts in a group. Use '.delusers clean' to remove deleted accounts from the group. \
+                 \n\n`.mute` \
+                 \nUsage: Reply to someone's message with .mute to mute them. \
+                 \n\n`.unmute` \
+                 \nUsage: Reply to someone's message with .unmute to unmute them. \
+                 \n\n`.pin` \
+                 \nUsage: Reply to someone's message to pin it in the chat."
+
     CHATINFO_HELP = "N/A"
     DELETIONS_HELP = "N/A"
     SYSTOOLS_HELP = "N/A"
