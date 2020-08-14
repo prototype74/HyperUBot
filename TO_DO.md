@@ -8,6 +8,7 @@
  - User module
 
 ## Missing and urgent:
+ - Add extra info to (.info)
  - Admin info from prototype74
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
