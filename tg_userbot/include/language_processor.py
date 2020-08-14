@@ -165,6 +165,10 @@ class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR
     GET_USER_FROM_EVENT_FAIL = text.GeneralMessages.GET_USER_FROM_EVENT_FAIL
 
+class HelpText(object):
+    INVALID_NAME = text.HelpText.INVALID_NAME
+    DEFAULT = text.HelpText.DEFAULT
+
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
     CHATINFO_HELP = text.HelpDesignations.CHATINFO_HELP

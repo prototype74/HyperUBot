@@ -151,6 +151,10 @@ class GeneralMessages(object):
     ERROR = "ERROR!"
     GET_USER_FROM_EVENT_FAIL = "Invalid user specified!"
 
+class HelpText(object):
+    INVALID_NAME = "Please specify a valid module name."
+    DEFAULT = "Please specify which module do you want help for !!\nSyntax: .help <module name>\n\nModules available:\n\n"
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
     ADMIN_HELP = "N/A"
