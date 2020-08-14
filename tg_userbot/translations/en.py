@@ -176,7 +176,9 @@ class HelpDesignations(object):
                  \n\n`.pin` \
                  \nUsage: Reply to someone's message to pin it in the chat."
 
-    CHATINFO_HELP = "N/A"
+    CHATINFO_HELP = "`.chatinfo` [optional: <reply/tag/chat id/invite link>] \
+                 \nUsage: Gets info about a chat. Some info might be limited due to missing permissions."
+
     DELETIONS_HELP = "N/A"
     SYSTOOLS_HELP = "N/A"
     USER_HELP = "N/A"
