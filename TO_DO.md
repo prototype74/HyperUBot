@@ -5,10 +5,9 @@
  - Deletions module
  - Chatinfo module
  - Systools module
- - User module's .kickme command
+ - User module
 
 ## Missing and urgent:
- - Finishing user module (info)
  - Admin info from prototype74
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
