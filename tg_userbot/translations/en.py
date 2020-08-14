@@ -188,4 +188,5 @@ class HelpDesignations(object):
     \nUsage: Type .status to check various bot information and if it is up and running.\
     \n\n`.shutdown`\
     \nUsage: Type .shutdown to shutdown the bot."
+
     USER_HELP = "N/A"
