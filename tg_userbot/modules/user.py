@@ -1,7 +1,7 @@
 # My Stuff
 from tg_userbot.include.watcher import watcher
-from tg_userbot import BOTLOG, BOTLOG_CHATID, bot
-from tg_userbot.include.language_processor import UserText as msgRep
+from tg_userbot import BOTLOG, BOTLOG_CHATID, bot, HELP_DICT
+from tg_userbot.include.language_processor import UserText as msgRep, HelpDesignations as helpRep
 from tg_userbot.include.aux_funcs import get_user
 
 # Telethon stuff
@@ -112,3 +112,5 @@ async def fetch_info(replied_user, event):
     caption += msgRep.BIO.format(user_bio)
     caption += msgRep.COMMON.format(common_chat)
     return caption
+
+HELP_DICT.update({"user":helpRep.USER_HELP})

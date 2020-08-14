@@ -1,8 +1,8 @@
 # My stuff
-from tg_userbot.include.language_processor import AdminText as msgRep # language_processor, yay
+from tg_userbot.include.language_processor import AdminText as msgRep, HelpDesignations as helpRep
 from tg_userbot.include.watcher import watcher
-from tg_userbot.include.aux_funcs import get_user_from_event, get_user_from_id
-from tg_userbot import BOTLOG, BOTLOG_CHATID
+from tg_userbot.include.aux_funcs import get_user_from_event
+from tg_userbot import BOTLOG, BOTLOG_CHATID, HELP_DICT
 
 # Telethon Stuff
 from telethon.errors import BadRequestError, UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError
@@ -322,3 +322,5 @@ async def pin(msg):
         return
     await msg.edit(msgRep.PINNED_SUCCESSFULLY)
     return
+
+HELP_DICT.update({"admin":helpRep.ADMIN_HELP})

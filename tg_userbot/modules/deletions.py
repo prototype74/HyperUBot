@@ -1,7 +1,7 @@
 # My stuff
 from tg_userbot.include.watcher import watcher
-from tg_userbot.include.language_processor import DeletionsText as msgRep
-from tg_userbot import BOTLOG, BOTLOG_CHATID
+from tg_userbot.include.language_processor import DeletionsText as msgRep, HelpDesignations as helpRep
+from tg_userbot import BOTLOG, BOTLOG_CHATID, HELP_DICT
 
 # Telethon stuff
 from telethon.errors import rpcbaseerrors
@@ -38,3 +38,5 @@ async def deleteThis(rep):
             await rep.delete()
         except rpcbaseerrors.BadRequestError:
             await rep.edit(msgRep.DEL_FAILED)
+
+HELP_DICT.update({"deletions":helpRep.DELETIONS_HELP})

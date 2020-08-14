@@ -1,6 +1,7 @@
 # My stuff
+from tg_userbot import HELP_DICT
 from tg_userbot.include.watcher import watcher
-from tg_userbot.include.language_processor import ChatInfoText as msgRep
+from tg_userbot.include.language_processor import ChatInfoText as msgRep, HelpDesignations as helpRep
 
 # Telethon stuff
 from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError
@@ -195,3 +196,5 @@ async def fetch_info(chat, event):
     if description:
         caption += msgRep.DESCRIPTION.format(description)
     return caption
+
+HELP_DICT.update({"chatinfo":helpRep.CHATINFO_HELP})

@@ -1,7 +1,7 @@
 # My stuff
-from tg_userbot import VERSION, PROJECT, BOTLOG, BOTLOG_CHATID
+from tg_userbot import VERSION, PROJECT, BOTLOG, BOTLOG_CHATID, HELP_DICT
 from tg_userbot.include.watcher import watcher
-from tg_userbot.include.language_processor import StatusText as msgRep
+from tg_userbot.include.language_processor import StatusText as msgRep, HelpDesignations as helpRep
 from tg_userbot.include.aux_funcs import pinger, getGitReview
 import tg_userbot.include.cas_api as cas
 import tg_userbot.include.git_api as git
@@ -64,3 +64,5 @@ async def shutdown(power_off):
     if BOTLOG:
         await power_off.client.send_message(BOTLOG_CHATID, msgRep.SHUTDOWN_LOG)
     await power_off.client.disconnect()
+
+HELP_DICT.update({"systools":helpRep.SYSTOOLS_HELP})

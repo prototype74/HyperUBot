@@ -151,3 +151,10 @@ class GeneralMessages(object):
     ERROR = "ERROR!"
     GET_USER_FROM_EVENT_FAIL = "Invalid user specified!"
 
+# Save your eyes from what may become the ugliest part of this userbot.
+class HelpDesignations(object):
+    ADMIN_HELP = "N/A"
+    CHATINFO_HELP = "N/A"
+    DELETIONS_HELP = "N/A"
+    SYSTOOLS_HELP = "N/A"
+    USER_HELP = "N/A"

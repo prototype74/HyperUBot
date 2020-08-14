@@ -164,3 +164,10 @@ class UserText(object):
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR
     GET_USER_FROM_EVENT_FAIL = text.GeneralMessages.GET_USER_FROM_EVENT_FAIL
+
+class HelpDesignations(object):
+    ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
+    CHATINFO_HELP = text.HelpDesignations.CHATINFO_HELP
+    DELETIONS_HELP = text.HelpDesignations.DELETIONS_HELP
+    SYSTOOLS_HELP = text.HelpDesignations.SYSTOOLS_HELP
+    USER_HELP = text.HelpDesignations.USER_HELP
