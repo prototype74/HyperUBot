@@ -8,4 +8,4 @@ def __list_all_modules():
     ]
     return all_modules
 
-ALL_MODULES = __list_all_modules() #maybe sort when shit gets bigger, so it gets beautiful
+ALL_MODULES = sorted(__list_all_modules())
