@@ -56,21 +56,20 @@ async def stats(event):
     return
 
 @watcher(pattern=r"^\.info(?: |$)(.*)", outgoing=True)
-async def who(event):  # .info command
-    if not event.text[0].isalpha() and event.text[0] in ("."):
-        if event.fwd_from:
-            return
-        await event.edit(msgRep.FETCH_INFO)
-        replied_user = await get_user(event)
-        caption = await fetch_info(replied_user, event)
-        message_id_to_reply = event.message.reply_to_msg_id
-        if not message_id_to_reply:
-            message_id_to_reply = None
-        try:
-            await event.client.send_file(event.chat_id, caption=caption, link_preview=False, force_document=False, reply_to=message_id_to_reply, parse_mode="html")
-            await event.delete()
-        except TypeError:
-            await event.edit(caption, parse_mode="html")
+async def info(event):  # .info command
+    if event.fwd_from:
+        return
+    await event.edit(msgRep.FETCH_INFO)
+    replied_user = await get_user(event)
+    caption = await fetch_info(replied_user, event)
+    message_id_to_reply = event.message.reply_to_msg_id
+    if not message_id_to_reply:
+        message_id_to_reply = None
+    try:
+        await event.client.send_file(event.chat_id, caption=caption, link_preview=False, force_document=False, reply_to=message_id_to_reply, parse_mode="html")
+        await event.delete()
+    except TypeError:
+        await event.edit(caption, parse_mode="html")
 
 async def fetch_info(replied_user, event):
     replied_user_profile_photos = await event.client(GetUserPhotosRequest(user_id=replied_user.user.id, offset=42, max_id=0, limit=80))
