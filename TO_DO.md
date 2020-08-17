@@ -6,15 +6,15 @@
  - Chatinfo module
  - Systools module
  - User module
+ - Help module
 
 ## Missing and urgent:
  - Add extra info to (.info)
  - Admin info from prototype74
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
- - Help module
  - QR Codes module
- - Scrappers (translator and tts)
+ - Scrappers (translator and text-to-speech)
  - Spam module
  - Stickers
  - Terminal (bash and python interpreters)
@@ -24,14 +24,13 @@
  - Finding translators to every language (currently have english, portuguese, spanish, german, turkish, tagalog, nepali, indonesian, vietnamese, huh... let me think)
 
 ## Missing, but *maybe* to be added:
- - Systools module (maybe neofetch thing)
  - Memes (mock, vaporwave, etc...)
  - Misc (coinflip, random, dice...)
  - Weather
  - File uploader and downloader
  - Automation module
  - Terminal (maybe interpreters for more languages)
- - Scrappers (currency converter)
+ - Scrappers (currency converter and speech-to-text)
  - quot.ly (maybe????)
 
 ## Final changes:
