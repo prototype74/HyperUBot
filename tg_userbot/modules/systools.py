@@ -71,7 +71,7 @@ async def neofetch(sysd):
     try:
         result = check_output("neofetch --stdout", shell=True).decode()
         await sysd.edit("`" + result + "`")
-    except FileNotFoundError:
+    except:
         await sysd.edit("`Install neofetch first !!`")
     return
 
