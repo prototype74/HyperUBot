@@ -14,8 +14,7 @@ from platform import python_version, uname
 from datetime import datetime, timedelta
 import time
 import psutil
-from asyncio import create_subprocess_exec as asyncrunapp
-from asyncio.subprocess import PIPE
+from subprocess import check_output
 
 # Module Global Variables
 USER = uname().node # Maybe add a username in future
@@ -70,15 +69,10 @@ async def shutdown(power_off):
 @watcher(outgoing=True, pattern=r"^\.sysd$")
 async def neofetch(sysd):
     try:
-        command = "neofetch --stdout"
-        execution = await asyncrunapp(command, stdout=PIPE, stderr=PIPE)
-        stdout, stderr = await execution.communicate()
-        result = str(stdout.decode().strip()) + str(stderr.decode().strip())
+        result = check_output("neofetch --stdout", shell=True).decode()
         await sysd.edit("`" + result + "`")
     except FileNotFoundError:
         await sysd.edit("`Install neofetch first !!`")
-    except Exception as e:
-        await sysd.edit(e)
     return
 
 HELP_DICT.update({"systools":helpRep.SYSTOOLS_HELP})
