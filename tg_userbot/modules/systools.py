@@ -28,17 +28,17 @@ async def statuschecker(stat):
     uptime_mins = uptimebot.seconds // 60 % 60
     uptime_secs = uptimebot.seconds % 60
     uptimeSTR = f"{uptimebot.days} " + msgRep.DAYS + f", {uptime_hours:02}:{uptime_mins:02}:{uptime_secs:02}"
-    uptimemachine = time.time() - psutil.boot_time()
-    uptime_machine_converted = timedelta(seconds=uptimemachine)
-    uptime_machine_array = str(uptime_machine_converted).split(" days, ")
-    uptime_machine_days = uptime_machine_array[0]
-    uptime_machine_time = uptime_machine_array[1].split(":")
-    uptime_machine_hours = uptime_machine_time[0]
-    if int(uptime_machine_hours) < 10:
-        uptime_machine_hours = "0" + uptime_machine_hours
-    uptime_machine_minutes = uptime_machine_time[1]
-    uptime_machine_seconds = uptime_machine_time[2].split(".")[0]
-    uptimeMacSTR = f"{uptime_machine_days} " + msgRep.DAYS + f", {uptime_machine_hours}:{uptime_machine_minutes}:{uptime_machine_seconds}"
+    # uptimemachine = time.time() - psutil.boot_time()
+    # uptime_machine_converted = timedelta(seconds=uptimemachine)
+    # uptime_machine_array = str(uptime_machine_converted).split(" days, ")
+    # uptime_machine_days = uptime_machine_array[0]
+    # uptime_machine_time = uptime_machine_array[1].split(":")
+    # uptime_machine_hours = uptime_machine_time[0]
+    # if int(uptime_machine_hours) < 10:
+    #    uptime_machine_hours = "0" + uptime_machine_hours
+    # uptime_machine_minutes = uptime_machine_time[1]
+    # uptime_machine_seconds = uptime_machine_time[2].split(".")[0]
+    # uptimeMacSTR = f"{uptime_machine_days} " + msgRep.DAYS + f", {uptime_machine_hours}:{uptime_machine_minutes}:{uptime_machine_seconds}"
     commit = await getGitReview()
     rtt = pinger("1.1.1.1") #cloudfare's
     reply = msgRep.SYSTEM_STATUS + "`" + msgRep.ONLINE + "`" + "\n\n"
@@ -50,7 +50,7 @@ async def statuschecker(stat):
     else:
         reply += msgRep.RTT + "`" + msgRep.ERROR + "`" + "\n"
     reply += msgRep.BOT_UPTIMETXT + uptimeSTR + "\n"
-    reply += msgRep.MAC_UPTIMETXT + uptimeMacSTR + "\n"
+    # reply += msgRep.MAC_UPTIMETXT + uptimeMacSTR + "\n"
     reply += "\n"
     reply += msgRep.TELETON_VER + "`" + str(version.__version__) + "`" + "\n"
     reply += msgRep.PYTHON_VER + "`" + str(python_version()) + "`" + "\n"
