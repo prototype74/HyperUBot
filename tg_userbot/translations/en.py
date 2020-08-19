@@ -105,6 +105,8 @@ class ChatInfoText(object):
     RESTRICTED_COUNT = "Restricted users: <code>{}</code>\n"
     BANNEDCOUNT = "Banned users: <code>{}</code>\n"
     GRUP_STICKERS = "Chat stickers: <a href=\"t.me/addstickers/{}\">{}</a>\n"
+    LINKED_CHAT = "Linked chat: {}\n"
+    LINKED_CHAT_TITLE = "> Name: {}\n"
     SLW_MODE = "Slow mode: {}"
     SLW_MODE_TIME = ", <code>{}s</code>\n\n"
     SPER_GRP = "Supergroup: {}\n\n"

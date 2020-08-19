@@ -119,6 +119,8 @@ class ChatInfoText(object):
     RESTRICTED_COUNT = text.ChatInfoText.RESTRICTED_COUNT
     BANNEDCOUNT = text.ChatInfoText.BANNEDCOUNT
     GRUP_STICKERS = text.ChatInfoText.GRUP_STICKERS
+    LINKED_CHAT = text.ChatInfoText.LINKED_CHAT
+    LINKED_CHAT_TITLE = text.ChatInfoText.LINKED_CHAT_TITLE
     SLW_MODE = text.ChatInfoText.SLW_MODE
     SLW_MODE_TIME = text.ChatInfoText.SLW_MODE_TIME
     SPER_GRP = text.ChatInfoText.SPER_GRP
