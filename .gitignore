@@ -1,0 +1,7 @@
+# tguserbot stuff
+tguserbot.session
+
+# python cache
+__pycache__/*
+tg_userbot/__pycache__/*
+tg_userbot/*/__pycache__/*
