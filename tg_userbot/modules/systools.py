@@ -12,8 +12,7 @@ from telethon import version
 # Misc Imports
 from platform import python_version, uname
 from datetime import datetime, timedelta
-import time
-import psutil
+from uptime import uptime
 from subprocess import check_output
 
 # Module Global Variables
@@ -28,7 +27,7 @@ async def statuschecker(stat):
     uptime_mins = uptimebot.seconds // 60 % 60
     uptime_secs = uptimebot.seconds % 60
     uptimeSTR = f"{uptimebot.days} " + msgRep.DAYS + f", {uptime_hours:02}:{uptime_mins:02}:{uptime_secs:02}"
-    uptimemachine = time.time() - psutil.boot_time()
+    uptimemachine = uptime()
     uptime_machine_converted = timedelta(seconds=uptimemachine)
     uptime_machine_array = str(uptime_machine_converted).split(" days, ")
     if len(uptime_machine_array) < 2:
