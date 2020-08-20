@@ -42,7 +42,7 @@ elif path.exists(CURR_PATH + "config.py"):
     try:
         from tg_userbot.config import ConfigClass  # Import here, otherwise error
     except ImportError as ie:
-        LOGS.error("Couldn't import ConfigClass: {ie}")
+        LOGS.error(f"Couldn't import ConfigClass: {ie}")
         quit(1)
     API_KEY = ConfigClass.API_KEY
     API_HASH = ConfigClass.API_HASH
