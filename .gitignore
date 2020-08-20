@@ -1,5 +1,6 @@
 # tguserbot stuff
 tguserbot.session
+tg_userbot/config.env
 tg_userbot/config.py
 
 # python cache
