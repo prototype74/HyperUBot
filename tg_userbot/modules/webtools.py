@@ -1,5 +1,5 @@
 # My imports
-from tg_userbot.include.aux_funcs import pinger
+from tg_userbot.include.aux_funcs import pinger, speed_convert
 from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import WebToolsText as msgRep
 
@@ -36,4 +36,16 @@ async def ping(args):
             await args.edit(msgRep.INVALID_HOST)
             return
         await args.edit(msgRep.PINGER_VAL.format(dns, duration))
+    return
+
+@watcher(outgoing=True, pattern=r"^\.speedtest$")
+async def speedtester(message):
+    await message.edit(msgRep.SPD_START)
+    test = speedtest.Speedtest()
+    test.get_best_server()
+    test.download()
+    test.upload()
+    test.results.share()
+    result = test.results.dict()
+    await  message.edit(msgRep.SPD_END.format(result['timestamp'], speed_convert(result['download']), speed_convert(result['upload']), result['ping'], result['client']['isp']))
     return

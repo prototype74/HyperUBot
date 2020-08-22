@@ -234,6 +234,8 @@ class WebToolsText(object):
     BAD_ARGS = text.WebToolsText.BAD_ARGS
     INVALID_HOST = text.WebToolsText.INVALID_HOST
     PINGER_VAL = text.WebToolsText.PINGER_VAL
+    SPD_START = text.WebToolsText.SPD_START
+    SPD_END = text.WebToolsText.SPD_END
 
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP

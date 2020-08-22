@@ -80,6 +80,15 @@ def pinger(address):
     else:
         return str(ping_time) + " ms"
 
+def speed_convert(size):
+    power = 2 ** 10
+    zero = 0
+    units = {0: '', 1: 'Kb/s', 2: 'Mb/s', 3: 'Gb/s', 4: 'Tb/s'}
+    while size > power:
+        size /= power
+        zero += 1
+    return f"{round(size, 2)} {units[zero]}"
+
 async def getGitReview():
     commit = msgsLang.ERROR
     if which("git") is not None:
