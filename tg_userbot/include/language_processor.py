@@ -244,3 +244,4 @@ class HelpDesignations(object):
     MEMBERINFO_HELP = text.HelpDesignations.MEMBERINFO_HELP
     SYSTOOLS_HELP = text.HelpDesignations.SYSTOOLS_HELP
     USER_HELP = text.HelpDesignations.USER_HELP
+    WEBTOOLS_HELP = text.HelpDesignations.WEBTOOLS_HELP

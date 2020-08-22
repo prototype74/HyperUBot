@@ -268,3 +268,12 @@ class HelpDesignations(object):
         \nUsage: Gets your stats.\
         \n\n`.kickme`\
         \nUsage: Makes you leave the group."
+
+    WEBTOOLS_HELP = "`.rtt` \
+                    \nUsage: Gets the current Round Trip Time\
+                    \n\n`.dc` \
+                    \nUsage: Finds the near datacenter to your userbot host. \
+                    \n\n`.ping` <DNS/IP> \
+                    \nUsage: Pings a specific DNS or IP address. \
+                    \n\n`.speedtest` \
+                    \nUsage: Performs a speedtest and shows the results."

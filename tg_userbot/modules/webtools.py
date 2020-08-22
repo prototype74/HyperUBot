@@ -1,7 +1,8 @@
 # My imports
 from tg_userbot.include.aux_funcs import pinger, speed_convert
 from tg_userbot.include.watcher import watcher
-from tg_userbot.include.language_processor import WebToolsText as msgRep
+from tg_userbot.include.language_processor import WebToolsText as msgRep, HelpDesignations as helpRep
+from tg_userbot import HELP_DICT
 
 # Telethon stuff
 from telethon import functions
@@ -49,3 +50,5 @@ async def speedtester(message):
     result = test.results.dict()
     await  message.edit(msgRep.SPD_END.format(result['timestamp'], speed_convert(result['download']), speed_convert(result['upload']), result['ping'], result['client']['isp']))
     return
+
+HELP_DICT.update({"webtools":helpRep.WEBTOOLS_HELP})
