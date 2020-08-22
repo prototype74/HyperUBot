@@ -10,24 +10,26 @@
  - Admin/Member info by @prototype74
  - WebTools module
 
-## Missing and urgent:
+## To Do Part 1 (before alpha public release):
  - Add extra info to (.info)
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
  - QR Codes module
  - Scrappers (translator and text-to-speech)
- - Spam module
  - Stickers
  - Terminal (bash and python interpreters)
- - Update module
- - Finding Windows and MacOS bois.
- - Finding translators to every language (currently have english, portuguese, spanish, german, turkish, tagalog, nepali, indonesian, vietnamese, huh... let me think)
 
-## Missing, but *maybe* to be added:
- - Memes (mock, vaporwave, etc...)
+## To Do Part 2 (after alpha public release):
+ - Update module
+ - Weather Module
+ - Finding Windows, MacOS and Termux bois.
+ - Finding translators to every language and get it translated
+
+## To Do Part 3 (after beta public release, but still undecided on all) :
+ - Memes module (mock, vaporwave, etc...)
+ - Spam module
  - Misc (coinflip, random, dice...)
- - Weather
- - File uploader and downloader
+ - File uploader and downloader module
  - Automation module
  - Terminal (maybe interpreters for more languages)
  - Scrappers (currency converter and speech-to-text)
