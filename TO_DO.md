@@ -8,6 +8,7 @@
  - User module
  - Help module
  - Admin/Member info by @prototype74
+ - WebTools module
 
 ## Missing and urgent:
  - Add extra info to (.info)
@@ -18,7 +19,6 @@
  - Spam module
  - Stickers
  - Terminal (bash and python interpreters)
- - WebTools (ping and such)
  - Update module
  - Finding Windows and MacOS bois.
  - Finding translators to every language (currently have english, portuguese, spanish, german, turkish, tagalog, nepali, indonesian, vietnamese, huh... let me think)
