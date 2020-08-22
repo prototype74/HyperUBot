@@ -216,6 +216,7 @@ class HelpText(object):
 
 class WebToolsText(object):
     PING_SPEED = "Ping speed is: "
+    DCMESSAGE = "Country : `{}`\nThis Datacenter : `{}`\nNearest Datacenter : `{}`"
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):

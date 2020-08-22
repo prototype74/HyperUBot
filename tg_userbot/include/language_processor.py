@@ -230,6 +230,7 @@ class HelpText(object):
 
 class WebToolsText(object):
     PING_SPEED = text.WebToolsText.PING_SPEED
+    DCMESSAGE = text.WebToolsText.DCMESSAGE
 
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
