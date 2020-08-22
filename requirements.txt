@@ -3,3 +3,4 @@ python-dotenv
 uptime>=3.0.1
 emoji
 requests
+speedtest-cli>=2.0.2

@@ -6,6 +6,9 @@ from tg_userbot.include.language_processor import WebToolsText as msgRep
 # Telethon stuff
 from telethon import functions
 
+# Misc imports
+import speedtest
+
 DEFAULT_ADD = "1.0.0.1"
 
 @watcher(outgoing=True, pattern=r"^\.rtt$")
