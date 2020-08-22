@@ -228,6 +228,9 @@ class HelpText(object):
     INVALID_NAME = text.HelpText.INVALID_NAME
     DEFAULT = text.HelpText.DEFAULT
 
+class WebToolsText(object):
+    PING_SPEED = text.WebToolsText.PING_SPEED
+
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
     CHATINFO_HELP = text.HelpDesignations.CHATINFO_HELP

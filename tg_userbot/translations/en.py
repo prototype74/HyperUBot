@@ -214,6 +214,9 @@ class HelpText(object):
     INVALID_NAME = "Please specify a valid module name."
     DEFAULT = "Please specify which module do you want help for !!\nSyntax: .help <module name>\n\nModules available:\n\n"
 
+class WebToolsText(object):
+    PING_SPEED = "Ping speed is: "
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
     ADMIN_HELP = "`.ban` \
