@@ -7,10 +7,10 @@
  - Systools module
  - User module
  - Help module
+ - Admin/Member info by @prototype74
 
 ## Missing and urgent:
  - Add extra info to (.info)
- - Admin info from prototype74
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
  - QR Codes module
