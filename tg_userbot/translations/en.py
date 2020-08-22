@@ -221,7 +221,7 @@ class WebToolsText(object):
     INVALID_HOST = "`There was a problem parsing the IP/Hostname`"
     PINGER_VAL = "DNS: `{}`\nPing Speed: `{}`"
     SPD_START = "`Running speed test...`"
-    SPD_END = "Started at: {}\nDownload: `{}`\nUpload: `{}`\nPing: `{}`\nISP: `{}`"
+    SPD_END = "Started at: {}\nDownload: `{}`\nUpload: `{}`\nPing: `{}` ms\nISP: `{}`"
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
