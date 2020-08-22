@@ -10,7 +10,7 @@
  - Admin/Member info by @prototype74
  - WebTools module
 
-## To Do Part 1 (before alpha public release):
+## To Do Part 1 (before alpha release):
  - Add extra info to (.info)
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
@@ -19,13 +19,13 @@
  - Stickers
  - Terminal (bash and python interpreters)
 
-## To Do Part 2 (after alpha public release):
+## To Do Part 2 (after alpha release):
  - Update module
  - Weather Module
  - Finding Windows, MacOS and Termux bois.
  - Finding translators to every language and get it translated
 
-## To Do Part 3 (after beta public release, but still undecided on all) :
+## To Do Part 3 (after beta release, but still undecided on all) :
  - Memes module (mock, vaporwave, etc...)
  - Spam module
  - Misc (coinflip, random, dice...)
