@@ -19,3 +19,18 @@ async def datacenter(event):
     result = await event.client(functions.help.GetNearestDcRequest())
     await event.edit(msgRep.DCMESSAGE.format(result.country, result.this_dc, result.nearest_dc))
     return
+
+@watcher(outgoing=True, pattern=r"^\.ping(?: |$)?")
+async def ping(args):
+    commandParser = str(args.message.message).split(' ')
+    if len(commandParser) != 2:
+        await args.edit(msgRep.BAD_ARGS)
+    else:
+        dns = commandParser[1]
+        try:
+            duration = pinger(dns)
+        except:
+            await args.edit(msgRep.INVALID_HOST)
+            return
+        await args.edit(msgRep.PINGER_VAL.format(dns, duration))
+    return

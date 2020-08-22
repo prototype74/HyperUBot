@@ -231,6 +231,9 @@ class HelpText(object):
 class WebToolsText(object):
     PING_SPEED = text.WebToolsText.PING_SPEED
     DCMESSAGE = text.WebToolsText.DCMESSAGE
+    BAD_ARGS = text.WebToolsText.BAD_ARGS
+    INVALID_HOST = text.WebToolsText.INVALID_HOST
+    PINGER_VAL = text.WebToolsText.PINGER_VAL
 
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP

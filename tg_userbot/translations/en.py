@@ -217,6 +217,9 @@ class HelpText(object):
 class WebToolsText(object):
     PING_SPEED = "Ping speed is: "
     DCMESSAGE = "Country : `{}`\nThis Datacenter : `{}`\nNearest Datacenter : `{}`"
+    BAD_ARGS = "`Bad arguments!`"
+    INVALID_HOST = "`There was a problem parsing the IP/Hostname`"
+    PINGER_VAL = "DNS: `{}`\nPing Speed: `{}`"
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
