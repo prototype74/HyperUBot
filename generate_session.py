@@ -35,7 +35,7 @@ try:
             print("Terminating...")
             quit()
         else:
-            print(color_red + "Invalid input. Try again..." + color_end)
+            print(color_yellow + "Invalid input. Try again..." + color_end)
 
     while not valid_api_key:
         API_KEY = input("Please enter your API KEY: ")
