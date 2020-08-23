@@ -7,3 +7,6 @@ tg_userbot/config.py
 __pycache__/*
 tg_userbot/__pycache__/*
 tg_userbot/*/__pycache__/*
+
+# misc
+downloads/*

@@ -5,7 +5,7 @@ from telethon.sessions import StringSession
 # Misc
 from dotenv import load_dotenv
 from logging import basicConfig, INFO, getLogger
-from os import path, environ
+from os import path, environ, mkdir
 from platform import system
 from sys import version_info  # check python version
 
@@ -37,6 +37,7 @@ if path.exists(CURR_PATH + "config.env"):
     BOTLOG = environ.get("BOTLOG", False)
     BOTLOG_CHATID = int(environ.get("BOTLOG_CHATID", "0"))
     STRING_SESSION = environ.get("STRING_SESSION", None)
+    TEMP_DL_DIR = environ.get("TEMP_DL_DIR", "./downloads")
     UBOT_LANG = environ.get("UBOT_LANG", "en")
 elif path.exists(CURR_PATH + "config.py"):
     try:
@@ -49,11 +50,23 @@ elif path.exists(CURR_PATH + "config.py"):
     BOTLOG = ConfigClass.BOTLOG
     BOTLOG_CHATID = ConfigClass.BOTLOG_CHATID
     STRING_SESSION = ConfigClass.STRING_SESSION
+    TEMP_DL_DIR = ConfigClass.TEMP_DL_DIR
     UBOT_LANG = ConfigClass.UBOT_LANG
 else:
     LOGS.error("No Config file found! Make sure it's located in ./tg_userbot/config.* or setup your config file first if you didn't. " +
     "Environment and py scripts are supported.")
     quit(1)
+
+if OS and OS.lower().startswith("win"):
+    TEMP_DL_DIR += "\\"
+else:
+    TEMP_DL_DIR += "/"
+
+try:
+    if not path.exists(TEMP_DL_DIR):
+        mkdir(TEMP_DL_DIR)
+except OSError:
+    LOGS.error("Failed to initialize download directory.")
 
 if not API_KEY:
     LOGS.error("API KEY is empty! Obtain your API KEY from https://my.telegram.org if you don't have one.")

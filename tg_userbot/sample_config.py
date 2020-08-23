@@ -23,9 +23,14 @@ class ConfigClass(object):
     STRING_SESSION = ""  # Your string session
 
     #
+    # Required to store downloaded file(s) (temporary)
+    #
+    TEMP_DL_DIR = "./downloads"  # Default
+
+    #
     # Userbot display language. Default is english ('en')
     #
-    UBOT_LANG = ""  # string
+    UBOT_LANG = "en"  # must match language code
 
 
     ### Optional configurations
