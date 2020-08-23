@@ -204,6 +204,11 @@ class ScrappersText(object):
     MSG_TOO_LONG = text.ScrappersText.MSG_TOO_LONG
     FAIL_TRANS_MSG = text.ScrappersText.FAIL_TRANS_MSG
     FAIL_TRANS_TEXT = text.ScrappersText.FAIL_TRANS_TEXT
+    MEDIA_FORBIDDEN = text.ScrappersText.MEDIA_FORBIDDEN
+    NO_TEXT_TTS = text.ScrappersText.NO_TEXT_TTS
+    FAIL_TTS = text.ScrappersText.FAIL_TTS
+    FAIL_API_REQ = text.ScrappersText.FAIL_API_REQ
+    INVALID_LANG_CODE = text.ScrappersText.INVALID_LANG_CODE
 
 class UserText(object):
     LEAVING = text.UserText.LEAVING

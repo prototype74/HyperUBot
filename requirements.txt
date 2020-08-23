@@ -5,3 +5,4 @@ emoji
 requests
 speedtest-cli>=2.0.2
 googletrans>=3.0.0
+gTTS>=2.1.1

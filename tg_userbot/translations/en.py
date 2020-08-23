@@ -190,6 +190,11 @@ class ScrappersText(object):
     MSG_TOO_LONG = "`Translated text is too long!`"
     FAIL_TRANS_MSG = "`Failed to translate this message`"
     FAIL_TRANS_TEXT = "`Failed to translate given text`"
+    MEDIA_FORBIDDEN = "`Couldn't TTS: Uploading media isn't allowed in this chat`"
+    NO_TEXT_TTS = "`No text or message to text-to-speech`"
+    FAIL_TTS = "`Failed to text-to-speech`"
+    FAIL_API_REQ = "`API request failed`"
+    INVALID_LANG_CODE = "`Invalid language code or language isn't supported`"
 
 class UserText(object):
     LEAVING = "`Leaving chat...`"
@@ -268,7 +273,9 @@ class HelpDesignations(object):
           \nUsage: Get (remotely) info of a member in a supergroup."
 
     SCRAPPERS_HELP = "`.trt` [optional: <text>] or reply\
-          \nUsage: Translates given text or replied message to the bot's target language."
+          \nUsage: Translates given text or replied message to the bot's target language.\
+          \n\n`.tts` [optional: <text>] or reply\
+          \nUsage: Converts text or replied message into spoken voice output (text-to-speech)."
 
     SYSTOOLS_HELP = "`.status`\
          \nUsage: Type .status to check various bot information and if it is up and running.\
