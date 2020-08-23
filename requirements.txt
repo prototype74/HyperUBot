@@ -4,3 +4,4 @@ uptime>=3.0.1
 emoji
 requests
 speedtest-cli>=2.0.2
+googletrans>=3.0.0

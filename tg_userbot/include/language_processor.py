@@ -193,6 +193,18 @@ class MemberInfoText(object):
     ADDED_BY = text.MemberInfoText.ADDED_BY
     JOIN_DATE = text.MemberInfoText.JOIN_DATE
 
+class ScrappersText(object):
+    NO_TEXT_OR_MSG = text.ScrappersText.NO_TEXT_OR_MSG
+    TRANSLATING = text.ScrappersText.TRANSLATING
+    SAME_SRC_TARGET_LANG = text.ScrappersText.SAME_SRC_TARGET_LANG
+    DETECTED_LANG = text.ScrappersText.DETECTED_LANG
+    TARGET_LANG = text.ScrappersText.TARGET_LANG
+    ORG_TEXT = text.ScrappersText.ORG_TEXT
+    TRANS_TEXT = text.ScrappersText.TRANS_TEXT
+    MSG_TOO_LONG = text.ScrappersText.MSG_TOO_LONG
+    FAIL_TRANS_MSG = text.ScrappersText.FAIL_TRANS_MSG
+    FAIL_TRANS_TEXT = text.ScrappersText.FAIL_TRANS_TEXT
+
 class UserText(object):
     LEAVING = text.UserText.LEAVING
     KICKME_LOG = text.UserText.KICKME_LOG
@@ -242,6 +254,7 @@ class HelpDesignations(object):
     CHATINFO_HELP = text.HelpDesignations.CHATINFO_HELP
     DELETIONS_HELP = text.HelpDesignations.DELETIONS_HELP
     MEMBERINFO_HELP = text.HelpDesignations.MEMBERINFO_HELP
+    SCRAPPERS_HELP = text.HelpDesignations.SCRAPPERS_HELP
     SYSTOOLS_HELP = text.HelpDesignations.SYSTOOLS_HELP
     USER_HELP = text.HelpDesignations.USER_HELP
     WEBTOOLS_HELP = text.HelpDesignations.WEBTOOLS_HELP

@@ -179,6 +179,18 @@ class MemberInfoText(object):
     ADDED_BY = "Added by"
     JOIN_DATE = "Join date"
 
+class ScrappersText(object):
+    NO_TEXT_OR_MSG = "`No text or message to translate`"
+    TRANSLATING = "`Translating...`"
+    SAME_SRC_TARGET_LANG = "`Source text language equals target language`"
+    DETECTED_LANG = "Detected language"
+    TARGET_LANG = "Target language"
+    ORG_TEXT = "Original text"
+    TRANS_TEXT = "Translated text"
+    MSG_TOO_LONG = "`Translated text is too long!`"
+    FAIL_TRANS_MSG = "`Failed to translate this message`"
+    FAIL_TRANS_TEXT = "`Failed to translate given text`"
+
 class UserText(object):
     LEAVING = "`Leaving chat...`"
     KICKME_LOG = "#KICKME\nSuccessfully left [{}]({})!"
@@ -254,6 +266,9 @@ class HelpDesignations(object):
 
     MEMBERINFO_HELP = "`.minfo` [optional: <tag/id> <group>] or reply\
           \nUsage: Get (remotely) info of a member in a supergroup."
+
+    SCRAPPERS_HELP = "`.trt` [optional: <text>] or reply\
+          \nUsage: Translates given text or replied message to the bot's target language."
 
     SYSTOOLS_HELP = "`.status`\
          \nUsage: Type .status to check various bot information and if it is up and running.\
