@@ -33,6 +33,7 @@
  - Automation module
  - Terminal (maybe interpreters for more languages)
  - Scrappers (currency converter and speech-to-text)
+ - nhentai (*insert lenny face*)
  - quot.ly (maybe????)
 
 ## Final changes:
