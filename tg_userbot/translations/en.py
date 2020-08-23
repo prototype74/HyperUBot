@@ -227,7 +227,7 @@ class HelpText(object):
     DEFAULT = "Please specify which module do you want help for !!\nSyntax: .help <module name>\n\nModules available:\n\n"
 
 class WebToolsText(object):
-    PING_SPEED = "Ping speed is: "
+    PING_SPEED = "Round-Trip Time: "
     DCMESSAGE = "Country : `{}`\nThis Datacenter : `{}`\nNearest Datacenter : `{}`"
     BAD_ARGS = "`Bad arguments!`"
     INVALID_HOST = "`There was a problem parsing the IP/Hostname`"
