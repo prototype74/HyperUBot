@@ -21,6 +21,7 @@
 
 ## To Do Part 2 (after alpha release):
  - Update module
+ - Self installer for modules
  - Weather Module
  - Finding Windows, MacOS and Termux bois.
  - Finding translators to every language and get it translated
