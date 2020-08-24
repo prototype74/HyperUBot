@@ -45,13 +45,13 @@ elif path.exists(CURR_PATH + "config.py"):
     except ImportError as ie:
         LOGS.error(f"Couldn't import ConfigClass: {ie}")
         quit(1)
-    API_KEY = ConfigClass.API_KEY
-    API_HASH = ConfigClass.API_HASH
-    BOTLOG = ConfigClass.BOTLOG
-    BOTLOG_CHATID = ConfigClass.BOTLOG_CHATID
-    STRING_SESSION = ConfigClass.STRING_SESSION
-    TEMP_DL_DIR = ConfigClass.TEMP_DL_DIR
-    UBOT_LANG = ConfigClass.UBOT_LANG
+    API_KEY = ConfigClass.API_KEY if hasattr(ConfigClass, "API_KEY") else None
+    API_HASH = ConfigClass.API_HASH if hasattr(ConfigClass, "API_HASH") else None
+    BOTLOG = ConfigClass.BOTLOG if hasattr(ConfigClass, "BOTLOG") else False
+    BOTLOG_CHATID = ConfigClass.BOTLOG_CHATID if hasattr(ConfigClass, "BOTLOG_CHATID") else 0
+    STRING_SESSION = ConfigClass.STRING_SESSION if hasattr(ConfigClass, "STRING_SESSION") else None
+    TEMP_DL_DIR = ConfigClass.TEMP_DL_DIR if hasattr(ConfigClass, "TEMP_DL_DIR") else "./downloads"
+    UBOT_LANG = ConfigClass.UBOT_LANG if hasattr(ConfigClass, "UBOT_LANG") else "en"
 else:
     LOGS.error("No Config file found! Make sure it's located in ./tg_userbot/config.* or setup your config file first if you didn't. " +
     "Environment and py scripts are supported.")
