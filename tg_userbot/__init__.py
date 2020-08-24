@@ -39,6 +39,7 @@ if path.exists(CURR_PATH + "config.env"):
     STRING_SESSION = environ.get("STRING_SESSION", None)
     TEMP_DL_DIR = environ.get("TEMP_DL_DIR", "./downloads")
     UBOT_LANG = environ.get("UBOT_LANG", "en")
+    NOT_LOAD_MODULES = environ.get("NOT_LOAD_MODULES", [])
 elif path.exists(CURR_PATH + "config.py"):
     try:
         from tg_userbot.config import ConfigClass  # Import here, otherwise error
@@ -52,6 +53,7 @@ elif path.exists(CURR_PATH + "config.py"):
     STRING_SESSION = ConfigClass.STRING_SESSION if hasattr(ConfigClass, "STRING_SESSION") else None
     TEMP_DL_DIR = ConfigClass.TEMP_DL_DIR if hasattr(ConfigClass, "TEMP_DL_DIR") else "./downloads"
     UBOT_LANG = ConfigClass.UBOT_LANG if hasattr(ConfigClass, "UBOT_LANG") else "en"
+    NOT_LOAD_MODULES = ConfigClass.NOT_LOAD_MODULES if hasattr(ConfigClass, "NOT_LOAD_MODULES") else []
 else:
     LOGS.error("No Config file found! Make sure it's located in ./tg_userbot/config.* or setup your config file first if you didn't. " +
     "Environment and py scripts are supported.")

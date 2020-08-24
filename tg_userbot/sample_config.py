@@ -23,11 +23,6 @@ class ConfigClass(object):
     STRING_SESSION = ""  # Your string session
 
     #
-    # Required to store downloaded file(s) (temporary)
-    #
-    TEMP_DL_DIR = "./downloads"  # Default
-
-    #
     # Userbot display language. Default is english ('en')
     #
     UBOT_LANG = "en"  # must match language code
@@ -39,4 +34,14 @@ class ConfigClass(object):
     #
     BOTLOG = False  # Enable or disable logging
     BOTLOG_CHATID = None  # Chat ID. Must be an integer
+
+    #
+    # Skips load specific module(s) e.g. ["admin"]
+    #
+    NOT_LOAD_MODUES = []  # must be a list or config will not work
+
+    #
+    # To store downloaded file(s) (temporary)
+    #
+    TEMP_DL_DIR = "./downloads"  # Default
 
