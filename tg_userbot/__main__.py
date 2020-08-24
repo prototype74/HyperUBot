@@ -1,6 +1,6 @@
 # tguserbot Stuff
-from tg_userbot import bot, LOGS, PROJECT, VERSION
-from tg_userbot.modules import ALL_MODULES, NOT_LOAD_MODULES
+from tg_userbot import bot, LOGS, PROJECT, NOT_LOAD_MODULES, VERSION
+from tg_userbot.modules import ALL_MODULES
 
 # Telethon Stuff
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
@@ -21,7 +21,7 @@ class Modules:
                 self.__imported_module = import_module("tg_userbot.modules." + module)
                 self.__modules_count += 1
             for module in NOT_LOAD_MODULES:
-                self.__no_load_modules_count += 1
+                self.__not_load_modules_count += 1
             return True
         except ModuleNotFoundError as mnfe:
             LOGS.error(f"Unable to load module: {mnfe}")
