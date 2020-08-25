@@ -138,9 +138,8 @@ class ChatInfoText(object):
 
 class MemberInfoText(object):
     SCAN = text.MemberInfoText.SCAN
-    SCAN_CHANNEL_FAIL = text.MemberInfoText.SCAN_CHANNEL_FAIL
-    INVALID_USER_ID = text.MemberInfoText.INVALID_USER_ID
-    FAIL_GET_MEMBER_DIV = text.MemberInfoText.FAIL_GET_MEMBER_DIV
+    FAIL_GET_MEMBER_CHAT = text.MemberInfoText.FAIL_GET_MEMBER_CHAT
+    FAIL_GET_MEMBER = text.MemberInfoText.FAIL_GET_MEMBER
     NOT_SUPERGROUP = text.MemberInfoText.NOT_SUPERGROUP
     INVALID_CHAT_ID = text.MemberInfoText.INVALID_CHAT_ID
     ME_NOT_PART = text.MemberInfoText.ME_NOT_PART

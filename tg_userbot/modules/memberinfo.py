@@ -35,13 +35,8 @@ async def memberinfo(event):
         member_name = member_info.user.first_name if not member_deleted else msgRep.DELETED_ACCOUNT
         member_username = member_info.user.username if member_info.user.username else None
         member_name_link = f"<a href=\"tg://user?id={member_id}\">{member_name}</a>"
-    except UserIdInvalidError as e:
-        print("UserIdInvalidError:", e)
-        await event.edit(msgRep.INVALID_USER_ID)
-        return
     except Exception as e:
-        print("Exception:", e)
-        await event.edit(f"`{msgRep.FAIL_GET_MEMBER_DIV}: {e}`")
+        await event.edit(f"`{msgRep.FAIL_GET_MEMBER}: {e}`")
         return
 
     try:
@@ -53,11 +48,9 @@ async def memberinfo(event):
         # member_info becomes a participant object now
         member_info = participant_info.participant if participant_info else None
     except ChannelInvalidError as cie:
-        print("ChannelInvalidError:", cie)
         await event.edit(msgRep.INVALID_CHAT_ID)
         return
     except UserNotParticipantError as unpe:
-        print("UserNotParticipantError:", unpe)
         if member_is_self:
             await event.edit(msgRep.ME_NOT_PART.format(chat_info.title))
         else:

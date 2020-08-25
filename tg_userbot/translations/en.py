@@ -124,9 +124,8 @@ class ChatInfoText(object):
 
 class MemberInfoText(object):
     SCAN = "`Scanning this member's information...`"
-    SCAN_CHANNEL_FAIL = "`Cannot check channels for member info`"
-    INVALID_USER_ID = "`Invalid user ID!`"
-    FAIL_GET_MEMBER_DIV = "Failed to get member info"
+    FAIL_GET_MEMBER_CHAT = "`Failed to get member info: couldn't fetch chat`"
+    FAIL_GET_MEMBER = "Failed to get member info"
     NOT_SUPERGROUP = "`This chat or given chat ID isn't a supergroup!`"
     INVALID_CHAT_ID = "`Invalid chat ID!`"
     ME_NOT_PART = "`I am not a participant of {}`"
