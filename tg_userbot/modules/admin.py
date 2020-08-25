@@ -1,7 +1,7 @@
 # My stuff
 from tg_userbot.include.language_processor import AdminText as msgRep, HelpDesignations as helpRep
 from tg_userbot.include.watcher import watcher
-from tg_userbot.include.aux_funcs import get_user_from_event
+from tg_userbot.include.aux_funcs import fetch_user
 from tg_userbot import BOTLOG, BOTLOG_CHATID, HELP_DICT
 
 # Telethon Stuff
@@ -34,7 +34,7 @@ async def ban(banning):
     if not admin and not creator:
         await banning.edit(msgRep.NOT_ADMIN)
         return
-    user = await get_user_from_event(banning)
+    user = await fetch_user(banning)
     if not user:
         return
     await banning.edit(msgRep.BANNING_USER)
@@ -63,7 +63,7 @@ async def unban(unbanner):
     if not admin and not creator:
         await unbanner.edit(msgRep.NO_PERMS)
         return
-    user = await get_user_from_event(unbanner)
+    user = await fetch_user(unbanner)
     if not user:
         return
     await unbanner.edit(msgRep.UNBANNING_USER)
@@ -84,7 +84,7 @@ async def kick(kicker):
     if not admin and not creator:
         await kicker.edit(msgRep.NOT_ADMIN)
         return
-    user = await get_user_from_event(kicker)
+    user = await fetch_user(kicker)
     if not user:
         await kicker.edit(msgRep.FAILED_FETCH_USER)
         return
@@ -112,7 +112,7 @@ async def promote(promt):
     if not admin and not creator:
         await promt.edit(msgRep.NOT_ADMIN)
         return
-    get_user = await get_user_from_event(promt)
+    get_user = await fetch_user(promt)
     if isinstance(get_user, tuple):
         user, rank = get_user
     else:
@@ -169,7 +169,7 @@ async def demote(dmt):
     if not admin and not creator:
         await dmt.edit(msgRep.NOT_ADMIN)
         return
-    get_user = await get_user_from_event(dmt)
+    get_user = await fetch_user(dmt)
     if isinstance(get_user, tuple):
         user, rank = get_user
     else:
@@ -263,7 +263,7 @@ async def mute(muter):
     if not admin and not creator:
         await muter.edit(msgRep.NOT_ADMIN)
         return
-    user = await get_user_from_event(muter)
+    user = await fetch_user(muter)
     if not user:
         return
     await muter.edit(msgRep.MUTING_USR)
@@ -285,7 +285,7 @@ async def unmute(unmuter):
     if not admin and not creator:
         await unmuter.edit(msgRep.NOT_ADMIN)
         return
-    user = await get_user_from_event(unmuter)
+    user = await fetch_user(unmuter)
     if not user:
         return
     await unmuter.edit(msgRep.UNMUTING_USR)

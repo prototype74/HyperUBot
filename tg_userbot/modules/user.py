@@ -2,7 +2,7 @@
 from tg_userbot.include.watcher import watcher
 from tg_userbot import BOTLOG, BOTLOG_CHATID, bot, HELP_DICT
 from tg_userbot.include.language_processor import UserText as msgRep, HelpDesignations as helpRep
-from tg_userbot.include.aux_funcs import get_user
+from tg_userbot.include.aux_funcs import fetch_user
 
 # Telethon stuff
 from telethon.tl.types import User, Chat, Channel
@@ -60,7 +60,7 @@ async def info(event):  # .info command
     if event.fwd_from:
         return
     await event.edit(msgRep.FETCH_INFO)
-    replied_user = await get_user(event)
+    replied_user = await fetch_user(event, full_user=True)
     caption = await fetch_info(replied_user, event)
     message_id_to_reply = event.message.reply_to_msg_id
     if not message_id_to_reply:

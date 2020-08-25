@@ -5,7 +5,7 @@
 from tg_userbot.include.language_processor import GeneralMessages as msgsLang
 
 # Telethon imports
-from telethon.tl.types import MessageEntityMentionName
+from telethon.tl.types import User
 from telethon.tl.functions.users import GetFullUserRequest
 
 # Misc imports
@@ -15,30 +15,69 @@ from asyncio import create_subprocess_exec as asyncr
 from asyncio.subprocess import PIPE as asyncPIPE
 from shutil import which
 
-# Admin tools
-async def get_user_from_event(event):
+
+async def fetch_user(event=None, full_user=False, get_chat=False):
+    if not event:
+        return (None, None) if get_chat else None
     if event.reply_to_msg_id:
-        previous_message = await event.get_reply_message()
-        user_obj = await event.client.get_entity(previous_message.from_id)
+        message = await event.get_reply_message()
+        # focus to original author on forwarded messages
+        if message.fwd_from is not None and message.fwd_from.channel_id is not None:
+            await event.edit("Channels are not User objects")
+            return (None, None) if get_chat else None
+        elif message.fwd_from is not None and message.fwd_from.from_id is not None:
+            user = message.fwd_from.from_id
+        else:
+            user = message.from_id
+        chat_obj = await event.get_chat() if get_chat else None  # current chat
     else:
-        user = event.pattern_match.group(1)
-        if user.isnumeric():
-            user = int(user)
-        if not user:
-            await event.edit(msgsLang.GET_USER_FROM_EVENT_FAIL)
-            return
-        if event.message.entities is not None:
-            probable_user_mention_entity = event.message.entities[0]
-            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
-                user_id = probable_user_mention_entity.user_id
-                user_obj = await event.client.get_entity(user_id)
-                return user_obj
         try:
+            # args_from_event becomes a list. it takes maximum of 2 arguments,
+            # more than 2 will be appended to second element.
+            args_from_event = event.pattern_match.group(1).split(" ", 1)
+            if len(args_from_event) == 2:
+                user, chat = args_from_event
+                try:
+                    chat = int(chat)  # chat ID given
+                except:
+                    pass
+
+                try:
+                    chat_obj = await event.client.get_entity(chat) if get_chat else None
+                    if type(chat_obj) is User:  # entity is not a chat or channel object
+                        chat_obj = None
+                except:
+                    chat_obj = None
+            else:
+                user = args_from_event[0]
+                chat_obj = await event.get_chat() if get_chat else None
+        except Exception as e:
+            await event.edit(f"`Failed to fetch user: {e}`")
+            return (None, None) if get_chat else None
+
+        try:
+            user = int(user)
+        except:
+            pass
+
+        if not user:
+            oh_look_its_me = await event.client.get_me()
+            user = oh_look_its_me.id
+
+    try:
+        if full_user:
+            user_obj = await event.client(GetFullUserRequest(user))
+        else:
             user_obj = await event.client.get_entity(user)
-        except (TypeError, ValueError) as err:
-            await event.edit(str(err))
-            return None
-    return user_obj
+            if not type(user_obj) is User:
+               await event.edit("`Entity is not an User object`")
+               user_obj = None
+        return (user_obj, chat_obj) if get_chat else user_obj
+    except Exception as e:
+        await event.edit(f"`Call User request failed: {e}`")
+
+    return (None, chat_obj) if get_chat else None
+
 
 async def get_user_from_id(user, event):
     if isinstance(user, str):
@@ -98,29 +137,3 @@ async def getGitReview():
         verdiv = verout.split("-")
         commit = verdiv[2]
     return commit
-
-# User module
-async def get_user(event):
-    if event.reply_to_msg_id:
-        previous_message = await event.get_reply_message()
-        replied_user = await event.client(GetFullUserRequest(previous_message.from_id))
-    else:
-        user = event.pattern_match.group(1).split(' ', 2)[0]
-        if user.isnumeric():
-            user = int(user)
-        if not user:
-            self_user = await event.client.get_me()
-            user = self_user.id
-        if event.message.entities is not None:
-            probable_user_mention_entity = event.message.entities[0]
-            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
-                user_id = probable_user_mention_entity.user_id
-                replied_user = await event.client(GetFullUserRequest(user_id))
-                return replied_user
-        try:
-            user_object = await event.client.get_entity(user)
-            replied_user = await event.client(GetFullUserRequest(user_object.id))
-        except (TypeError, ValueError) as err:
-            await event.edit(str(err))
-            return None
-    return replied_user
