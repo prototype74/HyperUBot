@@ -1,5 +1,6 @@
 # tguserbot stuff
 from tg_userbot import HELP_DICT
+from tg_userbot.include.aux_funcs import fetch_user
 from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import MemberInfoText as msgRep, HelpDesignations as helpRep
 
@@ -18,53 +19,16 @@ from datetime import datetime
 async def memberinfo(event):
     await event.edit(msgRep.SCAN)
 
-    if event.reply_to_msg_id:
-        message = await event.get_reply_message()
-        if message.fwd_from is not None and message.fwd_from.channel_id is not None:
-            # forwarded message from channel
-            await event.edit(msgRep.SCAN_CHANNEL_FAIL)
-            return
-        elif message.fwd_from is not None and message.fwd_from.from_id is not None:
-            # original author from forwarded message
-            member = message.fwd_from.from_id
-        else:
-            # replied message (no forward)
-            member = message.from_id
-        chat_info = await event.get_chat()
-    else:
-        try:
-            # becomes a list with at least one element and max two elements ([0, 1])
-            args = event.pattern_match.group(1).split(" ", 1)
-            if len(args) == 2:
-                member, chat = args
-                try:
-                    chat = int(chat)  # chat ID given
-                except:
-                    pass
-                try:
-                    chat_info = await event.client.get_entity(chat)
-                except:
-                    await event.edit(msgRep.FAIL_GET_MEMBER_CHAT)
-                    return
-            else:
-                member = args[0]
-                chat_info = await event.get_chat()  # get current chat
-        except Exception as e:
-            print("Exception:", e)
-            await event.edit(msgRep.FAIL_GET_MEMBER_ARGS)
-            return
+    member_info, chat_info = await fetch_user(event=event, full_user=True, get_chat=True)
 
-        try:
-            member = int(member)  # user ID given
-        except:
-            pass
+    if not member_info:
+        return
 
-        if not member:  # argument empty to check ourself
-            member = await event.client.get_me()
-            member = member.id
+    if not chat_info:
+        await event.edit(msgRep.FAIL_GET_MEMBER_CHAT)
+        return
 
     try:
-        member_info = await event.client(GetFullUserRequest(member))  # 'member' = ID
         member_id = member_info.user.id
         member_is_self = member_info.user.is_self
         member_deleted = member_info.user.deleted
