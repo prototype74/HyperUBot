@@ -7,7 +7,6 @@ from tg_userbot.include.aux_funcs import fetch_user
 # Telethon stuff
 from telethon.tl.types import User, Chat, Channel
 from telethon.tl.functions.photos import GetUserPhotosRequest
-from telethon.utils import get_input_location
 
 # Misc Imports
 from asyncio import sleep
@@ -60,41 +59,39 @@ async def info(event):  # .info command
     await event.edit(msgRep.FETCH_INFO)
 
     full_user_obj = await fetch_user(event=event, full_user=True)
-    if not full_user_obj:  #  fetch_user() will return an error msg if something failed
+    if not full_user_obj:  # fetch_user() will return an error msg if something failed
         return
 
-    caption = await fetch_info(full_user_obj, event)
-
     try:
+        caption = await fetch_info(full_user_obj, event)
         await event.edit(caption, parse_mode="html")
     except Exception as e:
-        print("Exception:", e)
         await event.edit(f"`Failed to fetch user info: {e}`")
 
     return
 
 async def fetch_info(replied_user, event):
-    replied_user_profile_photos = await event.client(GetUserPhotosRequest(user_id=replied_user.user.id, offset=42, max_id=0, limit=80))
-    replied_user_profile_photos_count = 0
     try:
-        replied_user_profile_photos_count = replied_user_profile_photos.count
-    except AttributeError:
-        pass
+        user_pfps = await event.client(GetUserPhotosRequest(user_id=replied_user.user.id, offset=42, max_id=0, limit=80))
+        user_pfps_count = user_pfps.count if hasattr(user_pfps, "count") else 0
+    except:
+        user_pfps_count = 0
     user_id = replied_user.user.id
     user_deleted = replied_user.user.deleted
-    first_name = replied_user.user.first_name if not user_deleted else "Deleted Account"
+    user_self = replied_user.user.is_self
+    first_name = replied_user.user.first_name if not user_deleted else msgRep.DELETED_ACCOUNT
     last_name = replied_user.user.last_name if replied_user.user.last_name else None
-    try:
-        dc_id, location = get_input_location(replied_user.profile_photo)
-    except Exception as e:
-        dc_id = msgRep.UNKNOWN
-        location = str(e)
-    common_chat = str(replied_user.common_chats_count)
+    dc_id = msgRep.UNKNOWN
+    if replied_user.profile_photo:
+        if hasattr(replied_user.profile_photo, "dc_id"):
+            dc_id = replied_user.profile_photo.dc_id
+    common_chat = replied_user.common_chats_count
     username = replied_user.user.username
     user_bio = replied_user.about
-    is_bot = replied_user.user.bot
-    restricted = replied_user.user.restricted
-    verified = replied_user.user.verified
+    is_bot = f"<b>{msgRep.YES}</b>" if replied_user.user.bot else msgRep.NO
+    scam = f"<b>{msgRep.YES}</b>" if replied_user.user.scam else msgRep.NO
+    restricted = f"<b>{msgRep.YES}</b>" if replied_user.user.restricted else msgRep.NO
+    verified = f"<b>{msgRep.YES}</b>" if replied_user.user.verified else msgRep.NO
     username = "@{}".format(username) if username else None
     user_bio = msgRep.USR_NO_BIO if not user_bio else user_bio
     profile_link = f"<a href=\"tg://user?id={user_id}\">link</a>"
@@ -106,17 +103,20 @@ async def fetch_info(replied_user, event):
         caption += f"{msgRep.LAST_NAME}: {last_name}\n"
     if username:
         caption += f"{msgRep.USERNAME}: {username}\n"
-    if dc_id:
-        caption += f"{msgRep.DCID}: {dc_id}\n"
-    if replied_user_profile_photos_count:
-        caption += f"{msgRep.PROF_PIC_COUNT}: {replied_user_profile_photos_count}\n"
+    caption += f"{msgRep.DCID}: {dc_id}\n"
+    if user_pfps_count:
+        caption += f"{msgRep.PROF_PIC_COUNT}: {user_pfps_count}\n"
     if not user_deleted:
         caption += f"{msgRep.PROF_LINK}: {profile_link}\n"
     caption += f"{msgRep.ISBOT}: {is_bot}\n"
+    caption += f"{msgRep.SCAMMER}: {scam}\n"
     caption += f"{msgRep.ISRESTRICTED}: {restricted}\n"
     caption += f"{msgRep.ISVERIFIED}: {verified}\n\n"
     caption += f"{msgRep.BIO}:\n<code>{user_bio}</code>\n\n"
-    caption += f"{msgRep.COMMON}: {common_chat}"
+    if user_self:
+        caption += f"{msgRep.COMMON_SELF}"
+    else:
+        caption += f"{msgRep.COMMON}: {common_chat}"
 
     return caption
 

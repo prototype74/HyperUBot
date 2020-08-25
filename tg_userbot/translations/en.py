@@ -205,6 +205,9 @@ class UserText(object):
     STATS_BOTS = "Bots: **{}**\n"
     FETCH_INFO = "`Getting user info...`"
     UNKNOWN = "Unknown"
+    DELETED_ACCOUNT = "Deleted Account"
+    YES = "Yes"
+    NO = "No"
     USR_NO_BIO = "This User has no Bio"
     USR_INFO = "USER INFO"
     FIRST_NAME = "First Name"
@@ -214,10 +217,12 @@ class UserText(object):
     PROF_PIC_COUNT = "Number of Profile Pics"
     PROF_LINK = "Permanent Link To Profile"
     ISBOT = "Bot"
+    SCAMMER = "Scammer"
     ISRESTRICTED = "Restricted"
     ISVERIFIED = "Verified by Telegram"
     USR_ID = "ID"
     BIO = "Bio"
+    COMMON_SELF = "Common chats... oh look it's me!"
     COMMON = "Common chats"
 
 class GeneralMessages(object):

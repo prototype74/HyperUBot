@@ -219,6 +219,9 @@ class UserText(object):
     STATS_BOTS = text.UserText.STATS_BOTS
     FETCH_INFO = text.UserText.FETCH_INFO
     UNKNOWN = text.UserText.UNKNOWN
+    DELETED_ACCOUNT = text.UserText.DELETED_ACCOUNT
+    YES = text.UserText.YES
+    NO = text.UserText.NO
     USR_NO_BIO = text.UserText.USR_NO_BIO
     USR_INFO = text.UserText.USR_INFO
     FIRST_NAME = text.UserText.FIRST_NAME
@@ -228,10 +231,12 @@ class UserText(object):
     PROF_PIC_COUNT = text.UserText.PROF_PIC_COUNT
     PROF_LINK = text.UserText.PROF_LINK
     ISBOT = text.UserText.ISBOT
+    SCAMMER = text.UserText.SCAMMER
     ISRESTRICTED = text.UserText.ISRESTRICTED
     ISVERIFIED = text.UserText.ISVERIFIED
     USR_ID = text.UserText.USR_ID
     BIO = text.UserText.BIO
+    COMMON_SELF = text.UserText.COMMON_SELF
     COMMON = text.UserText.COMMON
 
 class GeneralMessages(object):
