@@ -220,7 +220,6 @@ class UserText(object):
     STATS_CHANNELS = text.UserText.STATS_CHANNELS
     STATS_BOTS = text.UserText.STATS_BOTS
     FETCH_INFO = text.UserText.FETCH_INFO
-    NO_PROF_PIC = text.UserText.NO_PROF_PIC
     UNKNOWN = text.UserText.UNKNOWN
     USR_NO_BIO = text.UserText.USR_NO_BIO
     USR_INFO = text.UserText.USR_INFO
