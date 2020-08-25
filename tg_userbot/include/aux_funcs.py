@@ -23,7 +23,7 @@ async def fetch_user(event=None, full_user=False, get_chat=False):
         message = await event.get_reply_message()
         # focus to original author on forwarded messages
         if message.fwd_from is not None and message.fwd_from.channel_id is not None:
-            await event.edit("Channels are not User objects")
+            await event.edit(msgsLang.CHAT_NOT_USER)
             return (None, None) if get_chat else None
         elif message.fwd_from is not None and message.fwd_from.from_id is not None:
             user = message.fwd_from.from_id
@@ -52,7 +52,7 @@ async def fetch_user(event=None, full_user=False, get_chat=False):
                 user = args_from_event[0]
                 chat_obj = await event.get_chat() if get_chat else None
         except Exception as e:
-            await event.edit(f"`Failed to fetch user: {e}`")
+            await event.edit(f"`{msgsLang.FAIL_FETCH_USER}: {e}`")
             return (None, None) if get_chat else None
 
         try:
@@ -70,11 +70,11 @@ async def fetch_user(event=None, full_user=False, get_chat=False):
         else:
             user_obj = await event.client.get_entity(user)
             if not type(user_obj) is User:
-               await event.edit("`Entity is not an User object`")
+               await event.edit(msgsLang.ENTITY_NOT_USER)
                user_obj = None
         return (user_obj, chat_obj) if get_chat else user_obj
     except Exception as e:
-        await event.edit(f"`Call User request failed: {e}`")
+        await event.edit(f"`{msgsLang.CALL_UREQ_FAIL}: {e}`")
 
     return (None, chat_obj) if get_chat else None
 

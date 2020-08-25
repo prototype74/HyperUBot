@@ -236,7 +236,10 @@ class UserText(object):
 
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR
-    GET_USER_FROM_EVENT_FAIL = text.GeneralMessages.GET_USER_FROM_EVENT_FAIL
+    CHAT_NOT_USER = text.GeneralMessages.CHAT_NOT_USER
+    FAIL_FETCH_USER = text.GeneralMessages.FAIL_FETCH_USER
+    ENTITY_NOT_USER = text.GeneralMessages.ENTITY_NOT_USER
+    CALL_UREQ_FAIL = text.GeneralMessages.CALL_UREQ_FAIL
 
 class HelpText(object):
     INVALID_NAME = text.HelpText.INVALID_NAME

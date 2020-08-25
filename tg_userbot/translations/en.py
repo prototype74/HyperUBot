@@ -222,7 +222,10 @@ class UserText(object):
 
 class GeneralMessages(object):
     ERROR = "ERROR!"
-    GET_USER_FROM_EVENT_FAIL = "Invalid user specified!"
+    CHAT_NOT_USER = "`Channels are not User objects`"
+    FAIL_FETCH_USER = "Failed to fetch user"
+    ENTITY_NOT_USER = "`Entity is not an User object`"
+    CALL_UREQ_FAIL = "Call User request failed"
 
 class HelpText(object):
     INVALID_NAME = "Please specify a valid module name."
