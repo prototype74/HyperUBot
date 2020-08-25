@@ -9,7 +9,7 @@ from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.types import (ChannelParticipantCreator, ChannelParticipantAdmin, ChannelParticipantBanned,
                                ChannelParticipantSelf, ChannelParticipant)
-from telethon.errors import ChannelInvalidError, UserIdInvalidError, UserNotParticipantError
+from telethon.errors import ChannelInvalidError, UserNotParticipantError
 
 # Misc
 from datetime import datetime
