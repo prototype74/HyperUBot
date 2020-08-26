@@ -1,7 +1,9 @@
 # My stuff
 from tg_userbot.include.watcher import watcher
-from tg_userbot.include.language_processor import GitHubText as msgRep
+from tg_userbot.include.language_processor import GitHubText as msgRep, HelpDesignations as helpRep
 import tg_userbot.include.git_api as api
+from tg_userbot import HELP_DICT
+
 
 def getData(url, index):
     if not api.getData(url):
@@ -39,3 +41,7 @@ async def get_release(event):
     url = commandArgs[1]
     text = getData(url, index)
     await event.edit(text, parse_mode="html")
+    return
+
+
+HELP_DICT.update({"github":helpRep.GITHUB_HELP})

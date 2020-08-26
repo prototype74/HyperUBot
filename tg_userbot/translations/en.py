@@ -336,3 +336,6 @@ class HelpDesignations(object):
                     \nUsage: Checks if a user is CAS Banned\
                     \n\n`.groupcheck` \
                     \nUsage: Checks the whole group for CAS Banned users "
+
+    GITHUB_HELP = "`.git` <user>/<repo> \
+                  \nUsage: Checks for releases on the specified user/repo combination."
