@@ -33,7 +33,7 @@ def getData(url, index):
     return message
 
 
-@tgclient.on(NewMessage(pattern=".git(?: |$)(.*)", outgoing=True))
+@tgclient.on(NewMessage(pattern=r"^\.git(?: |$)(.*)", outgoing=True))
 async def get_release(event):
     commandArgs = event.text.split(" ")
     if len(commandArgs) != 2 or not "/" in commandArgs[1]:
