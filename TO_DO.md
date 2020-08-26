@@ -7,9 +7,9 @@
  - Systools module
  - User module
  - Help module
- - Admin/Member info by @prototype74
+ - Admin/Member info module by @prototype74
  - WebTools module
- - Scrappers (translator and text-to-speech)
+ - Scrappers module
  - CAS Interface module
  - GitHub Module
  - Stickers module (pack information)
