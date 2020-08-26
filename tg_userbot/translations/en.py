@@ -321,3 +321,8 @@ class HelpDesignations(object):
                     \nUsage: Pings a specific DNS or IP address. \
                     \n\n`.speedtest` \
                     \nUsage: Performs a speedtest and shows the results."
+
+    CAS_INTERFACE_HELP = "`.cascheck` [optional: <username>]\
+                    \nUsage: Checks if a user is CAS Banned\
+                    \n\n`.groupcheck` \
+                    \nUsage: Checks the whole group for CAS Banned users "

@@ -1,8 +1,9 @@
 # My stuff
 import tg_userbot.include.cas_api as cas_api
 from tg_userbot.include.watcher import watcher
-from tg_userbot.include.language_processor import CasIntText as msgRep
+from tg_userbot.include.language_processor import CasIntText as msgRep, HelpDesignations as helpRep
 from tg_userbot.include.aux_funcs import fetch_user as get_user
+from tg_userbot import HELP_DICT
 
 # Telethon stuff
 from telethon.errors import ChatAdminRequiredError
