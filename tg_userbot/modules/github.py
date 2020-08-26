@@ -14,9 +14,9 @@ def getData(url, index):
     assets = api.getAssets(recentRelease)
     releaseName = api.getReleaseName(recentRelease)
     message = msgRep.AUTHOR_STR.format(authorUrl, author)
-    message += "RELEASE_NAME" + releaseName + "\n\n"
+    message += msgRep.RELEASE_NAME + releaseName + "\n\n"
     for asset in assets:
-        message += "ASSET"
+        message += msgRep.ASSET
         fileName = api.getReleaseFileName(asset)
         fileURL = api.getReleaseFileURL(asset)
         assetFile = "<a href='{}'>{}</a>".format(fileURL, fileName)
@@ -24,8 +24,8 @@ def getData(url, index):
         size = "{0:.2f}".format(sizeB)
         downloadCount = api.getDownloadCount(asset)
         message += assetFile + "\n"
-        message += "SIZE" + size + " MB"
-        message += "DL_COUNT" + str(downloadCount) + "\n\n"
+        message += msgRep.SIZE + size + " MB"
+        message += msgRep.DL_COUNT + str(downloadCount) + "\n\n"
     return message
 
 
@@ -33,7 +33,7 @@ def getData(url, index):
 async def get_release(event):
     commandArgs = event.text.split(" ")
     if len(commandArgs) != 2 or not "/" in commandArgs[1]:
-        await event.edit("INVALID_ARGS")
+        await event.edit(msgRep.INVALID_ARGS)
         return
     index = 0  # later will support going back in time!
     url = commandArgs[1]
