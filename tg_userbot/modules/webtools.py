@@ -1,30 +1,30 @@
 # My imports
 from tg_userbot.include.aux_funcs import pinger, speed_convert
-from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import WebToolsText as msgRep, HelpDesignations as helpRep
-from tg_userbot import HELP_DICT
+from tg_userbot import tgclient, HELP_DICT
 
 # Telethon stuff
 from telethon import functions
+from telethon.events import NewMessage
 
 # Misc imports
 import speedtest
 
 DEFAULT_ADD = "1.0.0.1"
 
-@watcher(outgoing=True, pattern=r"^\.rtt$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.rtt$"))
 async def rtt(message):
     rtt = pinger(DEFAULT_ADD)
     await message.edit(msgRep.PING_SPEED + rtt)
     return
 
-@watcher(outgoing=True, pattern=r"^\.dc$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.dc$"))
 async def datacenter(event):
     result = await event.client(functions.help.GetNearestDcRequest())
     await event.edit(msgRep.DCMESSAGE.format(result.country, result.this_dc, result.nearest_dc))
     return
 
-@watcher(outgoing=True, pattern=r"^\.ping(?: |$)?")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.ping(?: |$)?"))
 async def ping(args):
     commandParser = str(args.message.message).split(' ')
     if len(commandParser) != 2:
@@ -39,7 +39,7 @@ async def ping(args):
         await args.edit(msgRep.PINGER_VAL.format(dns, duration))
     return
 
-@watcher(outgoing=True, pattern=r"^\.speedtest$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.speedtest$"))
 async def speedtester(message):
     await message.edit(msgRep.SPD_START)
     test = speedtest.Speedtest()

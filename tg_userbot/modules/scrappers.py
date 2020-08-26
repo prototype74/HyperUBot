@@ -1,10 +1,10 @@
 # tguserbot stuff
-from tg_userbot import HELP_DICT, TEMP_DL_DIR, UBOT_LANG
-from tg_userbot.include.watcher import watcher
+from tg_userbot import tgclient, HELP_DICT, TEMP_DL_DIR, UBOT_LANG
 from tg_userbot.include.language_processor import ScrappersText as msgRep, HelpDesignations as helpRep
 
 # Telethon stuff
 from telethon.errors import ChatSendMediaForbiddenError, MessageTooLongError
+from telethon.events import NewMessage
 
 # Misc
 from googletrans import Translator, LANGUAGES
@@ -13,7 +13,7 @@ from gtts.tts import gTTSError
 from os import remove
 
 
-@watcher(pattern=r"^\.trt(?: |$)(.*)", outgoing=True)
+@tgclient.on(NewMessage(pattern=r"^\.trt(?: |$)(.*)", outgoing=True))
 async def translate(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -57,7 +57,7 @@ async def translate(event):
     return
 
 
-@watcher(pattern=r"^\.tts(?: |$)(.*)", outgoing=True)
+@tgclient.on(NewMessage(pattern=r"^\.tts(?: |$)(.*)", outgoing=True))
 async def translate(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()

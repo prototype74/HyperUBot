@@ -1,17 +1,18 @@
 # My Stuff
-from tg_userbot.include.watcher import watcher
 from tg_userbot import BOTLOG, BOTLOG_CHATID, tgclient, HELP_DICT
 from tg_userbot.include.language_processor import UserText as msgRep, HelpDesignations as helpRep
 from tg_userbot.include.aux_funcs import fetch_user
 
 # Telethon stuff
+from telethon.events import NewMessage
 from telethon.tl.types import User, Chat, Channel
 from telethon.tl.functions.photos import GetUserPhotosRequest
 
 # Misc Imports
 from asyncio import sleep
 
-@watcher(outgoing=True, pattern=r"^\.kickme$")
+#@watcher(outgoing=True, pattern=r"^\.kickme$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.kickme$"))
 async def kickme(leave):
     await leave.edit(msgRep.LEAVING)
     await sleep(0.1) #wait to avoid bad stuff
@@ -20,7 +21,7 @@ async def kickme(leave):
         await leave.client.send_message(BOTLOG_CHATID, msgRep.KICKME_LOG.format(leave.chat.title, leave.chat.id))
     return
 
-@watcher(outgoing=True, pattern=r"^\.stats$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.stats$"))
 async def stats(event):
     result = ""
     users = 0
@@ -54,7 +55,7 @@ async def stats(event):
     await event.edit(result)
     return
 
-@watcher(pattern=r"^\.info(?: |$)(.*)", outgoing=True)
+@tgclient.on(NewMessage(pattern=r"^\.info(?: |$)(.*)", outgoing=True))
 async def info(event):  # .info command
     await event.edit(msgRep.FETCH_INFO)
 

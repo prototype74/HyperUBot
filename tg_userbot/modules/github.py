@@ -1,8 +1,10 @@
 # My stuff
-from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import GitHubText as msgRep, HelpDesignations as helpRep
 import tg_userbot.include.git_api as api
-from tg_userbot import HELP_DICT
+from tg_userbot import tgclient, HELP_DICT
+
+# Telethon stuff
+from telethon.events import NewMessage
 
 
 def getData(url, index):
@@ -31,7 +33,7 @@ def getData(url, index):
     return message
 
 
-@watcher(pattern=".git(?: |$)(.*)", outgoing=True)
+@tgclient.on(NewMessage(pattern=".git(?: |$)(.*)", outgoing=True))
 async def get_release(event):
     commandArgs = event.text.split(" ")
     if len(commandArgs) != 2 or not "/" in commandArgs[1]:

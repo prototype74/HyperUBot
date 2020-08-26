@@ -1,6 +1,5 @@
 # My stuff
-from tg_userbot import VERSION, PROJECT, BOTLOG, BOTLOG_CHATID, HELP_DICT
-from tg_userbot.include.watcher import watcher
+from tg_userbot import tgclient, VERSION, PROJECT, BOTLOG, BOTLOG_CHATID, HELP_DICT
 from tg_userbot.include.language_processor import StatusText as msgRep, HelpDesignations as helpRep
 from tg_userbot.include.aux_funcs import pinger, getGitReview
 import tg_userbot.include.cas_api as cas
@@ -8,6 +7,7 @@ import tg_userbot.include.git_api as git
 
 # Telethon stuff
 from telethon import version
+from telethon.events import NewMessage
 
 # Misc Imports
 from platform import python_version, uname
@@ -19,7 +19,7 @@ from subprocess import check_output
 USER = uname().node # Maybe add a username in future
 STARTTIME = datetime.now()
 
-@watcher(outgoing=True, pattern=r"^\.status$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.status$"))
 async def statuschecker(stat):
     global STARTTIME
     uptimebot = datetime.now() - STARTTIME
@@ -62,14 +62,14 @@ async def statuschecker(stat):
     await stat.edit(reply)
     return
 
-@watcher(outgoing=True, pattern=r"^\.shutdown$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.shutdown$"))
 async def shutdown(power_off):
     await power_off.edit(msgRep.SHUTDOWN)
     if BOTLOG:
         await power_off.client.send_message(BOTLOG_CHATID, msgRep.SHUTDOWN_LOG)
     await power_off.client.disconnect()
 
-@watcher(outgoing=True, pattern=r"^\.sysd$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.sysd$"))
 async def neofetch(sysd):
     try:
         result = check_output("neofetch --stdout", shell=True).decode()

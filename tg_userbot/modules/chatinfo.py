@@ -1,10 +1,10 @@
 # My stuff
-from tg_userbot import HELP_DICT
-from tg_userbot.include.watcher import watcher
+from tg_userbot import tgclient, HELP_DICT
 from tg_userbot.include.language_processor import ChatInfoText as msgRep, HelpDesignations as helpRep
 
 # Telethon stuff
 from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError
+from telethon.events import NewMessage
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
 from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest
 from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins
@@ -14,7 +14,7 @@ from telethon.utils import get_input_location
 from datetime import datetime
 from math import sqrt
 
-@watcher(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True)
+@tgclient.on(NewMessage(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True))
 async def info(event):
     await event.edit(msgRep.CHAT_ANALYSIS)
     chat = await get_chatinfo(event)

@@ -1,10 +1,10 @@
 # My stuff
 from tg_userbot.include.language_processor import AdminText as msgRep, HelpDesignations as helpRep
-from tg_userbot.include.watcher import watcher
 from tg_userbot.include.aux_funcs import fetch_user
-from tg_userbot import BOTLOG, BOTLOG_CHATID, HELP_DICT
+from tg_userbot import tgclient, BOTLOG, BOTLOG_CHATID, HELP_DICT
 
 # Telethon Stuff
+from telethon.events import NewMessage
 from telethon.errors import BadRequestError, UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
 from telethon.errors.rpcerrorlist import UserIdInvalidError
@@ -26,7 +26,7 @@ USER_URL = "tg://user?id="
 
 # Maybe add: admin list, user list
 
-@watcher(outgoing=True, pattern=r"^\.ban(?: |$)(.*)")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.ban(?: |$)(.*)"))
 async def ban(banning):
     chat = await banning.get_chat()
     admin = chat.admin_rights
@@ -55,7 +55,7 @@ async def ban(banning):
         await banning.client.send_message(BOTLOG_CHATID, msgRep.BANLOG.format(user.first_name, USER_URL + str(user.id), banning.chat.title, banning.chat.id))
     return
 
-@watcher(outgoing=True, pattern=r"^\.unban(?: |$)(.*)")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.unban(?: |$)(.*)"))
 async def unban(unbanner):
     chat = await unbanner.get_chat()
     admin = chat.admin_rights
@@ -76,7 +76,7 @@ async def unban(unbanner):
         await unbanner.edit(msgRep.USERID_INVALID)
     return
 
-@watcher(outgoing=True, pattern=r"^\.kick(?: |$)(.*)")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.kick(?: |$)(.*)"))
 async def kick(kicker):
     chat = await kicker.get_chat()
     admin = chat.admin_rights
@@ -101,7 +101,7 @@ async def kick(kicker):
         await kicker.client.send_message(BOTLOG_CHATID, msgRep.KICKLOG.format(user.first_name, USER_URL + str(user.id), kicker.chat.title, kicker.chat.id))
     return
 
-@watcher(outgoing=True, pattern=r"^\.promote(?: |$)(.*)")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.promote(?: |$)(.*)"))
 async def promote(promt):
     chat = await promt.get_chat()
     if isinstance(chat, User):
@@ -158,7 +158,7 @@ async def promote(promt):
         await promt.client.send_message(BOTLOG_CHATID, msgRep.PROMT_LOG.format(user.first_name, USER_URL + str(user.id), promt.chat.title, promt.chat.id))
     return
 
-@watcher(outgoing=True, pattern=r"^\.demote(?: |$)(.*)")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.demote(?: |$)(.*)"))
 async def demote(dmt):
     chat = await dmt.get_chat()
     if isinstance(chat, User):
@@ -208,7 +208,7 @@ async def demote(dmt):
         await dmt.client.send_message(BOTLOG_CHATID, msgRep.DMT_LOG.format(user.first_name, USER_URL + str(user.id), dmt.chat.title, dmt.chat.id))
     return
 
-@watcher(outgoing=True, pattern=r"^\.delusers(?: |$)(.*)")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.delusers(?: |$)(.*)"))
 async def delusers(deleter):
     con = deleter.pattern_match.group(1) # gets argument, if any
     del_u = 0
@@ -255,7 +255,7 @@ async def delusers(deleter):
         await deleter.client.send_message(BOTLOG_CHATID, msgRep.CLEAN_DELACC_LOG.format(str(del_u)))
     return
 
-@watcher(outgoing=True, pattern=r"^\.mute(?: |$)(.*)")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.mute(?: |$)(.*)"))
 async def mute(muter):
     chat = await muter.get_chat()
     admin = chat.admin_rights
@@ -277,7 +277,7 @@ async def mute(muter):
         await muter.client.send_message(BOTLOG_CHATID, msgRep.MUTE_LOG.format(user.first_name, USER_URL + str(user.id), muter.chat.title, muter.chat_id))
     return
 
-@watcher(outgoing=True, pattern=r"^\.unmute(?: |$)(.*)")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.unmute(?: |$)(.*)"))
 async def unmute(unmuter):
     chat = await unmuter.get_chat()
     admin = chat.admin_rights
@@ -299,7 +299,7 @@ async def unmute(unmuter):
         await unmuter.client.send_message(BOTLOG_CHATID, msgRep.UNMUTE_LOG.format(user.first_name, USER_URL + str(user.id), unmuter.chat.title, unmuter.chat_id))
     return
 
-@watcher(outgoing=True, pattern=r"^\.pin(?: |$)(.*)")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.pin(?: |$)(.*)"))
 async def pin(msg):
     chat = await msg.get_chat()
     admin = chat.admin_rights

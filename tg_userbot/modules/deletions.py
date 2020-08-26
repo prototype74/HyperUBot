@@ -1,15 +1,15 @@
 # My stuff
-from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import DeletionsText as msgRep, HelpDesignations as helpRep
-from tg_userbot import BOTLOG, BOTLOG_CHATID, HELP_DICT
+from tg_userbot import tgclient, BOTLOG, BOTLOG_CHATID, HELP_DICT
 
 # Telethon stuff
 from telethon.errors import rpcbaseerrors
+from telethon.events import NewMessage
 
 # Misc imports
 from asyncio import sleep
 
-@watcher(outgoing=True, pattern=r"^\.purge$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.purge$"))
 async def purger(purg):
     chat = await purg.get_input_chat()
     msgs = []
@@ -29,7 +29,7 @@ async def purger(purg):
     await sleep(3)
     await done.delete()
 
-@watcher(outgoing=True, pattern=r"^\.del$")
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.del$"))
 async def deleteThis(rep):
     msg_src = await rep.get_reply_message()
     if rep.reply_to_msg_id:

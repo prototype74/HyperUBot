@@ -1,9 +1,11 @@
 # My imports
-from tg_userbot import HELP_DICT
-from tg_userbot.include.watcher import watcher
+from tg_userbot import tgclient, HELP_DICT
 from tg_userbot.include.language_processor import HelpText as msgRep
 
-@watcher(outgoing=True, pattern=r"^\.help(?: |$)(.*)")
+# Telethon stuff
+from telethon.events import NewMessage
+
+@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.help(?: |$)(.*)"))
 async def help(event):
     args = event.pattern_match.group(1) # Get specific module
     if args:

@@ -1,14 +1,14 @@
 # My stuff
 import tg_userbot.include.cas_api as cas_api
-from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import CasIntText as msgRep, HelpDesignations as helpRep
 from tg_userbot.include.aux_funcs import fetch_user as get_user
-from tg_userbot import HELP_DICT
+from tg_userbot import tgclient, HELP_DICT
 
 # Telethon stuff
+from telethon.events import NewMessage
 from telethon.errors import ChatAdminRequiredError
 
-@watcher(pattern=r"^\.cascheck(?: |$)(.*)", outgoing=True)
+@tgclient.on(NewMessage(pattern=r"^\.cascheck(?: |$)(.*)", outgoing=True))
 async def caschecker(event):
     if event.fwd_from:
         return
@@ -45,7 +45,7 @@ async def caschecker(event):
     await event.edit(text, parse_mode="html")
     return
 
-@watcher(pattern=r"^\.groupcheck$", outgoing=True)
+@tgclient.on(NewMessage(pattern=r"^\.groupcheck$", outgoing=True))
 async def groupchecker(cas):
     text = ""
     chat = cas.chat_id

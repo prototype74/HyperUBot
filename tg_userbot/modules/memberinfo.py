@@ -1,10 +1,10 @@
 # tguserbot stuff
-from tg_userbot import HELP_DICT
+from tg_userbot import tgclient, HELP_DICT
 from tg_userbot.include.aux_funcs import fetch_user
-from tg_userbot.include.watcher import watcher
 from tg_userbot.include.language_processor import MemberInfoText as msgRep, HelpDesignations as helpRep
 
 # Telethon stuff
+from telethon.events import NewMessage
 from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.types import (ChannelParticipantCreator, ChannelParticipantAdmin, ChannelParticipantBanned,
@@ -15,7 +15,7 @@ from telethon.errors import ChannelInvalidError, UserNotParticipantError
 from datetime import datetime
 
 
-@watcher(pattern=r"^\.minfo(?: |$)(.*)", outgoing=True)
+@tgclient.on(NewMessage(pattern=r"^\.minfo(?: |$)(.*)", outgoing=True))
 async def memberinfo(event):
     await event.edit(msgRep.SCAN)
 
