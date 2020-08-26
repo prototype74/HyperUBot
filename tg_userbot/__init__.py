@@ -80,10 +80,10 @@ if not API_HASH:
 
 try:
     if STRING_SESSION:
-        bot = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
+        tgclient = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
     else:
         LOGS.warning("STRING SESSION is empty! Please enter your API KEY and HASH to create a new string session.")
-        bot = TelegramClient("tguserbot", API_KEY, API_HASH)
+        tgclient = TelegramClient("tguserbot", API_KEY, API_HASH)
 except Exception as e:
     LOGS.critical(f"Failed to create Telegram Client: {e}")
     quit(1)

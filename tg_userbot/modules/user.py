@@ -1,6 +1,6 @@
 # My Stuff
 from tg_userbot.include.watcher import watcher
-from tg_userbot import BOTLOG, BOTLOG_CHATID, bot, HELP_DICT
+from tg_userbot import BOTLOG, BOTLOG_CHATID, tgclient, HELP_DICT
 from tg_userbot.include.language_processor import UserText as msgRep, HelpDesignations as helpRep
 from tg_userbot.include.aux_funcs import fetch_user
 
@@ -29,7 +29,7 @@ async def stats(event):
     channels = 0
     bots = 0
     await event.edit(msgRep.STATS_PROCESSING)
-    dialogs = await bot.get_dialogs(limit=None, ignore_migrated=True)
+    dialogs = await tgclient.get_dialogs(limit=None, ignore_migrated=True)
     for d in dialogs:
         currrent_entity = d.entity
         if isinstance(currrent_entity, User):

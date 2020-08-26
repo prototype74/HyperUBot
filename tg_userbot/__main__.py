@@ -1,5 +1,5 @@
 # tguserbot Stuff
-from tg_userbot import bot, LOGS, PROJECT, NOT_LOAD_MODULES, VERSION
+from tg_userbot import tgclient, LOGS, PROJECT, NOT_LOAD_MODULES, VERSION
 from tg_userbot.modules import ALL_MODULES
 
 # Telethon Stuff
@@ -43,16 +43,16 @@ if __name__ == "__main__":
         modules_count = modules.loaded_modules()
         not_load_modules_count = modules.not_loaded_modules()
         sum_modules = modules_count + not_load_modules_count
-        with bot:
-            bot.start()
+        with tgclient:
+            tgclient.start()
             if not modules_count:
                 LOGS.warning("No module(s) available!")
             elif modules_count > 0:
                 LOGS.info(f"{modules_count} of {sum_modules} module(s) loaded!")
             LOGS.info("%s %s: operational!", PROJECT, VERSION)
-            me = bot.loop.run_until_complete(bot.get_me())
+            me = tgclient.loop.run_until_complete(tgclient.get_me())
             LOGS.info("You're logged in as: %s - ID: %s", me.first_name, me.id)
-            bot.run_until_disconnected()
+            tgclient.run_until_disconnected()
     except KeyboardInterrupt:
         LOGS.info("Keyboard interruption. Terminating...")
     except PhoneNumberInvalidError:

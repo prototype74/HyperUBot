@@ -1,6 +1,6 @@
 from telethon import events
 
-from tg_userbot import bot
+from tg_userbot import tgclient
 
 def watcher(**args): #bot command processor, maybe later for edited messages
     command = args.get('command', None)
@@ -9,8 +9,8 @@ def watcher(**args): #bot command processor, maybe later for edited messages
         args['pattern'] = '(?i)' + command
 
     def starter(func):
-        bot.add_event_handler(func, events.MessageEdited(**args))
-        bot.add_event_handler(func, events.NewMessage(**args))
+        tgclient.add_event_handler(func, events.MessageEdited(**args))
+        tgclient.add_event_handler(func, events.NewMessage(**args))
         return func
 
     return starter
