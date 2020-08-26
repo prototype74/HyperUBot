@@ -258,6 +258,24 @@ class WebToolsText(object):
     SPD_START = text.WebToolsText.SPD_START
     SPD_END = text.WebToolsText.SPD_END
 
+class CasIntText(object):
+    FAIL = text.CasIntText.FAIL
+    USER_HEADER = text.CasIntText.USER_HEADER
+    USER_ID = text.CasIntText.USER_ID
+    FIRST_NAME = text.CasIntText.FIRST_NAME
+    LAST_NAME = text.CasIntText.LAST_NAME
+    USERNAME = text.CasIntText.USERNAME
+    CAS_DATA = text.CasIntText.CAS_DATA
+    RESULT = text.CasIntText.RESULT
+    OFFENSES = text.CasIntText.OFFENSES
+    DAY_ADDED = text.CasIntText.DAY_ADDED
+    TIME_ADDED = text.CasIntText.TIME_ADDED
+    UTC_INFO = text.CasIntText.UTC_INFO
+    USERS_DETECTED = text.CasIntText.USERS_DETECTED
+    NO_USRS = text.CasIntText.NO_USRS
+    NO_ADM = text.CasIntText.NO_ADM
+    CAS_CHECK_FAIL = text.CasIntText.CAS_CHECK_FAIL
+
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
     CHATINFO_HELP = text.HelpDesignations.CHATINFO_HELP

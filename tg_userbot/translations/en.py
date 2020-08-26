@@ -244,6 +244,24 @@ class WebToolsText(object):
     SPD_START = "`Running speed test...`"
     SPD_END = "Started at: {}\nDownload: `{}`\nUpload: `{}`\nPing: `{} ms`\nISP: `{}`"
 
+class CasIntText(object):
+    FAIL = "Failed to extract a user from given data"
+    USER_HEADER = "<b>USER DATA</b>\n\n"
+    USER_ID = "ID: "
+    FIRST_NAME = "First name: "
+    LAST_NAME = "Last name: "
+    USERNAME = "Username: @"
+    CAS_DATA = "\n<b>CAS DATA</b>\n\n"
+    RESULT = "Result: "
+    OFFENSES = "Total of Offenses: "
+    DAY_ADDED = "Day added: "
+    TIME_ADDED = "\nTime added: "
+    UTC_INFO = "\n\nAll times are in UTC"
+    USERS_DETECTED = "Warning! `{}` of `{}` users are CAS Banned:\n"
+    NO_USRS = "No CAS Banned users found!"
+    NO_ADM = "`CAS check failed: Admin privileges are required`"
+    CAS_CHECK_FAIL = "`CAS check failed`"
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
     ADMIN_HELP = "`.ban` \
