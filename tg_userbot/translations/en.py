@@ -262,6 +262,16 @@ class CasIntText(object):
     NO_ADM = "`CAS check failed: Admin privileges are required`"
     CAS_CHECK_FAIL = "`CAS check failed`"
 
+class GitHubText(object):
+    INVALID_URL = "Invalid user/repo combo"
+    NO_RELEASE = "The specified release could not be found"
+    AUTHOR_STR = "<b>Author:</b> <a href='{}'>{}</a>\n"
+    RELEASE_NAME = "<b>Release Name:</b> "
+    ASSET = "<b>Asset:</b> \n"
+    SIZE = "Size: "
+    DL_COUNT = "\nDownload Count: "
+    INVALID_ARGS = "Invalid arguments! Make sure you are typing a valid combination of user/repo"
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
     ADMIN_HELP = "`.ban` \

@@ -276,6 +276,16 @@ class CasIntText(object):
     NO_ADM = text.CasIntText.NO_ADM
     CAS_CHECK_FAIL = text.CasIntText.CAS_CHECK_FAIL
 
+class GitHubText(object):
+    INVALID_URL = text.GitHubText.INVALID_URL
+    NO_RELEASE = text.GitHubText.NO_RELEASE
+    AUTHOR_STR = text.GitHubText.AUTHOR_STR
+    RELEASE_NAME = text.GitHubText.RELEASE_NAME
+    ASSET = text.GitHubText.ASSET
+    SIZE = text.GitHubText.SIZE
+    DL_COUNT = text.GitHubText.DL_COUNT
+    INVALID_ARGS = text.GitHubText.INVALID_ARGS
+
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
     CHATINFO_HELP = text.HelpDesignations.CHATINFO_HELP
