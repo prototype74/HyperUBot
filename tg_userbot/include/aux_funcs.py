@@ -78,7 +78,6 @@ async def fetch_user(event=None, full_user=False, get_chat=False):
 
     return (None, chat_obj) if get_chat else None
 
-
 async def get_user_from_id(user, event):
     if isinstance(user, str):
         user = int(user)
