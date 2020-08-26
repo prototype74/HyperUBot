@@ -79,3 +79,5 @@ async def groupchecker(cas):
         return
     await cas.edit(text)
     return
+
+HELP_DICT.update({"cas_interface":helpRep.CAS_INTERFACE_HELP})
