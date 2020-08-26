@@ -10,10 +10,10 @@
  - Admin/Member info by @prototype74
  - WebTools module
  - Scrappers (translator and text-to-speech)
+ - CAS Interface module
 
 ## To Do Part 1 (before alpha release):
  - Add extra info to (.info)
- - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
  - QR Codes module
  - Stickers
@@ -38,5 +38,5 @@
  - quot.ly (maybe????)
 
 ## Final changes:
- - Make sure the language processor is not using the temporary scheme I made to make pyCharm happy.
- - Check for "incriminating" comments or stuff that looks bad.
+ - Make sure the language processor is not using the temporary scheme I made to make pyCharm autocomplete happy.
+ 
