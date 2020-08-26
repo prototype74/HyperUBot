@@ -14,7 +14,6 @@
  - GitHub Module
 
 ## To Do Part 1 (before alpha release):
- - Add extra info to (.info)
  - QR Codes module
  - Stickers
  - Terminal (bash and python interpreters)
@@ -36,6 +35,7 @@
  - Scrappers (currency converter and speech-to-text)
  - nhentai (*insert lenny face*)
  - quot.ly (maybe????)
+ - Add extra info to .info (but what?)
 
 ## Final changes:
  - Make sure the language processor is not using the temporary scheme I made to make pyCharm autocomplete happy.
