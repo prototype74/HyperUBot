@@ -11,10 +11,10 @@
  - WebTools module
  - Scrappers (translator and text-to-speech)
  - CAS Interface module
+ - GitHub Module
 
 ## To Do Part 1 (before alpha release):
  - Add extra info to (.info)
- - GitHub Module (with API integration)
  - QR Codes module
  - Stickers
  - Terminal (bash and python interpreters)
