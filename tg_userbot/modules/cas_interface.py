@@ -11,12 +11,11 @@ from telethon.errors import ChatAdminRequiredError
 async def caschecker(event):
     if event.fwd_from:
         return
-    replied_user = await get_user(event, full_user=True)
-    if replied_user is None:
+    user_analysis = await get_user(event)
+    if user_analysis is None:
         text = msgRep.FAIL
         await event.edit(text, parse_mode="html")
         return
-    user_analysis = replied_user.user
     text = msgRep.USER_HEADER
     text += msgRep.USER_ID + str(user_analysis.id) + "\n"
     if user_analysis.first_name:
