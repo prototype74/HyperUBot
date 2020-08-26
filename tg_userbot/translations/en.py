@@ -272,6 +272,12 @@ class GitHubText(object):
     DL_COUNT = "\nDownload Count: "
     INVALID_ARGS = "Invalid arguments! Make sure you are typing a valid combination of user/repo"
 
+class StickersText(object):
+    FAIL_FETCH_INFO = "This command can only be used as a reply to something!"
+    NOT_STICKER = "Reply to a sticker to get the pack details!"
+    FETCHING_STICKER_DETAILS = "`Fetching details...`"
+    STICKER_INFO_OUTPUT = "**Sticker Title:** `{}`\n**Sticker Short Name:** `{}`\n**Official:** `{}`\n**Archived:** `{}`\n**Stickers In Pack:** `{}`\n**Emojis In Pack:**\n{}"
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
     ADMIN_HELP = "`.ban` \

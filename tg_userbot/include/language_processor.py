@@ -286,6 +286,12 @@ class GitHubText(object):
     DL_COUNT = text.GitHubText.DL_COUNT
     INVALID_ARGS = text.GitHubText.INVALID_ARGS
 
+class StickersText(object):
+    FAIL_FETCH_INFO = text.StickersText.FAIL_FETCH_INFO
+    NOT_STICKER = text.StickersText.NOT_STICKER
+    FETCHING_STICKER_DETAILS = text.StickersText.FETCHING_STICKER_DETAILS
+    STICKER_INFO_OUTPUT = text.StickersText.STICKER_INFO_OUTPUT
+
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
     CHATINFO_HELP = text.HelpDesignations.CHATINFO_HELP

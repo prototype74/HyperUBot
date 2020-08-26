@@ -12,10 +12,11 @@
  - Scrappers (translator and text-to-speech)
  - CAS Interface module
  - GitHub Module
+ - Stickers module (pack information)
 
 ## To Do Part 1 (before alpha release):
+ - Stickers module
  - QR Codes module
- - Stickers
  - Terminal (bash and python interpreters)
 
 ## To Do Part 2 (after alpha release):
