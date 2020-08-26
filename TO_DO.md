@@ -12,10 +12,8 @@
  - Scrappers module
  - CAS Interface module
  - GitHub Module
- - Stickers module (pack information)
 
 ## To Do Part 1 (before alpha release):
- - Stickers module
  - QR Codes module
  - Terminal (bash and python interpreters)
 
@@ -27,6 +25,7 @@
  - Finding translators to every language and get it translated
 
 ## To Do Part 3 (after beta release, but still undecided on all) :
+ - Stickers module
  - Memes module (mock, vaporwave, etc...)
  - Spam module
  - Misc (coinflip, random, dice...)
