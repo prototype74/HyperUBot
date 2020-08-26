@@ -9,13 +9,13 @@
  - Help module
  - Admin/Member info by @prototype74
  - WebTools module
+ - Scrappers (translator and text-to-speech)
 
 ## To Do Part 1 (before alpha release):
  - Add extra info to (.info)
  - CAS Interface module (with API integration)
  - GitHub Module (with API integration)
  - QR Codes module
- - Scrappers (translator and text-to-speech)
  - Stickers
  - Terminal (bash and python interpreters)
 
