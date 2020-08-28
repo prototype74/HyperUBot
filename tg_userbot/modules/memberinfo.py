@@ -63,8 +63,8 @@ async def memberinfo(event):
 
     # we can't access non-default permissions from other members if we aren't an admin
     # in the specific group
-    am_i_admeme = True if hasattr(chat_info, "admin_rights") and \
-                       chat_info.admin_rights is not None else False
+    am_i_admeme = True if chat_info.creator or (hasattr(chat_info, "admin_rights") and \
+                       chat_info.admin_rights is not None) else False
 
     x_marks_the_spot = u"\u274C"  # red cross mark emoji
     check_mark = u"\u2705"  # white check mark emoji
