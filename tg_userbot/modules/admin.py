@@ -403,12 +403,6 @@ async def delaccs(event):
     else:
         await event.edit(msgRep.NO_DEL_ACCOUNTS)
 
-    try:
-        if BOTLOG:
-            await event.client.send_message(BOTLOG_CHATID, msgRep.DELACC_LOG.format(str(del_u)))
-    except Exception as e:
-        print(f"`{msgRep.LOG_DEL_ACCS_FAILED}: {e}`")
-
     return
 
 
