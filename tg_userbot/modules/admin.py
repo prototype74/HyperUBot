@@ -1,326 +1,447 @@
-# My stuff
-from tg_userbot.include.language_processor import AdminText as msgRep, HelpDesignations as helpRep
+# tguserbot stuff
+from tg_userbot import tgclient, HELP_DICT
 from tg_userbot.include.aux_funcs import fetch_user
-from tg_userbot import tgclient, BOTLOG, BOTLOG_CHATID, HELP_DICT
+from tg_userbot.include.language_processor import AdminText as msgRep, HelpDesignations as helpRep
 
 # Telethon Stuff
+from telethon.errors import (UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError,
+                             AdminRankEmojiNotAllowedError, ChatNotModifiedError)
 from telethon.events import NewMessage
-from telethon.errors import BadRequestError, UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
-from telethon.errors.rpcerrorlist import UserIdInvalidError
-from telethon.tl.types import ChatAdminRights, ChatBannedRights, User, ChannelParticipantsAdmins
 from telethon.tl.functions.messages import UpdatePinnedMessageRequest
+from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticipantsAdmins, User
 
 # Misc
 from asyncio import sleep
 
-# Various vars for ease of customization
-BANNED_RIGHTS = ChatBannedRights(until_date=None, view_messages=True, send_messages=True, send_media=True, send_stickers=True, send_gifs=True, send_games=True, send_inline=True, embed_links=True)
-UNBANNED_RIGHTS = ChatBannedRights(until_date=None, send_messages=None, send_media=None, send_stickers=None, send_gifs=None, send_games=None, send_inline=None, embed_links=None)
-KICK_RIGHTS = ChatBannedRights(until_date=None, view_messages=True)
-MUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=True)
-UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
-ADMIN_RIGHTS = ChatAdminRights(add_admins=False, invite_users=True, change_info=False, ban_users=True, delete_messages=True, pin_messages=True)
-DEMOTE_RIGHTS = ChatAdminRights(add_admins=None, invite_users=None, change_info=None, ban_users=None, delete_messages=None, pin_messages=None)
-USER_URL = "tg://user?id="
 
-# Maybe add: admin list, user list
+# Constant
+def tguser_url() -> str:
+    return "tg://user?id="
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.ban(?: |$)(.*)"))
-async def ban(banning):
-    chat = await banning.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-    if not admin and not creator:
-        await banning.edit(msgRep.NOT_ADMIN)
+
+@tgclient.on(NewMessage(pattern=r"^\.ban(?: |$)(.*)", outgoing=True))
+async def ban(event):
+    user, chat = await fetch_user(event, get_chat=True)
+
+    if not user:  # successfully self-yeeted
         return
-    user = await fetch_user(banning)
-    if not user:
+
+    if not chat:
+        await event.edit(msgRep.FAIL_CHAT)
         return
-    await banning.edit(msgRep.BANNING_USER)
+
+    if type(chat) is User:
+        await event.edit(msgRep.NO_GROUP_CHAN_ARGS)
+        return
+
+    if user.is_self:
+        await event.edit(msgRep.CANNOT_BAN_SELF)
+        return
+
+    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
+    remote = True if not chat.id == this_chat else False
+    admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
+
+    if admin_perms and not admin_perms.ban_users:
+        await event.edit(msgRep.NO_BAN_PRIV)
+        return
+
     try:
-        await banning.client(EditBannedRequest(banning.chat_id, user.id, BANNED_RIGHTS))
-    except:
-        await banning.edit(msgRep.NO_PERMS)
-        return
-    try:
-        reply = await banning.get_reply_message()
-        if reply:
-            await reply.delete()
-    except BadRequestError:
-        await banning.edit(msgRep.NO_MSG_DEL_PERMS)
-        return
-    await banning.edit(msgRep.BANNED_SUCCESSFULLY.format(str(user.id)))
-    if BOTLOG:
-        await banning.client.send_message(BOTLOG_CHATID, msgRep.BANLOG.format(user.first_name, USER_URL + str(user.id), banning.chat.title, banning.chat.id))
+        # if view_messages is True then all ban permissions will be set to True too
+        ban_perms = ChatBannedRights(until_date=None, view_messages=True)
+        await event.client(EditBannedRequest(chat.id, user.id, ban_perms))
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        if remote:
+            await event.edit(msgRep.BAN_SUCCESS_REMOTE.format(name, chat.title))
+        else:
+            await event.edit(msgRep.BAN_SUCCESS.format(name))
+    except ChatAdminRequiredError:
+        await event.edit(msgRep.NO_ADMIN)
+    except UserAdminInvalidError:
+        await event.edit(msgRep.CANNOT_BAN_ADMIN)
+    except Exception as e:
+        await event.edit(f"{msgRep.BAN_FAILED}: {e}")
+
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.unban(?: |$)(.*)"))
-async def unban(unbanner):
-    chat = await unbanner.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-    if not admin and not creator:
-        await unbanner.edit(msgRep.NO_PERMS)
-        return
-    user = await fetch_user(unbanner)
+
+@tgclient.on(NewMessage(pattern=r"^\.unban(?: |$)(.*)", outgoing=True))
+async def unban(event):
+    user, chat = await fetch_user(event, get_chat=True)
+
     if not user:
         return
-    await unbanner.edit(msgRep.UNBANNING_USER)
+
+    if not chat:
+        await event.edit(msgRep.FAIL_CHAT)
+        return
+
+    if type(chat) is User:
+        await event.edit(msgRep.NO_GROUP_CHAN_ARGS)
+        return
+
+    if user.is_self:
+        await event.edit(msgRep.CANNOT_UNBAN_SELF)
+        return
+
+    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
+    remote = True if not chat.id == this_chat else False
+    admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
+
+    if admin_perms and not admin_perms.ban_users:
+        await event.edit(msgRep.NO_BAN_PRIV)
+        return
+
     try:
-        await unbanner.client(EditBannedRequest(unbanner.chat_id, user.id, UNBANNED_RIGHTS))
-        await unbanner.edit(msgRep.UNBANNED_SUCCESSFULLY)
-        if BOTLOG:
-            await unbanner.client.send_message(BOTLOG_CHATID, msgRep.UNBANLOG.format(user.first_name, USER_URL + str(user.id), unbanner.chat.title, unbanner.chat.id))
-    except UserIdInvalidError:
-        await unbanner.edit(msgRep.USERID_INVALID)
+        unban_perms = ChatBannedRights(until_date=None, view_messages=False)
+        await event.client(EditBannedRequest(chat.id, user.id, unban_perms))
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        if remote:
+            await event.edit(msgRep.UNBAN_SUCCESS_REMOTE.format(name, chat.title))
+        else:
+            await event.edit(msgRep.UNBAN_SUCCESS.format(name))
+    except ChatAdminRequiredError:
+        await event.edit(msgRep.NO_ADMIN)
+    except Exception as e:
+        await event.edit(f"{msgRep.UNBAN_FAILED}: {e}")
+
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.kick(?: |$)(.*)"))
-async def kick(kicker):
-    chat = await kicker.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-    if not admin and not creator:
-        await kicker.edit(msgRep.NOT_ADMIN)
-        return
-    user = await fetch_user(kicker)
+
+@tgclient.on(NewMessage(pattern=r"^\.kick(?: |$)(.*)", outgoing=True))
+async def kick(event):
+    user, chat = await fetch_user(event, get_chat=True)
+
     if not user:
-        await kicker.edit(msgRep.FAILED_FETCH_USER)
         return
-    await kicker.edit(msgRep.KICKING_USER)
+
+    if not chat:
+        await event.edit(msgRep.FAIL_CHAT)
+        return
+
+    if type(chat) is User:
+        await event.edit(msgRep.NO_GROUP_CHAN_ARGS)
+        return
+
+    if user.is_self:
+        await event.edit(msgRep.CANNOT_KICK_SELF)
+        return
+
+    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
+    remote = True if not chat.id == this_chat else False
+    admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
+
+    if admin_perms and not admin_perms.ban_users:
+        await event.edit(msgRep.NO_BAN_PRIV)
+        return
+
     try:
-        await kicker.client(EditBannedRequest(kicker.chat_id, user.id, KICK_RIGHTS))
-        await sleep(1) # sync
-    except BadRequestError:
-        await kicker.edit(msgRep.NO_PERMS)
-        return
-    await kicker.client(EditBannedRequest(kicker.chat_id, user.id, ChatBannedRights(until_date=None)))
-    await kicker.edit(msgRep.KICKED_SUCCESSFULLY.format(str(user.id)))
-    if BOTLOG:
-        await kicker.client.send_message(BOTLOG_CHATID, msgRep.KICKLOG.format(user.first_name, USER_URL + str(user.id), kicker.chat.title, kicker.chat.id))
+        await event.client.kick_participant(chat.id, user.id)
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        if remote:
+            await event.edit(msgRep.KICK_SUCCESS_REMOTE.format(name, chat.title))
+        else:
+            await event.edit(msgRep.KICK_SUCCESS.format(name))
+    except ChatAdminRequiredError:
+        await event.edit(msgRep.NO_ADMIN)
+    except Exception as e:
+        await event.edit(f"{msgRep.KICK_FAILED}: {e}")
+
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.promote(?: |$)(.*)"))
-async def promote(promt):
-    chat = await promt.get_chat()
-    if isinstance(chat, User):
-        await promt.edit(msgRep.ONLY_CHAN_GROUPS)
-        return
-    admin = chat.admin_rights
-    creator = chat.creator
-    if not admin and not creator:
-        await promt.edit(msgRep.NOT_ADMIN)
-        return
-    get_user = await fetch_user(promt)
-    if isinstance(get_user, tuple):
-        user, rank = get_user
+
+@tgclient.on(NewMessage(pattern=r"^\.promote(?: |$)(.*)", outgoing=True))
+async def promote(event):
+    if event.reply_to_msg_id:
+        msg = await event.get_reply_message()
+        user = await event.client.get_entity(msg.from_id) if msg.from_id else None
+        arg = event.pattern_match.group(1)
+        title = arg if len(arg) <= 16 else ""
     else:
-        user = get_user
-        rank = ""
-    if not rank:
-        rank = ""
-    if user:
-        pass
-    else:
+        args_from_event = event.pattern_match.group(1).split(" ", 1)
+        if len(args_from_event) == 2:
+            sec_arg = args_from_event[1]
+            title = sec_arg if len(sec_arg) <= 16 else ""
+        else:
+            title = ""
+        if args_from_event[0]:
+            user = await event.client.get_entity(args_from_event[0])
+        else:
+            user = None
+
+    if not user:
+        await event.edit(msgRep.NOONE_TO_PROMOTE)
         return
-    if not isinstance(user, User):
-        await promt.edit(msgRep.NOT_USER)
+
+    if not type(user) is User:
+        await event.edit(msgRep.NOT_USER)
         return
+
+    if user.is_self:
+        await event.edit(msgRep.CANNOT_PROMOTE_SELF)
+        return
+
+    chat = await event.get_chat()
+    if type(chat) is User:
+        await event.edit(msgRep.NO_GROUP_CHAN)
+        return
+
     try:
-        async for member in promt.client.iter_participants(promt.chat_id, filter=ChannelParticipantsAdmins):
+        async for member in event.client.iter_participants(chat.id, filter=ChannelParticipantsAdmins):
             if user.id == member.id:
                 if user.is_self:
-                    await promt.edit(msgRep.PROMT_SELF)
+                    await event.edit(msgRep.ADMIN_ALREADY_SELF)
                 else:
-                    await promt.edit(msgRep.ADM_ALRD)
+                    await event.edit(msgRep.ADMIN_ALREADY)
                 return
-    except ChatAdminRequiredError:
-        await promt.edit(msgRep.NOT_ADMIN)
-        return
-    await promt.edit(msgRep.PROMTING_USER)
-    try:
-        if creator:
-            await promt.client(EditAdminRequest(promt.chat_id, user.id, ADMIN_RIGHTS, rank))
-        else:
-            admin.add_admins = False
-            if all(getattr(admin, right) is False for right in vars(admin)):
-                return await promt.edit(msgRep.NO_ADD_ADM_RIGHT)
-            await promt.client(EditAdminRequest(promt.chat_id, user.id, admin, rank))
-        await promt.edit(msgRep.PRMT_SUCCESS)
-    except AdminsTooMuchError:
-        await promt.edit(msgRep.TOO_MANY_ADM)
-        return
-    except BadRequestError:
-        await promt.edit(msgRep.NO_PERMS)
-        return
-    if BOTLOG:
-        await promt.client.send_message(BOTLOG_CHATID, msgRep.PROMT_LOG.format(user.first_name, USER_URL + str(user.id), promt.chat.title, promt.chat.id))
-    return
-
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.demote(?: |$)(.*)"))
-async def demote(dmt):
-    chat = await dmt.get_chat()
-    if isinstance(chat, User):
-        await dmt.edit(msgRep.ONLY_CHAN_GROUPS)
-        return
-    admin = chat.admin_rights
-    creator = chat.creator
-    if not admin and not creator:
-        await dmt.edit(msgRep.NOT_ADMIN)
-        return
-    get_user = await fetch_user(dmt)
-    if isinstance(get_user, tuple):
-        user, rank = get_user
-    else:
-        user = get_user
-        rank = ""
-    if not rank:
-        rank = ""
-    if user:
+    except:
         pass
-    else:
-        return
-    if not isinstance(user, User):
-        await dmt.edit(msgRep.NOT_USER)
-        return
-    try:
-        admins_list = []
-        async for member in dmt.client.iter_participants(dmt.chat_id, filter=ChannelParticipantsAdmins):
-            admins_list.append(member.id)
-        if user.id not in admins_list:
-            await dmt.edit(msgRep.ALREADY_NOT_ADM)
-            return
-    except ChatAdminRequiredError:
-        await dmt.edit(msgRep.NOT_ADMIN)
-        return
-    if user.is_self:
-        await dmt.edit(msgRep.DMT_MYSELF)
-        return
-    await dmt.edit(msgRep.DMTING_USER)
-    try:
-        await dmt.client(EditAdminRequest(dmt.chat_id, user.id, DEMOTE_RIGHTS, rank))
-        await dmt.edit(msgRep.DMTED_SUCCESSFULLY)
-    except BadRequestError:
-        await dmt.edit(msgRep.NO_PERMS)
-        return
-    if BOTLOG:
-        await dmt.client.send_message(BOTLOG_CHATID, msgRep.DMT_LOG.format(user.first_name, USER_URL + str(user.id), dmt.chat.title, dmt.chat.id))
-    return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.delusers(?: |$)(.*)"))
-async def delusers(deleter):
-    con = deleter.pattern_match.group(1) # gets argument, if any
-    del_u = 0
-    del_status = msgRep.NO_DEl_USERS
-    if not deleter.is_group:
-        await deleter.edit(msgRep.ONLY_CHAN_GROUPS)
-        return
-    if con != "clean":
-        await deleter.edit(msgRep.SEARCHING_DEL_USERS)
-        async for user in deleter.client.iter_participants(deleter.chat_id):
-            if user.deleted:
-                del_u += 1
-        if del_u > 0:
-            del_status = msgRep.FOUND_DEL_ACCS.format(str(del_u))
-        await deleter.edit(del_status)
-        return
-    chat = await deleter.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-    if not admin and not creator:
-        await deleter.edit(msgRep.NOT_ADMIN)
-        return
-    await deleter.edit(msgRep.DELETING_ACCS)
-    del_u = 0
-    del_a = 0
-    async for user in deleter.client.iter_participants(deleter.chat_id):
-        if user.deleted:
-            try:
-                await deleter.client(EditBannedRequest(deleter.chat_id, user.id, BANNED_RIGHTS))
-            except ChatAdminRequiredError:
-                await deleter.edit(msgRep.NO_BAN_PERMS)
+    try:
+        if chat.creator:
+            admin_perms = ChatAdminRights(add_admins=False, invite_users=True, change_info=True,
+                                          ban_users=True, delete_messages=True, pin_messages=True)
+        else:
+            # get our own admin rights but set add_admin perm to False. If we aren't admin set empty permissions
+            admin_perms = chat.admin_rights if chat.admin_rights else ChatAdminRights()
+            if admin_perms.add_admins:
+                admin_perms.add_admins = False
+            if all(getattr(admin_perms, perm) is False for perm in vars(admin_perms)):
+                await event.edit(msgRep.ADMIN_NOT_ENOUGH_PERMS)
                 return
-            except UserAdminInvalidError:
-                del_u -= 1
-                del_a += 1
-            await deleter.client(EditBannedRequest(deleter.chat_id, user.id, UNBANNED_RIGHTS))
-            del_u += 1
-    if del_u > 0:
-        del_status = msgRep.DEL_ALL_SUCCESFULLY.format(str(del_u))
-    if del_a > 0:
-        del_status = msgRep.DEL_SOME_SUCCESSFULLY.format(str(del_u), str(del_a))
-    await deleter.edit(del_status)
-    if BOTLOG:
-        await deleter.client.send_message(BOTLOG_CHATID, msgRep.CLEAN_DELACC_LOG.format(str(del_u)))
+        await event.client(EditAdminRequest(chat.id, user.id, admin_perms, title))
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        await event.edit(msgRep.PROMOTE_SUCCESS.format(name))
+    except AdminsTooMuchError:
+        await event.edit(msgRep.TOO_MANY_ADMINS)
+    except AdminRankEmojiNotAllowedError:
+        await event.edit(msgRep.EMOJI_NOT_ALLOWED)
+    except ChatAdminRequiredError:
+        await event.edit(msgRep.NO_ADMIN)
+    except Exception as e:
+        await event.edit(f"`{msgRep.LOG_PROMOTE_FAILED}: {e}`")
+
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.mute(?: |$)(.*)"))
-async def mute(muter):
-    chat = await muter.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-    if not admin and not creator:
-        await muter.edit(msgRep.NOT_ADMIN)
+
+@tgclient.on(NewMessage(pattern=r"^\.demote(?: |$)(.*)", outgoing=True))
+async def demote(event):
+    if event.reply_to_msg_id:
+        msg = await event.get_reply_message()
+        user = await event.client.get_entity(msg.from_id) if msg.from_id else None
+    else:
+        arg_from_event = event.pattern_match.group(1)
+        if arg_from_event:
+            user = await event.client.get_entity(arg_from_event)
+        else:
+            user = None
+
+    if not user:
+        await event.edit(msgRep.NOONE_TO_DEMOTE)
         return
-    user = await fetch_user(muter)
+
+    if not type(user) is User:
+        await event.edit(msgRep.NOT_USER)
+        return
+
+    if user.is_self:
+        await event.edit(msgRep.CANNOT_DEMOTE_SELF)
+        return
+
+    chat = await event.get_chat()
+    if type(chat) is User:
+        await event.edit(msgRep.NO_GROUP_CHAN)
+        return
+
+    try:
+        admins = []
+        async for member in event.client.iter_participants(chat.id, filter=ChannelParticipantsAdmins):
+            admins.append(member.id)
+        if not user.id in admins:
+            await event.edit(msgRep.DEMOTED_ALREADY)
+            return
+        user_is_admin = True if user.id in admins else False
+    except:
+        pass
+
+    try:
+        rm_admin_perms = ChatAdminRights(add_admins=None, invite_users=None, change_info=None,
+                                         ban_users=None, delete_messages=None, pin_messages=None)
+        await event.client(EditAdminRequest(chat.id, user.id, rm_admin_perms, ""))
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        await event.edit(msgRep.DEMOTE_SUCCESS.format(name))
+    except ChatAdminRequiredError:
+        if user_is_admin:
+            await event.edit(msgRep.CANNOT_DEMOTE_ADMIN)
+        else:
+            await event.edit(msgRep.NO_ADMIN)
+    except Exception as e:
+        await event.edit(f"`{msgRep.DEMOTE_FAILED}: {e}`")
+
+    return
+
+
+@tgclient.on(NewMessage(pattern=r"^\.mute(?: |$)(.*)", outgoing=True))
+async def mute(event):
+    user, chat = await fetch_user(event, get_chat=True)
+
     if not user:
         return
-    await muter.edit(msgRep.MUTING_USR)
-    try:
-        await muter.client(EditBannedRequest(muter.chat_id, user.id, MUTE_RIGHTS))
-    except BadRequestError:
-        await muter.edit(msgRep.NO_PERMS)
+
+    if not chat:
+        await event.edit(msgRep.FAIL_CHAT)
         return
-    await muter.edit(msgRep.USER_MUTED)
-    if BOTLOG:
-        await muter.client.send_message(BOTLOG_CHATID, msgRep.MUTE_LOG.format(user.first_name, USER_URL + str(user.id), muter.chat.title, muter.chat_id))
+
+    if type(chat) is User:
+        await event.edit(msgRep.NO_GROUP_ARGS)
+        return
+
+    if hasattr(chat, "broadcast") and chat.broadcast:
+        await event.edit(msgRep.NOT_MUTE_SUB_CHAN)
+        return
+
+    if user.is_self:
+        await event.edit(msgRep.CANNOT_MUTE_SELF)
+        return
+
+    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
+    remote = True if not chat.id == this_chat else False
+    admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
+
+    if admin_perms and not admin_perms.ban_users:
+        await event.edit(msgRep.NO_BAN_PRIV)
+        return
+
+    try:
+        mute_perms = ChatBannedRights(until_date=None, send_messages=True, change_info=True, invite_users=True, pin_messages=True)
+        await event.client(EditBannedRequest(chat.id, user.id, mute_perms))
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        if remote:
+            await event.edit(msgRep.MUTE_SUCCESS_REMOTE.format(name, chat.title))
+        else:
+            await event.edit(msgRep.MUTE_SUCCESS.format(name))
+    except ChatAdminRequiredError:
+        await event.edit(msgRep.NO_ADMIN)
+    except Exception as e:
+        await event.edit(f"`{msgRep.MUTE_FAILED}: {e}`")
+
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.unmute(?: |$)(.*)"))
-async def unmute(unmuter):
-    chat = await unmuter.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-    if not admin and not creator:
-        await unmuter.edit(msgRep.NOT_ADMIN)
-        return
-    user = await fetch_user(unmuter)
+
+@tgclient.on(NewMessage(pattern=r"^\.unmute(?: |$)(.*)", outgoing=True))
+async def unmute(event):
+    user, chat = await fetch_user(event, get_chat=True)
+
     if not user:
         return
-    await unmuter.edit(msgRep.UNMUTING_USR)
-    try:
-        await unmuter.client(EditBannedRequest(unmuter.chat_id, user.id, UNMUTE_RIGHTS))
-    except BadRequestError:
-        await unmuter.edit(msgRep.NO_PERMS)
+
+    if not chat:
+        await event.edit(msgRep.FAIL_CHAT)
         return
-    await unmuter.edit(msgRep.USER_UNMUTED)
-    if BOTLOG:
-        await unmuter.client.send_message(BOTLOG_CHATID, msgRep.UNMUTE_LOG.format(user.first_name, USER_URL + str(user.id), unmuter.chat.title, unmuter.chat_id))
+
+    if type(chat) is User:
+        await event.edit(msgRep.NO_GROUP_ARGS)
+        return
+
+    if hasattr(chat, "broadcast") and chat.broadcast:
+        await event.edit(msgRep.NOT_UNMUTE_SUB_CHAN)
+        return
+
+    if user.is_self:
+        await event.edit(msgRep.CANNOT_UNMUTE_SELF)
+        return
+
+    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
+    remote = True if not chat.id == this_chat else False
+    admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
+
+    if admin_perms and not admin_perms.ban_users:
+        await event.edit(msgRep.NO_BAN_PRIV)
+        return
+
+    try:
+        unmute_perms = ChatBannedRights(until_date=None, send_messages=None)
+        await event.client(EditBannedRequest(chat.id, user.id, unmute_perms))
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        if remote:
+            await event.edit(msgRep.UNMUTE_SUCCESS_REMOTE.format(name, chat.title))
+        else:
+            await event.edit(msgRep.UNMUTE_SUCCESS.format(name))
+    except ChatAdminRequiredError:
+        await event.edit(msgRep.NO_ADMIN)
+    except Exception as e:
+        await event.edit(f"`{msgRep.UNMUTE_FAILED}: {e}`")
+
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.pin(?: |$)(.*)"))
-async def pin(msg):
-    chat = await msg.get_chat()
-    admin = chat.admin_rights
-    creator = chat.creator
-    if not admin and not creator:
-        await msg.edit(msgRep.NOT_ADMIN)
+
+@tgclient.on(NewMessage(pattern=r"^\.delaccs$", outgoing=True))
+async def delaccs(event):
+    chat = await event.get_chat()
+    if type(chat) is User:
+        await event.edit(msgRep.NO_GROUP_CHAN)
         return
-    to_pin = msg.reply_to_msg_id
-    if not to_pin:
-        await msg.edit(msgRep.MSG_NOT_FOUND_PIN)
-        return
-    options = msg.pattern_match.group(1)
-    is_silent = True
-    if options.lower() == "loud":
-        is_silent = False
+
+    deleted_accounts, rem_del_accounts = (0,)*2
+    await event.edit(msgRep.TRY_DEL_ACCOUNTS)
+    async for member in event.client.iter_participants(chat.id):
+        if member.deleted:
+            deleted_accounts += 1
+            if chat.creator or (chat.admin_rights and chat.admin_rights.ban_users):
+                try:
+                    await event.client.kick_participant(chat.id, member.id)
+                    await sleep(0.2)
+                    rem_del_accounts += 1
+                except:
+                    pass
+
+    if deleted_accounts > 0 and not rem_del_accounts:
+        await event.edit(msgRep.DEL_ACCS_COUNT.format(deleted_accounts))
+    elif rem_del_accounts > 0 and rem_del_accounts <= deleted_accounts:
+        await event.edit(msgRep.REM_DEL_ACCS_COUNT.format(rem_del_accounts, deleted_accounts))
+    else:
+        await event.edit(msgRep.NO_DEL_ACCOUNTS)
+
     try:
-        await msg.client(UpdatePinnedMessageRequest(msg.to_id, to_pin, is_silent))
-    except BadRequestError:
-        await msg.edit(msgRep.NO_PERMS)
-        return
-    await msg.edit(msgRep.PINNED_SUCCESSFULLY)
+        if BOTLOG:
+            await event.client.send_message(BOTLOG_CHATID, msgRep.DELACC_LOG.format(str(del_u)))
+    except Exception as e:
+        print(f"`{msgRep.LOG_DEL_ACCS_FAILED}: {e}`")
+
     return
 
-HELP_DICT.update({"admin":helpRep.ADMIN_HELP})
+
+@tgclient.on(NewMessage(pattern=r"^\.pin(?: |$)(.*)", outgoing=True))
+async def pin(event):
+    if event.reply_to_msg_id:
+        msg_id = event.reply_to_msg_id
+    else:
+        await event.edit(msgRep.REPLY_TO_MSG)
+        return
+
+    chat = await event.get_chat()
+    if not chat:
+        await event.edit(msgRep.FAIL_CHAT)
+        return
+
+    if type(chat) is User:
+        await event.edit(msgRep.NO_GROUP_CHAN)
+        return
+
+    arg_from_event = event.pattern_match.group(1)
+    silently = False if arg_from_event.lower() == "loud" else True
+    try:
+        await event.client(UpdatePinnedMessageRequest(chat.id, msg_id, silent=silently))
+        await event.edit(msgRep.PIN_SUCCESS)
+    except ChatNotModifiedError:
+        await event.edit(msgRep.PINNED_ALREADY)
+    except ChatAdminRequiredError:
+        await event.edit(msgRep.NO_ADMIN)
+    except Exception as e:
+        await event.edit(f"`{msgRep.PIN_FAILED}: {e}`")
+
+    return
+
+
+HELP_DICT.update({"admin": helpRep.ADMIN_HELP})

@@ -5,50 +5,60 @@
 # system in future revisions. - Penim
 
 class AdminText(object): # Admin module
-    NOT_ADMIN = "I am not admin! I need admin permissions to perform this action!"
-    BANNING_USER = "`Banning user...`"
-    NO_PERMS = "I do not have sufficient permissions to execute this action!"
-    NO_MSG_DEL_PERMS = "I do not have permissions to delete messages, so I cannot delete whatever this user sent."
-    BANNED_SUCCESSFULLY = "`{}` was banned!"
-    UNBANNING_USER = "`Unbanning user...`"
-    UNBANNED_SUCCESSFULLY = "Successfully unbanned!"
-    USERID_INVALID = "Invalid UserID!"
-    FAILED_FETCH_USER = "Couldn't fetch user."
-    KICKING_USER = "`Kicking user...`"
-    KICKED_SUCCESSFULLY = "{} has been kicked!"
-    ONLY_CHAN_GROUPS = "I can only perform this action in Groups or channels!"
-    NOT_USER = "This entity is not a User!"
-    PROMT_SELF = "I can't promote myself!"
-    ADM_ALRD = "This user is already Admin!"
-    PROMTING_USER = "`Promoting user...`"
-    NO_ADD_ADM_RIGHT = "I am admin, but I do not have permission to add other admins!"
-    PRMT_SUCCESS = "Successfully promoted!"
-    TOO_MANY_ADM = "There are too many administrators in this chat!"
-    ALREADY_NOT_ADM = "This user is already not an Admin!"
-    DMT_MYSELF = "I can't demote myself!"
-    DMTING_USER = "`Demoting user...`"
-    DMTED_SUCCESSFULLY = "Successfully demoted!"
-    NO_DEl_USERS = "No deleted accounts detected!"
-    SEARCHING_DEL_USERS = "`Searching for deleted accounts...`"
-    FOUND_DEL_ACCS = "Found `{}` deleted accounts! Use .delusers clean to clean them!"
-    DELETING_ACCS = "`Removing deleted accounts...`"
-    NO_BAN_PERMS = "I have no permissions to ban users!"
-    DEL_ALL_SUCCESFULLY = "Successfully removed `{}` deleted accounts!"
-    DEL_SOME_SUCCESSFULLY = "Successfully removed `{}` deleted accounts! `{}` admin accounts could not be removed!"
-    BANLOG = "#BAN\nUser: [{}]({})\nChat: [{}]({})"
-    UNBANLOG = "#UNBAN\nUser: [{}]({})\nChat: [{}]({})"
-    KICKLOG = "#KICK\nUser: [{}]({})\nChat: [{}]({})"
-    CLEAN_DELACC_LOG = "#DELUSERS\nRemoved `{}` deleted accounts!"
-    PROMT_LOG = "#PROMOTE\nUser: [{}]({})\nChat: [{}]({})"
-    DMT_LOG = "#DEMOTE\nUser: [{}]({})\nChat: [{}]({})"
-    MUTING_USR = "`Muting user...`"
-    USER_MUTED = "Successfully muted!"
-    UNMUTING_USR = "`Unmuting user...`"
-    USER_UNMUTED = "Successfully unmuted!"
-    MUTE_LOG = "#MUTE\nUser: [{}]({})\nChat: [{}]({})"
-    UNMUTE_LOG = "#UNMUTE\nUser: [{}]({})\nChat: [{}]({})"
-    MSG_NOT_FOUND_PIN = "`Reply to a message to pin it!`"
-    PINNED_SUCCESSFULLY = "Sucessfully pinned!"
+    FAIL_CHAT = "`Failed to fetch chat`"
+    NO_GROUP_CHAN = "`This chat isn't a group or channel`"
+    NO_GROUP_CHAN_ARGS = "`This chat or given chat isn't a group or channel`"
+    NO_ADMIN = "`Admin privileges are required to perform this action`"
+    NO_BAN_PRIV = "`Ban permission is required to perform this action`"
+    DELETED_ACCOUNT = "Deleted Account"
+    CANNOT_BAN_SELF = "`I can't ban myself`"
+    CANNOT_BAN_ADMIN = "`I can't ban this admin`"
+    BAN_SUCCESS_REMOTE = "{} has been banned from **{}**"  # user name, chat tile
+    BAN_SUCCESS = "{} has been banned!"  # user name
+    BAN_FAILED = "Ban failed"
+    CANNOT_UNBAN_SELF = "`I can't unban myself`"
+    UNBAN_SUCCESS_REMOTE = "{} has been unbanned from **{}**"  # user name, chat tile
+    UNBAN_SUCCESS = "{} has been unbanned!"  # user name
+    UNBAN_FAILED = "Unban failed"
+    CANNOT_KICK_SELF = "`I can't kick myself`"
+    KICK_SUCCESS_REMOTE = "{} has been kicked from **{}**"  # user name, chat tile
+    KICK_SUCCESS = "{} has been kicked!"  # user name
+    KICK_FAILED = "Failed to kick this person"
+    NOONE_TO_PROMOTE = "`There is no one to promote`"
+    NOT_USER = "`Given username or ID isn't an User`"
+    CANNOT_PROMOTE_SELF = "`I can't promote myself`"
+    ADMIN_ALREADY_SELF = "`I am immortal already`"
+    ADMIN_ALREADY = "This person is immortal already`"
+    ADMIN_NOT_ENOUGH_PERMS = "`I don't have enough admin rights to promote this person`"
+    PROMOTE_SUCCESS = "{} has been promoted with immortal power!"  # user name
+    TOO_MANY_ADMINS = "`This chat has too many admins already`"
+    EMOJI_NOT_ALLOWED = "`Emoji are not allowed in admin titles`"
+    PROMOTE_FAILED = "Failed to promote this person"
+    NOONE_TO_DEMOTE = "`There is no one to demote`"
+    CANNOT_DEMOTE_SELF = "`I can't demote myself`"
+    DEMOTED_ALREADY = "`This person is mortal already`"
+    DEMOTE_SUCCESS = "{} has been demoted!"  # user name
+    CANNOT_DEMOTE_ADMIN = "`This chat has too many admins already`"
+    DEMOTE_FAILED = "Failed to demote this person"
+    NO_GROUP_ARGS = "`This chat or given chat isn't a group`"
+    NOT_MUTE_SUB_CHAN = "`Unable to mute subscribers in a channel`"
+    CANNOT_MUTE_SELF = "`I can't mute myself`"
+    MUTE_SUCCESS_REMOTE = "{} has been muted in **{}**"  # user name, chat tile
+    MUTE_SUCCESS = "Muted {}"  # user name
+    MUTE_FAILED = "Failed to mute this person"
+    NOT_UNMUTE_SUB_CHAN = "`Unable to unmute subscribers in a channel`"
+    CANNOT_UNMUTE_SELF = "`I can't unmute myself`"
+    UNMUTE_SUCCESS_REMOTE = "{} has been unmuted in **{}**"  # user name, chat tile
+    UNMUTE_SUCCESS = "Unmuted {}"  # user name
+    UNMUTE_FAILED = "Failed to unmute this person"
+    TRY_DEL_ACCOUNTS = "`Trying to remove deleted accounts...`"
+    DEL_ACCS_COUNT = "`{} deleted accounts found in this chat`"
+    REM_DEL_ACCS_COUNT = "`Removed {} of {} deleted accounts`"  # rem count, total count
+    NO_DEL_ACCOUNTS = "`No deleted accounts found in this chat`"
+    REPLY_TO_MSG = "`Reply to a message to pin it`"
+    PIN_SUCCESS = "`Message pinned successfully`"
+    PINNED_ALREADY = "`This message is pinned already`"
+    PIN_FAILED = "Failed to pin messge"
 
 class StatusText(object):
     UBOT = "Userbot Project: "
@@ -280,23 +290,25 @@ class StickersText(object):
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
-    ADMIN_HELP = "`.ban` \
-                 \nUsage: Reply to someone's message with .ban to ban them. \
-                 \n\n`.unban` \
-                 \nUsage: Reply to someone's message with .unban to unban them. \
-                 \n\n`.kick` \
-                 \nUsage: Reply to someone's message with .kick to kick them. \
-                 \n\n`.promote` \
-                 \nUsage: Reply to someone's message with .promote to promote them. \
-                 \n\n`.demote` \
-                 \nUsage: Reply to someone's message with .demote to demote them. \
-                 \n\n`.delusers`\
-                 \nUsage: Searches for deleted accounts in a group. Use '.delusers clean' to remove deleted accounts from the group. \
-                 \n\n`.mute` \
-                 \nUsage: Reply to someone's message with .mute to mute them. \
-                 \n\n`.unmute` \
-                 \nUsage: Reply to someone's message with .unmute to unmute them. \
-                 \n\n`.pin` \
+    ADMIN_HELP = "`.ban` [optional: <username/id> <chat (id or link)>] or reply\
+                 \nUsage: Ban a certain user from a chat (remotely). Requires admin privileges with ban permission.\
+                 \n\n`.unban` [optional: <username/id> <chat (id or link)>] or reply\
+                 \nUsage: Unban a certain user from a chat (remotely). Requires admin privileges with ban permission.\
+                 \n\n`.kick` [optional: <username/id> <chat (id or link)>] or reply\
+                 \nUsage: Kick a certain user from a chat (remotely). Requires admin privileges with ban permission.\
+                 \n\n`.promote` [optional: <username/id> and/or <title>] or reply\
+                 \nUsage: Promote an user with immortal power! Requires admin privileges with at least add admin permission and a second\
+                 \nadmin permission as promote never promotes an user with add admin permission. Title length must be <= 16 characters.\
+                 \n\n`.demote` [optional: <username/id>] or reply\
+                 \nUsage: Demote an user to a mortal user. Requires admin privileges with add admin permission. Works with admins only which are promoted by you.\
+                 \n\n`.mute` [optional: <username/id> <chat (id or link)>] or reply\
+                 \nUsage: Mute a certain user from a chat (remotely). Requires admin privileges with ban permission.\
+                 \n\n`.unmute` [optional: <username/id> <chat (id or link)>] or reply\
+                 \nUsage: Unmute a certain user from a chat (remotely). Requires admin privileges with ban permission.\
+                 \n\n`.delaccs`\
+                 \nUsage: Tries to remove deleted accounts automatically in a chat if admin privileges with ban permission are present.\
+                 \nElse it reports the amount of deleted accounts it the specific chat.\
+                 \n\n`.pin` [optional argument \"loud\" to notify all members] or reply\
                  \nUsage: Reply to someone's message to pin it in the chat."
 
     CHATINFO_HELP = "`.chatinfo` [optional: <chat_id>] \
