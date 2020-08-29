@@ -94,9 +94,15 @@ class StatusText(object):
     SHUTDOWN_LOG = text.StatusText.SHUTDOWN_LOG
 
 class DeletionsText(object):
+    CANNOT_DEL_MSG = text.DeletionsText.CANNOT_DEL_MSG
+    UNABLE_DEL_MSG = text.DeletionsText.UNABLE_DEL_MSG
+    DEL_MSG_FAILED = text.DeletionsText.DEL_MSG_FAILED
+    REPLY_DEL_MSG = text.DeletionsText.REPLY_DEL_MSG
+    NO_ADMIN_PURGE = text.DeletionsText.NO_ADMIN_PURGE
+    NO_DEL_PRIV = text.DeletionsText.NO_DEL_PRIV
+    PURGE_MSG_FAILED = text.DeletionsText.PURGE_MSG_FAILED
     PURGE_COMPLETE = text.DeletionsText.PURGE_COMPLETE
-    DEL_FAILED = text.DeletionsText.DEL_FAILED
-    PURGE_LOG = text.DeletionsText.PURGE_LOG
+    REPLY_PURGE_MSG = text.DeletionsText.REPLY_PURGE_MSG
 
 class ChatInfoText(object):
     CHAT_ANALYSIS = text.ChatInfoText.CHAT_ANALYSIS

@@ -80,9 +80,15 @@ class StatusText(object):
     SHUTDOWN_LOG = "#SHUTDOWN\nBot is powering off under user request!"
 
 class DeletionsText(object):
-    PURGE_COMPLETE = "Purge complete! Deleted `{}` messages!"
-    DEL_FAILED = "I cannot delete this message!"
-    PURGE_LOG = "#PURGE\nPurged {} messages successfully!"
+    CANNOT_DEL_MSG = "`I can't delete this message`"
+    UNABLE_DEL_MSG = "`Unable to delete this message`"
+    DEL_MSG_FAILED = "Failed to delete this message"
+    REPLY_DEL_MSG = "`Reply to someone's message to delete it`"
+    NO_ADMIN_PURGE = "`Admin privileges are required to purge messages`"
+    NO_DEL_PRIV = "`Delete messages permission is required to purge messages`"
+    PURGE_MSG_FAILED = "`Reply to someone's message to delete it`"
+    PURGE_COMPLETE = "Purge complete! Purged `{}` message(s)!"
+    REPLY_PURGE_MSG = "`Reply to a message to start purge`"
 
 class ChatInfoText(object):
     CHAT_ANALYSIS = "`Analysing the chat...`"
@@ -314,10 +320,11 @@ class HelpDesignations(object):
     CHATINFO_HELP = "`.chatinfo` [optional: <chat_id>] \
                  \nUsage: Gets info about a chat. Some info might be limited due to missing permissions."
 
-    DELETIONS_HELP = "`.purge`\
-         \nUsage: Purges all messages starting from the reply.\
-         \n\n`.del`\
-         \nUsage: Deletes the message replied to."
+    DELETIONS_HELP = "`.del`\
+         \nUsage: Deletes the replied message.\
+         \n\n`.purge`\
+         \nUsage: Purges all messages between the latest and replied message. Admin privileges with delete permission are required if purge is being used in channels or groups.\
+         \n**Note: Please don't abuse this feature to delete whole group histories from other people!**"
 
     MEMBERINFO_HELP = "`.minfo` [optional: <tag/id> <group>] or reply\
           \nUsage: Get (remotely) info of a member in a supergroup."
