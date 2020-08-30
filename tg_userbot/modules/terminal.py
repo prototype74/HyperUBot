@@ -12,8 +12,8 @@ from subprocess import check_output, CalledProcessError
 async def bash(command):
     commandArray = command.text.split(" ")
     bashCmd = ""
-    for word in commandArray: #building the command
-        if not word == ".bash":
+    for word in commandArray: # building the command
+        if not word == ".shell": # Probably I should find a way not to have this hardcoded
             bashCmd += word + " "
     try:
         cmd_output = check_output(bashCmd, shell=True).decode()
