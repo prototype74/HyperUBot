@@ -32,13 +32,12 @@ async def python(command):
         if not word == ".python":  # Probably I should find a way not to have this hardcoded
             python_instruction += word + " "
     command_for_bash = executable + " -c " + '"' + python_instruction + '"'
-    print(command_for_bash)
     try:
         cmd_output = check_output(command_for_bash, shell=True).decode()
     except CalledProcessError:
         cmd_output = msgRep.BASH_ERROR
-    output = "Python instruction: " + python_instruction + "\n\n"
-    output += "Result: \n" + "`" + cmd_output + "`"
+    output = "**Python instruction:** `" + python_instruction + "`\n\n"
+    output += "**Result: **\n" + "`" + cmd_output + "`"
     await command.edit(output)
     return
 
