@@ -6,6 +6,7 @@ from tg_userbot.include.aux_funcs import fetch_user
 # Telethon stuff
 from telethon.events import NewMessage
 from telethon.tl.types import User, Chat, Channel
+from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
 
 # Misc Imports
@@ -21,38 +22,80 @@ async def kickme(leave):
         await leave.client.send_message(BOTLOG_CHATID, msgRep.KICKME_LOG.format(leave.chat.title, leave.chat.id))
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.stats$"))
+@tgclient.on(NewMessage(pattern=r"^\.stats$", outgoing=True))
 async def stats(event):
-    result = ""
-    users = 0
-    groups = 0
-    super_groups = 0
-    channels = 0
-    bots = 0
+    (groups, channels, super_groups, bots, users, unknown, total,
+     group_owner, group_admin, super_group_owner, super_group_admin,
+     bot_blocked, user_blocked, total_blocks, channel_owner,
+     channel_admin) = (0,)*16
+    blocked_ids = []
+
     await event.edit(msgRep.STATS_PROCESSING)
-    dialogs = await tgclient.get_dialogs(limit=None, ignore_migrated=True)
-    for d in dialogs:
-        currrent_entity = d.entity
-        if isinstance(currrent_entity, User):
-            if currrent_entity.bot:
+
+    try:
+        block_obj = await event.client(GetBlockedRequest(offset=0, limit=0))
+        if block_obj.blocked:
+            for user in block_obj.blocked:
+                blocked_ids.append(user.user_id)
+            total_blocks = len(blocked_ids)
+    except:
+        pass
+
+    async for dialog in tgclient.iter_dialogs(ignore_migrated=True):
+        total += 1
+        if isinstance(dialog.entity, Chat):
+            groups += 1
+            if dialog.entity.creator:
+                group_owner += 1
+            elif dialog.entity.admin_rights:
+                group_admin += 1
+        elif isinstance(dialog.entity, Channel):
+            if dialog.entity.broadcast:
+                channels += 1
+                if dialog.entity.creator:
+                    channel_owner += 1
+                elif dialog.entity.admin_rights:
+                    channel_admin += 1
+            elif dialog.entity.megagroup:
+                super_groups += 1
+                if dialog.entity.creator:
+                    super_group_owner += 1
+                elif dialog.entity.admin_rights:
+                    super_group_admin += 1
+            else:
+                unknown += 1
+        elif isinstance(dialog.entity, User):
+            if dialog.entity.bot:
                 bots += 1
+                if dialog.entity.id in blocked_ids:
+                    bot_blocked += 1
             else:
                 users += 1
-        elif isinstance(currrent_entity, Chat):
-            groups += 1
-        elif isinstance(currrent_entity, Channel):
-            if currrent_entity.broadcast:
-                channels += 1
-            else:
-                super_groups += 1
-        else: # Should never reach this!
-            print(d + ": Unrecognized chat type")
-    result += msgRep.STATS_USERS.format(users)
-    result += msgRep.STATS_BOTS.format(bots)
-    result += msgRep.STATS_SUPER_GROUPS.format(super_groups)
-    result += msgRep.STATS_GROUPS.format(groups)
-    result += msgRep.STATS_CHANNELS.format(channels)
+                if dialog.entity.id in blocked_ids:
+                    user_blocked += 1
+        else:
+            unknown += 1
+
+    result = f"**{msgRep.STATS_HEADER}:**\n\n"
+    result += msgRep.STATS_USERS.format(users) + "\n"
+    result += "> " + msgRep.STATS_BLOCKED.format(user_blocked) + "\n\n"
+    result += msgRep.STATS_BOTS.format(bots) + "\n"
+    result += "> " + msgRep.STATS_BLOCKED.format(bot_blocked) + "\n\n"
+    result += msgRep.STATS_BLOCKED_TOTAL.format(total_blocks) + "\n\n"
+    result += msgRep.STATS_GROUPS.format(groups) + "\n"
+    result += "> " + msgRep.STATS_SGC_OWNER.format(group_owner) + "\n"
+    result += "> " + msgRep.STATS_GROUPS_ADMIN.format(group_admin) + "\n\n"
+    result += msgRep.STATS_SUPER_GROUPS.format(super_groups) + "\n"
+    result += "> " + msgRep.STATS_SGC_OWNER.format(super_group_owner) + "\n"
+    result += "> " + msgRep.STATS_SG_ADMIN.format(super_group_admin) + "\n\n"
+    result += msgRep.STATS_CHANNELS.format(channels) + "\n"
+    result += "> " + msgRep.STATS_SGC_OWNER.format(channel_owner) + "\n"
+    result += "> " + msgRep.STATS_CHAN_ADMIN.format(channel_admin) + "\n"
+    result += "\n" + msgRep.STATS_UNKNOWN.format(unknown) + "\n\n" if unknown else "\n"
+    result += f"{msgRep.STATS_TOTAL}: **{total}**\n"
+
     await event.edit(result)
+
     return
 
 @tgclient.on(NewMessage(pattern=r"^\.info(?: |$)(.*)", outgoing=True))
