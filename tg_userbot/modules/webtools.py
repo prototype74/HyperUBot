@@ -1,6 +1,6 @@
 # My imports
 from tg_userbot import tgclient, HELP_DICT, TEMP_DL_DIR
-from tg_userbot.include.aux_funcs import pinger, speed_convert
+from tg_userbot.include.aux_funcs import pinger
 from tg_userbot.include.language_processor import WebToolsText as msgRep, HelpDesignations as helpRep
 
 # Telethon stuff
