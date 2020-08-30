@@ -16,16 +16,20 @@ from asyncio.subprocess import PIPE as asyncPIPE
 from shutil import which
 
 
-async def fetch_user(event=None, full_user=False, get_chat=False):
+async def fetch_user(event=None, full_user=False, get_chat=False, org_author=False):
     if not event:
         return (None, None) if get_chat else None
     if event.reply_to_msg_id:
         message = await event.get_reply_message()
-        # focus to original author on forwarded messages
-        if message.fwd_from is not None and message.fwd_from.channel_id is not None:
-            await event.edit(msgsLang.CHAT_NOT_USER)
-            return (None, None) if get_chat else None
-        elif message.fwd_from is not None and message.fwd_from.from_id is not None:
+        # focus to original author on forwarded messages if org_author is set to True
+        if (not message.from_id and message.fwd_from and message.fwd_from.channel_id) or \
+           (message.fwd_from and message.fwd_from.channel_id and org_author):
+            if message.from_id:  # fallback to forwarder ID if not None
+                user = message.from_id
+            else:
+                await event.edit(msgsLang.CHAT_NOT_USER)
+                return (None, None) if get_chat else None
+        elif message.fwd_from and message.fwd_from.from_id and org_author:
             user = message.fwd_from.from_id
         else:
             user = message.from_id
