@@ -31,9 +31,9 @@ async def python(command):
     for word in commandArray:
         if not word == ".python":  # Probably I should find a way not to have this hardcoded
             python_instruction += word + " "
-    command = executable + " " + python_instruction
+    command_for_bash = executable + " " + python_instruction
     try:
-        cmd_output = check_output(command, shell=True).decode()
+        cmd_output = check_output(command_for_bash, shell=True).decode()
     except CalledProcessError:
         cmd_output = msgRep.BASH_ERROR
     output = "Python instruction: " + python_instruction
