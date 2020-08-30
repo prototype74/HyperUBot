@@ -14,7 +14,6 @@
  - GitHub Module
 
 ## To Do Part 1 (before alpha release):
- - QR Codes module
  - Terminal (bash and python interpreters)
 
 ## To Do Part 2 (after alpha release):
@@ -25,6 +24,7 @@
  - Finding translators to every language and get it translated
 
 ## To Do Part 3 (after beta release, but still undecided on all) :
+ - QR Codes module
  - Stickers module
  - Memes module (mock, vaporwave, etc...)
  - Spam module
