@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot import tgclient
+from tg_userbot import tgclient, HELP_DICT
 from tg_userbot.include.language_processor import TerminalText as msgRep
 
 # Telethon stuff
@@ -8,7 +8,7 @@ from telethon.events import NewMessage
 # Misc imports
 from subprocess import check_output, CalledProcessError
 
-@tgclient.on(NewMessage(pattern=r"^\.bash(?: |$)(.*)", outgoing=True))
+@tgclient.on(NewMessage(pattern=r"^\.shell(?: |$)(.*)", outgoing=True))
 async def bash(command):
     commandArray = command.text.split(" ")
     bashCmd = ""
