@@ -13,7 +13,7 @@ from telethon.tl.functions.photos import GetUserPhotosRequest
 from asyncio import sleep
 
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.kickme$"))
+@tgclient.on(NewMessage(pattern=r"^\.kickme$", outgoing=True))
 async def kickme(leave):
     await leave.edit(msgRep.LEAVING)
     await sleep(0.1) #wait to avoid bad stuff
