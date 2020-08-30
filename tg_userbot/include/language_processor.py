@@ -281,7 +281,18 @@ class WebToolsText(object):
     INVALID_HOST = text.WebToolsText.INVALID_HOST
     PINGER_VAL = text.WebToolsText.PINGER_VAL
     SPD_START = text.WebToolsText.SPD_START
-    SPD_END = text.WebToolsText.SPD_END
+    SPD_FAILED = text.WebToolsText.SPD_FAILED
+    SPD_NO_RESULT = text.WebToolsText.SPD_NO_RESULT
+    SPD_NO_MEMORY = text.WebToolsText.SPD_NO_MEMORY
+    SPD_FAIL_SEND_RESULT = text.WebToolsText.SPD_FAIL_SEND_RESULT
+    SPD_MEGABITS = text.WebToolsText.SPD_MEGABITS
+    SPD_MEGABYTES = text.WebToolsText.SPD_MEGABYTES
+    SPD_TIME = text.WebToolsText.SPD_TIME
+    SPD_DOWNLOAD = text.WebToolsText.SPD_DOWNLOAD
+    SPD_UPLOAD = text.WebToolsText.SPD_UPLOAD
+    SPD_PING = text.WebToolsText.SPD_PING
+    SPD_ISP = text.WebToolsText.SPD_ISP
+    SPD_HOSTED_BY = text.WebToolsText.SPD_HOSTED_BY
 
 class CasIntText(object):
     FAIL = text.CasIntText.FAIL
