@@ -21,15 +21,14 @@
  - Update module
  - Self installer for modules
  - Weather Module
+ - Memes module (mock, vaporwave, etc...)
+ - Spam module
+ - Misc (coinflip, random, dice...)
  - Finding Windows, MacOS and Termux bois.
- - Finding translators to every language and get it translated
 
 ## To Do Part 3 (after beta release, but still undecided on all) :
  - QR Codes module
  - Stickers module
- - Memes module (mock, vaporwave, etc...)
- - Spam module
- - Misc (coinflip, random, dice...)
  - File uploader and downloader module
  - Automation module
  - Terminal (maybe interpreters for more languages)
@@ -37,6 +36,7 @@
  - nhentai (*insert lenny face*)
  - quot.ly (maybe????)
  - Add extra info to .info (but what?)
+ - Finding translators to every language and get it translated
 
 ## Final changes:
  - Make sure the language processor is not using the temporary scheme I made to make pyCharm autocomplete happy.
