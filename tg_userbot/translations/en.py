@@ -367,3 +367,7 @@ class HelpDesignations(object):
 
     GITHUB_HELP = "`.git` <user>/<repo> \
                   \nUsage: Checks for releases on the specified user/repo combination."
+
+    TERMINAL_HELP = "`.shell` <command> \
+                  \nUsage: Executes in the server machine shell prompt (bash, powershell or zsh) the specified command. \
+                  \n**WARNING: if the userbot process is running as root, this could potentially break your system irreversibly! Proceed with caution!"

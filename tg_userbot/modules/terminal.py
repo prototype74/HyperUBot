@@ -1,6 +1,6 @@
 # My stuff
 from tg_userbot import tgclient, HELP_DICT
-from tg_userbot.include.language_processor import TerminalText as msgRep
+from tg_userbot.include.language_processor import TerminalText as msgRep, HelpDesignations as helpRep
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -22,3 +22,5 @@ async def bash(command):
     output = "$ " + bashCmd + "\n\n" + cmd_output
     await command.edit("`" + output + "`")
     return
+
+HELP_DICT.update({"terminaç":helpRep.TERMINAL_HELP})

@@ -322,3 +322,4 @@ class HelpDesignations(object):
     WEBTOOLS_HELP = text.HelpDesignations.WEBTOOLS_HELP
     CAS_INTERFACE_HELP = text.HelpDesignations.CAS_INTERFACE_HELP
     GITHUB_HELP = text.HelpDesignations.GITHUB_HELP
+    TERMINAL_HELP = text.HelpDesignations.TERMINAL_HELP
