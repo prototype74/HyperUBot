@@ -23,4 +23,4 @@ async def bash(command):
     await command.edit("`" + output + "`")
     return
 
-HELP_DICT.update({"terminaç":helpRep.TERMINAL_HELP})
+HELP_DICT.update({"terminal":helpRep.TERMINAL_HELP})
