@@ -7,6 +7,7 @@ from telethon.events import NewMessage
 
 # Misc imports
 from subprocess import check_output, CalledProcessError
+from sys import executable
 
 @tgclient.on(NewMessage(pattern=r"^\.shell(?: |$)(.*)", outgoing=True))
 async def bash(command):
@@ -21,6 +22,23 @@ async def bash(command):
         cmd_output = msgRep.BASH_ERROR
     output = "$ " + bashCmd + "\n\n" + cmd_output
     await command.edit("`" + output + "`")
+    return
+
+@tgclient.on(NewMessage(pattern=r"^\.python(?: |$)(.*)", outgoing=True))
+async def python(command):
+    commandArray = command.text.split(" ")
+    python_instruction = ""
+    for word in commandArray:
+        if not word == ".python":  # Probably I should find a way not to have this hardcoded
+            python_instruction += word + " "
+    command = executable + " " + python_instruction
+    try:
+        cmd_output = check_output(command, shell=True).decode()
+    except CalledProcessError:
+        cmd_output = msgRep.BASH_ERROR
+    output = "Python instruction: " + python_instruction
+    output += "Result: \n" + "`" + cmd_output + "`"
+    await command.edit(output)
     return
 
 HELP_DICT.update({"terminal":helpRep.TERMINAL_HELP})
