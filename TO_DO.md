@@ -12,10 +12,10 @@
  - Scrappers module
  - CAS Interface module
  - GitHub Module
- - Terminal module (bash interpreter)
+ - Terminal module
 
 ## To Do Part 1 (before alpha release):
- - Terminal (python interpreter)
+ - Nothing, we should be ready!
 
 ## To Do Part 2 (after alpha release):
  - Update module
