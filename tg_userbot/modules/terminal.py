@@ -18,6 +18,6 @@ async def bash(command):
         cmd_output = check_output(bashCmd, shell=True).decode()
     except CalledProcessError:
         cmd_output = "There has been an unspecified error, likely bad arguments or that command does not exist"
-    output = "$ " + bashCmd + "\n" + cmd_output
+    output = "$ " + bashCmd + "\n\n" + cmd_output
     await command.edit("`" + output + "`")
     return
