@@ -379,8 +379,8 @@ class HelpDesignations(object):
                     \nUsage: Finds the near datacenter to your userbot host. \
                     \n\n`.ping` <DNS/IP> \
                     \nUsage: Pings a specific DNS or IP address. \
-                    \n\n`.speedtest` \
-                    \nUsage: Performs a speedtest and shows the results."
+                    \n\n`.speedtest` [optional argument \"pic\"] \
+                    \nUsage: Performs a speedtest and shows the result as text. Passing \"pic\" as argument will change the result to a picture."
 
     CAS_INTERFACE_HELP = "`.cascheck` [optional: <username>]\
                     \nUsage: Checks if a user is CAS Banned\
