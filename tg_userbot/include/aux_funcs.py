@@ -78,16 +78,6 @@ async def fetch_user(event=None, full_user=False, get_chat=False):
 
     return (None, chat_obj) if get_chat else None
 
-async def get_user_from_id(user, event):
-    if isinstance(user, str):
-        user = int(user)
-    try:
-        user_obj = await event.client.get_entity(user)
-    except (TypeError, ValueError) as err:
-        await event.edit(str(err))
-        return None
-    return user_obj
-
 # Systools/Webtools
 def pinger(address):
     if os.name == "nt":
@@ -117,15 +107,6 @@ def pinger(address):
         return "<" + str(ping_time) + " ms"
     else:
         return str(ping_time) + " ms"
-
-def speed_convert(size):
-    power = 2 ** 10
-    zero = 0
-    units = {0: '', 1: 'Kb/s', 2: 'Mb/s', 3: 'Gb/s', 4: 'Tb/s'}
-    while size > power:
-        size /= power
-        zero += 1
-    return f"{round(size, 2)} {units[zero]}"
 
 async def getGitReview():
     commit = msgsLang.ERROR
