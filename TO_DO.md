@@ -19,6 +19,7 @@
 
 ## To Do Part 2 (after alpha release):
  - Update module
+ - File uploader and downloader module
  - Self installer for modules
  - Weather Module
  - Memes module (mock, vaporwave, etc...)
@@ -29,7 +30,6 @@
 ## To Do Part 3 (after beta release, but still undecided on all) :
  - QR Codes module
  - Stickers module
- - File uploader and downloader module
  - Automation module
  - Terminal (maybe interpreters for more languages)
  - Scrappers (currency converter and speech-to-text)
