@@ -374,5 +374,5 @@ class HelpDesignations(object):
                   \nUsage: Executes in the server machine shell prompt (bash, powershell or zsh) the specified command. \
                   \n**WARNING: if the userbot process is running as root, this could potentially break your system irreversibly! Proceed with caution!** \
                   \n\n`.python` <instructions> \
-                  \nUsage: Executes the python instruction specified \
+                  \nUsage: Executes the specified python instructions \
                   \n**Notice:** Please use ' as the string delimiters instead of \", or errors could happen with the command processor."
