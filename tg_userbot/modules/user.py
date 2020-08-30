@@ -102,7 +102,7 @@ async def stats(event):
 async def info(event):  # .info command
     await event.edit(msgRep.FETCH_INFO)
 
-    full_user_obj = await fetch_user(event=event, full_user=True)
+    full_user_obj = await fetch_user(event=event, full_user=True, org_author=True)
     if not full_user_obj:  # fetch_user() will return an error msg if something failed
         return
 
