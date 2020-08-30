@@ -32,6 +32,7 @@ async def python(command):
         if not word == ".python":  # Probably I should find a way not to have this hardcoded
             python_instruction += word + " "
     command_for_bash = executable + ' ' + '"' + python_instruction + '"'
+    print(command_for_bash)
     try:
         cmd_output = check_output(command_for_bash, shell=True).decode()
     except CalledProcessError:
