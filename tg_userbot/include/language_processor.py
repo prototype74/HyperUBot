@@ -308,6 +308,9 @@ class StickersText(object):
     FETCHING_STICKER_DETAILS = text.StickersText.FETCHING_STICKER_DETAILS
     STICKER_INFO_OUTPUT = text.StickersText.STICKER_INFO_OUTPUT
 
+class TerminalText(object):
+    BASH_ERROR = text.TerminalText.BASH_ERROR
+
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
     CHATINFO_HELP = text.HelpDesignations.CHATINFO_HELP

@@ -294,6 +294,9 @@ class StickersText(object):
     FETCHING_STICKER_DETAILS = "`Fetching details...`"
     STICKER_INFO_OUTPUT = "**Sticker Title:** `{}`\n**Sticker Short Name:** `{}`\n**Official:** `{}`\n**Archived:** `{}`\n**Stickers In Pack:** `{}`\n**Emojis In Pack:**\n{}"
 
+class TerminalText(object):
+    BASH_ERROR = "There has been an unspecified error, likely bad arguments or that command does not exist"
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):
     ADMIN_HELP = "`.ban` [optional: <username/id> <chat (id or link)>] or reply\
