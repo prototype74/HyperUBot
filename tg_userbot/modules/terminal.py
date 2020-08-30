@@ -5,7 +5,7 @@ from tg_userbot import tgclient
 from telethon.events import NewMessage
 
 # Misc imports
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 
 @tgclient.on(NewMessage(pattern=r"^\.bash(?: |$)(.*)", outgoing=True))
 async def bash(command):
@@ -14,6 +14,10 @@ async def bash(command):
     for word in commandArray: #building the command
         if not word == ".bash":
             bashCmd += word + " "
-    output = check_output(bashCmd, shell=True).decode()
+    try:
+        cmd_output = check_output(bashCmd, shell=True).decode()
+    except CalledProcessError:
+        cmd_output = "There has been an unspecified error, likely bad arguments or that command does not exist"
+    output = "$ " + bashCmd + "\n" + cmd_output
     await command.edit("`" + output + "`")
     return
