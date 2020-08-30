@@ -14,5 +14,6 @@ async def bash(command):
     for word in commandArray: #building the command
         if not word == ".bash":
             bashCmd += word + " "
-    print(bashCmd)
+    output = check_output(bashCmd, shell=True).decode()
+    await command.edit("`" + output + "`")
     return
