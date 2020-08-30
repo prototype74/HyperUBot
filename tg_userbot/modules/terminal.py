@@ -36,8 +36,8 @@ async def python(command):
         cmd_output = check_output(command_for_bash, shell=True).decode()
     except CalledProcessError:
         cmd_output = msgRep.BASH_ERROR
-    output = msgRep.PYTHON_RESULT + " `" + python_instruction + "`\n\n"
-    output +=  msgRep.PYTHON_INSTRUCTION + "`" + cmd_output + "`"
+    output = msgRep.PYTHON_INSTRUCTION + " `" + python_instruction + "`\n\n"
+    output +=  msgRep.PYTHON_RESULT + "`" + cmd_output + "`"
     await command.edit(output)
     return
 
