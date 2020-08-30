@@ -296,6 +296,8 @@ class StickersText(object):
 
 class TerminalText(object):
     BASH_ERROR = "There has been an unspecified error, likely bad arguments or that command does not exist"
+    PYTHON_INSTRUCTION = "**Python instruction:**"
+    PYTHON_RESULT = "**Result: **\n"
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class HelpDesignations(object):

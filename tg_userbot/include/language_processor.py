@@ -310,6 +310,8 @@ class StickersText(object):
 
 class TerminalText(object):
     BASH_ERROR = text.TerminalText.BASH_ERROR
+    PYTHON_INSTRUCTION = text.TerminalText.PYTHON_INSTRUCTION
+    PYTHON_RESULT = text.TerminalText.PYTHON_RESULT
 
 class HelpDesignations(object):
     ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
