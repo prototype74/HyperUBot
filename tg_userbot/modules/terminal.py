@@ -12,7 +12,7 @@ async def bash(command):
     commandArray = command.text.split(" ")
     bashCmd = ""
     for word in commandArray: #building the command
-        if word is not ".bash":
+        if not word == ".bash":
             bashCmd += word + " "
     print(bashCmd)
     return
