@@ -26,7 +26,7 @@ def tguser_url() -> str:
 async def ban(event):
     user, chat = await fetch_user(event, get_chat=True)
 
-    if not user:  # successfully self-yeeted
+    if not user:
         return
 
     if not chat:
