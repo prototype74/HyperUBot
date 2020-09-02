@@ -215,6 +215,9 @@ async def promote(event):
         else:
             # get our own admin rights but set add_admin perm to False. If we aren't admin set empty permissions
             admin_perms = chat.admin_rights if chat.admin_rights else ChatAdminRights()
+            if admin_perms.add_admins is not None and not admin_perms.add_admins:
+                await event.edit(msgRep.ADD_ADMINS_REQUIRED)
+                return
             if admin_perms.add_admins:
                 admin_perms.add_admins = False
             if all(getattr(admin_perms, perm) is False for perm in vars(admin_perms)):
@@ -286,6 +289,9 @@ async def demote(event):
     try:
         rm_admin_perms = ChatAdminRights(add_admins=None, invite_users=None, change_info=None,
                                          ban_users=None, delete_messages=None, pin_messages=None)
+        if chat.admin_rights and not chat.admin_rights.add_admins:
+            await event.edit(msgRep.ADD_ADMINS_REQUIRED)
+            return
         await event.client(EditAdminRequest(chat.id, user.id, rm_admin_perms, ""))
         name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         await event.edit(msgRep.DEMOTE_SUCCESS.format(name))

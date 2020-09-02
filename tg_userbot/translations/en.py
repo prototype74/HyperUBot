@@ -30,6 +30,7 @@ class AdminText(object): # Admin module
     ADMIN_ALREADY_SELF = "`I am immortal already`"
     ADMIN_ALREADY = "`This person is immortal already`"
     ADMIN_NOT_ENOUGH_PERMS = "`I don't have enough admin rights to promote this person`"
+    ADD_ADMINS_REQUIRED = "`Add admins permission is required to perform this action`"
     PROMOTE_SUCCESS = "{} has been promoted with immortal power!"  # user name
     TOO_MANY_ADMINS = "`This chat has too many admins already`"
     EMOJI_NOT_ALLOWED = "`Emoji are not allowed in admin titles`"
