@@ -47,6 +47,7 @@ class AdminText(object): # Admin module
     PROMOTE_SUCCESS = text.AdminText.PROMOTE_SUCCESS
     TOO_MANY_ADMINS = text.AdminText.TOO_MANY_ADMINS
     EMOJI_NOT_ALLOWED = text.AdminText.EMOJI_NOT_ALLOWED
+    GET_ENTITY_FAILED = text.AdminText.GET_ENTITY_FAILED
     PROMOTE_FAILED = text.AdminText.PROMOTE_FAILED
     NOONE_TO_DEMOTE = text.AdminText.NOONE_TO_DEMOTE
     CANNOT_DEMOTE_SELF = text.AdminText.CANNOT_DEMOTE_SELF

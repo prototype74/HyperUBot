@@ -33,6 +33,7 @@ class AdminText(object): # Admin module
     PROMOTE_SUCCESS = "{} has been promoted with immortal power!"  # user name
     TOO_MANY_ADMINS = "`This chat has too many admins already`"
     EMOJI_NOT_ALLOWED = "`Emoji are not allowed in admin titles`"
+    GET_ENTITY_FAILED = "Failed to fetch entity"
     PROMOTE_FAILED = "Failed to promote this person"
     NOONE_TO_DEMOTE = "`There is no one to demote`"
     CANNOT_DEMOTE_SELF = "`I can't demote myself`"

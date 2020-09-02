@@ -157,7 +157,11 @@ async def kick(event):
 async def promote(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
-        user = await event.client.get_entity(msg.from_id) if msg.from_id else None
+        try:
+            user = await event.client.get_entity(msg.from_id) if msg.from_id else None
+        except ValueError as e:
+            await event.edit(f"`{msgRep.GET_ENTITY_FAILED}: {e}`")
+            return
         arg = event.pattern_match.group(1)
         title = arg if len(arg) <= 16 else ""
     else:
@@ -168,7 +172,11 @@ async def promote(event):
         else:
             title = ""
         if args_from_event[0]:
-            user = await event.client.get_entity(args_from_event[0])
+            try:
+                user = await event.client.get_entity(args_from_event[0])
+            except ValueError as e:
+                await event.edit(f"`{msgRep.GET_ENTITY_FAILED}: {e}`")
+                return
         else:
             user = None
 
@@ -231,11 +239,19 @@ async def promote(event):
 async def demote(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
-        user = await event.client.get_entity(msg.from_id) if msg.from_id else None
+        try:
+            user = await event.client.get_entity(msg.from_id) if msg.from_id else None
+        except ValueError as e:
+            await event.edit(f"`{msgRep.GET_ENTITY_FAILED}: {e}`")
+            return
     else:
         arg_from_event = event.pattern_match.group(1)
         if arg_from_event:
-            user = await event.client.get_entity(arg_from_event)
+            try:
+                user = await event.client.get_entity(arg_from_event)
+            except ValueError as e:
+                await event.edit(f"`{msgRep.GET_ENTITY_FAILED}: {e}`")
+                return
         else:
             user = None
 
