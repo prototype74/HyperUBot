@@ -7,6 +7,7 @@ from tg_userbot.include.language_processor import (TerminalText as msgRep, Modul
 from telethon.events import NewMessage
 
 # Misc imports
+from os.path import basename
 from subprocess import check_output, CalledProcessError
 from sys import executable
 
@@ -42,5 +43,5 @@ async def python(command):
     await command.edit(output)
     return
 
-MODULE_DESC.update({"terminal": descRep.TERMINAL_DESC})
-MODULE_DICT.update({"terminal": usageRep.TERMINAL_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.TERMINAL_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.TERMINAL_USAGE})

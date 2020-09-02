@@ -11,6 +11,7 @@ from telethon.events import NewMessage
 # Misc imports
 from dateutil.parser import parse
 from os import remove
+from os.path import basename
 from speedtest import Speedtest
 from urllib.request import urlretrieve
 
@@ -104,5 +105,5 @@ async def speedtest(event):
 
     return
 
-MODULE_DESC.update({"webtools": descRep.WEBTOOLS_DESC})
-MODULE_DICT.update({"webtools": usageRep.WEBTOOLS_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.WEBTOOLS_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.WEBTOOLS_USAGE})

@@ -12,6 +12,7 @@ from googletrans import Translator, LANGUAGES
 from gtts import gTTS
 from gtts.tts import gTTSError
 from os import remove
+from os.path import basename
 
 
 @tgclient.on(NewMessage(pattern=r"^\.trt(?: |$)(.*)", outgoing=True))
@@ -97,5 +98,5 @@ async def translate(event):
     return
 
 
-MODULE_DESC.update({"scrappers": descRep.SCRAPPERS_DESC})
-MODULE_DICT.update({"scrappers": usageRep.SCRAPPERS_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.SCRAPPERS_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SCRAPPERS_USAGE})

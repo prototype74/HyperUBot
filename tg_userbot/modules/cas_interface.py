@@ -9,6 +9,9 @@ from tg_userbot.include.aux_funcs import fetch_user as get_user
 from telethon.events import NewMessage
 from telethon.errors import ChatAdminRequiredError
 
+# Misc
+from os.path import basename
+
 @tgclient.on(NewMessage(pattern=r"^\.cascheck(?: |$)(.*)", outgoing=True))
 async def caschecker(event):
     if event.fwd_from:
@@ -81,5 +84,5 @@ async def groupchecker(cas):
     await cas.edit(text)
     return
 
-MODULE_DESC.update({"cas_interface": descRep.CAS_INTERFACE_DESC})
-MODULE_DICT.update({"cas_interface": usageRep.CAS_INTERFACE_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.CAS_INTERFACE_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.CAS_INTERFACE_USAGE})

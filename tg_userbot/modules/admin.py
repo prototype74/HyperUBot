@@ -14,6 +14,7 @@ from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticip
 
 # Misc
 from asyncio import sleep
+from os.path import basename
 
 
 # Constant
@@ -439,5 +440,5 @@ async def pin(event):
     return
 
 
-MODULE_DESC.update({"admin": descRep.ADMIN_DESC})
-MODULE_DICT.update({"admin": usageRep.ADMIN_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.ADMIN_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.ADMIN_USAGE})

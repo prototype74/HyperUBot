@@ -12,6 +12,7 @@ from telethon.tl.functions.photos import GetUserPhotosRequest
 
 # Misc Imports
 from asyncio import sleep
+from os.path import basename
 
 
 @tgclient.on(NewMessage(pattern=r"^\.kickme$", outgoing=True))
@@ -165,5 +166,5 @@ async def fetch_info(replied_user, event):
 
     return caption
 
-MODULE_DESC.update({"user": descRep.USER_DESC})
-MODULE_DICT.update({"user": usageRep.USER_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.USER_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.USER_USAGE})

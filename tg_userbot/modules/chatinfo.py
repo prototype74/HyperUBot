@@ -14,6 +14,7 @@ from telethon.utils import get_input_location
 # Misc imports
 from datetime import datetime
 from math import sqrt
+from os.path import basename
 
 @tgclient.on(NewMessage(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True))
 async def info(event):
@@ -216,5 +217,5 @@ async def fetch_info(chat, event):
         caption += msgRep.DESCRIPTION.format(description)
     return caption
 
-MODULE_DESC.update({"chatinfo": descRep.CHATINFO_DESC})
-MODULE_DICT.update({"chatinfo": usageRep.CHATINFO_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.CHATINFO_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.CHATINFO_USAGE})

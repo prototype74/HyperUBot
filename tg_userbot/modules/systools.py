@@ -15,6 +15,7 @@ from platform import python_version, uname
 from datetime import datetime, timedelta
 from uptime import uptime
 from subprocess import check_output
+from os.path import basename
 
 # Module Global Variables
 USER = uname().node # Maybe add a username in future
@@ -79,5 +80,5 @@ async def neofetch(sysd):
         await sysd.edit("`Install neofetch first !!`")
     return
 
-MODULE_DESC.update({"systools": descRep.SYSTOOLS_DESC})
-MODULE_DICT.update({"systools": usageRep.SYSTOOLS_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.SYSTOOLS_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SYSTOOLS_USAGE})

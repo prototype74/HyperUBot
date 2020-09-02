@@ -7,6 +7,9 @@ import tg_userbot.include.git_api as api
 # Telethon stuff
 from telethon.events import NewMessage
 
+# Misc
+from os.path import basename
+
 
 def getData(url, index):
     if not api.getData(url):
@@ -47,5 +50,5 @@ async def get_release(event):
     return
 
 
-MODULE_DESC.update({"github": descRep.GITHUB_DESC})
-MODULE_DICT.update({"github": usageRep.GITHUB_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.GITHUB_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.GITHUB_USAGE})

@@ -14,6 +14,7 @@ from telethon.errors import ChannelInvalidError, UserNotParticipantError
 
 # Misc
 from datetime import datetime
+from os.path import basename
 
 
 @tgclient.on(NewMessage(pattern=r"^\.minfo(?: |$)(.*)", outgoing=True))
@@ -325,5 +326,5 @@ async def memberinfo(event):
     return
 
 
-MODULE_DESC.update({"memberinfo": descRep.MEMBERINFO_DESC})
-MODULE_DICT.update({"memberinfo": usageRep.MEMBERINFO_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.MEMBERINFO_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.MEMBERINFO_USAGE})

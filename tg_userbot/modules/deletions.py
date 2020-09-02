@@ -12,6 +12,7 @@ from telethon.tl.types import Chat, Channel
 
 # Misc imports
 from asyncio import sleep
+from os.path import basename
 
 
 @tgclient.on(NewMessage(pattern=r"^\.del$", outgoing=True))
@@ -84,5 +85,5 @@ async def purge(event):
     return
 
 
-MODULE_DESC.update({"deletions": descRep.DELETIONS_DESC})
-MODULE_DICT.update({"deletions": usageRep.DELETIONS_USAGE})
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.DELETIONS_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.DELETIONS_USAGE})
