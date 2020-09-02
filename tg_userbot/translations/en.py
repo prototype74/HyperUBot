@@ -28,7 +28,7 @@ class AdminText(object): # Admin module
     NOT_USER = "`Given username or ID isn't an User`"
     CANNOT_PROMOTE_SELF = "`I can't promote myself`"
     ADMIN_ALREADY_SELF = "`I am immortal already`"
-    ADMIN_ALREADY = "This person is immortal already`"
+    ADMIN_ALREADY = "`This person is immortal already`"
     ADMIN_NOT_ENOUGH_PERMS = "`I don't have enough admin rights to promote this person`"
     PROMOTE_SUCCESS = "{} has been promoted with immortal power!"  # user name
     TOO_MANY_ADMINS = "`This chat has too many admins already`"
