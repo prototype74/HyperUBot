@@ -6,7 +6,6 @@ from tg_userbot.include.language_processor import (MemberInfoText as msgRep, Mod
 
 # Telethon stuff
 from telethon.events import NewMessage
-from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.types import (ChannelParticipantCreator, ChannelParticipantAdmin, ChannelParticipantBanned,
                                ChannelParticipantSelf, ChannelParticipant)
