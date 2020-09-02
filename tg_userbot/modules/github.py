@@ -1,7 +1,8 @@
 # My stuff
-from tg_userbot.include.language_processor import GitHubText as msgRep, HelpDesignations as helpRep
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
+from tg_userbot.include.language_processor import (GitHubText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 import tg_userbot.include.git_api as api
-from tg_userbot import tgclient, HELP_DICT
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -46,4 +47,5 @@ async def get_release(event):
     return
 
 
-HELP_DICT.update({"github":helpRep.GITHUB_HELP})
+MODULE_DESC.update({"github": descRep.GITHUB_DESC})
+MODULE_DICT.update({"github": usageRep.GITHUB_USAGE})

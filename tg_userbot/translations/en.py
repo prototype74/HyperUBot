@@ -257,8 +257,14 @@ class GeneralMessages(object):
     CALL_UREQ_FAIL = "Call User request failed"
 
 class HelpText(object):
-    INVALID_NAME = "Please specify a valid module name."
-    DEFAULT = "Please specify which module do you want help for !!\nSyntax: .help <module name>\n\nModules available:\n\n"
+    INVALID_ARG = "`Invalid argument \"{}\"`"
+    USAGE = "Usage"
+    NAME_OF_MODULE = "name of module"  # lower if possible
+    AVAILABLE_MODULES = "Available modules"
+    DISABLED_MODULES = "Disabled modules"
+    NAME_MODULE = "**{} module**"
+    MISSING_NAME_MODULE = "`Missing name of module`"
+    MODULE_NOT_FOUND = "`Module \"{}\" not found`"
 
 class WebToolsText(object):
     PING_SPEED = "Round-Trip Time: "
@@ -320,8 +326,26 @@ class TerminalText(object):
     PYTHON_RESULT = "**Result: **\n"
 
 # Save your eyes from what may become the ugliest part of this userbot.
-class HelpDesignations(object):
-    ADMIN_HELP = "`.ban` [optional: <username/id> <chat (id or link)>] or reply\
+class ModuleDescriptions(object):
+    ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote etc.\
+                 \n\nNote: most commands in this module require admin privileges to work properly."
+    CHATINFO_DESC = "Get most various information from a channel, group or super group such as creation date, message counts, deletions, former name etc."
+    DELETIONS_DESC = "This module allows you to delete your or in groups messages faster. Someone spammed your group? use purge command to delete them all!\
+                     \nAll commands in this module require admin privileges to delete other people's messages.\
+                     \n\n**Important: don't abuse this module to delete someone's else whole group history**, for real, just don't..."
+    MEMBERINFO_DESC = "Provides information from a specific group participant like permissions, restriction date, join date etc.\
+                     \n\nNote: requires admin privileges to access other member's permissions."
+    SCRAPPERS_DESC = "Not as it sounds like to be but still this module includes useful features like translation or text-to-speech."
+    # temp empty
+    SYSTOOLS_DESC = ""
+    USER_DESC = ""
+    WEBTOOLS_DESC = ""
+    CAS_INTERFACE_DESC = ""
+    GITHUB_DESC = ""
+    TERMINAL_DESC = ""
+
+class ModuleUsages(object):
+    ADMIN_USAGE = "`.ban` [optional: <username/id> <chat (id or link)>] or reply\
                  \nUsage: Ban a certain user from a chat (remotely). Requires admin privileges with ban permission.\
                  \n\n`.unban` [optional: <username/id> <chat (id or link)>] or reply\
                  \nUsage: Unban a certain user from a chat (remotely). Requires admin privileges with ban permission.\
@@ -342,38 +366,38 @@ class HelpDesignations(object):
                  \n\n`.pin` [optional argument \"loud\" to notify all members] or reply\
                  \nUsage: Reply to someone's message to pin it in the chat."
 
-    CHATINFO_HELP = "`.chatinfo` [optional: <chat_id>] \
+    CHATINFO_USAGE = "`.chatinfo` [optional: <chat_id>] \
                  \nUsage: Gets info about a chat. Some info might be limited due to missing permissions."
 
-    DELETIONS_HELP = "`.del`\
+    DELETIONS_USAGE = "`.del`\
          \nUsage: Deletes the replied message.\
          \n\n`.purge`\
          \nUsage: Purges all messages between the latest and replied message. Admin privileges with delete permission are required if purge is being used in channels or groups.\
          \n**Note: Please don't abuse this feature to delete whole group histories from other people!**"
 
-    MEMBERINFO_HELP = "`.minfo` [optional: <tag/id> <group>] or reply\
+    MEMBERINFO_USAGE = "`.minfo` [optional: <tag/id> <group>] or reply\
           \nUsage: Get (remotely) info of a member in a supergroup."
 
-    SCRAPPERS_HELP = "`.trt` [optional: <text>] or reply\
+    SCRAPPERS_USAGE = "`.trt` [optional: <text>] or reply\
           \nUsage: Translates given text or replied message to the bot's target language.\
           \n\n`.tts` [optional: <text>] or reply\
           \nUsage: Converts text or replied message into spoken voice output (text-to-speech)."
 
-    SYSTOOLS_HELP = "`.status`\
+    SYSTOOLS_USAGE = "`.status`\
          \nUsage: Type .status to check various bot information and if it is up and running.\
          \n\n`.shutdown`\
          \nUsage: Type .shutdown to shutdown the bot. \
          \n\n`.sysd`\
          \nUsage: Type .sysd to get system details. (Requires neofetch installed)"
 
-    USER_HELP = "`.info ` [optional: <username>]\
+    USER_USAGE = "`.info ` [optional: <username>]\
         \nUsage: Gets info of an user.\
         \n\n`.stats`\
         \nUsage: Gets your stats.\
         \n\n`.kickme`\
         \nUsage: Makes you leave the group."
 
-    WEBTOOLS_HELP = "`.rtt` \
+    WEBTOOLS_USAGE = "`.rtt` \
                     \nUsage: Gets the current Round Trip Time\
                     \n\n`.dc` \
                     \nUsage: Finds the near datacenter to your userbot host. \
@@ -382,15 +406,15 @@ class HelpDesignations(object):
                     \n\n`.speedtest` [optional argument \"pic\"] \
                     \nUsage: Performs a speedtest and shows the result as text. Passing \"pic\" as argument will change the result to a picture."
 
-    CAS_INTERFACE_HELP = "`.cascheck` [optional: <username>]\
+    CAS_INTERFACE_USAGE = "`.cascheck` [optional: <username>]\
                     \nUsage: Checks if a user is CAS Banned\
                     \n\n`.groupcheck` \
                     \nUsage: Checks the whole group for CAS Banned users "
 
-    GITHUB_HELP = "`.git` <user>/<repo> \
+    GITHUB_USAGE = "`.git` <user>/<repo> \
                   \nUsage: Checks for releases on the specified user/repo combination."
 
-    TERMINAL_HELP = "`.shell` <command> \
+    TERMINAL_USAGE = "`.shell` <command> \
                   \nUsage: Executes in the server machine shell prompt (bash, powershell or zsh) the specified command. \
                   \n\n**WARNING: if the userbot process is running as root, this could potentially break your system irreversibly! Proceed with caution!** \
                   \n\n`.python` <instructions> \

@@ -1,7 +1,8 @@
 # My imports
-from tg_userbot import tgclient, HELP_DICT, TEMP_DL_DIR
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR
 from tg_userbot.include.aux_funcs import pinger
-from tg_userbot.include.language_processor import WebToolsText as msgRep, HelpDesignations as helpRep
+from tg_userbot.include.language_processor import (WebToolsText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 
 # Telethon stuff
 from telethon import functions
@@ -103,4 +104,5 @@ async def speedtest(event):
 
     return
 
-HELP_DICT.update({"webtools":helpRep.WEBTOOLS_HELP})
+MODULE_DESC.update({"webtools": descRep.WEBTOOLS_DESC})
+MODULE_DICT.update({"webtools": usageRep.WEBTOOLS_USAGE})

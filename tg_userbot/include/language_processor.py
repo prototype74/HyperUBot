@@ -271,8 +271,14 @@ class GeneralMessages(object):
     CALL_UREQ_FAIL = text.GeneralMessages.CALL_UREQ_FAIL
 
 class HelpText(object):
-    INVALID_NAME = text.HelpText.INVALID_NAME
-    DEFAULT = text.HelpText.DEFAULT
+    INVALID_ARG = text.HelpText.INVALID_ARG
+    USAGE = text.HelpText.USAGE
+    NAME_OF_MODULE = text.HelpText.NAME_OF_MODULE
+    AVAILABLE_MODULES = text.HelpText.AVAILABLE_MODULES
+    DISABLED_MODULES = text.HelpText.DISABLED_MODULES
+    NAME_MODULE = text.HelpText.NAME_MODULE
+    MISSING_NAME_MODULE = text.HelpText.MISSING_NAME_MODULE
+    MODULE_NOT_FOUND = text.HelpText.MODULE_NOT_FOUND
 
 class WebToolsText(object):
     PING_SPEED = text.WebToolsText.PING_SPEED
@@ -333,15 +339,28 @@ class TerminalText(object):
     PYTHON_INSTRUCTION = text.TerminalText.PYTHON_INSTRUCTION
     PYTHON_RESULT = text.TerminalText.PYTHON_RESULT
 
-class HelpDesignations(object):
-    ADMIN_HELP = text.HelpDesignations.ADMIN_HELP
-    CHATINFO_HELP = text.HelpDesignations.CHATINFO_HELP
-    DELETIONS_HELP = text.HelpDesignations.DELETIONS_HELP
-    MEMBERINFO_HELP = text.HelpDesignations.MEMBERINFO_HELP
-    SCRAPPERS_HELP = text.HelpDesignations.SCRAPPERS_HELP
-    SYSTOOLS_HELP = text.HelpDesignations.SYSTOOLS_HELP
-    USER_HELP = text.HelpDesignations.USER_HELP
-    WEBTOOLS_HELP = text.HelpDesignations.WEBTOOLS_HELP
-    CAS_INTERFACE_HELP = text.HelpDesignations.CAS_INTERFACE_HELP
-    GITHUB_HELP = text.HelpDesignations.GITHUB_HELP
-    TERMINAL_HELP = text.HelpDesignations.TERMINAL_HELP
+class ModuleDescriptions(object):
+    ADMIN_DESC = text.ModuleDescriptions.ADMIN_DESC
+    CHATINFO_DESC = text.ModuleDescriptions.CHATINFO_DESC
+    DELETIONS_DESC = text.ModuleDescriptions.DELETIONS_DESC
+    MEMBERINFO_DESC = text.ModuleDescriptions.MEMBERINFO_DESC
+    SCRAPPERS_DESC = text.ModuleDescriptions.SCRAPPERS_DESC
+    SYSTOOLS_DESC = text.ModuleDescriptions.SYSTOOLS_DESC
+    USER_DESC = text.ModuleDescriptions.USER_DESC
+    WEBTOOLS_DESC = text.ModuleDescriptions.WEBTOOLS_DESC
+    CAS_INTERFACE_DESC = text.ModuleDescriptions.CAS_INTERFACE_DESC
+    GITHUB_DESC = text.ModuleDescriptions.GITHUB_DESC
+    TERMINAL_DESC = text.ModuleDescriptions.TERMINAL_DESC
+
+class ModuleUsages(object):
+    ADMIN_USAGE = text.ModuleUsages.ADMIN_USAGE
+    CHATINFO_USAGE = text.ModuleUsages.CHATINFO_USAGE
+    DELETIONS_USAGE = text.ModuleUsages.DELETIONS_USAGE
+    MEMBERINFO_USAGE = text.ModuleUsages.MEMBERINFO_USAGE
+    SCRAPPERS_USAGE = text.ModuleUsages.SCRAPPERS_USAGE
+    SYSTOOLS_USAGE = text.ModuleUsages.SYSTOOLS_USAGE
+    USER_USAGE = text.ModuleUsages.USER_USAGE
+    WEBTOOLS_USAGE = text.ModuleUsages.WEBTOOLS_USAGE
+    CAS_INTERFACE_USAGE = text.ModuleUsages.CAS_INTERFACE_USAGE
+    GITHUB_USAGE = text.ModuleUsages.GITHUB_USAGE
+    TERMINAL_USAGE = text.ModuleUsages.TERMINAL_USAGE

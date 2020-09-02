@@ -1,8 +1,9 @@
 # My stuff
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
 import tg_userbot.include.cas_api as cas_api
-from tg_userbot.include.language_processor import CasIntText as msgRep, HelpDesignations as helpRep
+from tg_userbot.include.language_processor import (CasIntText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 from tg_userbot.include.aux_funcs import fetch_user as get_user
-from tg_userbot import tgclient, HELP_DICT
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -80,4 +81,5 @@ async def groupchecker(cas):
     await cas.edit(text)
     return
 
-HELP_DICT.update({"cas_interface":helpRep.CAS_INTERFACE_HELP})
+MODULE_DESC.update({"cas_interface": descRep.CAS_INTERFACE_DESC})
+MODULE_DICT.update({"cas_interface": usageRep.CAS_INTERFACE_USAGE})

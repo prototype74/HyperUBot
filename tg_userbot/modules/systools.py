@@ -1,6 +1,7 @@
 # My stuff
-from tg_userbot import tgclient, VERSION, PROJECT, BOTLOG, BOTLOG_CHATID, HELP_DICT
-from tg_userbot.include.language_processor import StatusText as msgRep, HelpDesignations as helpRep
+from tg_userbot import tgclient, VERSION, PROJECT, BOTLOG, BOTLOG_CHATID, MODULE_DESC, MODULE_DICT
+from tg_userbot.include.language_processor import (StatusText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 from tg_userbot.include.aux_funcs import pinger, getGitReview
 import tg_userbot.include.cas_api as cas
 import tg_userbot.include.git_api as git
@@ -78,4 +79,5 @@ async def neofetch(sysd):
         await sysd.edit("`Install neofetch first !!`")
     return
 
-HELP_DICT.update({"systools":helpRep.SYSTOOLS_HELP})
+MODULE_DESC.update({"systools": descRep.SYSTOOLS_DESC})
+MODULE_DICT.update({"systools": usageRep.SYSTOOLS_USAGE})

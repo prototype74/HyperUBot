@@ -1,6 +1,7 @@
 # tguserbot stuff
-from tg_userbot import tgclient, HELP_DICT, TEMP_DL_DIR, UBOT_LANG
-from tg_userbot.include.language_processor import ScrappersText as msgRep, HelpDesignations as helpRep
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR, UBOT_LANG
+from tg_userbot.include.language_processor import (ScrappersText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 
 # Telethon stuff
 from telethon.errors import ChatSendMediaForbiddenError, MessageTooLongError
@@ -96,4 +97,5 @@ async def translate(event):
     return
 
 
-HELP_DICT.update({"scrappers": helpRep.SCRAPPERS_HELP})
+MODULE_DESC.update({"scrappers": descRep.SCRAPPERS_DESC})
+MODULE_DICT.update({"scrappers": usageRep.SCRAPPERS_USAGE})

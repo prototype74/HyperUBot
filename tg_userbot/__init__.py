@@ -91,5 +91,7 @@ except Exception as e:
 # SYSVARS
 PROJECT = "tguserbot-X"
 VERSION = "0.0.1-DEV_PREV"
-HELP_DICT = {}
+ALL_MODULES = []
+MODULE_DESC = {}
+MODULE_DICT = {}
 

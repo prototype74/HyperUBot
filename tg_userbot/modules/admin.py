@@ -1,7 +1,8 @@
 # tguserbot stuff
-from tg_userbot import tgclient, HELP_DICT
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import fetch_user
-from tg_userbot.include.language_processor import AdminText as msgRep, HelpDesignations as helpRep
+from tg_userbot.include.language_processor import (AdminText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 
 # Telethon Stuff
 from telethon.errors import (UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError,
@@ -438,4 +439,5 @@ async def pin(event):
     return
 
 
-HELP_DICT.update({"admin": helpRep.ADMIN_HELP})
+MODULE_DESC.update({"admin": descRep.ADMIN_DESC})
+MODULE_DICT.update({"admin": usageRep.ADMIN_USAGE})

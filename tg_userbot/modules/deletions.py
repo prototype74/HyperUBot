@@ -1,6 +1,7 @@
 # tguserbot stuff
-from tg_userbot import tgclient, HELP_DICT
-from tg_userbot.include.language_processor import DeletionsText as msgRep, HelpDesignations as helpRep
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
+from tg_userbot.include.language_processor import (DeletionsText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -83,4 +84,5 @@ async def purge(event):
     return
 
 
-HELP_DICT.update({"deletions": helpRep.DELETIONS_HELP})
+MODULE_DESC.update({"deletions": descRep.DELETIONS_DESC})
+MODULE_DICT.update({"deletions": usageRep.DELETIONS_USAGE})

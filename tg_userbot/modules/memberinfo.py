@@ -1,7 +1,8 @@
 # tguserbot stuff
-from tg_userbot import tgclient, HELP_DICT
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import fetch_user
-from tg_userbot.include.language_processor import MemberInfoText as msgRep, HelpDesignations as helpRep
+from tg_userbot.include.language_processor import (MemberInfoText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -324,4 +325,5 @@ async def memberinfo(event):
     return
 
 
-HELP_DICT.update({"memberinfo": helpRep.MEMBERINFO_HELP})
+MODULE_DESC.update({"memberinfo": descRep.MEMBERINFO_DESC})
+MODULE_DICT.update({"memberinfo": usageRep.MEMBERINFO_USAGE})

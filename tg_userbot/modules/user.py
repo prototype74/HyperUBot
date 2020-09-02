@@ -1,6 +1,7 @@
 # My Stuff
-from tg_userbot import BOTLOG, BOTLOG_CHATID, tgclient, HELP_DICT
-from tg_userbot.include.language_processor import UserText as msgRep, HelpDesignations as helpRep
+from tg_userbot import tgclient, BOTLOG, BOTLOG_CHATID, MODULE_DESC, MODULE_DICT
+from tg_userbot.include.language_processor import (UserText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 from tg_userbot.include.aux_funcs import fetch_user
 
 # Telethon stuff
@@ -164,4 +165,5 @@ async def fetch_info(replied_user, event):
 
     return caption
 
-HELP_DICT.update({"user":helpRep.USER_HELP})
+MODULE_DESC.update({"user": descRep.USER_DESC})
+MODULE_DICT.update({"user": usageRep.USER_USAGE})

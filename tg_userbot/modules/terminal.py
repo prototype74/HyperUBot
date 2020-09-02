@@ -1,6 +1,7 @@
 # My stuff
-from tg_userbot import tgclient, HELP_DICT
-from tg_userbot.include.language_processor import TerminalText as msgRep, HelpDesignations as helpRep
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
+from tg_userbot.include.language_processor import (TerminalText as msgRep, ModuleDescriptions as descRep,
+                                                   ModuleUsages as usageRep)
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -41,4 +42,5 @@ async def python(command):
     await command.edit(output)
     return
 
-HELP_DICT.update({"terminal":helpRep.TERMINAL_HELP})
+MODULE_DESC.update({"terminal": descRep.TERMINAL_DESC})
+MODULE_DICT.update({"terminal": usageRep.TERMINAL_USAGE})
