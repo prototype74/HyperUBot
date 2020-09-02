@@ -80,6 +80,7 @@ class StatusText(object):
     MAC_UPTIMETXT = "Server uptime: "
     SHUTDOWN = "`Powering off...`"
     SHUTDOWN_LOG = "#SHUTDOWN\nBot is powering off under user request!"
+    SYSD_NEOFETCH_REQ = "`neofetch package is required to display system information`"
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`I can't delete this message`"

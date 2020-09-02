@@ -72,12 +72,12 @@ async def shutdown(power_off):
     await power_off.client.disconnect()
 
 @tgclient.on(NewMessage(pattern=r"^\.sysd$", outgoing=True))
-async def neofetch(sysd):
+async def sysd(event):
     try:
         result = check_output("neofetch --stdout", shell=True).decode()
-        await sysd.edit("`" + result + "`")
+        await event.edit(f"`{result}`")
     except:
-        await sysd.edit("`Install neofetch first !!`")
+        await event.edit(msgRep.SYSD_NEOFETCH_REQ)
     return
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.SYSTOOLS_DESC})
