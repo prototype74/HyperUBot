@@ -21,7 +21,7 @@ from os.path import basename
 USER = uname().node # Maybe add a username in future
 STARTTIME = datetime.now()
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.status$"))
+@tgclient.on(NewMessage(pattern=r"^\.status$", outgoing=True))
 async def statuschecker(stat):
     global STARTTIME
     uptimebot = datetime.now() - STARTTIME
@@ -64,14 +64,14 @@ async def statuschecker(stat):
     await stat.edit(reply)
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.shutdown$"))
+@tgclient.on(NewMessage(pattern=r"^\.shutdown$", outgoing=True))
 async def shutdown(power_off):
     await power_off.edit(msgRep.SHUTDOWN)
     if BOTLOG:
         await power_off.client.send_message(BOTLOG_CHATID, msgRep.SHUTDOWN_LOG)
     await power_off.client.disconnect()
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.sysd$"))
+@tgclient.on(NewMessage(pattern=r"^\.sysd$", outgoing=True))
 async def neofetch(sysd):
     try:
         result = check_output("neofetch --stdout", shell=True).decode()

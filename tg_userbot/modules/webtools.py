@@ -18,19 +18,19 @@ from urllib.request import urlretrieve
 
 DEFAULT_ADD = "1.0.0.1"
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.rtt$"))
+@tgclient.on(NewMessage(pattern=r"^\.rtt$", outgoing=True))
 async def rtt(message):
     rtt = pinger(DEFAULT_ADD)
     await message.edit(msgRep.PING_SPEED + rtt)
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.dc$"))
+@tgclient.on(NewMessage(pattern=r"^\.dc$", outgoing=True))
 async def datacenter(event):
     result = await event.client(functions.help.GetNearestDcRequest())
     await event.edit(msgRep.DCMESSAGE.format(result.country, result.this_dc, result.nearest_dc))
     return
 
-@tgclient.on(NewMessage(outgoing=True, pattern=r"^\.ping(?: |$)?"))
+@tgclient.on(NewMessage(pattern=r"^\.ping(?: |$)?", outgoing=True))
 async def ping(args):
     commandParser = str(args.message.message).split(' ')
     if len(commandParser) != 2:
