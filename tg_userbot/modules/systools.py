@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot import tgclient, VERSION, PROJECT, LOGGING, LOGGING_CHATID, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, VERSION, PROJECT, LOGGING, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import event_log
 from tg_userbot.include.language_processor import (StatusText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -69,7 +69,7 @@ async def statuschecker(stat):
 async def shutdown(power_off):
     await power_off.edit(msgRep.SHUTDOWN)
     if LOGGING:
-        await power_off.client.send_message(LOGGING_CHATID, event_log("SHUTDOWN", custom_text=msgRep.SHUTDOWN_LOG))
+        await event_log(power_off, "SHUTDOWN", custom_text=msgRep.SHUTDOWN_LOG)
     await power_off.client.disconnect()
 
 @tgclient.on(NewMessage(pattern=r"^\.sysd$", outgoing=True))

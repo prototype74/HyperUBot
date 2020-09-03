@@ -61,6 +61,7 @@ class AdminText(object): # Admin module
     PIN_SUCCESS = "`Message pinned successfully`"
     PINNED_ALREADY = "`This message is pinned already`"
     PIN_FAILED = "Failed to pin messge"
+    LOG_PIN_MSG_ID = "Message ID"
 
 class StatusText(object):
     UBOT = "Userbot Project: "
@@ -91,6 +92,7 @@ class DeletionsText(object):
     NO_DEL_PRIV = "`Delete messages permission is required to purge messages`"
     PURGE_MSG_FAILED = "`Reply to someone's message to delete it`"
     PURGE_COMPLETE = "Purge complete! Purged `{}` message(s)!"
+    LOG_PURGE = "Purged `{}` message(s)"
     REPLY_PURGE_MSG = "`Reply to a message to start purge`"
 
 class ChatInfoText(object):

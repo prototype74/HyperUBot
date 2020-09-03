@@ -1,5 +1,6 @@
 # tguserbot stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
+from tg_userbot.include.aux_funcs import event_log
 from tg_userbot.include.language_processor import (DeletionsText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
 
@@ -77,6 +78,11 @@ async def purge(event):
             result = await event.client.send_message(chat.id, msgRep.PURGE_COMPLETE.format(msg_count))
             await sleep(2.5)
             await result.delete()
+            if LOGGING:
+                await event_log(event, "PURGE", chat_title=chat.title if hasattr(chat, "title") else None,
+                                chat_link=chat.username if hasattr(chat, "username") else None,
+                                chat_id=chat.id if hasattr(chat, "id") else None,
+                                custom_text= msgRep.LOG_PURGE.format(msg_count))
         except:
             pass
     else:

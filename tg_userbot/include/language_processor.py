@@ -75,6 +75,7 @@ class AdminText(object): # Admin module
     PIN_SUCCESS = text.AdminText.PIN_SUCCESS
     PINNED_ALREADY = text.AdminText.PINNED_ALREADY
     PIN_FAILED = text.AdminText.PIN_FAILED
+    LOG_PIN_MSG_ID = text.AdminText.LOG_PIN_MSG_ID
 
 class StatusText(object):
     UBOT = text.StatusText.UBOT
@@ -105,6 +106,7 @@ class DeletionsText(object):
     NO_DEL_PRIV = text.DeletionsText.NO_DEL_PRIV
     PURGE_MSG_FAILED = text.DeletionsText.PURGE_MSG_FAILED
     PURGE_COMPLETE = text.DeletionsText.PURGE_COMPLETE
+    LOG_PURGE = text.DeletionsText.LOG_PURGE
     REPLY_PURGE_MSG = text.DeletionsText.REPLY_PURGE_MSG
 
 class ChatInfoText(object):

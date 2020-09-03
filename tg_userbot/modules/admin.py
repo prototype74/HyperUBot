@@ -1,6 +1,6 @@
 # tguserbot stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
-from tg_userbot.include.aux_funcs import fetch_user
+from tg_userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
+from tg_userbot.include.aux_funcs import event_log, fetch_user
 from tg_userbot.include.language_processor import (AdminText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
 
@@ -58,6 +58,10 @@ async def ban(event):
             await event.edit(msgRep.BAN_SUCCESS_REMOTE.format(name, chat.title))
         else:
             await event.edit(msgRep.BAN_SUCCESS.format(name))
+        if LOGGING:
+            await event_log(event, "BAN", user_name=user.first_name, username=user.username, user_id=user.id,
+                            chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except UserAdminInvalidError:
@@ -103,6 +107,10 @@ async def unban(event):
             await event.edit(msgRep.UNBAN_SUCCESS_REMOTE.format(name, chat.title))
         else:
             await event.edit(msgRep.UNBAN_SUCCESS.format(name))
+        if LOGGING:
+            await event_log(event, "UNBAN", user_name=user.first_name, username=user.username, user_id=user.id,
+                            chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
@@ -145,6 +153,10 @@ async def kick(event):
             await event.edit(msgRep.KICK_SUCCESS_REMOTE.format(name, chat.title))
         else:
             await event.edit(msgRep.KICK_SUCCESS.format(name))
+        if LOGGING:
+            await event_log(event, "KICK", user_name=user.first_name, username=user.username, user_id=user.id,
+                            chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
@@ -226,6 +238,10 @@ async def promote(event):
         await event.client(EditAdminRequest(chat.id, user.id, admin_perms, title))
         name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         await event.edit(msgRep.PROMOTE_SUCCESS.format(name))
+        if LOGGING:
+            await event_log(event, "PROMOTE", user_name=user.first_name, username=user.username, user_id=user.id,
+                            chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id)
     except AdminsTooMuchError:
         await event.edit(msgRep.TOO_MANY_ADMINS)
     except AdminRankEmojiNotAllowedError:
@@ -295,6 +311,10 @@ async def demote(event):
         await event.client(EditAdminRequest(chat.id, user.id, rm_admin_perms, ""))
         name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         await event.edit(msgRep.DEMOTE_SUCCESS.format(name))
+        if LOGGING:
+            await event_log(event, "DEMOTE", user_name=user.first_name, username=user.username, user_id=user.id,
+                            chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id)
     except ChatAdminRequiredError:
         if user_is_admin:
             await event.edit(msgRep.CANNOT_DEMOTE_ADMIN)
@@ -345,6 +365,10 @@ async def mute(event):
             await event.edit(msgRep.MUTE_SUCCESS_REMOTE.format(name, chat.title))
         else:
             await event.edit(msgRep.MUTE_SUCCESS.format(name))
+        if LOGGING:
+            await event_log(event, "MUTE", user_name=user.first_name, username=user.username, user_id=user.id,
+                            chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
@@ -392,6 +416,10 @@ async def unmute(event):
             await event.edit(msgRep.UNMUTE_SUCCESS_REMOTE.format(name, chat.title))
         else:
             await event.edit(msgRep.UNMUTE_SUCCESS.format(name))
+        if LOGGING:
+            await event_log(event, "UNMUTE", user_name=user.first_name, username=user.username, user_id=user.id,
+                            chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
@@ -424,6 +452,9 @@ async def delaccs(event):
         await event.edit(msgRep.DEL_ACCS_COUNT.format(deleted_accounts))
     elif rem_del_accounts > 0 and rem_del_accounts <= deleted_accounts:
         await event.edit(msgRep.REM_DEL_ACCS_COUNT.format(rem_del_accounts, deleted_accounts))
+        if LOGGING:
+            await event_log(event, "DELACCS", chat_title=chat.title,
+                            chat_link=chat.username if hasattr(chat, "username") else None, chat_id=chat.id)
     else:
         await event.edit(msgRep.NO_DEL_ACCOUNTS)
 
@@ -452,6 +483,10 @@ async def pin(event):
     try:
         await event.client(UpdatePinnedMessageRequest(chat.id, msg_id, silent=silently))
         await event.edit(msgRep.PIN_SUCCESS)
+        if LOGGING:
+            await event_log(event, "PINNED MESSAGE", chat_title=chat.title if hasattr(chat, "title") else None,
+                            chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id, custom_text=f"{msgRep.LOG_PIN_MSG_ID}: {event.reply_to_msg_id}")
     except ChatNotModifiedError:
         await event.edit(msgRep.PINNED_ALREADY)
     except ChatAdminRequiredError:
