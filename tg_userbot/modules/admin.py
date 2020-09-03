@@ -474,7 +474,7 @@ async def pin(event):
         await event.edit(msgRep.FAIL_CHAT)
         return
 
-    if type(chat) is User:
+    if type(chat) is User and not chat.is_self:
         await event.edit(msgRep.NO_GROUP_CHAN)
         return
 
