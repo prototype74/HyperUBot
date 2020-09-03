@@ -249,7 +249,7 @@ async def promote(event):
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
-        await event.edit(f"`{msgRep.LOG_PROMOTE_FAILED}: {e}`")
+        await event.edit(f"`{msgRep.PROMOTE_FAILED}: {e}`")
 
     return
 
