@@ -1,5 +1,6 @@
 # My Stuff
-from tg_userbot import tgclient, BOTLOG, BOTLOG_CHATID, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, LOGGING, LOGGING_CHATID, MODULE_DESC, MODULE_DICT
+from tg_userbot.include.aux_funcs import event_log
 from tg_userbot.include.language_processor import (UserText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
 from tg_userbot.include.aux_funcs import fetch_user
@@ -20,8 +21,9 @@ async def kickme(leave):
     await leave.edit(msgRep.LEAVING)
     await sleep(0.1) #wait to avoid bad stuff
     await leave.client.kick_participant(leave.chat_id, 'me')
-    if BOTLOG:
-        await leave.client.send_message(BOTLOG_CHATID, msgRep.KICKME_LOG.format(leave.chat.title, leave.chat.id))
+    if LOGGING:
+        await leave.client.send_message(LOGGING_CHATID, event_log("KICKME", chat_title=leave.chat.title,
+                                        chat_id=leave.chat.id))
     return
 
 @tgclient.on(NewMessage(pattern=r"^\.stats$", outgoing=True))

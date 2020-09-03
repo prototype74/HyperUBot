@@ -228,7 +228,6 @@ class ScrappersText(object):
 
 class UserText(object):
     LEAVING = text.UserText.LEAVING
-    KICKME_LOG = text.UserText.KICKME_LOG
     STATS_PROCESSING = text.UserText.STATS_PROCESSING
     STATS_HEADER = text.UserText.STATS_HEADER
     STATS_USERS = text.UserText.STATS_USERS
@@ -272,6 +271,12 @@ class GeneralMessages(object):
     FAIL_FETCH_USER = text.GeneralMessages.FAIL_FETCH_USER
     ENTITY_NOT_USER = text.GeneralMessages.ENTITY_NOT_USER
     CALL_UREQ_FAIL = text.GeneralMessages.CALL_UREQ_FAIL
+    LOG_USER = text.GeneralMessages.CALL_UREQ_FAIL
+    LOG_USERNAME = text.GeneralMessages.CALL_UREQ_FAIL
+    LOG_USER_ID = text.GeneralMessages.CALL_UREQ_FAIL
+    LOG_CHAT_TITLE = text.GeneralMessages.CALL_UREQ_FAIL
+    LOG_CHAT_LINK = text.GeneralMessages.CALL_UREQ_FAIL
+    LOG_CHAT_ID = text.GeneralMessages.CALL_UREQ_FAIL
 
 class HelpText(object):
     INVALID_ARG = text.HelpText.INVALID_ARG

@@ -82,6 +82,27 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
 
     return (None, chat_obj) if get_chat else None
 
+def event_log(event_name: str, user_name=None, user_id=None, username=None,
+              chat_title=None, chat_link=None, chat_id=None, custom_text=None) -> str:
+    log = f"**{event_name}**\n"
+    if user_name and user_id and not username:
+        log += f"{msgsLang.LOG_USER}: [{user_name}](tg://user?id={user_id})\n"
+    elif user_name:
+        log += f"{msgsLang.LOG_USER}: {user_name}\n"
+    if username:
+        log += f"{msgsLang.LOG_USERNAME}: @{username}\n"
+    if user_id:
+        log += f"{msgsLang.LOG_USER_ID}: `{user_id}`\n"
+    if chat_title:
+        log += f"{msgsLang.LOG_CHAT_TITLE}: {chat_title}\n"
+    if chat_link:
+        log += f"{msgsLang.LOG_CHAT_LINK}: @{chat_link}\n"
+    if chat_id:
+        log += f"{msgsLang.LOG_CHAT_ID}: `{chat_id}`\n"
+    if custom_text:
+        log += f"{custom_text}"
+    return log
+
 # Systools/Webtools
 def pinger(address):
     if os.name == "nt":

@@ -34,8 +34,8 @@ if path.exists(CURR_PATH + "config.env"):
         quit(1)
     API_KEY = environ.get("API_KEY", None)
     API_HASH = environ.get("API_HASH", None)
-    BOTLOG = environ.get("BOTLOG", False)
-    BOTLOG_CHATID = int(environ.get("BOTLOG_CHATID", "0"))
+    LOGGING = environ.get("LOGGING", False)
+    LOGGING_CHATID = int(environ.get("LOGGING_CHATID", "0"))
     STRING_SESSION = environ.get("STRING_SESSION", None)
     TEMP_DL_DIR = environ.get("TEMP_DL_DIR", "./downloads")
     UBOT_LANG = environ.get("UBOT_LANG", "en")
@@ -48,8 +48,8 @@ elif path.exists(CURR_PATH + "config.py"):
         quit(1)
     API_KEY = ConfigClass.API_KEY if hasattr(ConfigClass, "API_KEY") else None
     API_HASH = ConfigClass.API_HASH if hasattr(ConfigClass, "API_HASH") else None
-    BOTLOG = ConfigClass.BOTLOG if hasattr(ConfigClass, "BOTLOG") else False
-    BOTLOG_CHATID = ConfigClass.BOTLOG_CHATID if hasattr(ConfigClass, "BOTLOG_CHATID") else 0
+    LOGGING = ConfigClass.LOGGING if hasattr(ConfigClass, "LOGGING") else False
+    LOGGING_CHATID = ConfigClass.LOGGING_CHATID if hasattr(ConfigClass, "LOGGING_CHATID") else 0
     STRING_SESSION = ConfigClass.STRING_SESSION if hasattr(ConfigClass, "STRING_SESSION") else None
     TEMP_DL_DIR = ConfigClass.TEMP_DL_DIR if hasattr(ConfigClass, "TEMP_DL_DIR") else "./downloads"
     UBOT_LANG = ConfigClass.UBOT_LANG if hasattr(ConfigClass, "UBOT_LANG") else "en"

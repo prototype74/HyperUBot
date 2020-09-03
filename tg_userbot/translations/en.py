@@ -79,7 +79,7 @@ class StatusText(object):
     BOT_UPTIMETXT = "Bot uptime: "
     MAC_UPTIMETXT = "Server uptime: "
     SHUTDOWN = "`Powering off...`"
-    SHUTDOWN_LOG = "#SHUTDOWN\nBot is powering off under user request!"
+    SHUTDOWN_LOG = "Bot is powering off under user request!"
     SYSD_NEOFETCH_REQ = "`neofetch package is required to display system information`"
 
 class DeletionsText(object):
@@ -214,7 +214,6 @@ class ScrappersText(object):
 
 class UserText(object):
     LEAVING = "`Leaving chat...`"
-    KICKME_LOG = "#KICKME\nSuccessfully left [{}]({})!"
     STATS_PROCESSING = "`Computing stats...`"
     STATS_HEADER = "My Telegram stats"
     STATS_USERS = "PM chats with **{}** people"
@@ -258,6 +257,12 @@ class GeneralMessages(object):
     FAIL_FETCH_USER = "Failed to fetch user"
     ENTITY_NOT_USER = "`Entity is not an User object`"
     CALL_UREQ_FAIL = "Call User request failed"
+    LOG_USER = "User"
+    LOG_USERNAME = "Username"
+    LOG_USER_ID = "User ID"
+    LOG_CHAT_TITLE = "Chat title"
+    LOG_CHAT_LINK = "Link"
+    LOG_CHAT_ID = "Chat ID"
 
 class HelpText(object):
     INVALID_ARG = "`Invalid argument \"{}\"`"
