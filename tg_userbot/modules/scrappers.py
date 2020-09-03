@@ -60,7 +60,7 @@ async def translate(event):
 
 
 @tgclient.on(NewMessage(pattern=r"^\.tts(?: |$)(.*)", outgoing=True))
-async def translate(event):
+async def text_to_speech(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
         msg = msg.message
