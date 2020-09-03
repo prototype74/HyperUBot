@@ -271,12 +271,12 @@ class GeneralMessages(object):
     FAIL_FETCH_USER = text.GeneralMessages.FAIL_FETCH_USER
     ENTITY_NOT_USER = text.GeneralMessages.ENTITY_NOT_USER
     CALL_UREQ_FAIL = text.GeneralMessages.CALL_UREQ_FAIL
-    LOG_USER = text.GeneralMessages.CALL_UREQ_FAIL
-    LOG_USERNAME = text.GeneralMessages.CALL_UREQ_FAIL
-    LOG_USER_ID = text.GeneralMessages.CALL_UREQ_FAIL
-    LOG_CHAT_TITLE = text.GeneralMessages.CALL_UREQ_FAIL
-    LOG_CHAT_LINK = text.GeneralMessages.CALL_UREQ_FAIL
-    LOG_CHAT_ID = text.GeneralMessages.CALL_UREQ_FAIL
+    LOG_USER = text.GeneralMessages.LOG_USER
+    LOG_USERNAME = text.GeneralMessages.LOG_USERNAME
+    LOG_USER_ID = text.GeneralMessages.LOG_USER_ID
+    LOG_CHAT_TITLE = text.GeneralMessages.LOG_CHAT_TITLE
+    LOG_CHAT_LINK = text.GeneralMessages.LOG_CHAT_LINK
+    LOG_CHAT_ID = text.GeneralMessages.LOG_CHAT_ID
 
 class HelpText(object):
     INVALID_ARG = text.HelpText.INVALID_ARG
