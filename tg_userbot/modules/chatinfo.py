@@ -19,8 +19,14 @@ from os.path import basename
 @tgclient.on(NewMessage(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True))
 async def info(event):
     await event.edit(msgRep.CHAT_ANALYSIS)
+
     chat = await get_chatinfo(event)
+
+    if not chat:
+        return
+
     caption = await fetch_info(chat, event)
+
     try:
         await event.edit(caption, parse_mode="html")
     except Exception as e:
