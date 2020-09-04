@@ -347,7 +347,8 @@ class ModuleDescriptions(object):
                      \n\nNote: requires admin privileges to access other member's permissions."
     SCRAPPERS_DESC = "Not as it sounds like to be but still this module includes useful features like translation or text-to-speech."
     # temp empty
-    SYSTOOLS_DESC = ""
+    SYSTOOLS_DESC = "This module contains a set of system tools for the bot. It allows you to check the bot uptime, the server uptime, the versions of all the bot's \
+                    components, the specifications of the server system, and some bot power controls."
     USER_DESC = ""
     WEBTOOLS_DESC = ""
     CAS_INTERFACE_DESC = ""
