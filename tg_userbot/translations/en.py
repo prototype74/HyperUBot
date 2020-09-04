@@ -232,6 +232,7 @@ class UserText(object):
     STATS_UNKNOWN = "**{}** unknown chats"
     STATS_TOTAL = "Total chats"
     FETCH_INFO = "`Getting user info...`"
+    FAILED_FETCH_INFO = "`Failed to fetch user info`"
     UNKNOWN = "Unknown"
     DELETED_ACCOUNT = "Deleted Account"
     YES = "Yes"
