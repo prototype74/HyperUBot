@@ -15,11 +15,11 @@ class AdminText(object): # Admin module
     CANNOT_BAN_ADMIN = "`I can't ban this admin`"
     BAN_SUCCESS_REMOTE = "{} has been banned from **{}**"  # user name, chat tile
     BAN_SUCCESS = "{} has been banned!"  # user name
-    BAN_FAILED = "`Ban failed`"
+    BAN_FAILED = "`Failed to ban this person`"
     CANNOT_UNBAN_SELF = "`I can't unban myself`"
     UNBAN_SUCCESS_REMOTE = "{} has been unbanned from **{}**"  # user name, chat tile
     UNBAN_SUCCESS = "{} has been unbanned!"  # user name
-    UNBAN_FAILED = "`Unban failed`"
+    UNBAN_FAILED = "`Failed to unban this person`"
     CANNOT_KICK_SELF = "`I can't kick myself`"
     KICK_SUCCESS_REMOTE = "{} has been kicked from **{}**"  # user name, chat tile
     KICK_SUCCESS = "{} has been kicked!"  # user name
@@ -60,7 +60,7 @@ class AdminText(object): # Admin module
     REPLY_TO_MSG = "`Reply to a message to pin it`"
     PIN_SUCCESS = "`Message pinned successfully`"
     PINNED_ALREADY = "`This message is pinned already`"
-    PIN_FAILED = "`Failed to pin messge`"
+    PIN_FAILED = "`Failed to pin this message`"
     LOG_PIN_MSG_ID = "Message ID"
 
 class StatusText(object):
