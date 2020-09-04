@@ -114,7 +114,7 @@ async def info(event):  # .info command
         await event.edit(caption, parse_mode="html")
     except Exception as e:
         log.error(f"{basename(__file__)[:-3]}: {e}")
-        await event.edit(f"`Failed to fetch user info: {e}`")
+        await event.edit(msgRep.FAILED_FETCH_INFO)
 
     return
 

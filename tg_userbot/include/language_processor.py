@@ -246,6 +246,7 @@ class UserText(object):
     STATS_UNKNOWN = text.UserText.STATS_UNKNOWN
     STATS_TOTAL = text.UserText.STATS_TOTAL
     FETCH_INFO = text.UserText.FETCH_INFO
+    FAILED_FETCH_INFO = text.UserText.FAILED_FETCH_INFO
     UNKNOWN = text.UserText.UNKNOWN
     DELETED_ACCOUNT = text.UserText.DELETED_ACCOUNT
     YES = text.UserText.YES
