@@ -346,14 +346,14 @@ class ModuleDescriptions(object):
     MEMBERINFO_DESC = "Provides information from a specific group participant like permissions, restriction date, join date etc.\
                      \n\nNote: requires admin privileges to access other member's permissions."
     SCRAPPERS_DESC = "Not as it sounds like to be but still this module includes useful features like translation or text-to-speech."
-    # temp empty
     SYSTOOLS_DESC = "This module contains a set of system tools for the bot. It allows you to check the bot uptime, the server uptime, the versions of all the bot's \
                     components, the specifications of the server system, and some bot power controls."
-    USER_DESC = ""
-    WEBTOOLS_DESC = ""
-    CAS_INTERFACE_DESC = ""
-    GITHUB_DESC = ""
-    TERMINAL_DESC = ""
+    USER_DESC = "Provides information about any user, your statistics, and contains the kickme tool."
+    WEBTOOLS_DESC = "This module contains most, if not all, of the bot's webtools, such as ping, speedtest, rtt calculator and the current datacenter."
+    CAS_INTERFACE_DESC = "The interface for the Combot Anti-Spam System API. It allows you to check a specific user for CAS bans or an entire group, via the designated commands."
+    GITHUB_DESC = "A module that takes use of the GitHub API. This allows you to check for releases from a specific user and repository."
+    TERMINAL_DESC = "This module provides tools to run directly shell commands, in the host machine, or python instructions, for quick tests. More to come! \
+                    \n\n**Attention:** Running shell commands in the bot can and will make permanent changes to the host system. **Bad things will happen if you run the bot as sudo/root!**"
 
 class ModuleUsages(object):
     ADMIN_USAGE = "`.ban` [optional: <username/id> <chat (id or link)>] or reply\
