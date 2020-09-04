@@ -98,6 +98,7 @@ class DeletionsText(object):
 class ChatInfoText(object):
     CHAT_ANALYSIS = "`Analysing the chat...`"
     EXCEPTION = "`An unexpected error has occurred!`"
+    CANNOT_GET_CHATINFO = "`I can't get information from this chat!`"
     YES_BOLD = "<b>Yes</b>"
     NO_BOLD = "<b>No</b>"
     YES = "Yes"

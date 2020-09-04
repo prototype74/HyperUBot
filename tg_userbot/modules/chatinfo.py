@@ -62,8 +62,9 @@ async def get_chatinfo(event):
         except ChannelPublicGroupNaError:
             await event.edit(msgRep.NOT_EXISTS)
             return None
-        except (TypeError, ValueError) as err:
-            await event.edit(str(err))
+        except Exception as e:
+            log.warning(f"{basename(__file__)[:-3]}: {e}")
+            await event.edit(msgRep.CANNOT_GET_CHATINFO)
             return None
     return chat_info
 
