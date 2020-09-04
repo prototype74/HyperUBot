@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, log, LOGGING, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import event_log, fetch_user
 from tg_userbot.include.language_processor import (AdminText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -67,7 +67,8 @@ async def ban(event):
     except UserAdminInvalidError:
         await event.edit(msgRep.CANNOT_BAN_ADMIN)
     except Exception as e:
-        await event.edit(f"{msgRep.BAN_FAILED}: {e}")
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(msgRep.BAN_FAILED)
 
     return
 
@@ -114,7 +115,8 @@ async def unban(event):
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
-        await event.edit(f"{msgRep.UNBAN_FAILED}: {e}")
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(fmsgRep.UNBAN_FAILED)
 
     return
 
@@ -160,7 +162,8 @@ async def kick(event):
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
-        await event.edit(f"{msgRep.KICK_FAILED}: {e}")
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(msgRep.KICK_FAILED)
 
     return
 
@@ -249,7 +252,8 @@ async def promote(event):
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
-        await event.edit(f"`{msgRep.PROMOTE_FAILED}: {e}`")
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(msgRep.PROMOTE_FAILED)
 
     return
 
@@ -321,7 +325,8 @@ async def demote(event):
         else:
             await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
-        await event.edit(f"`{msgRep.DEMOTE_FAILED}: {e}`")
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(msgRep.DEMOTE_FAILED)
 
     return
 
@@ -372,7 +377,8 @@ async def mute(event):
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
-        await event.edit(f"`{msgRep.MUTE_FAILED}: {e}`")
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(msgRep.MUTE_FAILED)
 
     return
 
@@ -423,7 +429,8 @@ async def unmute(event):
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
-        await event.edit(f"`{msgRep.UNMUTE_FAILED}: {e}`")
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(msgRep.UNMUTE_FAILED)
 
     return
 
@@ -492,7 +499,8 @@ async def pin(event):
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
-        await event.edit(f"`{msgRep.PIN_FAILED}: {e}`")
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(msgRep.PIN_FAILED)
 
     return
 

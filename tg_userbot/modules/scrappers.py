@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR, UBOT_LANG
+from tg_userbot import tgclient, log, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR, UBOT_LANG
 from tg_userbot.include.language_processor import (ScrappersText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
 
@@ -46,11 +46,10 @@ async def translate(event):
         text += f"<b>{msgRep.TRANS_TEXT}:</b>\n"
         text += result.text
         await event.edit(text, parse_mode="html")
-    except MessageTooLongError as mtle:
-        print("MessageTooLongError:", mtle)
+    except MessageTooLongError:
         await event.edit(msgRep.MSG_TOO_LONG)
     except Exception as e:
-        print("Exception:", e)
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
         if event.reply_to_msg_id:
             await event.edit(msgRep.FAIL_TRANS_MSG)
         else:
@@ -76,24 +75,23 @@ async def text_to_speech(event):
         await event.client.send_file(chat.id, file=file_loc, voice_note=True)
         await event.delete()
         remove(file_loc)
-    except ChatSendMediaForbiddenError as f:
-        print("ChatSendMediaForbiddenError:", f)
+    except ChatSendMediaForbiddenError:
         await event.edit(msgRep.MEDIA_FORBIDDEN)
     except AssertionError as ae:
-        print("AssertionError:", ae)
+        log.warning(f"{basename(__file__)[:-3]}: {ae}")
         if not msg:
             await event.edit(msgRep.NO_TEXT_TTS)
         else:
-            await event.edit(f"`{msgRep.FAIL_TTS}: {ae}`")
+            await event.edit(msgRep.FAIL_TTS)
     except gTTSError as ge:
-        print("gTTSError:", ge)
+        log.error(f"{basename(__file__)[:-3]}: {ge}")
         await event.edit(msgRep.FAIL_API_REQ)
     except ValueError as ve:
-        print("ValueError:", ve)
+        log.warning(f"{basename(__file__)[:-3]}: {ve}")
         await event.edit(msgRep.INVALID_LANG_CODE)
     except Exception as e:
-        print("Exception:", e)
-        await event.edit(f"`{msgRep.FAIL_TTS}: {e}`")
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(msgRep.FAIL_TTS)
 
     return
 

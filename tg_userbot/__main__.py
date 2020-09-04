@@ -1,5 +1,5 @@
 # tguserbot Stuff
-from tg_userbot import tgclient, LOGS, PROJECT, OS, ALL_MODULES, NOT_LOAD_MODULES, VERSION
+from tg_userbot import tgclient, log, PROJECT, OS, ALL_MODULES, NOT_LOAD_MODULES, VERSION
 
 # Telethon Stuff
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
@@ -43,9 +43,9 @@ class Modules:
                 self.__not_load_modules_count += 1
             return True
         except ModuleNotFoundError as mnfe:
-            LOGS.error(f"Unable to load module: {mnfe}")
+            log.error(f"Unable to load module: {mnfe}")
         except ImportError as ie:
-            LOGS.error(f"Unable to import module: {ie}")
+            log.error(f"Unable to import module: {ie}")
         return False
 
     def loaded_modules(self) -> int:
@@ -65,17 +65,17 @@ if __name__ == "__main__":
         with tgclient:
             tgclient.start()
             if not modules_count:
-                LOGS.warning("No module(s) available!")
+                log.warning("No module(s) available!")
             elif modules_count > 0:
-                LOGS.info(f"{modules_count} of {sum_modules} module(s) loaded!")
-            LOGS.info("%s %s: operational!", PROJECT, VERSION)
+                log.info(f"{modules_count} of {sum_modules} module(s) loaded!")
+            log.info("%s %s: operational!", PROJECT, VERSION)
             me = tgclient.loop.run_until_complete(tgclient.get_me())
-            LOGS.info("You're logged in as: %s - ID: %s", me.first_name, me.id)
+            log.info("You're logged in as: %s - ID: %s", me.first_name, me.id)
             tgclient.run_until_disconnected()
     except KeyboardInterrupt:
-        LOGS.info("Keyboard interruption. Terminating...")
+        log.info("Keyboard interruption. Terminating...")
     except PhoneNumberInvalidError:
-        LOGS.error("Invalid phone number!")
+        log.error("Invalid phone number!")
     except Exception as e:
-        LOGS.error(f"Unable to start userbot: {e}")
+        log.error(f"Unable to start userbot: {e}")
 

@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, log, MODULE_DESC, MODULE_DICT
 import tg_userbot.include.cas_api as cas_api
 from tg_userbot.include.language_processor import (CasIntText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -73,13 +73,12 @@ async def groupchecker(cas):
         text += banned_users
         if not cas_count:
             text = msgRep.NO_USRS
-    except ChatAdminRequiredError as carerr:
+    except ChatAdminRequiredError:
         await cas.edit(msgRep.NO_ADM)
-        print("ChatAdminRequiredError:", carerr)
         return
     except BaseException as be:
+        log.warning(f"{basename(__file__)[:-3]}: {be}")
         await cas.edit(msgRep.CAS_CHECK_FAIL)
-        print("BaseException:", be)
         return
     await cas.edit(text)
     return

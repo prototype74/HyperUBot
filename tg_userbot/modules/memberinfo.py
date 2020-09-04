@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, log, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import fetch_user
 from tg_userbot.include.language_processor import (MemberInfoText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -37,7 +37,8 @@ async def memberinfo(event):
         member_username = member_info.user.username if member_info.user.username else None
         member_name_link = f"<a href=\"tg://user?id={member_id}\">{member_name}</a>"
     except Exception as e:
-        await event.edit(f"`{msgRep.FAIL_GET_MEMBER}: {e}`")
+        log.error(f"{basename(__file__)[:-3]}: {e}")
+        await event.edit(msgRep.FAIL_GET_MEMBER)
         return
 
     try:
@@ -48,17 +49,17 @@ async def memberinfo(event):
             return
         # member_info becomes a participant object now
         member_info = participant_info.participant if participant_info else None
-    except ChannelInvalidError as cie:
+    except ChannelInvalidError:
         await event.edit(msgRep.INVALID_CHAT_ID)
         return
-    except UserNotParticipantError as unpe:
+    except UserNotParticipantError:
         if member_is_self:
             await event.edit(msgRep.ME_NOT_PART.format(chat_info.title))
         else:
             await event.edit(msgRep.USER_NOT_PART.format(chat_info.title))
         return
     except Exception as e:
-        print("Exception:", e)
+        log.warning(f"{basename(__file__)[:-3]}: {e}")
         await event.edit(msgRep.FAIL_GET_PART)
         return
 

@@ -15,15 +15,15 @@ class AdminText(object): # Admin module
     CANNOT_BAN_ADMIN = "`I can't ban this admin`"
     BAN_SUCCESS_REMOTE = "{} has been banned from **{}**"  # user name, chat tile
     BAN_SUCCESS = "{} has been banned!"  # user name
-    BAN_FAILED = "Ban failed"
+    BAN_FAILED = "`Ban failed`"
     CANNOT_UNBAN_SELF = "`I can't unban myself`"
     UNBAN_SUCCESS_REMOTE = "{} has been unbanned from **{}**"  # user name, chat tile
     UNBAN_SUCCESS = "{} has been unbanned!"  # user name
-    UNBAN_FAILED = "Unban failed"
+    UNBAN_FAILED = "`Unban failed`"
     CANNOT_KICK_SELF = "`I can't kick myself`"
     KICK_SUCCESS_REMOTE = "{} has been kicked from **{}**"  # user name, chat tile
     KICK_SUCCESS = "{} has been kicked!"  # user name
-    KICK_FAILED = "Failed to kick this person"
+    KICK_FAILED = "`Failed to kick this person`"
     NOONE_TO_PROMOTE = "`There is no one to promote`"
     NOT_USER = "`Given username or ID isn't an User`"
     CANNOT_PROMOTE_SELF = "`I can't promote myself`"
@@ -35,24 +35,24 @@ class AdminText(object): # Admin module
     TOO_MANY_ADMINS = "`This chat has too many admins already`"
     EMOJI_NOT_ALLOWED = "`Emoji are not allowed in admin titles`"
     GET_ENTITY_FAILED = "Failed to fetch entity"
-    PROMOTE_FAILED = "Failed to promote this person"
+    PROMOTE_FAILED = "`Failed to promote this person`"
     NOONE_TO_DEMOTE = "`There is no one to demote`"
     CANNOT_DEMOTE_SELF = "`I can't demote myself`"
     DEMOTED_ALREADY = "`This person is mortal already`"
     DEMOTE_SUCCESS = "{} has been demoted!"  # user name
     CANNOT_DEMOTE_ADMIN = "`This chat has too many admins already`"
-    DEMOTE_FAILED = "Failed to demote this person"
+    DEMOTE_FAILED = "`Failed to demote this person`"
     NO_GROUP_ARGS = "`This chat or given chat isn't a group`"
     NOT_MUTE_SUB_CHAN = "`Unable to mute subscribers in a channel`"
     CANNOT_MUTE_SELF = "`I can't mute myself`"
     MUTE_SUCCESS_REMOTE = "{} has been muted in **{}**"  # user name, chat tile
     MUTE_SUCCESS = "Muted {}"  # user name
-    MUTE_FAILED = "Failed to mute this person"
+    MUTE_FAILED = "`Failed to mute this person`"
     NOT_UNMUTE_SUB_CHAN = "`Unable to unmute subscribers in a channel`"
     CANNOT_UNMUTE_SELF = "`I can't unmute myself`"
     UNMUTE_SUCCESS_REMOTE = "{} has been unmuted in **{}**"  # user name, chat tile
     UNMUTE_SUCCESS = "Unmuted {}"  # user name
-    UNMUTE_FAILED = "Failed to unmute this person"
+    UNMUTE_FAILED = "`Failed to unmute this person`"
     TRY_DEL_ACCOUNTS = "`Trying to remove deleted accounts...`"
     DEL_ACCS_COUNT = "`{} deleted accounts found in this chat`"
     REM_DEL_ACCS_COUNT = "`Removed {} of {} deleted accounts`"  # rem count, total count
@@ -60,7 +60,7 @@ class AdminText(object): # Admin module
     REPLY_TO_MSG = "`Reply to a message to pin it`"
     PIN_SUCCESS = "`Message pinned successfully`"
     PINNED_ALREADY = "`This message is pinned already`"
-    PIN_FAILED = "Failed to pin messge"
+    PIN_FAILED = "`Failed to pin messge`"
     LOG_PIN_MSG_ID = "Message ID"
 
 class StatusText(object):
@@ -86,7 +86,7 @@ class StatusText(object):
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`I can't delete this message`"
     UNABLE_DEL_MSG = "`Unable to delete this message`"
-    DEL_MSG_FAILED = "Failed to delete this message"
+    DEL_MSG_FAILED = "`Failed to delete this message`"
     REPLY_DEL_MSG = "`Reply to someone's message to delete it`"
     NO_ADMIN_PURGE = "`Admin privileges are required to purge messages`"
     NO_DEL_PRIV = "`Delete messages permission is required to purge messages`"
@@ -146,7 +146,7 @@ class ChatInfoText(object):
 class MemberInfoText(object):
     SCAN = "`Scanning this member's information...`"
     FAIL_GET_MEMBER_CHAT = "`Failed to get member info: couldn't fetch chat`"
-    FAIL_GET_MEMBER = "Failed to get member info"
+    FAIL_GET_MEMBER = "`Failed to get member info`"
     NOT_SUPERGROUP = "`This chat or given chat ID isn't a supergroup!`"
     INVALID_CHAT_ID = "`Invalid chat ID!`"
     ME_NOT_PART = "`I am not a participant of {}`"
@@ -256,9 +256,9 @@ class UserText(object):
 class GeneralMessages(object):
     ERROR = "ERROR!"
     CHAT_NOT_USER = "`Channels are not User objects`"
-    FAIL_FETCH_USER = "Failed to fetch user"
+    FAIL_FETCH_USER = "`Failed to fetch user`"
     ENTITY_NOT_USER = "`Entity is not an User object`"
-    CALL_UREQ_FAIL = "Call User request failed"
+    CALL_UREQ_FAIL = "`Call User request failed`"
     LOG_USER = "User"
     LOG_USERNAME = "Username"
     LOG_USER_ID = "User ID"
@@ -286,7 +286,7 @@ class WebToolsText(object):
     SPD_FAILED = "Speedtest failed"
     SPD_NO_RESULT = "No result"
     SPD_NO_MEMORY = "Out of memory"
-    SPD_FAIL_SEND_RESULT = "Failed to send speedtest result"
+    SPD_FAIL_SEND_RESULT = "`Failed to send speedtest result`"
     SPD_MEGABITS = "Mbit/s"
     SPD_MEGABYTES = "MB/s"
     SPD_TIME = "Time"

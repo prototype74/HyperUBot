@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, log, LOGGING, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import event_log
 from tg_userbot.include.language_processor import (DeletionsText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -33,7 +33,8 @@ async def delete(event):
         except MessageDeleteForbiddenError:
             await event.edit(msgRep.UNABLE_DEL_MSG)
         except Exception as e:
-            await event.edit(f"`{msgRep.DEL_MSG_FAILED}: {e}`")
+            log.warning(f"{basename(__file__)[:-3]}: {e}")
+            await event.edit(msgRep.DEL_MSG_FAILED)
     else:
         await event.edit(msgRep.REPLY_DEL_MSG)
 
@@ -71,7 +72,8 @@ async def purge(event):
             else:
                 await event.client(DeleteMessagesRequestGPM(message_ids, revoke=True))
         except Exception as e:
-            await event.edit(f"`{msgRep.PURGE_MSG_FAILED}: {e}`")
+            log.warning(f"{basename(__file__)[:-3]}: {e}")
+            await event.edit(msgRep.PURGE_MSG_FAILED)
             return
 
         try:
@@ -83,8 +85,8 @@ async def purge(event):
                                 chat_link=chat.username if hasattr(chat, "username") else None,
                                 chat_id=chat.id if hasattr(chat, "id") else None,
                                 custom_text= msgRep.LOG_PURGE.format(msg_count))
-        except:
-            pass
+        except Exception as e:
+            log.error(f"{basename(__file__)[:-3]}: {e}")
     else:
         await event.edit(msgRep.REPLY_PURGE_MSG)
 

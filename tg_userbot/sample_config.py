@@ -1,8 +1,8 @@
-from tg_userbot import LOGS
+from tg_userbot import log
 from os.path import basename 
 
 if basename(__file__).startswith("config") or basename(__file__).startswith("sample_config"):
-    LOGS.error("Please do not just use this sample config as your main config. Create a new config.py in the same directory with a proper ConfigClass.")
+    log.error("Please do not just use this sample config as your main config. Create a new config.py in the same directory with a proper ConfigClass.")
     quit(1)
 
 class ConfigClass(object):

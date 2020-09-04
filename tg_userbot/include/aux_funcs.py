@@ -2,7 +2,7 @@
 # Nuno Penim, 2020
 
 # My imports
-from tg_userbot import LOGS, LOGGING_CHATID
+from tg_userbot import log, LOGGING_CHATID
 from tg_userbot.include.language_processor import GeneralMessages as msgsLang
 
 # Telethon imports
@@ -51,13 +51,15 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
                     chat_obj = await event.client.get_entity(chat) if get_chat else None
                     if type(chat_obj) is User:  # entity is not a chat or channel object
                         chat_obj = None
-                except:
+                except Exception as e:
+                    log.warning(f"{os.path.basename(__file__)[:-3]}: {e}")
                     chat_obj = None
             else:
                 user = args_from_event[0]
                 chat_obj = await event.get_chat() if get_chat else None
         except Exception as e:
-            await event.edit(f"`{msgsLang.FAIL_FETCH_USER}: {e}`")
+            log.warning(f"{os.path.basename(__file__)[:-3]}: {e}")
+            await event.edit(msgsLang.FAIL_FETCH_USER)
             return (None, None) if get_chat else None
 
         try:
@@ -79,7 +81,8 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
                user_obj = None
         return (user_obj, chat_obj) if get_chat else user_obj
     except Exception as e:
-        await event.edit(f"`{msgsLang.CALL_UREQ_FAIL}: {e}`")
+        log.warning(f"{os.path.basename(__file__)[:-3]}: {e}")
+        await event.edit(msgsLang.CALL_UREQ_FAIL)
 
     return (None, chat_obj) if get_chat else None
 
@@ -106,7 +109,7 @@ async def event_log(event, event_name: str, user_name=None, user_id=None, userna
     try:
         await event.client.send_message(LOGGING_CHATID, text)
     except Exception as e:
-        LOGS.warning(f"EVENT_LOG Exception {event_name}: {e}")
+        log.warning(f"EVENT_LOG ({event_name}): {e}")
     return
 
 # Systools/Webtools

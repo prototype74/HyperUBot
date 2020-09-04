@@ -1,5 +1,5 @@
 # My Stuff
-from tg_userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, log, LOGGING, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import event_log
 from tg_userbot.include.language_processor import (UserText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -113,6 +113,7 @@ async def info(event):  # .info command
         caption = await fetch_info(full_user_obj, event)
         await event.edit(caption, parse_mode="html")
     except Exception as e:
+        log.error(f"{basename(__file__)[:-3]}: {e}")
         await event.edit(f"`Failed to fetch user info: {e}`")
 
     return

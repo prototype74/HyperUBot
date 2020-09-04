@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, log, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.language_processor import (ChatInfoText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
 
@@ -24,9 +24,8 @@ async def info(event):
     try:
         await event.edit(caption, parse_mode="html")
     except Exception as e:
-        print("Exception:", e)
+        log.error(f"{basename(__file__)[:-3]}: {e}")
         await event.edit(msgRep.EXCEPTION)
-        print("Report this to userbot creator!")
     return
 
 async def get_chatinfo(event):
@@ -70,10 +69,8 @@ async def fetch_info(chat, event):
     warn_emoji = u"\u26A0"
     try:
         msg_info = await event.client(GetHistoryRequest(peer=chat_obj_info.id, offset_id=0, offset_date=datetime(2010, 1, 1), add_offset=-1, limit=1, max_id=0, min_id=0, hash=0))
-    except Exception as e:
+    except:
         msg_info = None
-        print("Exception:", e)
-        print("Report this to userbot creator!")
     first_msg_valid = True if msg_info and msg_info.messages and msg_info.messages[0].id == 1 else False
     creator_valid = True if first_msg_valid and msg_info.users else False
     creator_id = msg_info.users[0].id if creator_valid else None
