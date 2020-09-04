@@ -90,7 +90,7 @@ class DeletionsText(object):
     REPLY_DEL_MSG = "`Reply to someone's message to delete it`"
     NO_ADMIN_PURGE = "`Admin privileges are required to purge messages`"
     NO_DEL_PRIV = "`Delete messages permission is required to purge messages`"
-    PURGE_MSG_FAILED = "`Reply to someone's message to delete it`"
+    PURGE_MSG_FAILED = "`Failed to purge message(s)`"
     PURGE_COMPLETE = "Purge complete! Purged `{}` message(s)!"
     LOG_PURGE = "Purged `{}` message(s)"
     REPLY_PURGE_MSG = "`Reply to a message to start purge`"
