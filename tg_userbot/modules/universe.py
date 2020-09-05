@@ -26,7 +26,7 @@ async def universe_checker(msg):
     cmd_args = msg.pattern_match.group(1).split(" ", 1)
     if cmd_args[0] == "update":
         list_updater()
-        msg.edit("Modules list has been updated from the universe **{}**".format(UNIVERSE_NAME))
+        await msg.edit("Modules list has been updated from the universe **{}**".format(UNIVERSE_NAME))
         return
     elif cmd_args[0] == "list":
         files = "Files in **{}**:\n\n".format(UNIVERSE_NAME)
@@ -40,5 +40,5 @@ async def universe_checker(msg):
         await msg.edit(files, parse_mode='md')
         return
     else:
-        await msg.edit("`Invalid argument! Make sure it is either update or list!`")
+        await msg.edit("Invalid argument! Make sure it is either **update** or **list**!")
         return
