@@ -373,6 +373,7 @@ class ModuleDescriptions(object):
     CAS_INTERFACE_DESC = text.ModuleDescriptions.CAS_INTERFACE_DESC
     GITHUB_DESC = text.ModuleDescriptions.GITHUB_DESC
     TERMINAL_DESC = text.ModuleDescriptions.TERMINAL_DESC
+    MISC_DESC = text.ModuleDescriptions.MISC_DESC
 
 class ModuleUsages(object):
     ADMIN_USAGE = text.ModuleUsages.ADMIN_USAGE
@@ -386,3 +387,4 @@ class ModuleUsages(object):
     CAS_INTERFACE_USAGE = text.ModuleUsages.CAS_INTERFACE_USAGE
     GITHUB_USAGE = text.ModuleUsages.GITHUB_USAGE
     TERMINAL_USAGE = text.ModuleUsages.TERMINAL_USAGE
+    MISC_USAGE = text.ModuleUsages.MISC_USAGE

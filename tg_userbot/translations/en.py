@@ -366,6 +366,7 @@ class ModuleDescriptions(object):
     GITHUB_DESC = "A module that takes use of the GitHub API. This allows you to check for releases from a specific user and repository."
     TERMINAL_DESC = "This module provides tools to run directly shell commands, in the host machine, or python instructions, for quick tests. More to come! \
                     \n\n**Attention:** Running shell commands in the bot can and will make permanent changes to the host system. **Bad things will happen if you run the bot as sudo/root!**"
+    MISC_DESC = "The miscelaneous module contains a small set of tools that did not quite fit any of the other modules, but at the same time were too simple to have their own module. Check the help for more details."
 
 class ModuleUsages(object):
     ADMIN_USAGE = "`.ban` [optional: <username/id> <chat (id or link)>] or reply\
@@ -443,3 +444,10 @@ class ModuleUsages(object):
                   \n\n`.python` <instructions> \
                   \nUsage: Executes the specified python instructions.\
                   \n\n**Notice:** Please use ' as the string delimiters instead of \", or errors could happen with the command processor."
+
+    MISC_USAGE = "`.coinflip` \
+                 \nUsage: Flips a coin and returns heads or tails, depending on the result.\
+                 \n\n`.dice` \
+                 \nUsage: This will send the dice emoji, telegram will take care of the value, totally random.\
+                 \n\n`.random` <lower limit> <upper limit>\
+                 \nUsage: Given an upper and lower limit (both integers), the bot will generate a random number in between."

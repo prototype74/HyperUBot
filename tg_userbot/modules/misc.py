@@ -1,12 +1,13 @@
 # My stuff
-from tg_userbot import tgclient
-from tg_userbot.include.language_processor import MiscText as msgRep
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
+from tg_userbot.include.language_processor import MiscText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 
 # Telethon stuff
 from telethon.events import NewMessage
 from telethon.tl.types import InputMediaDice
 
 # Misc stuff
+from os.path import basename
 import random
 import time
 
@@ -54,3 +55,6 @@ async def randomizer(msg):
     rand_num = random.randint(limit1, limit2)
     await msg.edit(msgRep.RAND_NUM_GEN.format(limit1, limit2, rand_num))
     return
+
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.MISC_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.MISC_USAGE})
