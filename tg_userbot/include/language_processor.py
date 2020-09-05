@@ -356,6 +356,10 @@ class MiscText(object):
     THRWING_COIN = text.MiscText.THRWING_COIN
     HEADS = text.MiscText.HEADS
     TAILS = text.MiscText.TAILS
+    RAND_INVLD_ARGS = text.MiscText.RAND_INVLD_ARGS
+    FRST_LIMIT_INVALID = text.MiscText.FRST_LIMIT_INVALID
+    SCND_LIMIT_INVALID = text.MiscText.SCND_LIMIT_INVALID
+    RAND_NUM_GEN = text.MiscText.RAND_NUM_GEN
 
 class ModuleDescriptions(object):
     ADMIN_DESC = text.ModuleDescriptions.ADMIN_DESC

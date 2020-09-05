@@ -342,6 +342,10 @@ class MiscText(object):
     THRWING_COIN = "`Throwing coin...`"
     HEADS = "Heads"
     TAILS = "Tails"
+    RAND_INVLD_ARGS = "`Invalid arguments, make sure you have exactly 2 numbers`"
+    FRST_LIMIT_INVALID = "`The first value is not a valid number!`"
+    SCND_LIMIT_INVALID = "`The second value is not a valid number!`"
+    RAND_NUM_GEN = "Your generated number between `{}` and `{}`: **`{}`**"
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
