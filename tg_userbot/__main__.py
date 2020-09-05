@@ -79,7 +79,7 @@ if __name__ == "__main__":
     except PhoneNumberInvalidError:
         log.error("Invalid phone number!")
     except Exception as e:
-        log.error(f"Unable to start userbot: {e}")
+        log.critical(f"Unable to start userbot: {e}", exc_info=True)
 
     try:
         if fhandler:
