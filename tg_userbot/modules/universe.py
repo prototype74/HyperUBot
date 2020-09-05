@@ -11,12 +11,14 @@ UNIVERSE_NAME = "modules-universe"
 # Maybe add just a single command, but multiple arguments?
 @tgclient.on(NewMessage(pattern=r"^\.universe$", outgoing=True))
 async def universe_checker(msg):
-    files = "Files in **{}**".format(UNIVERSE_NAME)
+    files = "Files in **{}**:\n\n".format(UNIVERSE_NAME)
+    count = 1
     assets = git.getAssets(git.getReleaseData(git.getData(UNIVERSE_URL), 0))
     for asset in assets:
         assetName = git.getReleaseFileName(asset)
         assetURL = git.getReleaseFileURL(asset)
         assetSize = git.getSize(asset)
-        files += "[{}]({}) - {} MB\n".format(assetName, assetURL, assetSize)
+        files += "{}. [{}]({}) - {} MB\n".format(count, assetName, assetURL, assetSize)
+        count += 1
     await msg.edit(files, parse_mode='md')
     return
