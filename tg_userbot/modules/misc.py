@@ -46,6 +46,7 @@ async def randomizer(msg):
         limit2 = int(arguments[2])
     except ValueError:
         await msg.edit("SCND_LIMIT_INVALID")
+        return
     if limit1 > limit2:
         temp = limit1
         limit1 = limit2
