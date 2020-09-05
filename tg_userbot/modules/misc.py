@@ -4,11 +4,11 @@ from tg_userbot.include.language_processor import MiscText as msgRep
 
 # Telethon stuff
 from telethon.events import NewMessage
+from telethon.tl.types import InputMediaDice
 
 # Misc stuff
 import random
 import time
-import emoji
 
 @tgclient.on(NewMessage(pattern=r"^\.coinflip$", outgoing=True))
 async def coinflipper(coin):
@@ -25,6 +25,6 @@ async def coinflipper(coin):
 
 @tgclient.on(NewMessage(pattern=r"^\.dice$", outgoing=True))
 async def dice(rolling):
-    await rolling.client.send_message(rolling.to_id, emoji.emojize(":game_die:"))
+    await rolling.client.send_message(rolling.to_id, file=InputMediaDice("🎲"))
     await rolling.delete()
     return
