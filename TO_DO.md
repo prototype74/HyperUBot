@@ -13,6 +13,7 @@
  - CAS Interface module
  - GitHub Module
  - Terminal module
+ - Misc module
 
 ## To Do Part 1 (before alpha release):
  - Nothing, we should be ready!
@@ -24,7 +25,6 @@
  - Weather Module
  - Memes module (mock, vaporwave, etc...)
  - Spam module
- - Misc (coinflip, random, dice...)
  - Finding Windows, MacOS and Termux bois.
 
 ## To Do Part 3 (after beta release, but still undecided on all) :
