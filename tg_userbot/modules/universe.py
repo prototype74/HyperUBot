@@ -18,7 +18,7 @@ async def universe_checker(msg):
         assetName = git.getReleaseFileName(asset)
         assetURL = git.getReleaseFileURL(asset)
         assetSize = git.getSize(asset)
-        files += "{}. [{}]({}) - {} MB\n".format(count, assetName, assetURL, assetSize)
+        files += "{}. [{}]({}) - {} Bytes\n".format(count, assetName, assetURL, assetSize)
         count += 1
     await msg.edit(files, parse_mode='md')
     return
