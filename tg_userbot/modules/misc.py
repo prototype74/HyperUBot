@@ -8,6 +8,7 @@ from telethon.events import NewMessage
 # Misc stuff
 import random
 import time
+import emoji
 
 @tgclient.on(NewMessage(pattern=r"^\.coinflip$", outgoing=True))
 async def coinflipper(coin):
@@ -22,3 +23,7 @@ async def coinflipper(coin):
     await coin.edit(retStr)
     return
 
+@tgclient.on(NewMessage(pattern=r"^\.dice$", outgoing=True))
+async def dice(rolling):
+    await rolling.edit("🎲")
+    return
