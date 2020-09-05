@@ -11,13 +11,13 @@ MODULE_LIST = None # the thing that should get updated if you do .pkg update
 
 def list_updater():
     global MODULE_LIST
-    MODULE_LIST = {}
+    MODULE_LIST = []
     assets = git.getAssets(git.getReleaseData(git.getData(UNIVERSE_URL), 0))
     for asset in assets:
         assetName = git.getReleaseFileName(asset)
         assetURL = git.getReleaseFileURL(asset)
         assetSize = git.getSize(asset)
-        MODULE_LIST.update({'name': assetName, 'url': assetURL, 'size': assetSize})
+        MODULE_LIST.append({"name": assetName, "url": assetURL, "size": assetSize})
     return MODULE_LIST
 
 # Maybe add just a single command, but multiple arguments?
@@ -35,7 +35,7 @@ async def universe_checker(msg):
             files += "`There are no modules in the package list!`"
         else:
             for m in MODULE_LIST:
-                files += "{}. [{}]({}) - {} Bytes\n".format(count, m['name'], m['url'], m['size'])
+                files += "{}. [{}]({}) - {} Bytes\n".format(count, m["name"], m["url"], m["size"])
                 count += 1
         await msg.edit(files, parse_mode='md')
         return
