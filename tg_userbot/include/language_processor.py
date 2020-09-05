@@ -351,6 +351,12 @@ class TerminalText(object):
     PYTHON_INSTRUCTION = text.TerminalText.PYTHON_INSTRUCTION
     PYTHON_RESULT = text.TerminalText.PYTHON_RESULT
 
+class MiscText(object):
+    COIN_LANDED_VAL = text.MiscText.COIN_LANDED_VAL
+    THRWING_COIN = text.MiscText.THRWING_COIN
+    HEADS = text.MiscText.HEADS
+    TAILS = text.MiscText.TAILS
+
 class ModuleDescriptions(object):
     ADMIN_DESC = text.ModuleDescriptions.ADMIN_DESC
     CHATINFO_DESC = text.ModuleDescriptions.CHATINFO_DESC

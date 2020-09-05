@@ -337,6 +337,12 @@ class TerminalText(object):
     PYTHON_INSTRUCTION = "**Python instruction:**"
     PYTHON_RESULT = "**Result: **\n"
 
+class MiscText(object):
+    COIN_LANDED_VAL = "The coin landed on: "
+    THRWING_COIN = "`Throwing coin...`"
+    HEADS = "Heads"
+    TAILS = "Tails"
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
     ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote etc.\
