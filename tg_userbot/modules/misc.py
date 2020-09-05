@@ -28,3 +28,28 @@ async def dice(rolling):
     await rolling.client.send_message(rolling.to_id, file=InputMediaDice("🎲"))
     await rolling.delete()
     return
+
+@tgclient.on(NewMessage(pattern=r"^\.rand(?: |$)(.*)", outgoing=True))
+async def randomizer(msg):
+    limit1 = 0
+    limit2 = 0
+    arguments = msg.text.split(" ")
+    if len(arguments) != 3:
+        await msg.edit("RAND_INVLD_ARGS")
+        return
+    try:
+        limit1 = int(arguments[1])
+    except ValueError:
+        await msg.edit("FRST_LIMIT_INVALID")
+        return
+    try:
+        limit2 = int(arguments[2])
+    except ValueError:
+        await msg.edit("SCND_LIMIT_INVALID")
+    if limit1 > limit2:
+        temp = limit1
+        limit1 = limit2
+        limit2 = temp
+    rand_num = random.randint(limit1, limit2)
+    msg.edit("RAND_NUM_GEN" + str(rand_num))
+    return
