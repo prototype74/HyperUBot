@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot.include.colors import LogColorFormatter
+from tg_userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
 
 # Telethon Stuff
 from telethon import TelegramClient
@@ -7,16 +7,21 @@ from telethon.sessions import StringSession
 
 # Misc
 from dotenv import load_dotenv
-from logging import StreamHandler, basicConfig, INFO, getLogger
-from os import path, environ, mkdir
+from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
+from os import path, environ, mkdir, remove
 from platform import system
 from sys import version_info  # check python version
 
 # Terminal logging
+LOGFILE = "xbot.log"
+if path.exists(LOGFILE):
+    remove(LOGFILE)
 log = getLogger(__name__)
-handler = StreamHandler()
-handler.setFormatter(LogColorFormatter())
-basicConfig(handlers=[handler], level=INFO)
+fhandler = FileHandler(LOGFILE)
+fhandler.setFormatter(LogFileFormatter())
+shandler = StreamHandler()
+shandler.setFormatter(LogColorFormatter())
+basicConfig(handlers=[fhandler, shandler], level=INFO)
 
 CURR_PATH = path.dirname(__file__)
 OS = system()  # Current Operating System

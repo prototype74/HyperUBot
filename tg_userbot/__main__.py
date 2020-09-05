@@ -1,10 +1,12 @@
 # tguserbot Stuff
-from tg_userbot import tgclient, log, PROJECT, OS, ALL_MODULES, NOT_LOAD_MODULES, VERSION
+from tg_userbot import (tgclient, log, fhandler, PROJECT, OS, ALL_MODULES,
+                        NOT_LOAD_MODULES, VERSION)
 
 # Telethon Stuff
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
 
 # Misc
+from logging import shutdown
 from importlib import import_module
 from glob import glob
 from os.path import dirname, basename, isfile
@@ -79,3 +81,9 @@ if __name__ == "__main__":
     except Exception as e:
         log.error(f"Unable to start userbot: {e}")
 
+    try:
+        if fhandler:
+            fhandler.close()
+        shutdown()
+    except:
+        pass
