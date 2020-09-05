@@ -25,6 +25,6 @@ async def coinflipper(coin):
 
 @tgclient.on(NewMessage(pattern=r"^\.dice$", outgoing=True))
 async def dice(rolling):
-    await rolling.client.send_message(rolling.to_id, emoji.emojize(":dice:"))
+    await rolling.client.send_message(rolling.to_id, emoji.emojize(":game_die:"))
     await rolling.delete()
     return
