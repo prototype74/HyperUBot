@@ -51,5 +51,5 @@ async def randomizer(msg):
         limit1 = limit2
         limit2 = temp
     rand_num = random.randint(limit1, limit2)
-    msg.edit("RAND_NUM_GEN" + str(rand_num))
+    await msg.edit("RAND_NUM_GEN" + str(rand_num))
     return
