@@ -15,3 +15,9 @@ class ColorBG:
     RED = "\033[41m"
     YELLOW = "\033[43m"
     END = "\033[0m"
+
+def setColorText(text: str, color: Color) -> str:
+    return color + text + Color.END
+
+def setColorTextBG(text: str, colorbg: ColorBG) -> str:
+    return colorbg + text + ColorBG.END
