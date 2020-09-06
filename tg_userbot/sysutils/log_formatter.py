@@ -5,11 +5,9 @@ from .colors import Color, ColorBG
 from logging import Formatter, INFO, WARNING, ERROR, CRITICAL
 
 
-LOG_FORMAT = "[%(asctime)s] %(levelname).1s: %(name)s: %(message)s"
-
-
 class LogFileFormatter(Formatter):
     def format(self, logtype):
+        LOG_FORMAT = "[%(asctime)s] %(process)d %(levelname).1s: %(name)s: %(funcName)s: %(message)s [%(filename)s:%(lineno)d]"
         LOG_LEVELS = {"INFO": LOG_FORMAT,
                       "WARNING": LOG_FORMAT,
                       "ERROR": LOG_FORMAT,
@@ -20,6 +18,7 @@ class LogFileFormatter(Formatter):
 
 class LogColorFormatter(Formatter):
     def format(self, logtype):
+        LOG_FORMAT = "[%(asctime)s] %(levelname).1s: %(name)s: %(message)s"
         LOG_COLORS = {"INFO": LOG_FORMAT,  # plain text
                       "WARNING": Color.YELLOW + LOG_FORMAT + Color.END,
                       "ERROR": Color.RED + LOG_FORMAT + Color.END,

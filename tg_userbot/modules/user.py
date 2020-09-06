@@ -1,5 +1,5 @@
 # My Stuff
-from tg_userbot import tgclient, log, LOGGING, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import event_log
 from tg_userbot.include.language_processor import (UserText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -13,7 +13,11 @@ from telethon.tl.functions.photos import GetUserPhotosRequest
 
 # Misc Imports
 from asyncio import sleep
+from logging import getLogger
 from os.path import basename
+
+
+log = getLogger(__name__)
 
 
 @tgclient.on(NewMessage(pattern=r"^\.kickme$", outgoing=True))
@@ -113,7 +117,7 @@ async def info(event):  # .info command
         caption = await fetch_info(full_user_obj, event)
         await event.edit(caption, parse_mode="html")
     except Exception as e:
-        log.error(f"{basename(__file__)[:-3]}: {e}")
+        log.error(e)
         await event.edit(msgRep.FAILED_FETCH_INFO)
 
     return

@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot import tgclient, log, LOGGING, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import event_log
 from tg_userbot.include.language_processor import (DeletionsText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -13,7 +13,11 @@ from telethon.tl.types import Chat, Channel
 
 # Misc imports
 from asyncio import sleep
+from logging import getLogger
 from os.path import basename
+
+
+log = getLogger(__name__)
 
 
 @tgclient.on(NewMessage(pattern=r"^\.del$", outgoing=True))
@@ -33,7 +37,7 @@ async def delete(event):
         except MessageDeleteForbiddenError:
             await event.edit(msgRep.UNABLE_DEL_MSG)
         except Exception as e:
-            log.warning(f"{basename(__file__)[:-3]}: {e}")
+            log.warning(e)
             await event.edit(msgRep.DEL_MSG_FAILED)
     else:
         await event.edit(msgRep.REPLY_DEL_MSG)
@@ -72,7 +76,7 @@ async def purge(event):
             else:
                 await event.client(DeleteMessagesRequestGPM(message_ids, revoke=True))
         except Exception as e:
-            log.warning(f"{basename(__file__)[:-3]}: {e}")
+            log.warning(e)
             await event.edit(msgRep.PURGE_MSG_FAILED)
             return
 
@@ -86,7 +90,7 @@ async def purge(event):
                                 chat_id=chat.id if hasattr(chat, "id") else None,
                                 custom_text= msgRep.LOG_PURGE.format(msg_count))
         except Exception as e:
-            log.error(f"{basename(__file__)[:-3]}: {e}")
+            log.error(e)
     else:
         await event.edit(msgRep.REPLY_PURGE_MSG)
 

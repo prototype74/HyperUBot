@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot import tgclient, log, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.language_processor import (ChatInfoText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
 
@@ -13,8 +13,11 @@ from telethon.utils import get_input_location
 
 # Misc imports
 from datetime import datetime
+from logging import getLogger
 from math import sqrt
 from os.path import basename
+
+log = getLogger(__name__)
 
 @tgclient.on(NewMessage(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True))
 async def info(event):
@@ -30,7 +33,7 @@ async def info(event):
     try:
         await event.edit(caption, parse_mode="html")
     except Exception as e:
-        log.error(f"{basename(__file__)[:-3]}: {e}")
+        log.error(e)
         await event.edit(msgRep.EXCEPTION)
     return
 
@@ -63,7 +66,7 @@ async def get_chatinfo(event):
             await event.edit(msgRep.NOT_EXISTS)
             return None
         except Exception as e:
-            log.warning(f"{basename(__file__)[:-3]}: {e}")
+            log.warning(e)
             await event.edit(msgRep.CANNOT_GET_CHATINFO)
             return None
     return chat_info

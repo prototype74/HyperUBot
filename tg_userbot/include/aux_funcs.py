@@ -2,7 +2,7 @@
 # Nuno Penim, 2020
 
 # My imports
-from tg_userbot import log, LOGGING_CHATID
+from tg_userbot import LOGGING_CHATID
 from tg_userbot.include.language_processor import GeneralMessages as msgsLang
 
 # Telethon imports
@@ -10,11 +10,15 @@ from telethon.tl.types import User
 from telethon.tl.functions.users import GetFullUserRequest
 
 # Misc imports
+from logging import getLogger
 import os
 from subprocess import check_output
 from asyncio import create_subprocess_exec as asyncr
 from asyncio.subprocess import PIPE as asyncPIPE
 from shutil import which
+
+
+log = getLogger(__name__)
 
 
 async def fetch_user(event=None, full_user=False, get_chat=False, org_author=False):

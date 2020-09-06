@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot import tgclient, log, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.aux_funcs import fetch_user
 from tg_userbot.include.language_processor import (MemberInfoText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -13,7 +13,11 @@ from telethon.errors import ChannelInvalidError, UserNotParticipantError
 
 # Misc
 from datetime import datetime
+from logging import getLogger
 from os.path import basename
+
+
+log = getLogger(__name__)
 
 
 @tgclient.on(NewMessage(pattern=r"^\.minfo(?: |$)(.*)", outgoing=True))
@@ -37,7 +41,7 @@ async def memberinfo(event):
         member_username = member_info.user.username if member_info.user.username else None
         member_name_link = f"<a href=\"tg://user?id={member_id}\">{member_name}</a>"
     except Exception as e:
-        log.error(f"{basename(__file__)[:-3]}: {e}")
+        log.error(e)
         await event.edit(msgRep.FAIL_GET_MEMBER)
         return
 
@@ -59,7 +63,7 @@ async def memberinfo(event):
             await event.edit(msgRep.USER_NOT_PART.format(chat_info.title))
         return
     except Exception as e:
-        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        log.warning(e)
         await event.edit(msgRep.FAIL_GET_PART)
         return
 

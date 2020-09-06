@@ -1,8 +1,11 @@
-from tg_userbot import log, UBOT_LANG
+from tg_userbot import UBOT_LANG
 from importlib import import_module
+from logging import getLogger
 
 # Temp because pyCharm needs for autocompletion and I am being a Lazy S.O.B. again
 import tg_userbot.translations.en as text
+
+log = getLogger(__name__)
 
 # Language selector logic
 

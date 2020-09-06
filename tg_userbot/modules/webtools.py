@@ -1,5 +1,5 @@
 # My imports
-from tg_userbot import tgclient, log, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR
 from tg_userbot.include.aux_funcs import pinger
 from tg_userbot.include.language_processor import (WebToolsText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -10,12 +10,13 @@ from telethon.events import NewMessage
 
 # Misc imports
 from dateutil.parser import parse
+from logging import getLogger
 from os import remove
 from os.path import basename
 from speedtest import Speedtest
 from urllib.request import urlretrieve
 
-
+log = getLogger(__name__)
 DEFAULT_ADD = "1.0.0.1"
 
 @tgclient.on(NewMessage(pattern=r"^\.rtt$", outgoing=True))
@@ -40,7 +41,7 @@ async def ping(args):
         try:
             duration = pinger(dns)
         except Exception as e:
-            log.warning(f"{basename(__file__)[:-3]}: {e}")
+            log.warning(e)
             await args.edit(msgRep.INVALID_HOST)
             return
         await args.edit(msgRep.PINGER_VAL.format(dns, duration))
@@ -69,10 +70,10 @@ async def speedtest(event):
             await event.edit(f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_RESULT}`")
             return
     except MemoryError as me:
-        log.error(f"{basename(__file__)[:-3]}: {e}")
+        log.error(me)
         await event.edit(f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_MEMORY}`")
     except Exception as e:
-        log.error(f"{basename(__file__)[:-3]}: {e}")
+        log.error(e)
         await event.edit(msgRep.SPD_FAILED)
 
     if share_as_pic:
@@ -83,7 +84,7 @@ async def speedtest(event):
             await event.delete()
             remove(png_file)
         except Exception as e:
-            log.error(f"{basename(__file__)[:-3]}: {e}")
+            log.error(e)
             await event.edit(msgRep.SPD_FAIL_SEND_RESULT)
     else:
         # Convert speed to Mbit/s

@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot import tgclient, log, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR, UBOT_LANG
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR, UBOT_LANG
 from tg_userbot.include.language_processor import (ScrappersText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
 
@@ -11,8 +11,12 @@ from telethon.events import NewMessage
 from googletrans import Translator, LANGUAGES
 from gtts import gTTS
 from gtts.tts import gTTSError
+from logging import getLogger
 from os import remove
 from os.path import basename
+
+
+log = getLogger(__name__)
 
 
 @tgclient.on(NewMessage(pattern=r"^\.trt(?: |$)(.*)", outgoing=True))
@@ -49,7 +53,7 @@ async def translate(event):
     except MessageTooLongError:
         await event.edit(msgRep.MSG_TOO_LONG)
     except Exception as e:
-        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        log.warning(e)
         if event.reply_to_msg_id:
             await event.edit(msgRep.FAIL_TRANS_MSG)
         else:
@@ -78,19 +82,19 @@ async def text_to_speech(event):
     except ChatSendMediaForbiddenError:
         await event.edit(msgRep.MEDIA_FORBIDDEN)
     except AssertionError as ae:
-        log.warning(f"{basename(__file__)[:-3]}: {ae}")
+        log.warning(ae)
         if not msg:
             await event.edit(msgRep.NO_TEXT_TTS)
         else:
             await event.edit(msgRep.FAIL_TTS)
     except gTTSError as ge:
-        log.error(f"{basename(__file__)[:-3]}: {ge}")
+        log.error(ge)
         await event.edit(msgRep.FAIL_API_REQ)
     except ValueError as ve:
-        log.warning(f"{basename(__file__)[:-3]}: {ve}")
+        log.warning(ve)
         await event.edit(msgRep.INVALID_LANG_CODE)
     except Exception as e:
-        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        log.warning(e)
         await event.edit(msgRep.FAIL_TTS)
 
     return

@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot import tgclient, log, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
 import tg_userbot.include.cas_api as cas_api
 from tg_userbot.include.language_processor import (CasIntText as msgRep, ModuleDescriptions as descRep,
                                                    ModuleUsages as usageRep)
@@ -10,7 +10,10 @@ from telethon.events import NewMessage
 from telethon.errors import ChatAdminRequiredError
 
 # Misc
+from logging import getLogger
 from os.path import basename
+
+log = getLogger(__name__)
 
 @tgclient.on(NewMessage(pattern=r"^\.cascheck(?: |$)(.*)", outgoing=True))
 async def caschecker(event):
@@ -77,7 +80,7 @@ async def groupchecker(cas):
         await cas.edit(msgRep.NO_ADM)
         return
     except BaseException as be:
-        log.warning(f"{basename(__file__)[:-3]}: {be}")
+        log.warning(be)
         await cas.edit(msgRep.CAS_CHECK_FAIL)
         return
     await cas.edit(text)
