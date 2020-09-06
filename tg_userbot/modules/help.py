@@ -1,9 +1,12 @@
 # tguserbot stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT, NOT_LOAD_MODULES
+from tg_userbot import tgclient, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, MODULE_DESC, MODULE_DICT
 from tg_userbot.include.language_processor import HelpText as msgRep
 
 # Telethon stuff
 from telethon.events import NewMessage
+
+# Misc
+from os.path import basename
 
 
 def modules_listing(error_text: str = None) -> str:
@@ -16,32 +19,43 @@ def modules_listing(error_text: str = None) -> str:
         modules_listed = f"{msgRep.AVAILABLE_MODULES}:\n"
     else:
         modules_listed += f"{msgRep.AVAILABLE_MODULES}:\n"
-    for module in MODULE_DICT:
-        modules_listed += f"`{str(num)}. {module}`\n"
-        num += 1
-
-    if NOT_LOAD_MODULES:
-        modules_listed += "\n"
-        modules_listed += f"{msgRep.DISABLED_MODULES}:\n"
-        num = 1
-        for module in NOT_LOAD_MODULES:
+    for module in LOAD_MODULES:
+        if not module == basename(__file__)[:-3]:  # exclude this module
             modules_listed += f"`{str(num)}. {module}`\n"
             num += 1
+
+    if NOT_LOAD_MODULES:
+        num = 1
+        for module in NOT_LOAD_MODULES:
+            if module in ALL_MODULES:
+                modules_listed += "\n"
+                modules_listed += f"{msgRep.DISABLED_MODULES}:\n"
+                break
+        for module in sorted(NOT_LOAD_MODULES):
+            if module in ALL_MODULES:
+                modules_listed += f"`{str(num)}. {module}`\n"
+                num += 1
     return modules_listed
 
 
 def module_desc(module: str) -> str:
-    if module in MODULE_DESC.keys():
-        return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + MODULE_DESC.get(module)
+    if module in LOAD_MODULES:
+        if module in MODULE_DESC.keys():
+            return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + MODULE_DESC.get(module)
+        else:
+            return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + "__No description available__"
     else:
-        raise KeyError
+        raise IndexError
 
 
 def module_usage(module: str) -> str:
-    if module in MODULE_DICT.keys():
-        return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + MODULE_DICT.get(module)
+    if module in LOAD_MODULES:
+        if module in MODULE_DICT.keys():
+            return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + MODULE_DICT.get(module)
+        else:
+            return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + "__No usage available__"
     else:
-        raise KeyError
+        raise IndexError
 
 
 @tgclient.on(NewMessage(pattern=r"^\.modules(?: |$)(.*)", outgoing=True))
@@ -76,7 +90,7 @@ async def modules(event):
                 await event.edit(module_desc(sec_arg.lower()))
             elif usage:
                 await event.edit(module_usage(sec_arg.lower()))
-        except KeyError:
+        except IndexError:
             await event.edit(modules_listing(msgRep.MODULE_NOT_FOUND.format(sec_arg)))
 
     return

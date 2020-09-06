@@ -101,6 +101,7 @@ except Exception as e:
 PROJECT = "tguserbot-X"
 VERSION = "0.0.1-DEV_PREV"
 ALL_MODULES = []
+LOAD_MODULES = []
 MODULE_DESC = {}
 MODULE_DICT = {}
 
