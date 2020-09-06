@@ -1,5 +1,5 @@
 # tguserbot stuff
-from .colors import Color, ColorBG
+from .colors import Color, ColorBG, setColorText, setColorTextBG
 
 # Misc
 from logging import Formatter, INFO, WARNING, ERROR, CRITICAL
@@ -20,9 +20,9 @@ class LogColorFormatter(Formatter):
     def format(self, logtype):
         LOG_FORMAT = "[%(asctime)s] %(levelname).1s: %(name)s: %(message)s"
         LOG_COLORS = {"INFO": LOG_FORMAT,  # plain text
-                      "WARNING": Color.YELLOW + LOG_FORMAT + Color.END,
-                      "ERROR": Color.RED + LOG_FORMAT + Color.END,
-                      "CRITICAL": ColorBG.RED + LOG_FORMAT + ColorBG.END}
+                      "WARNING": setColorText(LOG_FORMAT, Color.YELLOW),
+                      "ERROR": setColorText(LOG_FORMAT, Color.RED),
+                      "CRITICAL": setColorTextBG(LOG_FORMAT, ColorBG.RED)}
         get_type = LOG_COLORS.get(logtype.levelname)
         formatter = Formatter(get_type, "%Y-%m-%d %H:%M:%S").format(logtype)
         return formatter
