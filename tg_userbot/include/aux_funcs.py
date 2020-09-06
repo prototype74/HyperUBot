@@ -56,13 +56,13 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
                     if type(chat_obj) is User:  # entity is not a chat or channel object
                         chat_obj = None
                 except Exception as e:
-                    log.warning(f"{os.path.basename(__file__)[:-3]}: {e}")
+                    log.warning(e)
                     chat_obj = None
             else:
                 user = args_from_event[0]
                 chat_obj = await event.get_chat() if get_chat else None
         except Exception as e:
-            log.warning(f"{os.path.basename(__file__)[:-3]}: {e}")
+            log.warning(e)
             await event.edit(msgsLang.FAIL_FETCH_USER)
             return (None, None) if get_chat else None
 
@@ -85,7 +85,7 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
                user_obj = None
         return (user_obj, chat_obj) if get_chat else user_obj
     except Exception as e:
-        log.warning(f"{os.path.basename(__file__)[:-3]}: {e}")
+        log.warning(e)
         await event.edit(msgsLang.CALL_UREQ_FAIL)
 
     return (None, chat_obj) if get_chat else None
