@@ -43,7 +43,7 @@ def module_desc(module: str) -> str:
         if module in MODULE_DESC.keys():
             return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + MODULE_DESC.get(module)
         else:
-            return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + "__No description available__"
+            return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + msgRep.MODULE_NO_DESC
     else:
         raise IndexError
 
@@ -53,7 +53,7 @@ def module_usage(module: str) -> str:
         if module in MODULE_DICT.keys():
             return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + MODULE_DICT.get(module)
         else:
-            return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + "__No usage available__"
+            return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + msgRep.MODULE_NO_USAGE
     else:
         raise IndexError
 

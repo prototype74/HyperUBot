@@ -277,6 +277,8 @@ class HelpText(object):
     NAME_MODULE = "**{} module**"
     MISSING_NAME_MODULE = "`Missing name of module`"
     MODULE_NOT_FOUND = "`Module \"{}\" not found`"
+    MODULE_NO_DESC = "__No description available__"
+    MODULE_NO_USAGE = "__No usage available__"
 
 class WebToolsText(object):
     PING_SPEED = "Round-Trip Time: "

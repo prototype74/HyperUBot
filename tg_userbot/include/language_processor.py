@@ -294,6 +294,8 @@ class HelpText(object):
     NAME_MODULE = text.HelpText.NAME_MODULE
     MISSING_NAME_MODULE = text.HelpText.MISSING_NAME_MODULE
     MODULE_NOT_FOUND = text.HelpText.MODULE_NOT_FOUND
+    MODULE_NO_DESC = text.HelpText.MODULE_NO_DESC
+    MODULE_NO_USAGE = text.HelpText.MODULE_NO_USAGE
 
 class WebToolsText(object):
     PING_SPEED = text.WebToolsText.PING_SPEED
