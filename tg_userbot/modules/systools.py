@@ -17,7 +17,7 @@ from datetime import datetime, timedelta
 from uptime import uptime
 from subprocess import check_output
 from os.path import basename
-import sys
+import sys, time
 from os import execle, environ
 
 # Module Global Variables
@@ -77,6 +77,7 @@ async def shutdown(power_off):
 @tgclient.on(NewMessage(pattern=r"^\.reboot$", outgoing=True))
 async def restart(power_off): # Totally not a shutdown kang *sips whiskey*
     await power_off.edit(msgRep.RESTART)
+    time.sleep(1) # just so we can actually see a message
     if LOGGING:
         await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
     await power_off.edit(msgRep.RESTARTED)
