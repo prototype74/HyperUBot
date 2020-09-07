@@ -39,6 +39,18 @@ async def universe_checker(msg):
                 count += 1
         await msg.edit(files, parse_mode='md')
         return
+    elif cmd_args[0] == "install":
+        if len(cmd_args) == 1:
+            await msg.edit("`No specified package to install! Command halted!`")
+            return
+        del(cmd_args[0])
+        fileURLs = []
+        for i in cmd_args:
+            for j in MODULE_LIST:
+                if j['name'] == i:
+                    fileURLs.append(j['url'])
+        print(fileURLs)
+        return
     else:
-        await msg.edit("Invalid argument! Make sure it is either **update** or **list**!")
+        await msg.edit("Invalid argument! Make sure it is **update**, **list** or **install**!")
         return
