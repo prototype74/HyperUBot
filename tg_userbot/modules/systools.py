@@ -17,6 +17,8 @@ from datetime import datetime, timedelta
 from uptime import uptime
 from subprocess import check_output
 from os.path import basename
+import sys
+from os import execle, environ
 
 # Module Global Variables
 USER = uname().node # Maybe add a username in future
@@ -71,6 +73,16 @@ async def shutdown(power_off):
     if LOGGING:
         await event_log(power_off, "SHUTDOWN", custom_text=msgRep.SHUTDOWN_LOG)
     await power_off.client.disconnect()
+
+@tgclient.on(NewMessage(pattern=r"^\.reboot$", outgoing=True))
+async def restart(power_off): # Totally not a shutdown kang *sips whiskey*
+    await power_off.edit(msgRep.RESTART)
+    if LOGGING:
+        await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
+    await power_off.client.disconnect()
+    args = [sys.executable, "-m", "tg_userbot"]
+    execle(sys.executable, *args, environ)
+    await power_off.edit(msgRep.RESTARTED)
 
 @tgclient.on(NewMessage(pattern=r"^\.sysd$", outgoing=True))
 async def sysd(event):

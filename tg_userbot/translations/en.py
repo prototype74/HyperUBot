@@ -82,6 +82,9 @@ class StatusText(object):
     SHUTDOWN = "`Powering off...`"
     SHUTDOWN_LOG = "Bot is powering off under user request!"
     SYSD_NEOFETCH_REQ = "`neofetch package is required to display system information`"
+    RESTART = "`Rebooting...`"
+    RESTART_LOG = "Userbot is restarting!"
+    RESTARTED = "Reboot complete!"
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`I can't delete this message`"

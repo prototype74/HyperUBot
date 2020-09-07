@@ -99,6 +99,9 @@ class StatusText(object):
     SHUTDOWN = text.StatusText.SHUTDOWN
     SHUTDOWN_LOG = text.StatusText.SHUTDOWN_LOG
     SYSD_NEOFETCH_REQ = text.StatusText.SYSD_NEOFETCH_REQ
+    RESTART = text.StatusText.RESTART
+    RESTART_LOG = text.StatusText.RESTART_LOG
+    RESTARTED = text.StatusText.RESTARTED
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = text.DeletionsText.CANNOT_DEL_MSG
