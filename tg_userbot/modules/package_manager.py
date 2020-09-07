@@ -5,6 +5,9 @@ import tg_userbot.include.git_api as git
 # Telethon stuff
 from telethon.events import NewMessage
 
+# Misc stuff
+import requests
+
 UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
 MODULE_LIST = None # the thing that should get updated if you do .pkg update
@@ -40,6 +43,9 @@ async def universe_checker(msg):
         await msg.edit(files, parse_mode='md')
         return
     elif cmd_args[0] == "install":
+        if MODULE_LIST is None or len(MODULE_LIST) == 0:
+            await msg.edit("The modules list is empty! Please run `.pkg update` first!")
+            return
         if len(cmd_args) == 1:
             await msg.edit("`No specified package to install! Command halted!`")
             return
@@ -50,8 +56,15 @@ async def universe_checker(msg):
                 i += ".py"
             for j in MODULE_LIST:
                 if j['name'] == i:
-                    fileURLs.append(j['url'])
-        print(fileURLs)
+                    fileURLs.append({'filename': i, 'link': j['url']})
+                else:
+                    await msg.edit("No module named `{}` was found in the release repo! Aborting!".format(i))
+                    return
+        # print(fileURLs)
+        for i in fileURLs:
+            request = requests.get(i['link'], allow_redirects=True)
+            open('tg_userbot/modules/' + i['filename'], 'wb').write(request.content)
+        await msg.edit("Done! Reboot userbot!")
         return
     else:
         await msg.edit("Invalid argument! Make sure it is **update**, **list** or **install**!")
