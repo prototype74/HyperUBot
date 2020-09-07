@@ -46,6 +46,8 @@ async def universe_checker(msg):
         del(cmd_args[0])
         fileURLs = []
         for i in cmd_args:
+            if not i.endswith(".py"):
+                i += ".py"
             for j in MODULE_LIST:
                 if j['name'] == i:
                     fileURLs.append(j['url'])
