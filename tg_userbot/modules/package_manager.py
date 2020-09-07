@@ -52,14 +52,17 @@ async def universe_checker(msg):
         del(cmd_args[0])
         fileURLs = []
         for i in cmd_args:
+            found = False
             if not i.endswith(".py"):
                 i += ".py"
             for j in MODULE_LIST:
                 if j['name'] == i:
                     fileURLs.append({'filename': i, 'link': j['url']})
-                else:
-                    await msg.edit("No module named `{}` was found in the release repo! Aborting!".format(i))
-                    return
+                    found = True
+                    break
+            if not found:
+                await msg.edit("No module named `{}` was found in the release repo! Aborting!".format(i))
+                return
         # print(fileURLs)
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
