@@ -79,10 +79,10 @@ async def restart(power_off): # Totally not a shutdown kang *sips whiskey*
     await power_off.edit(msgRep.RESTART)
     if LOGGING:
         await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
-    await power_off.client.disconnect()
     args = [sys.executable, "-m", "tg_userbot"]
     execle(sys.executable, *args, environ)
     await power_off.edit(msgRep.RESTARTED)
+    await power_off.client.disconnect()
 
 @tgclient.on(NewMessage(pattern=r"^\.sysd$", outgoing=True))
 async def sysd(event):
