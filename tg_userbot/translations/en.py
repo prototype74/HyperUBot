@@ -416,6 +416,8 @@ class ModuleUsages(object):
          \nUsage: Type .status to check various bot information and if it is up and running.\
          \n\n`.shutdown`\
          \nUsage: Type .shutdown to shutdown the bot. \
+         \n\n`.reboot`\
+         \nUsage: Reboots the bot! \
          \n\n`.sysd`\
          \nUsage: Type .sysd to get system details. (Requires neofetch installed)"
 
