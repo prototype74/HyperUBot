@@ -479,7 +479,7 @@ class ModuleUsages(object):
                  \nUsage: Flips a coin and returns heads or tails, depending on the result.\
                  \n\n`.dice` \
                  \nUsage: This will send the dice emoji, telegram will take care of the value, totally random.\
-                 \n\n`.random` <lower limit> <upper limit>\
+                 \n\n`.rand` <lower limit> <upper limit>\
                  \nUsage: Given an upper and lower limit (both integers), the bot will generate a random number in between."
 
     PACKAGE_MANAGER_USAGE = "`.pkg update` \
