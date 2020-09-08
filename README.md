@@ -5,7 +5,7 @@ Copyright (C) 2020 Nuno Penim
 
 All rights reserved, under construction.
 
-> Licensed under [DBADPL-B](https://github.com/nunopenim/DBADPL-B)
+> Licensed under [PEL](https://github.com/nunopenim/HyperUBot/blob/master/LICENSE.md)
 
 # Special thanks
 To my brother [prototype74](https://github.com/prototype74) for his direct and indirect work on this project, and for the german translation.
