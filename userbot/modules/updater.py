@@ -48,3 +48,4 @@ async def updater(upd):
             retText += "\nPlease run `.update upgrade` to update now!"
             await upd.edit(retText)
             return
+
