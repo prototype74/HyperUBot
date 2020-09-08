@@ -47,7 +47,7 @@ async def universe_checker(msg):
         repos = UNIVERSE_NAME
         for repo in REPOS_NAMES:
             repos += ", " + repo
-        await msg.edit("Modules list has been updated from the universe(s) **{}**".format(repos))
+        await msg.edit("Modules list has been updated from the universe(s): **{}**".format(repos))
         return
     elif cmd_args[0] == "list":
         files = ""
