@@ -21,7 +21,6 @@
 
 ## To Do Part 2 (after alpha release):
  - Update module
- - File uploader and downloader module
  - Finding Windows, MacOS and Termux bois.
 
 ## To Do Part 3 (after beta release, but still undecided on all) :
@@ -32,6 +31,7 @@
  - Finding translators to every language and get it translated
 
 ## Modules for the Universe
+ - File uploader and downloader module
  - Weather Module
  - Memes module (mock, vaporwave, etc...)
  - Spam module
