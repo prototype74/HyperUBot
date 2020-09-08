@@ -101,10 +101,12 @@ try:
     if STRING_SESSION:
         tgclient = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
     else:
-        log.warning("STRING SESSION is empty! Please enter your API KEY and HASH to create a new string session.")
-        tgclient = TelegramClient("tguserbot", API_KEY, API_HASH)
+        log.error("STRING SESSION is empty!")
+        log.error("Please run 'generate_session.py' to get a new string session or if present, set your string session to STRING_SESSION in your config.* file")
+        log.error("Terminating...")
+        quit(1)
 except Exception as e:
-    log.critical(f"Failed to create Telegram Client: {e}")
+    log.critical(f"Failed to create Telegram Client: {e}", exc_info=True)
     quit(1)
 
 # SYSVARS
