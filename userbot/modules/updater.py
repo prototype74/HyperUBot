@@ -32,8 +32,8 @@ async def updater(upd):
             changelog += "{}. By <{}>: {}\n".format(counter, commit.author, commit.summary)
             counter += 1
         if not changelog:
-            upd.edit("Bot is up to date")
+            await upd.edit("Bot is up to date")
             return
         if changelog:
-            upd.edit(changelog)
+            await upd.edit(changelog)
             return
