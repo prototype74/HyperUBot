@@ -1,3 +1,11 @@
+# Copyright 2020 nunopenim @github
+# Copyright 2020 prototype74 @github
+#
+# Licensed under the PEL (Penim Enterprises License), v1.0
+#
+# You may not use this file or any of the content within it, unless in
+# compliance with the PE License
+
 from userbot import UBOT_LANG
 from importlib import import_module
 from logging import getLogger

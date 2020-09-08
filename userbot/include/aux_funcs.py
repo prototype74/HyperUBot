@@ -1,5 +1,10 @@
-# Auxiliary functions used in the entire project, to keep the code clean.
-# Nuno Penim, 2020
+# Copyright 2020 nunopenim @github
+# Copyright 2020 prototype74 @github
+#
+# Licensed under the PEL (Penim Enterprises License), v1.0
+#
+# You may not use this file or any of the content within it, unless in
+# compliance with the PE License
 
 # My imports
 from userbot import LOGGING_CHATID
