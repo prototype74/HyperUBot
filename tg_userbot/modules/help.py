@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot import tgclient, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, MODULE_DESC, MODULE_DICT
+from tg_userbot import tgclient, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, MODULE_DESC, MODULE_DICT, USER_MODULES
 from tg_userbot.include.language_processor import HelpText as msgRep
 
 # Telethon stuff
@@ -21,8 +21,11 @@ def modules_listing(error_text: str = None) -> str:
         modules_listed += f"{msgRep.AVAILABLE_MODULES}:\n"
     for module in LOAD_MODULES:
         if not module == basename(__file__)[:-3]:  # exclude this module
-            modules_listed += f"`{str(num)}. {module}`\n"
+            modules_listed += f"`{str(num)}. {module}"
             num += 1
+            if module in USER_MODULES:
+                modules_listed += "*"
+            modules_listed += "`\n"
 
     if NOT_LOAD_MODULES:
         num = 1
