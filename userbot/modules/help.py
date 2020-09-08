@@ -27,14 +27,15 @@ def modules_listing(error_text: str = None) -> str:
         modules_listed = f"{msgRep.AVAILABLE_MODULES}:\n"
     else:
         modules_listed += f"{msgRep.AVAILABLE_MODULES}:\n"
-    for module in LOAD_MODULES:
+    for module in sorted(LOAD_MODULES):
         if not module == basename(__file__)[:-3]:  # exclude this module
-            modules_listed += f"`{str(num)}. {module}"
-            num += 1
             if module in USER_MODULES:
-                modules_listed += "*"
-            modules_listed += "`\n"
-    modules_listed += "\n{}".format(msgRep.ASTERISK)
+                 modules_listed += f"`{str(num)}. {module}*`\n"
+            else:
+                 modules_listed += f"`{str(num)}. {module}`\n"
+            num += 1
+    if USER_MODULES:
+        modules_listed += "\n" + msgRep.ASTERISK
 
     if NOT_LOAD_MODULES:
         num = 1

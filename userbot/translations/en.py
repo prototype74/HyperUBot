@@ -284,7 +284,7 @@ class HelpText(object):
     MODULE_NOT_FOUND = "`Module \"{}\" not found`"
     MODULE_NO_DESC = "__No description available__"
     MODULE_NO_USAGE = "__No usage available__"
-    ASTERISK = "* - Uninstalable module."
+    ASTERISK = "__* Uninstallable user module__"
 
 class WebToolsText(object):
     PING_SPEED = "Round-Trip Time: "
