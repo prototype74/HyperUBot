@@ -58,7 +58,7 @@ async def universe_checker(msg):
             oldName = ""
             for m in MODULE_LIST:
                 if not (m["repo"] == oldName):
-                    files += "\n\n Files in {}".format(m["repo"])
+                    files += "\n\n Files in {}\n".format(m["repo"])
                     oldName = m["repo"]
                     count = 1
                 files += "{}. [{}]({}) - {} Bytes\n".format(count, m["name"], m["url"], m["size"])
