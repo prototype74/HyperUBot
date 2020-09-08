@@ -32,9 +32,10 @@ async def updater(upd):
             changelog += "{}. [{}] > `{}`\n".format(counter, commit.author, commit.summary)
             counter += 1
         if not changelog:
-            await upd.edit("Bot is up to date")
+            await upd.edit("HyperUBot is already running on the latest version!")
             return
         if changelog:
-            await upd.edit(changelog)
+            retText = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
+            await upd.edit(retText + changelog)
             return
 
