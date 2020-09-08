@@ -27,7 +27,6 @@
  - Research on a possible Automation module
  - Terminal (maybe interpreters for more languages)
  - Scrappers (currency converter and speech-to-text)
- - Add extra info to .info (but what?)
  - Finding translators to every language and get it translated
 
 ## Modules for the Universe
