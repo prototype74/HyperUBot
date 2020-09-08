@@ -80,7 +80,8 @@ async def universe_checker(msg):
         del(cmd_args[0])
         fileURLs = []
         modules_installed = []
-        cmd_args = cmd_args.split(" ")
+        cmd_args = cmd_args[0].split(" ")
+        print(cmd_args)
         for i in cmd_args:
             found = False
             if not i.endswith(".py"):
