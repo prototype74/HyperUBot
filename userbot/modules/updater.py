@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 # My stuff
-from userbot import tgclient
+from userbot import tgclient, PROJECT
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -40,7 +40,7 @@ async def updater(upd):
             changelog += "{}. [{}] > `{}`\n".format(counter, commit.author, commit.summary)
             counter += 1
         if not changelog:
-            await upd.edit("HyperUBot is already running on the latest version!")
+            await upd.edit("{} is already running on the latest version!".format(PROJECT))
             return
         if changelog:
             retText = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
