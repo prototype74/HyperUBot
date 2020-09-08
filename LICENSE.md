@@ -1,29 +1,51 @@
-# DON'T BE A DICK PUBLIC LICENSE B
+# PENIM ENTERPRISES LICENSE
 
-> Version 1.0, July 2020
+> Version 0.1a (unreleased), AUGUST 2020
 
 > Copyright (C) 2020 Nuno Penim
  
- Everyone is permitted to copy and distribute verbatim or modified
- copies of this license document.
+ Everyone is permitted to copy and distribute verbatim copies of this license document if associated with Penim Enterprises. Changing the terms in this license is forbidden, unless the name changes too.
 
-> DON'T BE A DICK PUBLIC LICENSE B
-> TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+> PENIM ENTERPRISES LICENSE
 
- 1. Do whatever you like with the original work, just don't be a dick.
-
-     Being a dick includes - but is not limited to - the following instances:
-
-	 1a. Outright copyright infringement - Don't just copy the original work/works and change the name.  
-	 1b. Selling the unmodified original with no work done what-so-ever, that's REALLY being a dick.  
-	 1c. Modifying the original work to contain hidden harmful content. That would make you a PROPER dick.  
-	 1d. Selling a project with educational purposes without consulting the original creator. That would make you a BAG of dicks.  
-	 
- 2. If you become rich through modifications, related works/services, or supporting the original work,
- share the love. Only a dick would make loads off this work and not buy the original work's 
- creator(s) a beer or a pizza.
+> DEFINITIONS
+ 1. "Source code" refers to the work with this copy of the license has been distributed.
  
- 3. Code is provided with no warranty. Using somebody else's code and bitching when it goes wrong makes 
- you a DONKEY dick. Fix the problem yourself or submit a [bug report](https://www.chiark.greenend.org.uk/~sgtatham/bugs.html), so that the 
- original creator can attempt to fix the problem. Just don't bitch about it.
+ 2. "Original author(s)" refers to the original creator of this source code.
+ 
+ 3. "This work" - See "Source code"
+
+
+> TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION, MODIFICATION AND WARRANTY
+ 1. Modifications:
+
+     Modifying is allowed, unless you perform copyright infringement. Changing the name and claiming the whole work as "yours" is an example of such copyright infringement. You should always state who was the original author of any modification you do, if you used the algorithm of anyone else, besides yours.
+     
+ 2. Unintended uses:
+ 
+     The source code within this license is marked with some unintended uses, which are:
+     
+	 2a. Selling the unmodified original with no work done what-so-ever, claiming it as yours.  
+	 2b. Modifying the original work to contain hidden harmful content.  
+	 2c. Profit from an educational project, in any shape or form such as:  
+	   - 2ca. Selling it.  
+	   - 2cb. Modifying the project to display monetized ads.  
+	   - 2cc. Modifying the project to include some sort of trial that forces the user to pay after.  
+	 
+	 2d. Circunventing any copyright protection mechanisms (if) implemented, such as DRM.  
+	 2e. Eliminating any references to the original authors of any part of this project.  
+	 2f. Changing the license to which this project is licensed under, without proper permission from the original authors  
+	 
+ 3. Profiting:
+     
+     If you profit from any modification you made to this work, that are not included in any of the topics in (2), share the love. It's not a requirement, but you should pass the karma :)
+ 
+ 4. Distribution:
+ 
+     Distributing this work or modified versions is authorized, as long as you include the modifications you made, as comments, and that do not break any of the other topics of this License, and of course, maintaining this License as the project License file.
+ 
+ 5. Warranty:
+ 
+     The source code is distributed with no warranty. Use it at your own risk.
+     
 
