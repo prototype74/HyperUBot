@@ -85,7 +85,7 @@ async def universe_checker(msg):
         if modName not in USER_MODULES:
             await msg.edit("`{}` is not a valid Userspace module name! Process halted!")
             return
-        os.remove(USER_MODULES_DIR + modName)
+        os.remove(USER_MODULES_DIR + modName + ".py")
         await msg.edit("Done! Reboot userbot!")
         return
     else:
