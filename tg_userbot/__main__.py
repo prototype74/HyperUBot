@@ -40,6 +40,8 @@ class _Modules:
 
     def import_load_modules(self) -> bool:
         load_modules = self.__load_modules()
+        print(LOAD_MODULES)
+        print(USER_MODULES)
         try:
             for module in load_modules:
                 if module in USER_MODULES:
