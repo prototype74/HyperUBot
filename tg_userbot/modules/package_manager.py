@@ -1,6 +1,7 @@
 # My stuff
 from tg_userbot import tgclient, USER_MODULES, COMMUNITY_REPOS
 import tg_userbot.include.git_api as git
+from tg_userbot.include.language_processor import PackageManagerText as msgRep
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -47,30 +48,30 @@ async def universe_checker(msg):
         repos = UNIVERSE_NAME
         for repo in REPOS_NAMES:
             repos += ", " + repo
-        await msg.edit("Modules list has been updated from the universe(s): **{}**".format(repos))
+        await msg.edit(msgRep.UPDATE_COMPLETE.format(repos))
         return
     elif cmd_args[0] == "list":
         files = ""
         count = 1
         if MODULE_LIST is None or len(MODULE_LIST) == 0:
-            files += "`There are no modules in the package list!`"
+            files += msgRep.EMPTY_LIST
         else:
             oldName = ""
             for m in MODULE_LIST:
                 if not (m["repo"] == oldName):
-                    files += "\n\n Files in {}:\n".format(m["repo"])
+                    files += msgRep.FILES_IN.format(m["repo"])
                     oldName = m["repo"]
                     count = 1
-                files += "{}. [{}]({}) - {} Bytes\n".format(count, m["name"], m["url"], m["size"])
+                files += msgRep.FILE_DSC.format(count, m["name"], m["url"], m["size"])
                 count += 1
         await msg.edit(files, parse_mode='md')
         return
     elif cmd_args[0] == "install":
         if MODULE_LIST is None or len(MODULE_LIST) == 0:
-            await msg.edit("The modules list is empty! Please run `.pkg update` first!")
+            await msg.edit(msgRep.EMPTY_LIST)
             return
         if len(cmd_args) == 1:
-            await msg.edit("`No specified package to install! Process halted!`")
+            await msg.edit(msgRep.NO_PKG)
             return
         del(cmd_args[0])
         fileURLs = []
@@ -84,32 +85,31 @@ async def universe_checker(msg):
                     found = True
                     break
             if not found:
-                await msg.edit("No module named `{}` was found in the release repo! Aborting!".format(i))
+                await msg.edit(msgRep.MOD_NOT_FOUND_INSTALL.format(i))
                 return
-        # print(fileURLs)
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
             open(USER_MODULES_DIR + i['filename'], 'wb').write(request.content)
-        await msg.edit("Done! Reboot userbot!")
+        await msg.edit(msgRep.DONE_RBT)
         return
     elif cmd_args[0] == "uninstall":
         if len(USER_MODULES) == 0:
-            await msg.edit("No uninstallable modules present! Process halted!")
+            await msg.edit(msgRep.NO_UNINSTALL_MODULES)
             return
         if len(cmd_args) == 1:
-            await msg.edit("Please specify a module name, I cannot uninstall __nothing__!")
+            await msg.edit(msgRep.NO_UN_NAME)
             return
         if len(cmd_args) > 2:
-            await msg.edit("For safety reasons, you can only uninstall one module at a time, please give a single name!")
+            await msg.edit(msgRep.MULTIPLE_NAMES)
             return
         modName = cmd_args[1].lower()
         if modName not in USER_MODULES:
-            await msg.edit("`{}` is not a valid Userspace module name! Process halted!")
+            await msg.edit(msgRep.NOT_IN_USERSPACE.format(modName))
             return
-        await msg.edit("`Uninstalling {}...`".format(modName))
+        await msg.edit(msgRep.UNINSTALLING.format(modName))
         os.remove(USER_MODULES_DIR + modName + ".py")
-        await msg.edit("Done! Reboot userbot!")
+        await msg.edit(msgRep.DONE_RBT)
         return
     else:
-        await msg.edit("Invalid argument! Make sure it is **update**, **list**, **install** or **uninstall**!")
+        await msg.edit(msgRep.INVALID_ARG)
         return

@@ -370,6 +370,21 @@ class MiscText(object):
     SCND_LIMIT_INVALID = text.MiscText.SCND_LIMIT_INVALID
     RAND_NUM_GEN = text.MiscText.RAND_NUM_GEN
 
+class PackageManagerText(object):
+    INVALID_ARG = text.PackageManagerText.INVALID_ARG
+    UPDATE_COMPLETE = text.PackageManagerText.UPDATE_COMPLETE
+    EMPTY_LIST = text.PackageManagerText.EMPTY_LIST
+    FILES_IN = text.PackageManagerText.FILES_IN
+    FILE_DSC = text.PackageManagerText.FILE_DSC
+    NO_PKG = text.PackageManagerText.NO_PKG
+    MOD_NOT_FOUND_INSTALL = text.PackageManagerText.MOD_NOT_FOUND_INSTALL
+    DONE_RBT = text.PackageManagerText.DONE_RBT
+    NO_UNINSTALL_MODULES = text.PackageManagerText.NO_UNINSTALL_MODULES
+    NO_UN_NAME = text.PackageManagerText.NO_UN_NAME
+    MULTIPLE_NAMES = text.PackageManagerText.MULTIPLE_NAMES
+    NOT_IN_USERSPACE = text.PackageManagerText.NOT_IN_USERSPACE
+    UNINSTALLING = text.PackageManagerText.UNINSTALLING
+
 class ModuleDescriptions(object):
     ADMIN_DESC = text.ModuleDescriptions.ADMIN_DESC
     CHATINFO_DESC = text.ModuleDescriptions.CHATINFO_DESC

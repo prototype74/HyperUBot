@@ -353,6 +353,21 @@ class MiscText(object):
     SCND_LIMIT_INVALID = "`The second value is not a valid number!`"
     RAND_NUM_GEN = "Your generated number between `{}` and `{}`: **`{}`**"
 
+class PackageManagerText(object):
+    INVALID_ARG = "Invalid argument! Make sure it is **update**, **list**, **install** or **uninstall**!"
+    UPDATE_COMPLETE = "Modules list has been updated from the universe(s): **{}**"
+    EMPTY_LIST = "The modules list is empty! Please run `.pkg update` first!"
+    FILES_IN = "\n\n Files in {}:\n"
+    FILE_DSC = "{}. [{}]({}) - {} Bytes\n"
+    NO_PKG = "`No specified package to install! Process halted!`"
+    MOD_NOT_FOUND_INSTALL = "No module named `{}` was found in the release repo! Aborting!"
+    DONE_RBT = "Done! Reboot userbot!"
+    NO_UNINSTALL_MODULES = "No uninstallable modules present! Process halted!"
+    NO_UN_NAME = "Please specify a module name, I cannot uninstall __nothing__!"
+    MULTIPLE_NAMES = "For safety reasons, you can only uninstall one module at a time, please give a single name!"
+    NOT_IN_USERSPACE = "`{}` is not a valid Userspace module name! Process halted!"
+    UNINSTALLING = "`Uninstalling {}...`"
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
     ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote etc.\
