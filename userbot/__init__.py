@@ -37,7 +37,6 @@ OS = system()  # Current Operating System
 
 try:
     if path.exists(LOGFILE):
-        file = open(LOGFILE, "w")
         sys_string = "======= SYS INFO\n\n"
         sys_string += "Project: {}\n".format(PROJECT)
         sys_string += "Version: {}\n".format(VERSION)
@@ -49,6 +48,7 @@ try:
         sys_string += "Python compiler: {}\n".format(python_compiler())
         sys_string += "Telethon: v{}\n\n".format(version.__version__)
         sys_string += "======= TERMINAL LOGGING\n\n"
+        file = open(LOGFILE, "w")
         file.write(sys_string)
         file.close()
 except Exception as e:
