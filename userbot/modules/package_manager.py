@@ -81,7 +81,6 @@ async def universe_checker(msg):
         fileURLs = []
         modules_installed = []
         cmd_args = cmd_args[0].split(" ")
-        print(cmd_args)
         for i in cmd_args:
             found = False
             if not i.endswith(".py"):
@@ -94,6 +93,7 @@ async def universe_checker(msg):
             if not found:
                 await msg.edit(msgRep.MOD_NOT_FOUND_INSTALL.format(i))
                 return
+        print(fileURLs)
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
             open(USER_MODULES_DIR + i['filename'], 'wb').write(request.content)
