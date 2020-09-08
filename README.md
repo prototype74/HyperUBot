@@ -1,5 +1,5 @@
-# tguserbot-X
-The reboot of the tguserbot project
+# HyperUBot
+A modular telegram userbot with it's own package manager.
 
 Copyright (C) 2020 Nuno Penim
 
