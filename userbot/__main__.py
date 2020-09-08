@@ -26,35 +26,53 @@ class _Modules:
         self.__load_modules_count = 0
         self.__not_load_modules_count = 0
 
-    def __load_modules(self) -> list:
+    def __load_modules(self) -> tuple:
+        sys_modules = []
+        user_modules = []
         if OS and OS.startswith("win"):
-            module_paths = glob(dirname(__file__) + "\\modules\\*.py")
-            user_paths = glob(dirname(__file__) + "\\modules_user\\*.py")
+            sys_module_paths = glob(dirname(__file__) + "\\modules\\*.py")
+            user_module_paths = glob(dirname(__file__) + "\\modules_user\\*.py")
         else:
-            module_paths = glob(dirname(__file__) + "/modules/*.py")
-            user_paths = glob(dirname(__file__) + "/modules_user/*.py")
-        for module in sorted(module_paths + user_paths):
+            sys_module_paths = glob(dirname(__file__) + "/modules/*.py")
+            user_module_paths = glob(dirname(__file__) + "/modules_user/*.py")
+        for module in sys_module_paths:
             if isfile(module) and module.endswith(".py"):
                 filename = basename(module)[:-3]
-                ALL_MODULES.append(filename)
                 try:
                     if not filename in NOT_LOAD_MODULES:
-                        LOAD_MODULES.append(filename)
+                        sys_modules.append(filename)
                 except:
-                    LOAD_MODULES.append(filename)
-            if module in user_paths:
-                USER_MODULES.append(filename)
-        return LOAD_MODULES
+                    sys_modules.append(filename)
+        for module in user_module_paths:
+            if isfile(module) and module.endswith(".py"):
+                filename = basename(module)[:-3]
+                try:
+                    if not filename in NOT_LOAD_MODULES:
+                        if not filename in sys_modules:
+                            user_modules.append(filename)
+                        else:
+                            log.warning(f"Module '{filename}' not loaded as present sys already")
+                except:
+                    if not filename in sys_modules:
+                        user_modules.append(filename)
+                    else:
+                        log.warning(f"Module '{filename}' not loaded as present sys already")
+        return (sys_modules, user_modules)
 
     def import_load_modules(self) -> bool:
-        load_modules = self.__load_modules()
+        sys_modules, user_modules = self.__load_modules()
         try:
-            for module in load_modules:
-                if module in USER_MODULES:
-                    self.__imported_module = import_module("userbot.modules_user." + module)
-                else:
-                    self.__imported_module = import_module("userbot.modules." + module)
+            for module in sys_modules:
+                self.__imported_module = import_module("userbot.modules." + module)
+                LOAD_MODULES.append(module)
                 self.__load_modules_count += 1
+            for module in user_modules:
+                self.__imported_module = import_module("userbot.modules_user." + module)
+                LOAD_MODULES.append(module)
+                USER_MODULES.append(module)
+                self.__load_modules_count += 1
+            for module in sorted(sys_modules + user_modules):
+                ALL_MODULES.append(module)
             if NOT_LOAD_MODULES:
                 for module in NOT_LOAD_MODULES:
                     if module in ALL_MODULES:
