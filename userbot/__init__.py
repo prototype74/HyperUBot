@@ -21,7 +21,7 @@ from platform import system
 from sys import version_info  # check python version
 
 # Terminal logging
-LOGFILE = "xbot.log"
+LOGFILE = "hyper.log"
 if path.exists(LOGFILE):
     remove(LOGFILE)
 log = getLogger(__name__)
