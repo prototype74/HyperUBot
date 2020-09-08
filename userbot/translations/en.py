@@ -1,8 +1,10 @@
-# This is the english language file! As an early version,
-# if you want to translate, copy this file then rename all
-# the imports in the language processor module
-# for your language. I will think of a better implementation
-# system in future revisions. - Penim
+# Copyright 2020 nunopenim @github
+# Copyright 2020 prototype74 @github
+#
+# Licensed under the PEL (Penim Enterprises License), v1.0
+#
+# You may not use this file or any of the content within it, unless in
+# compliance with the PE License
 
 class AdminText(object): # Admin module
     FAIL_CHAT = "`Failed to fetch chat`"
