@@ -3,7 +3,7 @@ xbot.log
 tguserbot.session
 userbot/config.env
 userbot/config.py
-tg_userbot/modules_user/*.py
+userbot/modules_user/*.py
 
 # python cache
 __pycache__/*
