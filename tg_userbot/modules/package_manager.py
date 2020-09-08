@@ -131,7 +131,7 @@ async def universe_checker(msg):
         time.sleep(1)  # just so we can actually see a message
         if LOGGING:
             await event_log(msg, "MODULE UNINSTALL", custom_text=msgRep.UNINSTALL_LOG.format(modName))
-        await msg.edit(msgRep.REBOOT_DONE_UNINS)
+        await msg.edit(msgRep.REBOOT_DONE_UNINS.format(modName))
         args = [sys.executable, "-m", "tg_userbot"]
         os.execle(sys.executable, *args, os.environ)
         await msg.client.disconnect()
