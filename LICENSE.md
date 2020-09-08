@@ -1,10 +1,10 @@
 # PENIM ENTERPRISES LICENSE
 
-> Version 0.1a (unreleased), AUGUST 2020
+> Version 1.0, SEPTEMBER 2020
 
 > Copyright (C) 2020 Nuno Penim
  
- Everyone is permitted to copy and distribute verbatim copies of this license document if associated with Penim Enterprises. Changing the terms in this license is forbidden, unless the name changes too.
+ Everyone is permitted to copy and distribute verbatim copies of this license document if associated with Penim Enterprises, or if the project is a modified version of an existing project, licensed under the PEL. Changing the terms in this license is forbidden, unless the name changes too.
 
 > PENIM ENTERPRISES LICENSE
 
