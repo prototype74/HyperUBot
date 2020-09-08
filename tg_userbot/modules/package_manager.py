@@ -13,6 +13,7 @@ UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
 USER_MODULES_DIR = "./tg_userbot/modules_user/"
 MODULE_LIST = None # the thing that should get updated if you do .pkg update
+REPOS_NAMES = []
 
 def list_updater():
     global MODULE_LIST
@@ -25,6 +26,8 @@ def list_updater():
         MODULE_LIST.append({"repo": UNIVERSE_NAME, "name": assetName, "url": assetURL, "size": assetSize})
     for repoURL in COMMUNITY_REPOS:
         repoName = git.getReleaseName(git.getReleaseData(git.getData(repoURL), 0))
+        if repoName not in REPOS_NAMES:
+            REPOS_NAMES.append(repoName)
         assets = git.getAssets(git.getReleaseData(git.getData(repoURL), 0))
         for asset in assets:
             assetName = git.getReleaseFileName(asset)
@@ -41,7 +44,10 @@ async def universe_checker(msg):
     cmd_args = msg.pattern_match.group(1).split(" ", 1)
     if cmd_args[0] == "update":
         list_updater()
-        await msg.edit("Modules list has been updated from the universe **{}**".format(UNIVERSE_NAME))
+        repos = UNIVERSE_NAME
+        for repo in REPOS_NAMES:
+            repos += ", " + repo
+        await msg.edit("Modules list has been updated from the universe(s) **{}**".format(repos))
         return
     elif cmd_args[0] == "list":
         files = ""
