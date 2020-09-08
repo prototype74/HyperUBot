@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot import tgclient, USER_MODULES
+from tg_userbot import tgclient, USER_MODULES, COMMUNITY_REPOS
 import tg_userbot.include.git_api as git
 
 # Telethon stuff
@@ -22,7 +22,17 @@ def list_updater():
         assetName = git.getReleaseFileName(asset)
         assetURL = git.getReleaseFileURL(asset)
         assetSize = git.getSize(asset)
-        MODULE_LIST.append({"name": assetName, "url": assetURL, "size": assetSize})
+        MODULE_LIST.append({"repo": UNIVERSE_NAME, "name": assetName, "url": assetURL, "size": assetSize})
+    for repoURL in COMMUNITY_REPOS:
+        repoName = git.getReleaseName(git.getReleaseData(git.getData(repoURL), 0))
+        assets = git.getAssets(git.getReleaseData(git.getData(repoURL), 0))
+        for asset in assets:
+            assetName = git.getReleaseFileName(asset)
+            assetURL = git.getReleaseFileURL(asset)
+            assetSize = git.getSize(asset)
+            if assetName in MODULE_LIST:
+                MODULE_LIST.remove(MODULE_LIST["name"] == assetName)
+            MODULE_LIST.append({"repo": repoName, "name": assetName, "url": assetURL, "size": assetSize})
     return MODULE_LIST
 
 # Maybe add just a single command, but multiple arguments?
@@ -34,12 +44,17 @@ async def universe_checker(msg):
         await msg.edit("Modules list has been updated from the universe **{}**".format(UNIVERSE_NAME))
         return
     elif cmd_args[0] == "list":
-        files = "Files in **{}**:\n\n".format(UNIVERSE_NAME)
+        files = ""
         count = 1
         if MODULE_LIST is None or len(MODULE_LIST) == 0:
             files += "`There are no modules in the package list!`"
         else:
+            oldName = ""
             for m in MODULE_LIST:
+                if not (m["repo"] == oldName):
+                    files += "\n\n Files in {}".format(m["repo"])
+                    oldName = m["repo"]
+                    count = 1
                 files += "{}. [{}]({}) - {} Bytes\n".format(count, m["name"], m["url"], m["size"])
                 count += 1
         await msg.edit(files, parse_mode='md')
@@ -90,5 +105,5 @@ async def universe_checker(msg):
         await msg.edit("Done! Reboot userbot!")
         return
     else:
-        await msg.edit("Invalid argument! Make sure it is **update**, **list** or **install**!")
+        await msg.edit("Invalid argument! Make sure it is **update**, **list**, **install** or **uninstall**!")
         return

@@ -45,3 +45,6 @@ class ConfigClass(object):
     #
     TEMP_DL_DIR = "./downloads"  # Default
 
+    # Community extra repos, leave as list of strings (or not)
+    COMMUNITY_REPOS = []
+
