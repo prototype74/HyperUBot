@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, LOGGING_CHATID
+from tg_userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING
 import tg_userbot.include.git_api as git
 from tg_userbot.include.aux_funcs import event_log
 from tg_userbot.include.language_processor import PackageManagerText as msgRep
