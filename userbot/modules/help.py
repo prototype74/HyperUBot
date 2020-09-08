@@ -1,3 +1,11 @@
+# Copyright 2020 nunopenim @github
+# Copyright 2020 prototype74 @github
+#
+# Licensed under the PEL (Penim Enterprises License), v1.0
+#
+# You may not use this file or any of the content within it, unless in
+# compliance with the PE License
+
 # tguserbot stuff
 from userbot import tgclient, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, MODULE_DESC, MODULE_DICT, USER_MODULES
 from userbot.include.language_processor import HelpText as msgRep

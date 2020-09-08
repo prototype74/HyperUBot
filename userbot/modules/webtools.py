@@ -1,3 +1,11 @@
+# Copyright 2020 nunopenim @github
+# Copyright 2020 prototype74 @github
+#
+# Licensed under the PEL (Penim Enterprises License), v1.0
+#
+# You may not use this file or any of the content within it, unless in
+# compliance with the PE License
+
 # My imports
 from userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR
 from userbot.include.aux_funcs import pinger
