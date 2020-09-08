@@ -66,7 +66,7 @@ async def universe_checker(msg):
         # print(fileURLs)
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
-            open('./tg_userbot/modules/' + i['filename'], 'wb').write(request.content)
+            open('./tg_userbot/modules_user/' + i['filename'], 'wb').write(request.content)
         await msg.edit("Done! Reboot userbot!")
         return
     else:

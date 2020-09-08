@@ -1,6 +1,6 @@
 # tguserbot Stuff
 from tg_userbot import (tgclient, log, fhandler, PROJECT, OS, ALL_MODULES,
-                        LOAD_MODULES, NOT_LOAD_MODULES, VERSION)
+                        LOAD_MODULES, NOT_LOAD_MODULES, VERSION, USER_MODULES)
 
 # Telethon Stuff
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
@@ -18,11 +18,13 @@ class _Modules:
         self.__load_modules_count = 0
         self.__not_load_modules_count = 0
 
-    def __load_modules(self) -> list:
+    def __load_modules(self):
         if OS and OS.startswith("win"):
             module_paths = glob(dirname(__file__) + "\\modules\\*.py")
+            user_module_paths = glob(dirname(__file__) + "\\modules_user\\*.py")
         else:
             module_paths = glob(dirname(__file__) + "/modules/*.py")
+            user_module_paths = glob(dirname(__file__) + "/modules_user/*.py")
         for module in sorted(module_paths):
             if isfile(module) and module.endswith(".py"):
                 filename = basename(module)[:-3]
@@ -32,13 +34,26 @@ class _Modules:
                         LOAD_MODULES.append(filename)
                 except:
                     LOAD_MODULES.append(filename)
-        return LOAD_MODULES
+        for module in sorted(user_module_paths):
+            if isfile(module) and module.endswith(".py"):
+                filename = basename(module)[:-3]
+                ALL_MODULES.append(filename)
+                try:
+                    if not filename in NOT_LOAD_MODULES:
+                        USER_MODULES.append(filename)
+                except:
+                    USER_MODULES.append(filename)
+        return LOAD_MODULES, USER_MODULES
 
     def import_load_modules(self) -> bool:
-        load_modules = self.__load_modules()
+        load_modules = self.__load_modules()[0]
+        user_modules = self.__load_modules()[1]
         try:
             for module in load_modules:
                 self.__imported_module = import_module("tg_userbot.modules." + module)
+                self.__load_modules_count += 1
+            for module in user_modules:
+                self.__imported_module = import_module("tg_userbot.modules_user." + module)
                 self.__load_modules_count += 1
             if NOT_LOAD_MODULES:
                 for module in NOT_LOAD_MODULES:
