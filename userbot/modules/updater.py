@@ -29,7 +29,7 @@ async def updater(upd):
         changelog = ''
         counter = 1
         for commit in repo.iter_commits("HEAD..upstream/"+branch):
-            changelog += "{}. By <{}>: {}\n".format(counter, commit.author, commit.summary)
+            changelog += "{}. [{}] -> {}\n".format(counter, commit.author, commit.summary)
             counter += 1
         if not changelog:
             await upd.edit("Bot is up to date")
@@ -37,4 +37,3 @@ async def updater(upd):
         if changelog:
             await upd.edit(changelog)
             return
-
