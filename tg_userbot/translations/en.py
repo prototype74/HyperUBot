@@ -361,12 +361,16 @@ class PackageManagerText(object):
     FILE_DSC = "{}. [{}]({}) - {} Bytes\n"
     NO_PKG = "`No specified package to install! Process halted!`"
     MOD_NOT_FOUND_INSTALL = "No module named `{}` was found in the release repo! Aborting!"
-    DONE_RBT = "Done! Reboot userbot!"
+    DONE_RBT = "`Rebooting userbot...`"
     NO_UNINSTALL_MODULES = "No uninstallable modules present! Process halted!"
     NO_UN_NAME = "Please specify a module name, I cannot uninstall __nothing__!"
     MULTIPLE_NAMES = "For safety reasons, you can only uninstall one module at a time, please give a single name!"
     NOT_IN_USERSPACE = "`{}` is not a valid Userspace module name! Process halted!"
     UNINSTALLING = "`Uninstalling {}...`"
+    REBOOT_DONE_INS = "Done! Module(s) installed: `{}`"
+    REBOOT_DONE_UNINS = "Done! Uninstalled `{}`!"
+    INSTALL_LOG = "Userbot rebooted! Module(s) installed: `{}`"
+    UNINSTALL_LOG = "Userbot rebooted! Module uninstalled: `{}`"
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):

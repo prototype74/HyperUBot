@@ -1,6 +1,7 @@
 # My stuff
-from tg_userbot import tgclient, USER_MODULES, COMMUNITY_REPOS
+from tg_userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, LOGGING_CHATID
 import tg_userbot.include.git_api as git
+from tg_userbot.include.aux_funcs import event_log
 from tg_userbot.include.language_processor import PackageManagerText as msgRep
 
 # Telethon stuff
@@ -9,6 +10,8 @@ from telethon.events import NewMessage
 # Misc stuff
 import requests
 import os
+import time
+import sys
 
 UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
@@ -75,6 +78,7 @@ async def universe_checker(msg):
             return
         del(cmd_args[0])
         fileURLs = []
+        modules_installed = []
         for i in cmd_args:
             found = False
             if not i.endswith(".py"):
@@ -87,10 +91,25 @@ async def universe_checker(msg):
             if not found:
                 await msg.edit(msgRep.MOD_NOT_FOUND_INSTALL.format(i))
                 return
+
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
             open(USER_MODULES_DIR + i['filename'], 'wb').write(request.content)
+            modules_installed.append(i['filename'].strip(".py"))
+        md_installed_string = ""
+        for md in modules_installed:
+            if md_installed_string == "":
+                md_installed_string += md
+            else:
+                md_installed_string += ", " + md
         await msg.edit(msgRep.DONE_RBT)
+        time.sleep(1)  # just so we can actually see a message
+        if LOGGING:
+            await event_log(msg, "MODULE INSTALL", custom_text=msgRep.INSTALL_LOG.format(md_installed_string))
+        await msg.edit(msgRep.REBOOT_DONE_INS.format(md_installed_string))
+        args = [sys.executable, "-m", "tg_userbot"]
+        os.execle(sys.executable, *args, os.environ)
+        await msg.client.disconnect()
         return
     elif cmd_args[0] == "uninstall":
         if len(USER_MODULES) == 0:
@@ -109,6 +128,13 @@ async def universe_checker(msg):
         await msg.edit(msgRep.UNINSTALLING.format(modName))
         os.remove(USER_MODULES_DIR + modName + ".py")
         await msg.edit(msgRep.DONE_RBT)
+        time.sleep(1)  # just so we can actually see a message
+        if LOGGING:
+            await event_log(msg, "MODULE UNINSTALL", custom_text=msgRep.UNINSTALL_LOG.format(modName))
+        await msg.edit(msgRep.REBOOT_DONE_UNINS)
+        args = [sys.executable, "-m", "tg_userbot"]
+        os.execle(sys.executable, *args, os.environ)
+        await msg.client.disconnect()
         return
     else:
         await msg.edit(msgRep.INVALID_ARG)

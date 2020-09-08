@@ -384,6 +384,10 @@ class PackageManagerText(object):
     MULTIPLE_NAMES = text.PackageManagerText.MULTIPLE_NAMES
     NOT_IN_USERSPACE = text.PackageManagerText.NOT_IN_USERSPACE
     UNINSTALLING = text.PackageManagerText.UNINSTALLING
+    REBOOT_DONE_INS = text.PackageManagerText.REBOOT_DONE_INS
+    REBOOT_DONE_UNINS = text.PackageManagerText.REBOOT_DONE_UNINS
+    INSTALL_LOG = text.PackageManagerText.INSTALL_LOG
+    UNINSTALL_LOG = text.PackageManagerText.UNINSTALL_LOG
 
 class ModuleDescriptions(object):
     ADMIN_DESC = text.ModuleDescriptions.ADMIN_DESC
