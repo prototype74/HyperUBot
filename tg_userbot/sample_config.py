@@ -45,6 +45,10 @@ class ConfigClass(object):
     #
     TEMP_DL_DIR = "./downloads"  # Default
 
+    #
     # Community extra repos, leave as list of strings (or not)
+    # The format of the repo should be "<github_username>/<github_repo>"
+    # Example: "nunopenim/modules-universe" , although this is not a community repo :)
+    #
     COMMUNITY_REPOS = []
 
