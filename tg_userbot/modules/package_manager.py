@@ -1,5 +1,5 @@
 # My stuff
-from tg_userbot import tgclient
+from tg_userbot import tgclient, USER_MODULES
 import tg_userbot.include.git_api as git
 
 # Telethon stuff
@@ -7,9 +7,11 @@ from telethon.events import NewMessage
 
 # Misc stuff
 import requests
+import os
 
 UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
+USER_MODULES_DIR = "./tg_userbot/modules_user/"
 MODULE_LIST = None # the thing that should get updated if you do .pkg update
 
 def list_updater():
@@ -47,7 +49,7 @@ async def universe_checker(msg):
             await msg.edit("The modules list is empty! Please run `.pkg update` first!")
             return
         if len(cmd_args) == 1:
-            await msg.edit("`No specified package to install! Command halted!`")
+            await msg.edit("`No specified package to install! Process halted!`")
             return
         del(cmd_args[0])
         fileURLs = []
@@ -66,7 +68,24 @@ async def universe_checker(msg):
         # print(fileURLs)
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
-            open('./tg_userbot/modules_user/' + i['filename'], 'wb').write(request.content)
+            open(USER_MODULES_DIR + i['filename'], 'wb').write(request.content)
+        await msg.edit("Done! Reboot userbot!")
+        return
+    elif cmd_args[0] == "uninstall":
+        if len(USER_MODULES) == 0:
+            await msg.edit("No uninstallable modules present! Process halted!")
+            return
+        if len(cmd_args) == 1:
+            await msg.edit("Please specify a module name, I cannot uninstall __nothing__!")
+            return
+        if len(cmd_args) > 2:
+            await msg.edit("For safety reasons, you can only uninstall one module at a time, please give a single name!")
+            return
+        modName = cmd_args[1].lower()
+        if modName not in USER_MODULES:
+            await msg.edit("`{}` is not a valid Userspace module name! Process halted!")
+            return
+        os.remove(USER_MODULES_DIR + modName)
         await msg.edit("Done! Reboot userbot!")
         return
     else:
