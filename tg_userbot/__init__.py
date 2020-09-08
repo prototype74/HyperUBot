@@ -100,8 +100,8 @@ except Exception as e:
     quit(1)
 
 # SYSVARS
-PROJECT = "tguserbot-X"
-VERSION = "0.0.1-DEV_PREV"
+PROJECT = "HyperUBot"
+VERSION = "1.0.0a - Closed Alpha"
 ALL_MODULES = []
 LOAD_MODULES = []
 MODULE_DESC = {}
