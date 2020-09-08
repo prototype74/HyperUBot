@@ -56,7 +56,7 @@ class _Modules:
                     if not filename in sys_modules:
                         user_modules.append(filename)
                     else:
-                        log.warning(f"Module '{filename}' not loaded as present sys already")
+                        log.warning(f"Module '{filename}' not loaded as present in sys already")
         return (sys_modules, user_modules)
 
     def import_load_modules(self) -> bool:
