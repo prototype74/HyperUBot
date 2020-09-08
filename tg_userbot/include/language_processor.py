@@ -402,6 +402,7 @@ class ModuleDescriptions(object):
     GITHUB_DESC = text.ModuleDescriptions.GITHUB_DESC
     TERMINAL_DESC = text.ModuleDescriptions.TERMINAL_DESC
     MISC_DESC = text.ModuleDescriptions.MISC_DESC
+    PACKAGE_MANAGER_DESC = text.ModuleDescriptions.PACKAGE_MANAGER_DESC
 
 class ModuleUsages(object):
     ADMIN_USAGE = text.ModuleUsages.ADMIN_USAGE
@@ -416,3 +417,4 @@ class ModuleUsages(object):
     GITHUB_USAGE = text.ModuleUsages.GITHUB_USAGE
     TERMINAL_USAGE = text.ModuleUsages.TERMINAL_USAGE
     MISC_USAGE = text.ModuleUsages.MISC_USAGE
+    PACKAGE_MANAGER_USAGE = text.ModuleUsages.PACKAGE_MANAGER_USAGE

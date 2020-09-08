@@ -1,8 +1,8 @@
 # My stuff
-from tg_userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING
+from tg_userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, MODULE_DESC, MODULE_DICT
 import tg_userbot.include.git_api as git
 from tg_userbot.include.aux_funcs import event_log
-from tg_userbot.include.language_processor import PackageManagerText as msgRep
+from tg_userbot.include.language_processor import PackageManagerText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -12,6 +12,7 @@ import requests
 import os
 import time
 import sys
+from os.path import basename
 
 UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
@@ -139,3 +140,6 @@ async def universe_checker(msg):
     else:
         await msg.edit(msgRep.INVALID_ARG)
         return
+
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.PACKAGE_MANAGER_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.PACKAGE_MANAGER_USAGE})

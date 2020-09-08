@@ -392,6 +392,7 @@ class ModuleDescriptions(object):
     TERMINAL_DESC = "This module provides tools to run directly shell commands, in the host machine, or python instructions, for quick tests. More to come! \
                     \n\n**Attention:** Running shell commands in the bot can and will make permanent changes to the host system. **Bad things will happen if you run the bot as sudo/root!**"
     MISC_DESC = "The miscelaneous module contains a small set of tools that did not quite fit any of the other modules, but at the same time were too simple to have their own module. Check the help for more details."
+    PACKAGE_MANAGER_DESC = "The package manager module allows a user to manage extra apps, from external repos, either official, such as the modules-universe repo, or from external sources. It provides a way for users to customize their bots more than stock."
 
 class ModuleUsages(object):
     ADMIN_USAGE = "`.ban` [optional: <username/id> <chat (id or link)>] or reply\
@@ -478,3 +479,12 @@ class ModuleUsages(object):
                  \nUsage: This will send the dice emoji, telegram will take care of the value, totally random.\
                  \n\n`.random` <lower limit> <upper limit>\
                  \nUsage: Given an upper and lower limit (both integers), the bot will generate a random number in between."
+
+    PACKAGE_MANAGER_USAGE = "`.pkg update` \
+                 \nUsage: Updates the Modules List with info from the repos. \
+                 \n\n`.pkg list` \
+                 \nUsage: Lists the list of available modules for installation (can be outdated!) \
+                 \n\n`.pkg install <module name 1> <module name 2 (optional)> <...>` \
+                 \nUsage: Installs the list of modules given as argument. \
+                 \n\n`.pkg uninstall <module name>` \
+                 \nUsage: Uninstalls the specified module. For security measures, it only works with a single module name."
