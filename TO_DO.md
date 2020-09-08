@@ -31,13 +31,13 @@
  - Finding translators to every language and get it translated
 
 ## Modules for the Universe
+ - (DONE) nHentai module
  - File uploader and downloader module
  - Weather Module
  - Memes module (mock, vaporwave, etc...)
  - Spam module
  - QR Codes module
  - Stickers module
- - nHentai
  - quot.ly (maybe????)
 
 ## Final changes:
