@@ -13,7 +13,7 @@ BOT_REPO_URL = "https://github.com/nunopenim/HyperUBot"
 async def updater(upd):
     args = upd.pattern_match.group(1)
     if args == "upgrade":
-        await upd.edit("Basically here upgrades")
+        await upd.edit("`LMAO PRANKED! I AM STILL BROKEN`")
         return
     else:
         repo = Repo()
@@ -36,5 +36,7 @@ async def updater(upd):
             return
         if changelog:
             retText = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
-            await upd.edit(retText + changelog)
+            retText += changelog
+            retText += "\n\nPlease run `.update upgrade` to update now!"
+            await upd.edit(retText)
             return
