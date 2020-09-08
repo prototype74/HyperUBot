@@ -299,6 +299,7 @@ class HelpText(object):
     MODULE_NOT_FOUND = text.HelpText.MODULE_NOT_FOUND
     MODULE_NO_DESC = text.HelpText.MODULE_NO_DESC
     MODULE_NO_USAGE = text.HelpText.MODULE_NO_USAGE
+    ASTERISK = text.HelpText.ASTERISK
 
 class WebToolsText(object):
     PING_SPEED = text.WebToolsText.PING_SPEED

@@ -26,6 +26,7 @@ def modules_listing(error_text: str = None) -> str:
             if module in USER_MODULES:
                 modules_listed += "*"
             modules_listed += "`\n"
+    modules_listed += "\n{}".format(msgRep.ASTERISK)
 
     if NOT_LOAD_MODULES:
         num = 1
