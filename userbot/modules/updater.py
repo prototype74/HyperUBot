@@ -45,6 +45,6 @@ async def updater(upd):
         if changelog:
             retText = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
             retText += changelog
-            retText += "\n\nPlease run `.update upgrade` to update now!"
+            retText += "\nPlease run `.update upgrade` to update now!"
             await upd.edit(retText)
             return
