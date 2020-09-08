@@ -38,4 +38,3 @@ async def updater(upd):
             retText = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
             await upd.edit(retText + changelog)
             return
-
