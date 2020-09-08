@@ -1,6 +1,6 @@
 # tguserbot Stuff
 from tg_userbot import (tgclient, log, fhandler, PROJECT, OS, ALL_MODULES,
-                        LOAD_MODULES, NOT_LOAD_MODULES, VERSION)
+                        LOAD_MODULES, NOT_LOAD_MODULES, VERSION, USER_MODULES)
 
 # Telethon Stuff
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
@@ -21,9 +21,11 @@ class _Modules:
     def __load_modules(self) -> list:
         if OS and OS.startswith("win"):
             module_paths = glob(dirname(__file__) + "\\modules\\*.py")
+            user_paths = glob(dirname(__file__) + "\\modules_user\\*.py")
         else:
             module_paths = glob(dirname(__file__) + "/modules/*.py")
-        for module in sorted(module_paths):
+            user_paths = glob(dirname(__file__) + "/modules_user/*.py")
+        for module in sorted(module_paths + user_paths):
             if isfile(module) and module.endswith(".py"):
                 filename = basename(module)[:-3]
                 ALL_MODULES.append(filename)
@@ -32,13 +34,18 @@ class _Modules:
                         LOAD_MODULES.append(filename)
                 except:
                     LOAD_MODULES.append(filename)
+            if module in user_paths:
+                USER_MODULES.append(module)
         return LOAD_MODULES
 
     def import_load_modules(self) -> bool:
         load_modules = self.__load_modules()
         try:
             for module in load_modules:
-                self.__imported_module = import_module("tg_userbot.modules." + module)
+                if module in USER_MODULES:
+                    self.__imported_module = import_module("tg_userbot.modules_user." + module)
+                else:
+                    self.__imported_module = import_module("tg_userbot.modules." + module)
                 self.__load_modules_count += 1
             if NOT_LOAD_MODULES:
                 for module in NOT_LOAD_MODULES:
