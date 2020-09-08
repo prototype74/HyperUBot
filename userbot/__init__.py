@@ -10,18 +10,18 @@
 from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
 
 # Telethon Stuff
-from telethon import TelegramClient
+from telethon import TelegramClient, version
 from telethon.sessions import StringSession
 
 # Misc
 from dotenv import load_dotenv
 from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
 from os import path, environ, mkdir, remove
-from platform import system
+from platform import platform, python_compiler, system, machine, processor
 from sys import version_info  # check python version
 
 # Terminal logging
-LOGFILE = "xbot.log"
+LOGFILE = "hyper.log"
 if path.exists(LOGFILE):
     remove(LOGFILE)
 log = getLogger(__name__)
@@ -31,12 +31,34 @@ shandler = StreamHandler()
 shandler.setFormatter(LogColorFormatter())
 basicConfig(handlers=[fhandler, shandler], level=INFO)
 
-CURR_PATH = path.dirname(__file__)
+PROJECT = "HyperUBot"
+VERSION = "1.0.0a - Closed Alpha"
 OS = system()  # Current Operating System
 
-if version_info[0] < 3 or version_info[1] < 8:
+try:
+    if path.exists(LOGFILE):
+        sys_string = "======= SYS INFO\n\n"
+        sys_string += "Project: {}\n".format(PROJECT)
+        sys_string += "Version: {}\n".format(VERSION)
+        sys_string += "Operating System: {}\n".format(OS)
+        sys_string += "Platform: {}\n".format(platform())
+        sys_string += "Machine: {}\n".format(machine())
+        sys_string += "Processor: {}\n".format(processor())
+        sys_string += "Python: v{}.{}.{}\n".format(version_info.major, version_info.minor, version_info.micro)
+        sys_string += "Python compiler: {}\n".format(python_compiler())
+        sys_string += "Telethon: v{}\n\n".format(version.__version__)
+        sys_string += "======= TERMINAL LOGGING\n\n"
+        file = open(LOGFILE, "w")
+        file.write(sys_string)
+        file.close()
+except Exception as e:
+    log.warning("Unable to write system information into log: {}".format(e))
+
+if (version_info.major, version_info.minor) < (3, 8):
     log.error("Required Python 3.8!")
     quit(1)
+
+CURR_PATH = path.dirname(__file__)
 
 if OS and OS.lower().startswith("win"):
     CURR_PATH += "\\"  # Windows backslash path
@@ -101,15 +123,15 @@ try:
     if STRING_SESSION:
         tgclient = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
     else:
-        log.warning("STRING SESSION is empty! Please enter your API KEY and HASH to create a new string session.")
-        tgclient = TelegramClient("tguserbot", API_KEY, API_HASH)
+        log.error("STRING SESSION is empty!")
+        log.error("Please run 'generate_session.py' to get a new string session or if present, set your string session to STRING_SESSION in your config.* file")
+        log.error("Terminating...")
+        quit(1)
 except Exception as e:
-    log.critical(f"Failed to create Telegram Client: {e}")
+    log.critical(f"Failed to create Telegram Client: {e}", exc_info=True)
     quit(1)
 
 # SYSVARS
-PROJECT = "HyperUBot"
-VERSION = "1.0.0a - Closed Alpha"
 ALL_MODULES = []
 LOAD_MODULES = []
 MODULE_DESC = {}
