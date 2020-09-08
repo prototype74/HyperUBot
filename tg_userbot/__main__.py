@@ -35,13 +35,11 @@ class _Modules:
                 except:
                     LOAD_MODULES.append(filename)
             if module in user_paths:
-                USER_MODULES.append(module)
+                USER_MODULES.append(filename)
         return LOAD_MODULES
 
     def import_load_modules(self) -> bool:
         load_modules = self.__load_modules()
-        print(LOAD_MODULES)
-        print(USER_MODULES)
         try:
             for module in load_modules:
                 if module in USER_MODULES:
