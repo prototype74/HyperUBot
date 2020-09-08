@@ -1,9 +1,9 @@
 # My stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
-import tg_userbot.include.cas_api as cas_api
-from tg_userbot.include.language_processor import (CasIntText as msgRep, ModuleDescriptions as descRep,
-                                                   ModuleUsages as usageRep)
-from tg_userbot.include.aux_funcs import fetch_user as get_user
+from userbot import tgclient, MODULE_DESC, MODULE_DICT
+import userbot.include.cas_api as cas_api
+from userbot.include.language_processor import (CasIntText as msgRep, ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
+from userbot.include.aux_funcs import fetch_user as get_user
 
 # Telethon stuff
 from telethon.events import NewMessage

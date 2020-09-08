@@ -2,8 +2,8 @@
 # Nuno Penim, 2020
 
 # My imports
-from tg_userbot import LOGGING_CHATID
-from tg_userbot.include.language_processor import GeneralMessages as msgsLang
+from userbot import LOGGING_CHATID
+from userbot.include.language_processor import GeneralMessages as msgsLang
 
 # Telethon imports
 from telethon.tl.types import User

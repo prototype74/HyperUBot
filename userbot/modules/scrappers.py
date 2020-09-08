@@ -1,7 +1,7 @@
 # tguserbot stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR, UBOT_LANG
-from tg_userbot.include.language_processor import (ScrappersText as msgRep, ModuleDescriptions as descRep,
-                                                   ModuleUsages as usageRep)
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR, UBOT_LANG
+from userbot.include.language_processor import (ScrappersText as msgRep, ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 
 # Telethon stuff
 from telethon.errors import ChatSendMediaForbiddenError, MessageTooLongError

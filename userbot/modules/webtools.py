@@ -1,8 +1,8 @@
 # My imports
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR
-from tg_userbot.include.aux_funcs import pinger
-from tg_userbot.include.language_processor import (WebToolsText as msgRep, ModuleDescriptions as descRep,
-                                                   ModuleUsages as usageRep)
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR
+from userbot.include.aux_funcs import pinger
+from userbot.include.language_processor import (WebToolsText as msgRep, ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 
 # Telethon stuff
 from telethon import functions

@@ -1,6 +1,6 @@
 # tguserbot Stuff
-from tg_userbot import (tgclient, log, fhandler, PROJECT, OS, ALL_MODULES,
-                        LOAD_MODULES, NOT_LOAD_MODULES, VERSION, USER_MODULES)
+from userbot import (tgclient, log, fhandler, PROJECT, OS, ALL_MODULES,
+                     LOAD_MODULES, NOT_LOAD_MODULES, VERSION, USER_MODULES)
 
 # Telethon Stuff
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
@@ -43,9 +43,9 @@ class _Modules:
         try:
             for module in load_modules:
                 if module in USER_MODULES:
-                    self.__imported_module = import_module("tg_userbot.modules_user." + module)
+                    self.__imported_module = import_module("userbot.modules_user." + module)
                 else:
-                    self.__imported_module = import_module("tg_userbot.modules." + module)
+                    self.__imported_module = import_module("userbot.modules." + module)
                 self.__load_modules_count += 1
             if NOT_LOAD_MODULES:
                 for module in NOT_LOAD_MODULES:

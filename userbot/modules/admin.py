@@ -1,8 +1,8 @@
 # tguserbot stuff
-from tg_userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
-from tg_userbot.include.aux_funcs import event_log, fetch_user
-from tg_userbot.include.language_processor import (AdminText as msgRep, ModuleDescriptions as descRep,
-                                                   ModuleUsages as usageRep)
+from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
+from userbot.include.aux_funcs import event_log, fetch_user
+from userbot.include.language_processor import (AdminText as msgRep, ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 
 # Telethon Stuff
 from telethon.errors import (UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError,

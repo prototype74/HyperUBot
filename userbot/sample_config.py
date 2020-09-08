@@ -1,4 +1,4 @@
-from tg_userbot import log
+from userbot import log
 from os.path import basename 
 
 if basename(__file__).startswith("config") or basename(__file__).startswith("sample_config"):

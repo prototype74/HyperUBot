@@ -1,14 +1,14 @@
 # tguserbot stuff
 xbot.log
 tguserbot.session
-tg_userbot/config.env
-tg_userbot/config.py
+userbot/config.env
+userbot/config.py
 tg_userbot/modules_user/*.py
 
 # python cache
 __pycache__/*
-tg_userbot/__pycache__/*
-tg_userbot/*/__pycache__/*
+userbot/__pycache__/*
+userbot/*/__pycache__/*
 
 # misc
 downloads/*

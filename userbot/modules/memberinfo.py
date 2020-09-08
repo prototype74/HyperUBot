@@ -1,8 +1,8 @@
 # tguserbot stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
-from tg_userbot.include.aux_funcs import fetch_user
-from tg_userbot.include.language_processor import (MemberInfoText as msgRep, ModuleDescriptions as descRep,
-                                                   ModuleUsages as usageRep)
+from userbot import tgclient, MODULE_DESC, MODULE_DICT
+from userbot.include.aux_funcs import fetch_user
+from userbot.include.language_processor import (MemberInfoText as msgRep, ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 
 # Telethon stuff
 from telethon.events import NewMessage

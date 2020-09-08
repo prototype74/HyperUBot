@@ -1,8 +1,8 @@
 # My stuff
-from tg_userbot import tgclient, MODULE_DESC, MODULE_DICT
-from tg_userbot.include.language_processor import (GitHubText as msgRep, ModuleDescriptions as descRep,
-                                                   ModuleUsages as usageRep)
-import tg_userbot.include.git_api as api
+from userbot import tgclient, MODULE_DESC, MODULE_DICT
+from userbot.include.language_processor import (GitHubText as msgRep, ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
+import userbot.include.git_api as api
 
 # Telethon stuff
 from telethon.events import NewMessage

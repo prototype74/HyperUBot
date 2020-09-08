@@ -1,20 +1,20 @@
-from tg_userbot import UBOT_LANG
+from userbot import UBOT_LANG
 from importlib import import_module
 from logging import getLogger
 
 # Temp because pyCharm needs for autocompletion and I am being a Lazy S.O.B. again
-import tg_userbot.translations.en as text
+import userbot.translations.en as text
 
 log = getLogger(__name__)
 
 # Language selector logic
 
 try:
-    text = import_module("tg_userbot.translations." + UBOT_LANG)
+    text = import_module("userbot.translations." + UBOT_LANG)
 except:
     log.warning("There was a problem loading the language file. Make sure it exists! Should have the same name as the UBOT_LANG variable in config.py. Attempting to load default language")
     try:
-        text = import_module("tg_userbot.translations.en")
+        text = import_module("userbot.translations.en")
     except:
         log.error("English language file not found, bot quitting!")
         exit(1)

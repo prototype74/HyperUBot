@@ -1,5 +1,5 @@
 # tguserbot stuff
-from tg_userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
+from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
 
 # Telethon Stuff
 from telethon import TelegramClient
@@ -52,7 +52,7 @@ if path.exists(CURR_PATH + "config.env"):
     COMMUNITY_REPOS = environ.get("COMMUNITY_REPOS", [])
 elif path.exists(CURR_PATH + "config.py"):
     try:
-        from tg_userbot.config import ConfigClass  # Import here, otherwise error
+        from userbot.config import ConfigClass  # Import here, otherwise error
     except ImportError as ie:
         log.error(f"Couldn't import ConfigClass: {ie}")
         quit(1)
@@ -66,7 +66,7 @@ elif path.exists(CURR_PATH + "config.py"):
     NOT_LOAD_MODULES = ConfigClass.NOT_LOAD_MODULES if hasattr(ConfigClass, "NOT_LOAD_MODULES") else []
     COMMUNITY_REPOS = ConfigClass.COMMUNITY_REPOS if hasattr(ConfigClass, "COMMUNITY_REPOS") else []
 else:
-    log.error("No Config file found! Make sure it's located in ./tg_userbot/config.* or setup your config file first if you didn't. " +
+    log.error("No Config file found! Make sure it's located in ./userbot/config.* or setup your config file first if you didn't. " +
     "Environment and py scripts are supported.")
     quit(1)
 

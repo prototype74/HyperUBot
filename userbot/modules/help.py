@@ -1,6 +1,6 @@
 # tguserbot stuff
-from tg_userbot import tgclient, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, MODULE_DESC, MODULE_DICT, USER_MODULES
-from tg_userbot.include.language_processor import HelpText as msgRep
+from userbot import tgclient, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, MODULE_DESC, MODULE_DICT, USER_MODULES
+from userbot.include.language_processor import HelpText as msgRep
 
 # Telethon stuff
 from telethon.events import NewMessage

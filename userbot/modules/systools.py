@@ -1,11 +1,11 @@
 # My stuff
-from tg_userbot import tgclient, VERSION, PROJECT, LOGGING, MODULE_DESC, MODULE_DICT
-from tg_userbot.include.aux_funcs import event_log
-from tg_userbot.include.language_processor import (StatusText as msgRep, ModuleDescriptions as descRep,
-                                                   ModuleUsages as usageRep)
-from tg_userbot.include.aux_funcs import pinger, getGitReview
-import tg_userbot.include.cas_api as cas
-import tg_userbot.include.git_api as git
+from userbot import tgclient, VERSION, PROJECT, LOGGING, MODULE_DESC, MODULE_DICT
+from userbot.include.aux_funcs import event_log
+from userbot.include.language_processor import (StatusText as msgRep, ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
+from userbot.include.aux_funcs import pinger, getGitReview
+import userbot.include.cas_api as cas
+import userbot.include.git_api as git
 
 # Telethon stuff
 from telethon import version
@@ -81,7 +81,7 @@ async def restart(power_off): # Totally not a shutdown kang *sips whiskey*
     if LOGGING:
         await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
     await power_off.edit(msgRep.RESTARTED)
-    args = [sys.executable, "-m", "tg_userbot"]
+    args = [sys.executable, "-m", "userbot"]
     execle(sys.executable, *args, environ)
     await power_off.client.disconnect()
 

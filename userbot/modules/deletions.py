@@ -1,8 +1,8 @@
 # tguserbot stuff
-from tg_userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
-from tg_userbot.include.aux_funcs import event_log
-from tg_userbot.include.language_processor import (DeletionsText as msgRep, ModuleDescriptions as descRep,
-                                                   ModuleUsages as usageRep)
+from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
+from userbot.include.aux_funcs import event_log
+from userbot.include.language_processor import (DeletionsText as msgRep, ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 
 # Telethon stuff
 from telethon.events import NewMessage
