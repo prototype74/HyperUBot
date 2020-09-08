@@ -37,3 +37,4 @@ async def updater(upd):
         if changelog:
             await upd.edit(changelog)
             return
+
