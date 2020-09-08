@@ -95,7 +95,7 @@ async def universe_checker(msg):
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
             open(USER_MODULES_DIR + i['filename'], 'wb').write(request.content)
-            modules_installed.append(i['filename'].strip(".py"))
+            modules_installed.append(i['filename'])
         md_installed_string = ""
         for md in modules_installed:
             if md_installed_string == "":
