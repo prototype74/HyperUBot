@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 # My stuff
-from userbot import tgclient, PROJECT
+from userbot import tgclient, PROJECT, log
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -35,8 +35,10 @@ async def updater(upd):
             return
         try:
             await upd.edit("`Updating...`")
-            check_output("git pull", shell=True).decode()
-            check_output(executable + " -m pip install -r requirements.txt", shell=True).decode()
+            gitpull = check_output("git pull", shell=True).decode()
+            log.info(gitpull)
+            pip = check_output(executable + " -m pip install -r requirements.txt", shell=True).decode()
+            log.info(pip)
         except CalledProcessError:
             await upd.edit("An unspecified error has occured, the common issue is not having git installed as a system package, please make sure you do.")
             return
