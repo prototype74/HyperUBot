@@ -249,6 +249,7 @@ class ScrappersText(object):
     CFROM_CTO = text.ScrappersText.CFROM_CTO
     INVALID_INPUT = text.ScrappersText.INVALID_INPUT
     UNABLE_TO_CC = text.ScrappersText.UNABLE_TO_CC
+    CC_LAST_UPDATE = text.ScrappersText.CC_LAST_UPDATE
 
 class UserText(object):
     LEAVING = text.UserText.LEAVING

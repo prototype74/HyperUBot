@@ -226,6 +226,7 @@ class ScrappersText(object):
     CFROM_CTO = "**{}** to **{}**"  # from cc iso, target cc iso
     INVALID_INPUT = "Invalid input"
     UNABLE_TO_CC = "`Unable to convert currency`"
+    CC_LAST_UPDATE = "Last Updated"
 
 class UserText(object):
     LEAVING = "`Leaving chat...`"

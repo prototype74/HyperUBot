@@ -190,10 +190,12 @@ async def cc(event):
         if not c_to_iso in c.currencies:
             await event.edit(msgRep.CC_ISO_UNSUPPORTED.format(c_to_iso))
             return
+        date = c.bounds[c_from_iso]
         result = "{:.2f}".format(c.convert(amount=amount, currency=c_from_iso, new_currency=c_to_iso))
         strings = f"**{msgRep.CC_HEADER}**\n\n"
         strings += msgRep.CFROM_CTO.format(c_from_iso, c_to_iso) + "\n"
-        strings += f"{amount} {c_from_iso} = {result} {c_to_iso}"
+        strings += f"{amount} {c_from_iso} = {result} {c_to_iso}\n\n"
+        strings += f"__{msgRep.CC_LAST_UPDATE}: {date.last_date}__"
         await event.edit(strings)
     except ValueError as ve:
         await event.edit(f"`{msgRep.INVALID_INPUT}: {ve}`")
