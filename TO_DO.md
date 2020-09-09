@@ -42,3 +42,6 @@
 ## Final changes:
  - Make sure the language processor is not using the temporary scheme I made to make pyCharm autocomplete happy.
  
+ 
+## Packages:
+git neofetch ffpmpeg flac net-tools
