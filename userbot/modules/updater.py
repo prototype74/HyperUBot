@@ -19,7 +19,7 @@ from sys import executable
 
 BOT_REPO_URL = "https://github.com/nunopenim/HyperUBot"
 RAN = False
-FOUND_UPD = True
+FOUND_UPD = False
 
 @tgclient.on(NewMessage(pattern=r"^\.update(?: |$)(.*)$", outgoing=True))
 async def updater(upd):
