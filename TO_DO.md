@@ -15,18 +15,18 @@
  - Terminal module
  - Misc module
  - Module manager module
+ - Update module (missing translations)
 
 ## To Do Part 1 (before alpha release):
  - Complete!
 
 ## To Do Part 2 (after alpha release):
- - Update module
  - Finding Windows, MacOS and Termux bois.
 
 ## To Do Part 3 (after beta release, but still undecided on all) :
  - Research on a possible Automation module
  - Terminal (maybe interpreters for more languages)
- - Scrappers (currency converter and speech-to-text)
+ - Scrappers (speech-to-text maybe?)
  - Finding translators to every language and get it translated
 
 ## Modules for the Universe
