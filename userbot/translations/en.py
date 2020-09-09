@@ -440,7 +440,9 @@ class ModuleUsages(object):
     SCRAPPERS_USAGE = "`.trt` [optional: <text>] or reply\
           \nUsage: Translates given text or replied message to the bot's target language.\
           \n\n`.tts` [optional: <text>] or reply\
-          \nUsage: Converts text or replied message into spoken voice output (text-to-speech)."
+          \nUsage: Converts text or replied message into spoken voice output (text-to-speech).\
+          \n\n`.currency` <amount> <From ISO> [optional: <To ISO>] \
+          \nUsage: Converts input currency to target currency (default: USD). Requires Country ISO (EUR, USD, JPY etc.)."
 
     SYSTOOLS_USAGE = "`.status`\
          \nUsage: Type .status to check various bot information and if it is up and running.\
