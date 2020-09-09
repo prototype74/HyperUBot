@@ -11,6 +11,7 @@ from userbot import tgclient, PROJECT, log
 
 # Telethon stuff
 from telethon.events import NewMessage
+from telethon.errors.rpcerrorlist import MessageTooLongError
 
 # Misc stuff
 from git import Repo
@@ -65,10 +66,14 @@ async def updater(upd):
             RAN = True
             return
         if changelog:
-            retText = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
-            retText += changelog
-            retText += "\nPlease run `.update upgrade` to update now!"
-            await upd.edit(retText)
+            try:
+                retText = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
+                retText += changelog
+                retText += "\nPlease run `.update upgrade` to update now!"
+                await upd.edit(retText)
+            except MessageTooLongError:
+                retText = "New updates avaliable, however the changelist is too long to be displayed!\n\nPlease run `.update upgrade` to update now!"
+                await upd.edit(retText)
             RAN = True
             FOUND_UPD = True
             return
