@@ -162,11 +162,11 @@ async def cc(event):
         amount, c_from_iso = args_from_event
         c_to_iso = "USD"  # default
     else:
-        await event.edit("Not enough arguments given.")
+        await event.edit("`Not enough arguments given!`")
         return
 
     try:
-        amount = round(float(amount.replace(",", ".")), 2)
+        amount = "{:.2f}".format(float(amount.replace(",", ".")))
     except:
         await event.edit("`Invalid amount format`")
         return
@@ -187,13 +187,16 @@ async def cc(event):
         if not c_to_iso in c.currencies:
             await event.edit(f"`'{c_to_iso}' unsupported country ISO currency`")
             return
-        result = round(c.convert(amount=amount, currency=c_from_iso, new_currency=c_to_iso), 2)
+        result = "{:.2f}".format(c.convert(amount=amount, currency=c_from_iso, new_currency=c_to_iso))
         strings = "**Currency converter**\n\n"
         strings += f"**{c_from_iso}** to **{c_to_iso}**\n"
         strings += f"{amount} {c_from_iso} = {result} {c_to_iso}"
         await event.edit(strings)
-    except ValueError as e:
-        await event.edit(f"`Invalid input: {e}`")
+    except ValueError as ve:
+        await event.edit(f"`Invalid input: {ve}`")
+    except Exception as e:
+        log.warning(f"Failed to convert currency: {e}")
+        await event.edit("`Unable to convert currency`")
 
     return
 
