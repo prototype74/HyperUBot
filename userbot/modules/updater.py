@@ -72,4 +72,3 @@ async def updater(upd):
             RAN = True
             FOUND_UPD = True
             return
-
