@@ -137,6 +137,7 @@ def update_currency_data():
                     csv_filename = filename
                     zipObject.extract(filename, TEMP_DL_DIR)
                     break
+            zipObject.close()
         try:
             rename(TEMP_DL_DIR + filename, CC_CSV_PATH)
             log.info("[CURRENCY] data history successfully updated")
