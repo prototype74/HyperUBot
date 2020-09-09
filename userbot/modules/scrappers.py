@@ -125,14 +125,11 @@ async def speech_to_text(event):
         await event.edit("`Reply to a voice message`")
         return
 
-    if not msg.media:
-        await event.edit("`Reply to a voice message`")
-        return
-
     filename, file_format = (None,)*2
     voice_note = False
 
-    if hasattr(msg.media, "document") and isinstance(msg.media.document, Document) and \
+    if msg.media and hasattr(msg.media, "document") and \
+       isinstance(msg.media.document, Document) and \
        msg.media.document.mime_type.startswith("audio"):
         for attribute in msg.media.document.attributes:
             if isinstance(attribute, DocumentAttributeAudio):
