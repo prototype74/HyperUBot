@@ -165,13 +165,13 @@ async def cc(event):
         amount, c_from_iso = args_from_event
         c_to_iso = "USD"  # default
     else:
-        await event.edit("`Not enough arguments given!`")
+        await event.edit(msgRep.NOT_EGH_ARGS)
         return
 
     try:
         amount = "{:.2f}".format(float(amount.replace(",", ".")))
     except:
-        await event.edit("`Invalid amount format`")
+        await event.edit(msgRep.INVALID_AMOUNT_FORMAT)
         return
 
     c_from_iso = c_from_iso.upper()
@@ -185,21 +185,21 @@ async def cc(event):
             log.warning(f"Unable to read updated data history: {e}. Falling back to default currency data.")
             c = CurrencyConverter()
         if not c_from_iso in c.currencies:
-            await event.edit(f"`'{c_from_iso}' unsupported country ISO currency`")
+            await event.edit(msgRep.CC_ISO_UNSUPPORTED.format(c_from_iso))
             return
         if not c_to_iso in c.currencies:
-            await event.edit(f"`'{c_to_iso}' unsupported country ISO currency`")
+            await event.edit(msgRep.CC_ISO_UNSUPPORTED.format(c_to_iso))
             return
         result = "{:.2f}".format(c.convert(amount=amount, currency=c_from_iso, new_currency=c_to_iso))
-        strings = "**Currency converter**\n\n"
-        strings += f"**{c_from_iso}** to **{c_to_iso}**\n"
+        strings = f"**{msgRep.CC_HEADER}**\n\n"
+        strings += msgRep.CFROM_CTO.format(c_from_iso, c_to_iso) + "\n"
         strings += f"{amount} {c_from_iso} = {result} {c_to_iso}"
         await event.edit(strings)
     except ValueError as ve:
-        await event.edit(f"`Invalid input: {ve}`")
+        await event.edit(f"`{msgRep.INVALID_INPUT}: {ve}`")
     except Exception as e:
         log.warning(f"Failed to convert currency: {e}")
-        await event.edit("`Unable to convert currency`")
+        await event.edit(msgRep.UNABLE_TO_CC)
 
     return
 

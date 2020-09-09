@@ -242,6 +242,13 @@ class ScrappersText(object):
     FAIL_TTS = text.ScrappersText.FAIL_TTS
     FAIL_API_REQ = text.ScrappersText.FAIL_API_REQ
     INVALID_LANG_CODE = text.ScrappersText.INVALID_LANG_CODE
+    NOT_EGH_ARGS = text.ScrappersText.NOT_EGH_ARGS
+    INVALID_AMOUNT_FORMAT = text.ScrappersText.INVALID_AMOUNT_FORMAT
+    CC_ISO_UNSUPPORTED = text.ScrappersText.CC_ISO_UNSUPPORTED
+    CC_HEADER = text.ScrappersText.CC_HEADER
+    CFROM_CTO = text.ScrappersText.CFROM_CTO
+    INVALID_INPUT = text.ScrappersText.INVALID_INPUT
+    UNABLE_TO_CC = text.ScrappersText.UNABLE_TO_CC
 
 class UserText(object):
     LEAVING = text.UserText.LEAVING

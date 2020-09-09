@@ -219,6 +219,13 @@ class ScrappersText(object):
     FAIL_TTS = "`Failed to text-to-speech`"
     FAIL_API_REQ = "`API request failed`"
     INVALID_LANG_CODE = "`Invalid language code or language isn't supported`"
+    NOT_EGH_ARGS = "`Not enough arguments given!`"
+    INVALID_AMOUNT_FORMAT = "`Invalid amount format`"
+    CC_ISO_UNSUPPORTED = "`'{}' unsupported country ISO currency`"
+    CC_HEADER = "Currency converter"
+    CFROM_CTO = "**{}** to **{}**"  # from cc iso, target cc iso
+    INVALID_INPUT = "Invalid input"
+    UNABLE_TO_CC = "`Unable to convert currency`"
 
 class UserText(object):
     LEAVING = "`Leaving chat...`"
