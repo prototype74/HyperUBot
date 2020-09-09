@@ -160,7 +160,6 @@ async def speech_to_text(event):
         audio_file = AudioSegment.from_file(filename, file_format)
         audio_wav = TEMP_DL_DIR + "audio.wav"
         audio_file.export(audio_wav, "wav")
-        remove(filename)
 
         r = Recognizer()
         with AudioFile(audio_wav) as source:
@@ -169,7 +168,6 @@ async def speech_to_text(event):
         text += "Text:\n"
         text += r.recognize_google(audio)
         await event.edit(text)
-        remove(audio_wav)
     except UnknownValueError:
         await event.edit("`Couldn't recognize speech from audio`")
     except RequestError as re:
@@ -179,6 +177,12 @@ async def speech_to_text(event):
     except Exception as e:
         log.warning(e)
         await event.edit("`Unable to speech-to-text`")
+
+    try:
+        remove(filename)
+        remove(audio_wav)
+    except Exception as e:
+        log.warning(f"Unable to delete audio(s): {e}")
 
     return
 
