@@ -14,14 +14,30 @@ from telethon.events import NewMessage
 
 # Misc stuff
 from git import Repo
+from subprocess import check_output, CalledProcessError
 
 BOT_REPO_URL = "https://github.com/nunopenim/HyperUBot"
+RAN = False
+FOUND_UPD = True
 
 @tgclient.on(NewMessage(pattern=r"^\.update(?: |$)(.*)$", outgoing=True))
 async def updater(upd):
+    global RAN
+    global FOUND_UPD
     args = upd.pattern_match.group(1)
     if args == "upgrade":
-        await upd.edit("`LMAO PRANKED! I AM STILL BROKEN`")
+        if not RAN:
+            await upd.edit("Please run just .update to check for updates first!")
+            return
+        if not FOUND_UPD:
+            await upd.edit("No updates queued. If you suspect a new update has been released, please run .update to queue it.")
+            return
+        try:
+            check_output("git pull", shell=True).decode()
+        except CalledProcessError:
+            await upd.edit("An unspecified error has occured, the common issue is not having git installed as a system package, please make sure you do.")
+            return
+        await upd.edit("Userbot updated! Please reboot now!")
         return
     else:
         repo = Repo()
@@ -41,10 +57,13 @@ async def updater(upd):
             counter += 1
         if not changelog:
             await upd.edit("{} is already running on the latest version!".format(PROJECT))
+            RAN = True
             return
         if changelog:
             retText = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
             retText += changelog
             retText += "\nPlease run `.update upgrade` to update now!"
             await upd.edit(retText)
+            RAN = True
+            FOUND_UPD = True
             return
