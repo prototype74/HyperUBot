@@ -25,7 +25,7 @@ from logging import getLogger
 from os import remove, rename
 from os.path import basename, exists, getmtime
 from urllib.request import urlretrieve
-from zipfile import ZipFile
+from zipfile import BadZipFile, ZipFile
 
 
 log = getLogger(__name__)
@@ -143,6 +143,8 @@ def update_currency_data():
             log.info("[CURRENCY] data history successfully updated")
         except Exception as e:
             log.warning(f"Unable to rename csv file: {e}")
+    except BadZipFile as bze:
+        log.warning(f"Bad zip archive: {bze}")
     except Exception as e:
         log.warning(f"Failed to extract data history: {e}")
 
