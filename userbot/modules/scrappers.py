@@ -122,7 +122,7 @@ async def speech_to_text(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
     else:
-        await event.edit("`Reply to a voice message`")
+        await event.edit(msgRep.REPLY_TO_VM)
         return
 
     filename, file_format = (None,)*2
@@ -140,20 +140,20 @@ async def speech_to_text(event):
                     string = attribute.file_name.split(".")
                     file_format = string[-1]
         if not voice_note:
-            await event.edit("`Works with voice messages only`")
+            await event.edit(msgRep.WORKS_WITH_VM_ONLY)
             return
         if not file_format:  # alternative way
             file_format = msg.media.document.mime_type.split("/")[1]
         filename = TEMP_DL_DIR + "audio." + file_format
-        await event.edit("`Converting speech into text...`")
+        await event.edit(msgRep.CONVERT_STT)
         try:
             await msg.download_media(file=filename)
         except Exception as e:
             log.warning(e)
-            await event.edit("`Failed to load audio`")
+            await event.edit(msgRep.FAILED_LOAD_AUDIO)
             return
     else:
-        await event.edit("`Reply to a voice message`")
+        await event.edit(msgRep.REPLY_TO_VM)
         return
 
     try:
@@ -164,19 +164,20 @@ async def speech_to_text(event):
         r = Recognizer()
         with AudioFile(audio_wav) as source:
             audio = r.record(source)
-        text = "**Speech-to-Text**\n\n"
-        text += "Text:\n"
-        text += r.recognize_google(audio)
+        result = r.recognize_google(audio)
+        text = f"**{msgRep.STT}**\n\n"
+        text += f"{msgRep.STT_TEXT}:\n"
+        text += f"__{result}__"
         await event.edit(text)
     except UnknownValueError:
-        await event.edit("`Couldn't recognize speech from audio`")
+        await event.edit(msgRep.STT_NOT_RECOGNIZED)
     except RequestError as re:
-        await event.edit("`Request result from server failed: {re}`")
+        await event.edit("`{msgRep.STT_REQ_FAILED} {re}`")
     except MessageTooLongError:
-        await event.edit("`Speech-to-text output is too long!`")
+        await event.edit(msgRep.STT_OUTPUT_TOO_LONG)
     except Exception as e:
         log.warning(e)
-        await event.edit("`Unable to speech-to-text`")
+        await event.edit(msgRep.UNABLE_TO_STT)
 
     try:
         remove(filename)

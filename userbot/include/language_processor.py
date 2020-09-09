@@ -250,6 +250,16 @@ class ScrappersText(object):
     INVALID_INPUT = text.ScrappersText.INVALID_INPUT
     UNABLE_TO_CC = text.ScrappersText.UNABLE_TO_CC
     CC_LAST_UPDATE = text.ScrappersText.CC_LAST_UPDATE
+    REPLY_TO_VM = text.ScrappersText.REPLY_TO_VM
+    WORKS_WITH_VM_ONLY = text.ScrappersText.WORKS_WITH_VM_ONLY
+    CONVERT_STT = text.ScrappersText.CONVERT_STT
+    FAILED_LOAD_AUDIO = text.ScrappersText.FAILED_LOAD_AUDIO
+    STT = text.ScrappersText.STT
+    STT_TEXT = text.ScrappersText.STT_TEXT
+    STT_NOT_RECOGNIZED = text.ScrappersText.STT_NOT_RECOGNIZED
+    STT_REQ_FAILED = text.ScrappersText.STT_REQ_FAILED
+    STT_OUTPUT_TOO_LONG = text.ScrappersText.STT_OUTPUT_TOO_LONG
+    UNABLE_TO_STT = text.ScrappersText.UNABLE_TO_STT
 
 class UserText(object):
     LEAVING = text.UserText.LEAVING

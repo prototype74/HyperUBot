@@ -227,6 +227,16 @@ class ScrappersText(object):
     INVALID_INPUT = "Invalid input"
     UNABLE_TO_CC = "`Unable to convert currency`"
     CC_LAST_UPDATE = "Last Updated"
+    REPLY_TO_VM = "`Reply to a voice message`"
+    WORKS_WITH_VM_ONLY = "`Works with voice messages only`"
+    CONVERT_STT = "`Converting speech into text...`"
+    FAILED_LOAD_AUDIO = "`Failed to load audio`"
+    STT = "Speech-to-text"
+    STT_TEXT = "Text"
+    STT_NOT_RECOGNIZED = "`Couldn't recognize speech from audio`"
+    STT_REQ_FAILED = "Request result from server failed"
+    STT_OUTPUT_TOO_LONG = "`Speech-to-text output is too long!`"
+    UNABLE_TO_STT = "`Unable to speech-to-text`"
 
 class UserText(object):
     LEAVING = "`Leaving chat...`"
