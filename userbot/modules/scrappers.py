@@ -14,6 +14,7 @@ from userbot.include.language_processor import (ScrappersText as msgRep, ModuleD
 # Telethon stuff
 from telethon.errors import ChatSendMediaForbiddenError, MessageTooLongError
 from telethon.events import NewMessage
+from telethon.tl.types import Document, DocumentAttributeAudio, DocumentAttributeFilename
 
 # Misc
 from datetime import datetime
@@ -22,8 +23,10 @@ from googletrans import Translator, LANGUAGES
 from gtts import gTTS
 from gtts.tts import gTTSError
 from logging import getLogger
+from pydub import AudioSegment
 from os import remove, rename
 from os.path import basename, exists, getmtime
+from speech_recognition import AudioFile, Recognizer, UnknownValueError, RequestError
 from urllib.request import urlretrieve
 from zipfile import BadZipFile, ZipFile
 
@@ -109,6 +112,76 @@ async def text_to_speech(event):
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.FAIL_TTS)
+
+    return
+
+
+@tgclient.on(NewMessage(pattern=r"^\.stt(?: |$)(.*)", outgoing=True))
+async def speech_to_text(event):
+    """ Note: telethon may borrow a different DC id to download audio """
+    if event.reply_to_msg_id:
+        msg = await event.get_reply_message()
+    else:
+        await event.edit("`Reply to a voice message`")
+        return
+
+    if not msg.media:
+        await event.edit("`Reply to a voice message`")
+        return
+
+    filename, file_format = (None,)*2
+    voice_note = False
+
+    if hasattr(msg.media, "document") and isinstance(msg.media.document, Document) and \
+       msg.media.document.mime_type.startswith("audio"):
+        for attribute in msg.media.document.attributes:
+            if isinstance(attribute, DocumentAttributeAudio):
+                if not voice_note:  # set only if not True already
+                    voice_note = attribute.voice
+            if isinstance(attribute, DocumentAttributeFilename):
+                if not file_format:  # set only if none
+                    string = attribute.file_name.split(".")
+                    file_format = string[-1]
+        if not voice_note:
+            await event.edit("`Works with voice messages only`")
+            return
+        if not file_format:  # alternative way
+            file_format = msg.media.document.mime_type.split("/")[1]
+        filename = TEMP_DL_DIR + "audio." + file_format
+        await event.edit("`Converting speech into text...`")
+        try:
+            await msg.download_media(file=filename)
+        except Exception as e:
+            log.warning(e)
+            await event.edit("`Failed to load audio`")
+            return
+    else:
+        await event.edit("`Reply to a voice message`")
+        return
+
+    try:
+        audio_file = AudioSegment.from_file(filename, file_format)
+        audio_wav = TEMP_DL_DIR + "audio.wav"
+        audio_file.export(audio_wav, "wav")
+        remove(filename)
+
+        r = Recognizer()
+        with AudioFile(audio_wav) as source:
+            audio = r.record(source)
+        text = "**Speech-to-Text**\n\n"
+        text += "Text:\n"
+        text += r.recognize_google(audio)
+        await event.edit(text)
+        remove(audio_wav)
+    except UnknownValueError:
+        await event.edit("`Couldn't recognize speech from audio`")
+    except RequestError as re:
+        await event.edit("`Request result from server failed: {re}`")
+    except MessageTooLongError:
+        await event.edit("`Speech-to-text output is too long!`")
+    except Exception as e:
+        log.warning(e)
+        await event.edit("`Unable to speech-to-text`")
 
     return
 
