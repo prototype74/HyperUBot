@@ -15,6 +15,7 @@ from telethon.events import NewMessage
 # Misc stuff
 from git import Repo
 from subprocess import check_output, CalledProcessError
+from sys import executable
 
 BOT_REPO_URL = "https://github.com/nunopenim/HyperUBot"
 RAN = False
@@ -33,7 +34,9 @@ async def updater(upd):
             await upd.edit("No updates queued. If you suspect a new update has been released, please run .update to queue it.")
             return
         try:
+            await upd.edit("`Updating...`")
             check_output("git pull", shell=True).decode()
+            check_output(executable + " -m pip install -r requirements.txt", shell=True).decode()
         except CalledProcessError:
             await upd.edit("An unspecified error has occured, the common issue is not having git installed as a system package, please make sure you do.")
             return
@@ -67,4 +70,3 @@ async def updater(upd):
             RAN = True
             FOUND_UPD = True
             return
-
