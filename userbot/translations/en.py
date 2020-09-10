@@ -392,6 +392,18 @@ class PackageManagerText(object):
     INSTALL_LOG = "Userbot rebooted! Module(s) installed: `{}`"
     UNINSTALL_LOG = "Userbot rebooted! Module uninstalled: `{}`"
 
+class UpdaterText(object):
+    UPDATES_NOT_RAN = "Please run just .update to check for updates first!"
+    NO_UPDATES = "No updates queued. If you suspect a new update has been released, please run .update to queue it."
+    UPDATING = "`Updating...`"
+    UPD_ERROR = "An unspecified error has occured, the common issue is not having git installed as a system package, please make sure you do."
+    UPD_SUCCESS = "Userbot updated! Please reboot now!"
+    UNKWN_BRANCH = "Unrecognized branch. Likely you are running a modified source."
+    LATS_VERSION = "{} is already running on the latest version!"
+    UPD_AVAIL = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
+    RUN_UPD = "\nPlease run `.update upgrade` to update now!"
+    CHLG_TOO_LONG = "New updates avaliable, however the changelist is too long to be displayed!\n\nPlease run `.update upgrade` to update now!"
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
     ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote etc.\

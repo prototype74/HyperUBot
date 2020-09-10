@@ -8,6 +8,7 @@
 
 # My stuff
 from userbot import tgclient, PROJECT, log
+from userbot.include.language_processor import UpdaterText as msgRep
 
 # Telethon stuff
 from telethon.events import NewMessage
@@ -29,27 +30,27 @@ async def updater(upd):
     args = upd.pattern_match.group(1)
     if args == "upgrade":
         if not RAN:
-            await upd.edit("Please run just .update to check for updates first!")
+            await upd.edit(msgRep.UPDATES_NOT_RAN)
             return
         if not FOUND_UPD:
-            await upd.edit("No updates queued. If you suspect a new update has been released, please run .update to queue it.")
+            await upd.edit(msgRep.NO_UPDATES)
             return
         try:
-            await upd.edit("`Updating...`")
+            await upd.edit(msgRep.UPDATING)
             gitpull = check_output("git pull", shell=True).decode()
             log.info(gitpull)
             pip = check_output(executable + " -m pip install -r requirements.txt", shell=True).decode()
             log.info(pip)
         except CalledProcessError:
-            await upd.edit("An unspecified error has occured, the common issue is not having git installed as a system package, please make sure you do.")
+            await upd.edit(msgRep.UPD_ERROR)
             return
-        await upd.edit("Userbot updated! Please reboot now!")
+        await upd.edit(msgRep.UPD_SUCCESS)
         return
     else:
         repo = Repo()
         branch = repo.active_branch.name
         if not (branch in ['master', 'staging']):
-            await upd.edit("Unrecognized branch. Likely you are running a modified source.")
+            await upd.edit(msgRep.UNKWN_BRANCH)
             return
         try:
             repo.create_remote('upstream', BOT_REPO_URL)
@@ -62,17 +63,17 @@ async def updater(upd):
             changelog += "{}. [{}] > `{}`\n".format(counter, commit.author, commit.summary)
             counter += 1
         if not changelog:
-            await upd.edit("{} is already running on the latest version!".format(PROJECT))
+            await upd.edit(msgRep.LATS_VERSION.format(PROJECT))
             RAN = True
             return
         if changelog:
             try:
-                retText = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
+                retText = msgRep.UPD_AVAIL
                 retText += changelog
-                retText += "\nPlease run `.update upgrade` to update now!"
+                retText += msgRep.RUN_UPD
                 await upd.edit(retText)
             except MessageTooLongError:
-                retText = "New updates avaliable, however the changelist is too long to be displayed!\n\nPlease run `.update upgrade` to update now!"
+                retText = msgRep.CHLG_TOO_LONG
                 await upd.edit(retText)
             RAN = True
             FOUND_UPD = True

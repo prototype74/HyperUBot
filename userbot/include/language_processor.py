@@ -415,6 +415,19 @@ class PackageManagerText(object):
     INSTALL_LOG = text.PackageManagerText.INSTALL_LOG
     UNINSTALL_LOG = text.PackageManagerText.UNINSTALL_LOG
 
+class UpdaterText(object):
+    UPDATES_NOT_RAN = text.UpdaterText.UPDATES_NOT_RAN
+    NO_UPDATES = text.UpdaterText.NO_UPDATES
+    UPDATING = text.UpdaterText.UPDATING
+    UPD_ERROR = text.UpdaterText.UPD_ERROR
+    UPD_SUCCESS = text.UpdaterText.UPD_SUCCESS
+    UNKWN_BRANCH = text.UpdaterText.UNKWN_BRANCH
+    LATS_VERSION = text.UpdaterText.LATS_VERSION
+    UPD_AVAIL = text.UpdaterText.UPD_AVAIL
+    RUN_UPD = text.UpdaterText.RUN_UPD
+    CHLG_TOO_LONG = text.UpdaterText.CHLG_TOO_LONG
+
+
 class ModuleDescriptions(object):
     ADMIN_DESC = text.ModuleDescriptions.ADMIN_DESC
     CHATINFO_DESC = text.ModuleDescriptions.CHATINFO_DESC
