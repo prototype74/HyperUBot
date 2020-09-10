@@ -24,24 +24,9 @@ from logging import getLogger
 from math import sqrt
 from os.path import basename
 
+
 log = getLogger(__name__)
 
-@tgclient.on(NewMessage(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True))
-async def chatinfo(event):
-    await event.edit(msgRep.CHAT_ANALYSIS)
-
-    chat = await get_chatinfo(event)
-
-    if not chat:
-        return
-
-    try:
-        caption = await fetch_info(chat, event)
-        await event.edit(caption, parse_mode="html")
-    except Exception as e:
-        log.error(e)
-        await event.edit(msgRep.EXCEPTION)
-    return
 
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
@@ -77,7 +62,9 @@ async def get_chatinfo(event):
         except Exception as e:
             log.warning(e)
             await event.edit(msgRep.CANNOT_GET_CHATINFO.format(chat))
+
     return None
+
 
 async def fetch_info(chat, event):
     chat_obj_info = await event.client.get_entity(chat.full_chat.id)
@@ -222,7 +209,28 @@ async def fetch_info(chat, event):
         caption += msgRep.VERFIED.format(verified)
     if description:
         caption += msgRep.DESCRIPTION.format(description)
+
     return caption
+
+
+@tgclient.on(NewMessage(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True))
+async def chatinfo(event):
+    await event.edit(msgRep.CHAT_ANALYSIS)
+
+    chat = await get_chatinfo(event)
+
+    if not chat:
+        return
+
+    try:
+        caption = await fetch_info(chat, event)
+        await event.edit(caption, parse_mode="html")
+    except Exception as e:
+        log.error(e, exc_info=True)
+        await event.edit(msgRep.EXCEPTION)
+
+    return
+
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.CHATINFO_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.CHATINFO_USAGE})
