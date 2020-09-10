@@ -360,8 +360,6 @@ class StickersText(object):
 
 class TerminalText(object):
     BASH_ERROR = "There has been an unspecified error, likely bad arguments or that command does not exist"
-    PYTHON_INSTRUCTION = "**Python instruction:**"
-    PYTHON_RESULT = "**Result: **\n"
 
 class MiscText(object):
     COIN_LANDED_VAL = "The coin landed on: "
@@ -423,7 +421,7 @@ class ModuleDescriptions(object):
     WEBTOOLS_DESC = "This module contains most, if not all, of the bot's webtools, such as ping, speedtest, rtt calculator and the current datacenter."
     CAS_INTERFACE_DESC = "The interface for the Combot Anti-Spam System API. It allows you to check a specific user for CAS bans or an entire group, via the designated commands."
     GITHUB_DESC = "A module that takes use of the GitHub API. This allows you to check for releases from a specific user and repository."
-    TERMINAL_DESC = "This module provides tools to run directly shell commands, in the host machine, or python instructions, for quick tests. More to come! \
+    TERMINAL_DESC = "This module provides tools to run directly shell commands, in the host machine.\
                     \n\n**Attention:** Running shell commands in the bot can and will make permanent changes to the host system. **Bad things will happen if you run the bot as sudo/root!**"
     MISC_DESC = "The miscelaneous module contains a small set of tools that did not quite fit any of the other modules, but at the same time were too simple to have their own module. Check the help for more details."
     PACKAGE_MANAGER_DESC = "The package manager module allows a user to manage extra apps, from external repos, either official, such as the modules-universe repo, or from external sources. It provides a way for users to customize their bots more than stock."
@@ -507,10 +505,7 @@ class ModuleUsages(object):
 
     TERMINAL_USAGE = "`.shell` <command> \
                   \nUsage: Executes in the server machine shell prompt (bash, powershell or zsh) the specified command. \
-                  \n\n**WARNING: if the userbot process is running as root, this could potentially break your system irreversibly! Proceed with caution!** \
-                  \n\n`.python` <instructions> \
-                  \nUsage: Executes the specified python instructions.\
-                  \n\n**Notice:** Please use ' as the string delimiters instead of \", or errors could happen with the command processor."
+                  \n\n**WARNING: if the userbot process is running as root, this could potentially break your system irreversibly! Proceed with caution!**"
 
     MISC_USAGE = "`.coinflip` \
                  \nUsage: Flips a coin and returns heads or tails, depending on the result.\

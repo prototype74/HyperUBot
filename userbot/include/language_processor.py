@@ -383,8 +383,6 @@ class StickersText(object):
 
 class TerminalText(object):
     BASH_ERROR = text.TerminalText.BASH_ERROR
-    PYTHON_INSTRUCTION = text.TerminalText.PYTHON_INSTRUCTION
-    PYTHON_RESULT = text.TerminalText.PYTHON_RESULT
 
 class MiscText(object):
     COIN_LANDED_VAL = text.MiscText.COIN_LANDED_VAL
