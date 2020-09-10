@@ -173,4 +173,4 @@ def sizeStrMaker(value: int): #
     while newval > 1024:
         newval = newval / 1024
         divisions += 1
-    return str(newval) + str(SUFFIXES[divisions])
+    return str(round(newval), 2) + " " + str(SUFFIXES[divisions])
