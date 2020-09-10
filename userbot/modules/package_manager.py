@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 # My stuff
-from userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, MODULE_DESC, MODULE_DICT
+from userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, MODULE_DESC, MODULE_DICT, OS
 import userbot.include.git_api as git
 from userbot.include.aux_funcs import event_log, sizeStrMaker
 from userbot.include.language_processor import PackageManagerText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
@@ -22,9 +22,13 @@ import time
 import sys
 from os.path import basename
 
+if OS and OS.startswith("win"):
+    USER_MODULES_DIR = ".\\userbot\\modules_user\\"
+else:
+    USER_MODULES_DIR = "./userbot/modules_user/"
+
 UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
-USER_MODULES_DIR = "./userbot/modules_user/"
 MODULE_LIST = None # the thing that should get updated if you do .pkg update
 REPOS_NAMES = []
 
@@ -104,6 +108,8 @@ async def universe_checker(msg):
                 return
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
+            if os.path.exists(USER_MODULES_DIR + i['filename']): # We remove first, in case exists for updates
+                os.remove(USER_MODULES_DIR + i['filename'])
             open(USER_MODULES_DIR + i['filename'], 'wb').write(request.content)
             modules_installed.append(i['filename'])
         md_installed_string = ""
