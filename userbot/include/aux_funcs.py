@@ -162,15 +162,13 @@ async def getGitReview():
     return commit
 
 # Package Manager
-
-SUFFIXES = ['B', 'KB', 'MB', 'GB']
-# really? GB? A python module with GB?
-# Yes, in 2095 maybe.
-
 def sizeStrMaker(value: int): #
-    divisions = 0
+    if value < 1024:
+        return value + " B"
     newval = float(value)
-    while newval > 1024:
+    if value > 1023 and value < 1024*1024:
         newval = newval / 1024
-        divisions += 1
-    return str(round(newval, 2)) + " " + str(SUFFIXES[divisions])
+        return str(round(newval, 2)) + " kB"
+    else:
+        newval = newval / 1024 / 1024
+        return str(round(newval, 2)) + " MB"
