@@ -30,11 +30,11 @@
 
 ## Modules for the Universe
  - (DONE) nHentai module
+ - (DONE) Python Interpreter module
  - File uploader and downloader module
  - Weather Module
  - Memes module (mock, vaporwave, etc...)
  - Spam module
- - Extension of Terminal module
  - QR Codes module
  - Stickers module
  - quot.ly (maybe????)
