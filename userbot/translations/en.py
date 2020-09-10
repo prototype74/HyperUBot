@@ -390,7 +390,7 @@ class PackageManagerText(object):
     INSTALL_LOG = "Userbot rebooted! Module(s) installed: `{}`"
     UNINSTALL_LOG = "Userbot rebooted! Module uninstalled: `{}`"
     INSTALLED = "**INSTALLED MODULES:**\n"
-    ALREADY_PRESENT = "\n__* Module already present__"
+    ALREADY_PRESENT = "\n__* Module already present, will be updated instead of installed__"
 
 class UpdaterText(object):
     UPDATES_NOT_RAN = "Please run just .update to check for updates first!"
