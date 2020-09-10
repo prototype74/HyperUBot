@@ -44,4 +44,4 @@
  
  
 ## Packages:
-git neofetch ffpmpeg flac net-tools
+git neofetch ffmpeg flac net-tools
