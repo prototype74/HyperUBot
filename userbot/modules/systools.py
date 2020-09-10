@@ -42,7 +42,7 @@ async def statuschecker(stat):
     uptimeSTR = f"{uptimebot.days} " + msgRep.DAYS + f", {uptime_hours:02}:{uptime_mins:02}:{uptime_secs:02}"
     uptimemachine = uptime()
     uptime_machine_converted = timedelta(seconds=uptimemachine)
-    uptime_machine_array = str(uptime_machine_converted).split(" days, ")
+    uptime_machine_array = str(uptime_machine_converted).split(" day, ")
     if len(uptime_machine_array) < 2:
         uptime_machine_days = 0
         uptime_machine_time = uptime_machine_array[0].split(":")
