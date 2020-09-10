@@ -126,6 +126,7 @@ class DeletionsText(object):
 class ChatInfoText(object):
     CHAT_ANALYSIS = text.ChatInfoText.CHAT_ANALYSIS
     EXCEPTION = text.ChatInfoText.EXCEPTION
+    REPLY_NOT_CHANNEL = text.ChatInfoText.REPLY_NOT_CHANNEL
     CANNOT_GET_CHATINFO = text.ChatInfoText.CANNOT_GET_CHATINFO
     YES_BOLD = text.ChatInfoText.YES_BOLD
     NO_BOLD = text.ChatInfoText.NO_BOLD

@@ -35,9 +35,8 @@ async def chatinfo(event):
     if not chat:
         return
 
-    caption = await fetch_info(chat, event)
-
     try:
+        caption = await fetch_info(chat, event)
         await event.edit(caption, parse_mode="html")
     except Exception as e:
         log.error(e)
@@ -46,37 +45,39 @@ async def chatinfo(event):
 
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
-    if chat:
+    if event.reply_to_msg_id and not chat:
+        replied_msg = await event.get_reply_message()
+        if replied_msg.fwd_from and replied_msg.fwd_from.channel_id is not None:
+            chat = replied_msg.fwd_from.channel_id
+        else:
+            await event.edit(msgRep.REPLY_NOT_CHANNEL)
+            return None
+    else:
         try:
             chat = int(chat)
-        except ValueError:
+        except:
             pass
+
     if not chat:
-        if event.reply_to_msg_id:
-            replied_msg = await event.get_reply_message()
-            if replied_msg.fwd_from and replied_msg.fwd_from.channel_id is not None:
-                chat = replied_msg.fwd_from.channel_id
-        else:
-            chat = event.chat_id
+        chat = event.chat_id
+
     try:
         chat_info = await event.client(GetFullChatRequest(chat))
+        return chat_info
     except:
         try:
             chat_info = await event.client(GetFullChannelRequest(chat))
+            return chat_info
         except ChannelInvalidError:
             await event.edit(msgRep.INVALID_CH_GRP)
-            return None
         except ChannelPrivateError:
             await event.edit(msgRep.PRV_BAN)
-            return None
         except ChannelPublicGroupNaError:
             await event.edit(msgRep.NOT_EXISTS)
-            return None
         except Exception as e:
             log.warning(e)
-            await event.edit(msgRep.CANNOT_GET_CHATINFO)
-            return None
-    return chat_info
+            await event.edit(msgRep.CANNOT_GET_CHATINFO.format(chat))
+    return None
 
 async def fetch_info(chat, event):
     chat_obj_info = await event.client.get_entity(chat.full_chat.id)
@@ -116,7 +117,7 @@ async def fetch_info(chat, event):
     exp_count = chat.full_chat.pts if hasattr(chat.full_chat, "pts") else None
     username = chat_obj_info.username if hasattr(chat_obj_info, "username") else None
     bots_list = chat.full_chat.bot_info  # this is a list
-    bots = 0
+    bots = len(bots_list) if bots_list else 0
     supergroup = True if hasattr(chat_obj_info, "megagroup") and chat_obj_info.megagroup else False
     is_supergroup = msgRep.YES_BOLD if supergroup else msgRep.NO
     slowmode = msgRep.YES_BOLD if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else msgRep.NO
@@ -144,9 +145,6 @@ async def fetch_info(chat, event):
             admins = participants_admins.count if participants_admins else None
         except:
             pass
-    if bots_list:
-        for bot in bots_list:
-            bots += 1
 
     caption = msgRep.CHATINFO
     caption += msgRep.CHAT_ID.format(chat_obj_info.id)
