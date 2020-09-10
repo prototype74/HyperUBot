@@ -70,11 +70,15 @@ async def universe_checker(msg):
         files = msgRep.INSTALLED
         count = 1
         for item in USER_MODULES:
-            files += str(count) + ". " + item
+            files += str(count) + ". " + item + "\n"
+            count += 1
+        if len(USER_MODULES) == 0:
+            files += "__No modules installed in userspace__\n"
         count = 1
         if MODULE_LIST is None or len(MODULE_LIST) == 0:
             files += msgRep.EMPTY_LIST
         else:
+            mdInstalled = False
             oldName = ""
             for m in MODULE_LIST:
                 if not (m["repo"] == oldName):
@@ -82,8 +86,14 @@ async def universe_checker(msg):
                     oldName = m["repo"]
                     count = 1
                 size = sizeStrMaker(int(m["size"]))
-                files += msgRep.FILE_DSC.format(count, m["name"].split(".py")[0], m["url"], size)
+                mdName = m["name"].split(".py")[0]
+                if mdName in USER_MODULES:
+                    mdName += "*"
+                    mdInstalled = True
+                files += msgRep.FILE_DSC.format(count, mdName, m["url"], size)
                 count += 1
+            if mdInstalled:
+                files += msgRep.ALREADY_PRESENT
         await msg.edit(files, parse_mode='md')
         return
     elif cmd_args[0] == "install":
