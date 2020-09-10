@@ -167,7 +167,7 @@ SUFFIXES = ['B', 'KB', 'MB', 'GB']
 # really? GB? A python module with GB?
 # Yes, in 2095 maybe.
 
-async def sizeStrMaker(value: int): #
+def sizeStrMaker(value: int): #
     divisions = 0
     newval = float(value)
     while newval > 1024:
