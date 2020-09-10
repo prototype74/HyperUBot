@@ -7,7 +7,7 @@
  - Systools module
  - User module
  - Help module
- - Admin/Member info module by @prototype74
+ - Admin/Member info module
  - WebTools module
  - Scrappers module
  - CAS Interface module
@@ -15,19 +15,18 @@
  - Terminal module
  - Misc module
  - Module manager module
- - Update module (missing translations)
+ - Updater module
 
 ## To Do Part 1 (before alpha release):
  - Complete!
 
 ## To Do Part 2 (after alpha release):
- - Finding Windows, MacOS and Termux bois.
+ - Complete!
 
 ## To Do Part 3 (after beta release, but still undecided on all) :
  - Research on a possible Automation module
- - Terminal (maybe interpreters for more languages)
- - Scrappers (speech-to-text maybe?)
  - Finding translators to every language and get it translated
+ - Finding Windows, MacOS and Termux bois.
 
 ## Modules for the Universe
  - (DONE) nHentai module
@@ -35,6 +34,7 @@
  - Weather Module
  - Memes module (mock, vaporwave, etc...)
  - Spam module
+ - Extension of Terminal module
  - QR Codes module
  - Stickers module
  - quot.ly (maybe????)
