@@ -397,12 +397,14 @@ class UpdaterText(object):
     NO_UPDATES = "No updates queued. If you suspect a new update has been released, please run .update to queue it."
     UPDATING = "`Updating...`"
     UPD_ERROR = "An unspecified error has occured, the common issue is not having git installed as a system package, please make sure you do."
-    UPD_SUCCESS = "Userbot updated! Please reboot now!"
+    UPD_SUCCESS = "Userbot updated! Rebooting..."
     UNKWN_BRANCH = "Unrecognized branch. Likely you are running a modified source."
     LATS_VERSION = "{} is already running on the latest version!"
     UPD_AVAIL = "**UPDATES AVALIABLE!**\n\n**Changelog:**\n"
     RUN_UPD = "\nPlease run `.update upgrade` to update now!"
     CHLG_TOO_LONG = "New updates avaliable, however the changelist is too long to be displayed!\n\nPlease run `.update upgrade` to update now!"
+    RBT_COMPLETE = "Update complete!"
+    UPD_LOG = "Userbot has successfully been updated and has rebooted!"
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):

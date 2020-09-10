@@ -7,7 +7,8 @@
 # compliance with the PE License
 
 # My stuff
-from userbot import tgclient, PROJECT, log, MODULE_DESC, MODULE_DICT
+from userbot import tgclient, PROJECT, log, MODULE_DESC, MODULE_DICT, LOGGING
+from userbot.include.aux_funcs import event_log
 from userbot.include.language_processor import UpdaterText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 
 # Telethon stuff
@@ -15,10 +16,13 @@ from telethon.events import NewMessage
 from telethon.errors.rpcerrorlist import MessageTooLongError
 
 # Misc stuff
+import time
 from git import Repo
 from subprocess import check_output, CalledProcessError
 from sys import executable
 from os.path import basename
+import os
+import sys
 
 BOT_REPO_URL = "https://github.com/nunopenim/HyperUBot"
 RAN = False
@@ -46,6 +50,13 @@ async def updater(upd):
             await upd.edit(msgRep.UPD_ERROR)
             return
         await upd.edit(msgRep.UPD_SUCCESS)
+        time.sleep(1)
+        if LOGGING:
+            await event_log(upd, "UPDATE", custom_text=msgRep.UPD_LOG)
+        await upd.edit(msgRep.RBT_COMPLETE)
+        args = [sys.executable, "-m", "userbot"]
+        os.execle(sys.executable, *args, os.environ)
+        await upd.client.disconnect()
         return
     else:
         repo = Repo()

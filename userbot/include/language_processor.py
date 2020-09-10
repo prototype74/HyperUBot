@@ -426,6 +426,8 @@ class UpdaterText(object):
     UPD_AVAIL = text.UpdaterText.UPD_AVAIL
     RUN_UPD = text.UpdaterText.RUN_UPD
     CHLG_TOO_LONG = text.UpdaterText.CHLG_TOO_LONG
+    RBT_COMPLETE = text.UpdaterText.RBT_COMPLETE
+    UPD_LOG = text.UpdaterText.UPD_LOG
 
 class ModuleDescriptions(object):
     ADMIN_DESC = text.ModuleDescriptions.ADMIN_DESC
