@@ -1,7 +1,8 @@
 # HyperUBot
 A modular telegram userbot with it's own package manager.
 
-Copyright (C) 2020 Nuno Penim
+Copyright (C) 2020 nunopenim
+Copyright (C) 2020 prototype74
 
 All rights and lefts reserved, under construction.
 
