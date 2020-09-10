@@ -117,7 +117,7 @@ class ChatInfoText(object):
     CHAT_TYPE_PUBLIC = "Chat type: Public\n"
     CHAT_TYPE_PRIVATE = "Chat type: Private\n"
     CREATOR = "Creator: {}\n"
-    CREATOR_WITH_URL = "Creator: <a href=\"tg://user?id={}\">{creator_firstname}</a>\n"
+    CREATOR_WITH_URL = "Creator: <a href=\"tg://user?id={}\">{}</a>\n"
     CREATED_NOT_NULL = "Created: <code>{} - {} {}</code>\n"
     CREATED_NULL = "Created: <code>{} - {} {}</code> {}\n"
     DCID = "Data Center ID: {}\n"
