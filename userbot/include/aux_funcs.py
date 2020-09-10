@@ -160,3 +160,17 @@ async def getGitReview():
         verdiv = verout.split("-")
         commit = verdiv[2]
     return commit
+
+# Package Manager
+
+SUFFIXES = ['B', 'KB', 'MB', 'GB']
+# really? GB? A python module with GB?
+# Yes, in 2095 maybe.
+
+async def sizeStrMaker(value: int): #
+    divisions = 0
+    newval = float(value)
+    while newval > 1024:
+        newval = newval / 1024
+        divisions += 1
+    return str(newval) + str(SUFFIXES[divisions])

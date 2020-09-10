@@ -9,7 +9,7 @@
 # My stuff
 from userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, MODULE_DESC, MODULE_DICT
 import userbot.include.git_api as git
-from userbot.include.aux_funcs import event_log
+from userbot.include.aux_funcs import event_log, sizeStrMaker
 from userbot.include.language_processor import PackageManagerText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 
 # Telethon stuff
@@ -74,7 +74,8 @@ async def universe_checker(msg):
                     files += msgRep.FILES_IN.format(m["repo"])
                     oldName = m["repo"]
                     count = 1
-                files += msgRep.FILE_DSC.format(count, m["name"], m["url"], m["size"])
+                size = sizeStrMaker(int(m["size"]))
+                files += msgRep.FILE_DSC.format(count, m["name"], m["url"], size)
                 count += 1
         await msg.edit(files, parse_mode='md')
         return
