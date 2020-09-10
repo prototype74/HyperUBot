@@ -427,7 +427,6 @@ class UpdaterText(object):
     RUN_UPD = text.UpdaterText.RUN_UPD
     CHLG_TOO_LONG = text.UpdaterText.CHLG_TOO_LONG
 
-
 class ModuleDescriptions(object):
     ADMIN_DESC = text.ModuleDescriptions.ADMIN_DESC
     CHATINFO_DESC = text.ModuleDescriptions.CHATINFO_DESC
@@ -442,6 +441,7 @@ class ModuleDescriptions(object):
     TERMINAL_DESC = text.ModuleDescriptions.TERMINAL_DESC
     MISC_DESC = text.ModuleDescriptions.MISC_DESC
     PACKAGE_MANAGER_DESC = text.ModuleDescriptions.PACKAGE_MANAGER_DESC
+    UPDATER_DESC = text.ModuleDescriptions.UPDATER_DESC
 
 class ModuleUsages(object):
     ADMIN_USAGE = text.ModuleUsages.ADMIN_USAGE
@@ -457,3 +457,4 @@ class ModuleUsages(object):
     TERMINAL_USAGE = text.ModuleUsages.TERMINAL_USAGE
     MISC_USAGE = text.ModuleUsages.MISC_USAGE
     PACKAGE_MANAGER_USAGE = text.ModuleUsages.PACKAGE_MANAGER_USAGE
+    UPDATER_USAGE = text.ModuleUsages.UPDATER_USAGE

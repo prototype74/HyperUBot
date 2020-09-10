@@ -425,6 +425,7 @@ class ModuleDescriptions(object):
                     \n\n**Attention:** Running shell commands in the bot can and will make permanent changes to the host system. **Bad things will happen if you run the bot as sudo/root!**"
     MISC_DESC = "The miscelaneous module contains a small set of tools that did not quite fit any of the other modules, but at the same time were too simple to have their own module. Check the help for more details."
     PACKAGE_MANAGER_DESC = "The package manager module allows a user to manage extra apps, from external repos, either official, such as the modules-universe repo, or from external sources. It provides a way for users to customize their bots more than stock."
+    UPDATER_DESC = "The updater module allows the user to check for bot updates and to update the bot, if new updates exist."
 
 class ModuleUsages(object):
     ADMIN_USAGE = "`.ban` [optional: <username/id> <chat (id or link)>] or reply\
@@ -524,3 +525,8 @@ class ModuleUsages(object):
                  \nUsage: Installs the list of modules given as argument. \
                  \n\n`.pkg uninstall <module name>` \
                  \nUsage: Uninstalls the specified module. For security measures, it only works with a single module name."
+
+    UPDATER_USAGE = "`.update` \
+                 \nUsage: Checks for updates, and if avaliable, displays the changelog. \
+                 \n\n`.update upgrade` \
+                 \nUsage: If the user has checked for updates, it will update the bot to the latest version."
