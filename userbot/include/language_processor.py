@@ -412,6 +412,7 @@ class PackageManagerText(object):
     REBOOT_DONE_UNINS = text.PackageManagerText.REBOOT_DONE_UNINS
     INSTALL_LOG = text.PackageManagerText.INSTALL_LOG
     UNINSTALL_LOG = text.PackageManagerText.UNINSTALL_LOG
+    INSTALLED = text.PackageManagerText.INSTALLED
 
 class UpdaterText(object):
     UPDATES_NOT_RAN = text.UpdaterText.UPDATES_NOT_RAN

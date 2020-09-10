@@ -375,7 +375,7 @@ class PackageManagerText(object):
     INVALID_ARG = "Invalid argument! Make sure it is **update**, **list**, **install** or **uninstall**!"
     UPDATE_COMPLETE = "Modules list has been updated from the universe(s): **{}**"
     EMPTY_LIST = "The modules list is empty! Please run `.pkg update` first!"
-    FILES_IN = "\n\n Files in {}:\n"
+    FILES_IN = "\n\n **Files in {}:**\n"
     FILE_DSC = "{}. [{}]({}) - {}\n"
     NO_PKG = "`No specified package to install! Process halted!`"
     MOD_NOT_FOUND_INSTALL = "No module named `{}` was found in the release repo! Aborting!"
@@ -389,6 +389,7 @@ class PackageManagerText(object):
     REBOOT_DONE_UNINS = "Done! Uninstalled `{}`!"
     INSTALL_LOG = "Userbot rebooted! Module(s) installed: `{}`"
     UNINSTALL_LOG = "Userbot rebooted! Module uninstalled: `{}`"
+    INSTALLED = "**INSTALLED MODULES:**\n"
 
 class UpdaterText(object):
     UPDATES_NOT_RAN = "Please run just .update to check for updates first!"

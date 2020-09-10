@@ -67,7 +67,10 @@ async def universe_checker(msg):
         await msg.edit(msgRep.UPDATE_COMPLETE.format(repos))
         return
     elif cmd_args[0] == "list":
-        files = ""
+        files = msgRep.INSTALLED
+        count = 1
+        for item in USER_MODULES:
+            files += str(count) + ". " + item
         count = 1
         if MODULE_LIST is None or len(MODULE_LIST) == 0:
             files += msgRep.EMPTY_LIST
