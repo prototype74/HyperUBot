@@ -82,7 +82,7 @@ async def universe_checker(msg):
                     oldName = m["repo"]
                     count = 1
                 size = sizeStrMaker(int(m["size"]))
-                files += msgRep.FILE_DSC.format(count, m["name"], m["url"], size)
+                files += msgRep.FILE_DSC.format(count, m["name"].split(".py")[0], m["url"], size)
                 count += 1
         await msg.edit(files, parse_mode='md')
         return
