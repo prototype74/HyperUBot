@@ -3,7 +3,7 @@ A modular telegram userbot with it's own package manager.
 
 Copyright (C) 2020 Nuno Penim
 
-All rights reserved, under construction.
+All rights and lefts reserved, under construction.
 
 > Licensed under [PEL](https://github.com/nunopenim/HyperUBot/blob/master/LICENSE.md)
 
