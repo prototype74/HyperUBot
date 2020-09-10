@@ -27,7 +27,7 @@ from os.path import basename
 log = getLogger(__name__)
 
 @tgclient.on(NewMessage(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True))
-async def info(event):
+async def chatinfo(event):
     await event.edit(msgRep.CHAT_ANALYSIS)
 
     chat = await get_chatinfo(event)
