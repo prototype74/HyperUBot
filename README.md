@@ -14,3 +14,4 @@ To my brother [prototype74](https://github.com/prototype74) for his direct and i
 ## Reminder to make an instalation guide and add Termux support too. Maybe Heroku
 
 ## Also reminder to add thanks, contributors and translators!
+
