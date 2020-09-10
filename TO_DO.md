@@ -24,7 +24,6 @@
  - Complete!
 
 ## To Do Part 3 (after beta release, but still undecided on all) :
- - Research on a possible Automation module
  - Finding translators to every language and get it translated
  - Finding Windows, MacOS and Termux bois.
 
