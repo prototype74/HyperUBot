@@ -17,7 +17,6 @@ from telethon.events import NewMessage
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
 from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest
 from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins
-from telethon.utils import get_input_location
 
 # Misc imports
 from datetime import datetime
@@ -96,12 +95,7 @@ async def fetch_info(chat, event):
     creator_username = msg_info.users[0].username if creator_valid and msg_info.users[0].username is not None else None
     created = msg_info.messages[0].date if first_msg_valid else None
     former_title = msg_info.messages[0].action.title if first_msg_valid and type(msg_info.messages[0].action) is MessageActionChannelMigrateFrom and msg_info.messages[0].action.title != chat_title else None
-    try:
-        dc_id, location = get_input_location(chat.full_chat.chat_photo)
-    except Exception as e:
-        dc_id = msgRep.UNKNOWN
-        location = str(e)
-
+    dc_id = chat.full_chat.chat_photo.dc_id if hasattr(chat.full_chat.chat_photo, "dc_id") else msgRep.UNKNOWN
     # Prototype's spaghetti, although already salted by me
     description = chat.full_chat.about
     members = chat.full_chat.participants_count if hasattr(chat.full_chat, "participants_count") else chat_obj_info.participants_count
