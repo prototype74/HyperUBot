@@ -374,8 +374,8 @@ class MiscText(object):
 class PackageManagerText(object):
     INVALID_ARG = "Invalid argument! Make sure it is **update**, **list**, **install** or **uninstall**!"
     UPDATE_COMPLETE = "Modules list has been updated from the universe(s): **{}**"
-    EMPTY_LIST = "The modules list is empty! Please run `.pkg update` first!"
-    FILES_IN = "\n\n **Files in {}:**\n"
+    EMPTY_LIST = "\n\nThe modules list is empty! Please run `.pkg update` first!"
+    FILES_IN = "\n\n**Files in {}:**\n"
     FILE_DSC = "{}. [{}]({}) - {}\n"
     NO_PKG = "`No specified package to install! Process halted!`"
     MOD_NOT_FOUND_INSTALL = "No module named `{}` was found in the release repo! Aborting!"
