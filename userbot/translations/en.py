@@ -464,7 +464,9 @@ class ModuleUsages(object):
     CHATINFO_USAGE = "`.chatinfo` [optional: <chat_id/link>] or reply (if channel)\
                  \nUsage: Gets info about a chat. Some info might be limited due to missing permissions.\
                  \n\n`.chatid`\
-                 \nUsage: Gets the ID of a channel or group."
+                 \nUsage: Gets the ID of a channel or group.\
+                 \n\n`.link` [optional: <chat_id/link>]\
+                 \nUsage: Fetch the invite link from a channel or group to share it with other people. Requires admin privileges with invite users permission."
 
     DELETIONS_USAGE = "`.del`\
          \nUsage: Deletes the replied message.\
