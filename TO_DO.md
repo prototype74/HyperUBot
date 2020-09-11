@@ -30,6 +30,7 @@
 ## Modules for the Universe
  - (DONE) nHentai module
  - (DONE) Python Interpreter module
+ - (DONE) Superuser module
  - File uploader and downloader module
  - Weather Module
  - Memes module (mock, vaporwave, etc...)
