@@ -454,8 +454,10 @@ class ModuleUsages(object):
                  \n\n`.pin` [optional argument \"loud\" to notify all members] or reply\
                  \nUsage: Reply to someone's message to pin it in the chat."
 
-    CHATINFO_USAGE = "`.chatinfo` [optional: <chat_id>] \
-                 \nUsage: Gets info about a chat. Some info might be limited due to missing permissions."
+    CHATINFO_USAGE = "`.chatinfo` [optional: <chat_id/link>] or reply (if channel)\
+                 \nUsage: Gets info about a chat. Some info might be limited due to missing permissions.\
+                 \n\n`.chatid`\
+                 \nUsage: Gets the ID of a channel or group."
 
     DELETIONS_USAGE = "`.del`\
          \nUsage: Deletes the replied message.\
