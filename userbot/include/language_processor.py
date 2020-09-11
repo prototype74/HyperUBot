@@ -172,6 +172,8 @@ class ChatInfoText(object):
     INVALID_CH_GRP = text.ChatInfoText.INVALID_CH_GRP
     PRV_BAN = text.ChatInfoText.PRV_BAN
     NOT_EXISTS = text.ChatInfoText.NOT_EXISTS
+    CID_TEXT = text.ChatInfoText.CID_TEXT
+    CID_NO_GROUP = text.ChatInfoText.CID_NO_GROUP
 
 class MemberInfoText(object):
     SCAN = text.MemberInfoText.SCAN

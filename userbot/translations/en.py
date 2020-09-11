@@ -149,6 +149,8 @@ class ChatInfoText(object):
     INVALID_CH_GRP = "Invalid channel/group!"
     PRV_BAN = "This is a private channel/group or I am banned from there!"
     NOT_EXISTS = "Channel or supergroup doesn't exist!"
+    CID_TEXT = "This chat's id is `{}`"
+    CID_NO_GROUP = "`This chat isn't a channel or group`"
 
 class MemberInfoText(object):
     SCAN = "`Scanning this member's information...`"

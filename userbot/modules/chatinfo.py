@@ -16,7 +16,7 @@ from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPub
 from telethon.events import NewMessage
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
 from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest
-from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins
+from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins, Chat, Channel
 
 # Misc imports
 from datetime import datetime
@@ -229,6 +229,16 @@ async def chatinfo(event):
         log.error(e, exc_info=True)
         await event.edit(msgRep.EXCEPTION)
 
+    return
+
+
+@tgclient.on(NewMessage(pattern=r"^\.chatid$", outgoing=True))
+async def chatid(event):
+    chat = await event.get_chat()
+    if isinstance(chat, (Chat, Channel)):
+        await event.edit(msgRep.CID_TEXT.format(event.chat_id))
+    else:
+        await event.edit(msgRep.CID_NO_GROUP)
     return
 
 
