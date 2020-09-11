@@ -255,31 +255,31 @@ async def chatid(event):
         try:
             chat = await event.client.get_entity(arg)
         except:
-            await event.edit("`Given ID or link is invalid`")
+            await event.edit(msgRep.LINK_INVALID_ID)
             return
     else:
         chat = await event.get_chat()
 
     if not isinstance(chat, (Chat, Channel)):
-        await event.edit("`Given ID or link is not a channel or group`")
+        await event.edit(msgRep.LINK_INVALID_ID_GROUP)
         return
 
     try:
         result = await event.client(ExportChatInviteRequest(chat.id))
         if hasattr(result, "link"):  # might return ChatInviteEmpty object
-            text = f"Here is the invite link for **{chat.title}**:\n"
+            text = msgRep.LINK_TEXT.format(chat.title) + ":\n"
             text += result.link
             await event.edit(text)
         else:
-            await event.edit("`This chat has no invite link`")
+            await event.edit(msgRep.NO_LINK)
     except ChatAdminRequiredError:
         if chat.admin_rights and not chat.admin_rights.invite_users:
-            await event.edit("`Invite users permission is required to perform this action`")
+            await event.edit(msgRep.NO_INVITE_PERM)
         else:
-            await event.edit("`Admin privileges are required to perfom this action`")
+            await event.edit(msgRep.NO_ADMIN_PERM)
     except Exception as e:
         log.warning(e)
-        await event.edit("`Unable to fetch chat's invite link`")
+        await event.edit(msgRep.UNABLE_GET_LINK)
 
     return
 

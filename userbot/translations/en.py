@@ -151,6 +151,13 @@ class ChatInfoText(object):
     NOT_EXISTS = "Channel or supergroup doesn't exist!"
     CID_TEXT = "This chat's id is `{}`"
     CID_NO_GROUP = "`This chat isn't a channel or group`"
+    LINK_INVALID_ID = "`Given ID or link is invalid`"
+    LINK_INVALID_ID_GROUP = "`Given ID or link isn't from a channel or group`"
+    LINK_TEXT = "Here is the invite link for **{}**"
+    NO_LINK = "`This chat has no invite link`"
+    NO_ADMIN_PERM = "`Admin privileges are required to perform this action`"
+    NO_INVITE_PERM = "`Invite users permission is required to perform this action`"
+    UNABLE_GET_LINK = "`Unable to fetch chat's invite link`"
 
 class MemberInfoText(object):
     SCAN = "`Scanning this member's information...`"

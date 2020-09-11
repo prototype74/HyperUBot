@@ -174,6 +174,13 @@ class ChatInfoText(object):
     NOT_EXISTS = text.ChatInfoText.NOT_EXISTS
     CID_TEXT = text.ChatInfoText.CID_TEXT
     CID_NO_GROUP = text.ChatInfoText.CID_NO_GROUP
+    LINK_INVALID_ID = text.ChatInfoText.LINK_INVALID_ID
+    LINK_INVALID_ID_GROUP = text.ChatInfoText.LINK_INVALID_ID_GROUP
+    LINK_TEXT = text.ChatInfoText.LINK_TEXT
+    NO_LINK = text.ChatInfoText.NO_LINK
+    NO_ADMIN_PERM = text.ChatInfoText.NO_ADMIN_PERM
+    NO_INVITE_PERM = text.ChatInfoText.NO_INVITE_PERM
+    UNABLE_GET_LINK = text.ChatInfoText.UNABLE_GET_LINK
 
 class MemberInfoText(object):
     SCAN = text.MemberInfoText.SCAN
