@@ -12,10 +12,11 @@ from userbot.include.language_processor import (ChatInfoText as msgRep, ModuleDe
                                                 ModuleUsages as usageRep)
 
 # Telethon stuff
-from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError
+from telethon.errors import (ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError,
+                             ChatAdminRequiredError)
 from telethon.events import NewMessage
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
-from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest
+from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest, ExportChatInviteRequest
 from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins, Chat, Channel
 
 # Misc imports
@@ -239,6 +240,47 @@ async def chatid(event):
         await event.edit(msgRep.CID_TEXT.format(event.chat_id))
     else:
         await event.edit(msgRep.CID_NO_GROUP)
+    return
+
+
+@tgclient.on(NewMessage(pattern=r"^\.link(?: |$)(.*)", outgoing=True))
+async def chatid(event):
+    arg = event.pattern_match.group(1)
+    if arg:
+        try:
+            arg = int(arg)
+        except:
+            pass
+
+        try:
+            chat = await event.client.get_entity(arg)
+        except:
+            await event.edit("`Given ID or link is invalid`")
+            return
+    else:
+        chat = await event.get_chat()
+
+    if not isinstance(chat, (Chat, Channel)):
+        await event.edit("`Given ID or link is not a channel or group`")
+        return
+
+    try:
+        result = await event.client(ExportChatInviteRequest(chat.id))
+        if hasattr(result, "link"):  # might return ChatInviteEmpty object
+            text = f"Here is the invite link for **{chat.title}**:\n"
+            text += result.link
+            await event.edit(text)
+        else:
+            await event.edit("`This chat has no invite link`")
+    except ChatAdminRequiredError:
+        if chat.admin_rights and not chat.admin_rights.invite_users:
+            await event.edit("`Invite users permission is required to perform this action`")
+        else:
+            await event.edit("`Admin privileges are required to perfom this action`")
+    except Exception as e:
+        log.warning(e)
+        await event.edit("`Unable to fetch chat's invite link`")
+
     return
 
 
