@@ -7,7 +7,9 @@
 # compliance with the PE License
 
 class AdminText(object): # Admin module
-    FAIL_CHAT = "`Failed to fetch chat`"
+    ADMINS_IN_CHAT = "Admins in **{}**"
+    UNABLE_GET_ADMINS = "`Unable to get admins from this chat`"
+    FAIL_CHAT = "`Failed to fetch1 chat`"
     NO_GROUP_CHAN = "`This chat isn't a group or channel`"
     NO_GROUP_CHAN_ARGS = "`This chat or given chat isn't a group or channel`"
     NO_ADMIN = "`Admin privileges are required to perform this action`"
@@ -448,7 +450,9 @@ class ModuleDescriptions(object):
     UPDATER_DESC = "The updater module allows the user to check for bot updates and to update the bot, if new updates exist."
 
 class ModuleUsages(object):
-    ADMIN_USAGE = "`.ban` [optional: <username/id> <chat (id or link)>] or reply\
+    ADMIN_USAGE = "`.adminlist` [optional: <link/id>] \
+                 \nUsage: lists all admins from a channel or group (remotely). Requires admin privileges in channels.\
+                 \n\n`.ban` [optional: <username/id> <chat (id or link)>] or reply\
                  \nUsage: Ban a certain user from a chat (remotely). Requires admin privileges with ban permission.\
                  \n\n`.unban` [optional: <username/id> <chat (id or link)>] or reply\
                  \nUsage: Unban a certain user from a chat (remotely). Requires admin privileges with ban permission.\

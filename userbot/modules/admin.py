@@ -18,7 +18,7 @@ from telethon.errors import (UserAdminInvalidError, ChatAdminRequiredError, Admi
 from telethon.events import NewMessage
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
 from telethon.tl.functions.messages import UpdatePinnedMessageRequest
-from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticipantsAdmins, User
+from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticipantsAdmins, User, Channel
 
 # Misc
 from asyncio import sleep
@@ -31,6 +31,46 @@ def tguser_url() -> str:
     return "tg://user?id="
 
 log = getLogger(__name__)
+
+
+@tgclient.on(NewMessage(pattern=r"^\.adminlist(?: |$)(.*)", outgoing=True))
+async def adminlist(event):
+    arg = event.pattern_match.group(1)
+    if arg:
+        try:
+            arg = int(arg)
+        except:
+            pass
+
+        try:
+            chat = await event.client.get_entity(arg)
+        except Exception as e:
+            log.warning(e)
+            await event.edit(msgRep.FAIL_CHAT)
+            return
+    else:
+        chat = await event.get_chat()
+
+    if not isinstance(chat, Channel):
+        await event.edit(msgRep.NO_GROUP_CHAN_ARGS)
+        return
+
+    try:
+        text = msgRep.ADMINS_IN_CHAT.format(chat.title) + ":\n\n"
+        num = 1
+        async for member in event.client.iter_participants(chat.id, filter=ChannelParticipantsAdmins):
+            if member.username:
+                text += f"{num}. @{member.username}\n"
+            else:
+                text += f"{num}. [{member.first_name}]({tguser_url()}{member.id})\n"
+            num += 1
+        await event.edit(text)
+    except ChatAdminRequiredError:
+        await event.edit(msgRep.NO_ADMIN)
+    except Exception as e:
+        log.warning(e)
+        await event.edit(msgRep.UNABLE_GET_ADMINS)
+    return
 
 
 @tgclient.on(NewMessage(pattern=r"^\.ban(?: |$)(.*)", outgoing=True))

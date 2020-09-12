@@ -30,6 +30,8 @@ except:
 # Language processor!
 
 class AdminText(object): # Admin module
+    ADMINS_IN_CHAT = text.AdminText.ADMINS_IN_CHAT
+    UNABLE_GET_ADMINS = text.AdminText.UNABLE_GET_ADMINS
     FAIL_CHAT = text.AdminText.FAIL_CHAT
     NO_GROUP_CHAN = text.AdminText.NO_GROUP_CHAN
     NO_GROUP_CHAN_ARGS = text.AdminText.NO_GROUP_CHAN_ARGS
