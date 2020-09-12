@@ -28,6 +28,63 @@ from os.path import basename
 log = getLogger(__name__)
 
 
+@tgclient.on(NewMessage(pattern=r"^\.userid(?: |$)(.*)", outgoing=True))
+async def userid(event):
+    if event.reply_to_msg_id:
+        msg = await event.get_reply_message()
+        sender = msg.sender
+        org_author = msg.forward.sender if msg.forward else None
+        if not sender and not org_author:
+            await event.edit("Unable to get user ID(s) from this message")
+            return
+
+        if sender:
+            sender_link = f"[{sender.first_name}](tg://user?id={sender.id})"
+
+        if org_author:
+            org_author_link = f"[{org_author.first_name}](tg://user?id={org_author.id})"
+
+        if sender and org_author:
+            if not sender == org_author:
+                text = f"**Original author**:\n{org_author_link} has an ID of `{org_author.id}`\n\n"
+                text += f"**Forwarder**:\n{sender_link} has an ID of `{sender.id}`"
+            else:
+                if sender.deleted:
+                    text = f"Deleted Account has an ID of `{sender.id}`"
+                elif sender.is_self:
+                    text = f"My ID is `{sender.id}`"
+                else:
+                    text = f"{sender_link} has an ID of `{sender.id}`"
+        elif sender and not org_author:
+            if msg.fwd_from and msg.fwd_from.from_name:
+                text = f"**Original author**:\nthe ID from {msg.fwd_from.from_name} is not accessible\n\n"
+                text += f"**Forwarder**:\n{sender_link} has an ID of `{sender.id}`"
+            else:
+                if sender.deleted:
+                    text = f"Deleted Account has an ID of `{sender.id}`"
+                elif sender.is_self:
+                    text = f"My ID is `{sender.id}`"
+                else:
+                    text = f"{sender_link} has an ID of `{sender.id}`"
+        elif not sender and org_author:
+            text = f"The original author {org_author_link} has an ID of `{org_author.id}`"
+    else:
+        user_obj = await fetch_user(event)
+
+        if not user_obj:
+            return
+
+        if user_obj.deleted:
+            text = f"Deleted Account has an ID of `{user_obj.id}`"
+        elif user_obj.is_self:
+            text = f"My ID is `{user_obj.id}`"
+        else:
+            user_link = f"[{user_obj.first_name}](tg://user?id={user_obj.id})"
+            text = f"{user_link} has an ID of `{user_obj.id}`"
+
+    await event.edit(text)
+    return
+
 @tgclient.on(NewMessage(pattern=r"^\.kickme$", outgoing=True))
 async def kickme(leave):
     await leave.edit(msgRep.LEAVING)
