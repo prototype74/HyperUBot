@@ -215,6 +215,22 @@ class MemberInfoText(object):
     ADDED_BY = "Added by"
     JOIN_DATE = "Join date"
 
+class MessagesText(object):
+    NO_ADMIN = "`Admin privileges are required to perform this action`"
+    FAIL_CHAT = "`Failed to fetch chat`"
+    CANNOT_COUNT_DEL = "`Can't count messages from a deleted user`"
+    CANNOT_QUERY_FWD = "`Can't query forwarded messages from a channel`"
+    FAIL_COUNT_MSG = "`Can't query forwarded messages from a channel`"
+    USER_HAS_SENT = "{} has sent `{}` messages in this chat"  # userlink, msg count
+    USER_HAS_SENT_REMOTE = "{} has sent `{}` messages in **{}**"  # userlink, msg count, chat title
+    CANNOT_COUNT_MSG = "`Can't count messages in this chat!`"
+    CANNOT_COUNT_MSG_REMOTE = "`Can't count messages in {}!`"
+    NO_GROUP_CHAN = "`This chat isn't a group or channel`"
+    PICKING_MEMBERS = "`Picking the most active members. This might take up some time...`"
+    FAILED_TO_PICK = "`Failed to pick the most active members`"
+    TOP_USERS_TEXT = "Top **{}** active members in **{}**"  # count, chat title
+    TOP_USERS_MSGS = "Messages"
+
 class ScrappersText(object):
     NO_TEXT_OR_MSG = "`No text or message to translate`"
     TRANSLATING = "`Translating...`"
@@ -436,6 +452,7 @@ class ModuleDescriptions(object):
                      \n\n**Important: don't abuse this module to delete someone's else whole group history**, for real, just don't..."
     MEMBERINFO_DESC = "Provides information from a specific group participant like permissions, restriction date, join date etc.\
                      \n\nNote: requires admin privileges to access other member's permissions."
+    MESSAGES_DESC = "This module includes commands that a working with messages only such as msgs or topusers."
     SCRAPPERS_DESC = "Not as it sounds like to be but still this module includes useful features like translation or text-to-speech."
     SYSTOOLS_DESC = "This module contains a set of system tools for the bot. It allows you to check the bot uptime, the server uptime, the versions of all the bot's \
                     components, the specifications of the server system, and some bot power controls."
@@ -488,6 +505,12 @@ class ModuleUsages(object):
 
     MEMBERINFO_USAGE = "`.minfo` [optional: <tag/id> <group>] or reply\
           \nUsage: Get (remotely) info of a member in a supergroup."
+
+    MESSAGES_USAGE = "`.msgs` [optional: <username/id> <group>] or reply\
+                \nUsage: Gets the amount of sent messages from an user (includes any message like text messages, voice notes, videos etc.).\
+                \nWorks remotely too.\
+                \n\n`.topusers` [optional: <group>]\
+                \nUsage: Pick the top 10 members in a group. This process may take up some time, the more members the specific group has."
 
     SCRAPPERS_USAGE = "`.trt` [optional: <text>] or reply\
           \nUsage: Translates given text or replied message to the bot's target language.\

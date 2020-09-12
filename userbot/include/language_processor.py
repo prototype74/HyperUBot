@@ -238,6 +238,22 @@ class MemberInfoText(object):
     ADDED_BY = text.MemberInfoText.ADDED_BY
     JOIN_DATE = text.MemberInfoText.JOIN_DATE
 
+class MessagesText(object):
+    NO_ADMIN = text.MessagesText.NO_ADMIN
+    FAIL_CHAT = text.MessagesText.FAIL_CHAT
+    CANNOT_COUNT_DEL = text.MessagesText.CANNOT_COUNT_DEL
+    CANNOT_QUERY_FWD = text.MessagesText.CANNOT_QUERY_FWD
+    FAIL_COUNT_MSG = text.MessagesText.FAIL_COUNT_MSG
+    USER_HAS_SENT = text.MessagesText.USER_HAS_SENT
+    USER_HAS_SENT_REMOTE = text.MessagesText.USER_HAS_SENT_REMOTE
+    CANNOT_COUNT_MSG = text.MessagesText.CANNOT_COUNT_MSG
+    CANNOT_COUNT_MSG_REMOTE = text.MessagesText.CANNOT_COUNT_MSG_REMOTE
+    NO_GROUP_CHAN = text.MessagesText.NO_GROUP_CHAN
+    PICKING_MEMBERS = text.MessagesText.PICKING_MEMBERS
+    FAILED_TO_PICK = text.MessagesText.FAILED_TO_PICK
+    TOP_USERS_TEXT = text.MessagesText.TOP_USERS_TEXT
+    TOP_USERS_MSGS = text.MessagesText.TOP_USERS_MSGS
+
 class ScrappersText(object):
     NO_TEXT_OR_MSG = text.ScrappersText.NO_TEXT_OR_MSG
     TRANSLATING = text.ScrappersText.TRANSLATING
@@ -454,6 +470,7 @@ class ModuleDescriptions(object):
     CHATINFO_DESC = text.ModuleDescriptions.CHATINFO_DESC
     DELETIONS_DESC = text.ModuleDescriptions.DELETIONS_DESC
     MEMBERINFO_DESC = text.ModuleDescriptions.MEMBERINFO_DESC
+    MESSAGES_DESC = text.ModuleDescriptions.MESSAGES_DESC
     SCRAPPERS_DESC = text.ModuleDescriptions.SCRAPPERS_DESC
     SYSTOOLS_DESC = text.ModuleDescriptions.SYSTOOLS_DESC
     USER_DESC = text.ModuleDescriptions.USER_DESC
@@ -470,6 +487,7 @@ class ModuleUsages(object):
     CHATINFO_USAGE = text.ModuleUsages.CHATINFO_USAGE
     DELETIONS_USAGE = text.ModuleUsages.DELETIONS_USAGE
     MEMBERINFO_USAGE = text.ModuleUsages.MEMBERINFO_USAGE
+    MESSAGES_USAGE = text.ModuleUsages.MESSAGES_USAGE
     SCRAPPERS_USAGE = text.ModuleUsages.SCRAPPERS_USAGE
     SYSTOOLS_USAGE = text.ModuleUsages.SYSTOOLS_USAGE
     USER_USAGE = text.ModuleUsages.USER_USAGE
