@@ -503,12 +503,14 @@ class ModuleUsages(object):
          \n\n`.sysd`\
          \nUsage: Type .sysd to get system details. (Requires neofetch installed)"
 
-    USER_USAGE = "`.info ` [optional: <username>]\
+    USER_USAGE = "`.info` [optional: <username/id>] or reply\
         \nUsage: Gets info of an user.\
         \n\n`.stats`\
         \nUsage: Gets your stats.\
         \n\n`.kickme`\
-        \nUsage: Makes you leave the group."
+        \nUsage: Makes you leave the group.\
+        \n\n`.userid` [optional: <username>] or reply\
+        \nUsage: Get the ID from an user. If replied to a forwarded message, it gets the IDs from both, forwarder and original author."
 
     WEBTOOLS_USAGE = "`.rtt` \
                     \nUsage: Gets the current Round Trip Time\
