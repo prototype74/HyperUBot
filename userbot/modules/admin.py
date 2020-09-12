@@ -8,7 +8,7 @@
 
 # tguserbot stuff
 from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
-from userbot.include.aux_funcs import event_log, fetch_user
+from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD
 from userbot.include.language_processor import (AdminText as msgRep, ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
 
@@ -92,8 +92,7 @@ async def ban(event):
         await event.edit(msgRep.CANNOT_BAN_SELF)
         return
 
-    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
-    remote = True if not chat.id == this_chat else False
+    remote = isRemoteCMD(event, chat.id)
     admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
 
     if admin_perms and not admin_perms.ban_users:
@@ -143,8 +142,7 @@ async def unban(event):
         await event.edit(msgRep.CANNOT_UNBAN_SELF)
         return
 
-    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
-    remote = True if not chat.id == this_chat else False
+    remote = isRemoteCMD(event, chat.id)
     admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
 
     if admin_perms and not admin_perms.ban_users:
@@ -191,8 +189,7 @@ async def kick(event):
         await event.edit(msgRep.CANNOT_KICK_SELF)
         return
 
-    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
-    remote = True if not chat.id == this_chat else False
+    remote = isRemoteCMD(event, chat.id)
     admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
 
     if admin_perms and not admin_perms.ban_users:
@@ -405,8 +402,7 @@ async def mute(event):
         await event.edit(msgRep.CANNOT_MUTE_SELF)
         return
 
-    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
-    remote = True if not chat.id == this_chat else False
+    remote = isRemoteCMD(event, chat.id)
     admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
 
     if admin_perms and not admin_perms.ban_users:
@@ -457,8 +453,7 @@ async def unmute(event):
         await event.edit(msgRep.CANNOT_UNMUTE_SELF)
         return
 
-    this_chat = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
-    remote = True if not chat.id == this_chat else False
+    remote = isRemoteCMD(event, chat.id)
     admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
 
     if admin_perms and not admin_perms.ban_users:

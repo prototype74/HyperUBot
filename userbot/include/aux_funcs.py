@@ -121,6 +121,10 @@ async def event_log(event, event_name: str, user_name=None, user_id=None, userna
         log.warning(f"EVENT_LOG ({event_name}): {e}")
     return
 
+def isRemoteCMD(event, chat_id: int) -> bool:
+    chat_from_event = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
+    return True if not chat_id == chat_from_event else False
+
 # Systools/Webtools
 def pinger(address):
     if os.name == "nt":
