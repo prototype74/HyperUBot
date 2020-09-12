@@ -9,7 +9,7 @@
 class AdminText(object): # Admin module
     ADMINS_IN_CHAT = "Admins in **{}**"
     UNABLE_GET_ADMINS = "`Unable to get admins from this chat`"
-    FAIL_CHAT = "`Failed to fetch1 chat`"
+    FAIL_CHAT = "`Failed to fetch chat`"
     NO_GROUP_CHAN = "`This chat isn't a group or channel`"
     NO_GROUP_CHAN_ARGS = "`This chat or given chat isn't a group or channel`"
     NO_ADMIN = "`Admin privileges are required to perform this action`"
