@@ -116,7 +116,7 @@ async def text_to_speech(event):
     return
 
 
-@tgclient.on(NewMessage(pattern=r"^\.stt(?: |$)(.*)", outgoing=True))
+@tgclient.on(NewMessage(pattern=r"^\.stt$", outgoing=True))
 async def speech_to_text(event):
     """ Note: telethon may borrow a different DC id to download audio """
     if event.reply_to_msg_id:
