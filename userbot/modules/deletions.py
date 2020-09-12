@@ -70,7 +70,7 @@ async def purge(event):
                 return
 
         message_ids = []
-        wait_time_sec = 5  # Prevent FloodWaitError
+        wait_time_sec = 2  # Prevent FloodWaitError
         async for message in event.client.iter_messages(entity=chat.id, min_id=event.reply_to_msg_id,
                                                         wait_time=wait_time_sec):
             message_ids.append(message.id)
