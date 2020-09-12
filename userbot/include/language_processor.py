@@ -310,6 +310,14 @@ class UserText(object):
     BIO = text.UserText.BIO
     COMMON_SELF = text.UserText.COMMON_SELF
     COMMON = text.UserText.COMMON
+    UNABLE_GET_IDS = text.UserText.UNABLE_GET_IDS
+    ORIGINAL_AUTHOR = text.UserText.ORIGINAL_AUTHOR
+    FORWARDER = text.UserText.FORWARDER
+    DUAL_HAS_ID_OF = text.UserText.DUAL_HAS_ID_OF
+    MY_ID = text.UserText.MY_ID
+    DEL_HAS_ID_OF = text.UserText.DEL_HAS_ID_OF
+    ID_NOT_ACCESSIBLE = text.UserText.ID_NOT_ACCESSIBLE
+    ORG_HAS_ID_OF = text.UserText.ORG_HAS_ID_OF
 
 class GeneralMessages(object):
     ERROR = text.GeneralMessages.ERROR

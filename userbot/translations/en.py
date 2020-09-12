@@ -287,6 +287,14 @@ class UserText(object):
     BIO = "Bio"
     COMMON_SELF = "Common chats... oh look it's me!"
     COMMON = "Common chats"
+    UNABLE_GET_IDS = "`Unable to get user ID(s) from this message`"
+    ORIGINAL_AUTHOR = "Original author"
+    FORWARDER = "Forwarder"
+    DUAL_HAS_ID_OF = "{} has an ID of `{}`"  # name of person, ID
+    MY_ID = "My ID is `{}`"
+    DEL_HAS_ID_OF = "Deleted Account has an ID of `{}`"
+    ID_NOT_ACCESSIBLE = "the ID from {} is not accessible"
+    ORG_HAS_ID_OF = "The original author {} has an ID of `{}`"  # name of person, ID
 
 class GeneralMessages(object):
     ERROR = "ERROR!"

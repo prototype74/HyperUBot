@@ -35,7 +35,7 @@ async def userid(event):
         sender = msg.sender
         org_author = msg.forward.sender if msg.forward else None
         if not sender and not org_author:
-            await event.edit("Unable to get user ID(s) from this message")
+            await event.edit(msgRep.UNABLE_GET_IDS)
             return
 
         if sender:
@@ -46,28 +46,28 @@ async def userid(event):
 
         if sender and org_author:
             if not sender == org_author:
-                text = f"**Original author**:\n{org_author_link} has an ID of `{org_author.id}`\n\n"
-                text += f"**Forwarder**:\n{sender_link} has an ID of `{sender.id}`"
+                text = f"**{msgRep.ORIGINAL_AUTHOR}**:\n" + msgRep.DUAL_HAS_ID_OF.format(org_author_link, org_author.id) + "\n\n"
+                text += f"**{msgRep.FORWARDER}**:\n" + msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id)
             else:
                 if sender.deleted:
-                    text = f"Deleted Account has an ID of `{sender.id}`"
+                    text = msgRep.DEL_HAS_ID_OF.format(sender.id)
                 elif sender.is_self:
-                    text = f"My ID is `{sender.id}`"
+                    text = msgRep.MY_ID.format(sender.id)
                 else:
-                    text = f"{sender_link} has an ID of `{sender.id}`"
+                    text = msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id)
         elif sender and not org_author:
             if msg.fwd_from and msg.fwd_from.from_name:
-                text = f"**Original author**:\nthe ID from {msg.fwd_from.from_name} is not accessible\n\n"
-                text += f"**Forwarder**:\n{sender_link} has an ID of `{sender.id}`"
+                text = f"**{msgRep.ORIGINAL_AUTHOR}**:\n" + msgRep.ID_NOT_ACCESSIBLE.format(msg.fwd_from.from_name) + "\n\n"
+                text += f"**{msgRep.FORWARDER}**:\n" + msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id)
             else:
                 if sender.deleted:
-                    text = f"Deleted Account has an ID of `{sender.id}`"
+                    text = msgRep.DEL_HAS_ID_OF.format(sender.id)
                 elif sender.is_self:
-                    text = f"My ID is `{sender.id}`"
+                    text = msgRep.MY_ID.format(sender.id)
                 else:
-                    text = f"{sender_link} has an ID of `{sender.id}`"
+                    text = msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id)
         elif not sender and org_author:
-            text = f"The original author {org_author_link} has an ID of `{org_author.id}`"
+            text = msgRep.ORG_HAS_ID_OF.format(org_author_link, org_author.id)
     else:
         user_obj = await fetch_user(event)
 
@@ -75,12 +75,12 @@ async def userid(event):
             return
 
         if user_obj.deleted:
-            text = f"Deleted Account has an ID of `{user_obj.id}`"
+            text = msgRep.DEL_HAS_ID_OF.format(user_obj.id)
         elif user_obj.is_self:
-            text = f"My ID is `{user_obj.id}`"
+            text = msgRep.MY_ID.format(user_obj.id)
         else:
             user_link = f"[{user_obj.first_name}](tg://user?id={user_obj.id})"
-            text = f"{user_link} has an ID of `{user_obj.id}`"
+            text = msgRep.DUAL_HAS_ID_OF.format(user_link, user_obj.id)
 
     await event.edit(text)
     return
