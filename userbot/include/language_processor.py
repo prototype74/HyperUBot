@@ -384,7 +384,20 @@ class WebToolsText(object):
     SPD_HOSTED_BY = text.WebToolsText.SPD_HOSTED_BY
 
 class CasIntText(object):
-    FAIL = text.CasIntText.FAIL
+    TOO_MANY_CAS = text.CasIntText.TOO_MANY_CAS
+    FAIL_UPLOAD_LIST = text.CasIntText.FAIL_UPLOAD_LIST
+    SEND_MEDIA_FORBIDDEN = text.CasIntText.SEND_MEDIA_FORBIDDEN
+    UPDATER_CONNECTING = text.CasIntText.UPDATER_CONNECTING
+    UPDATER_DOWNLOADING = text.CasIntText.UPDATER_DOWNLOADING
+    FAIL_APPEND_CAS = text.CasIntText.FAIL_APPEND_CAS
+    UPDATE_SUCCESS = text.CasIntText.UPDATE_SUCCESS
+    UPDATE_FAILED = text.CasIntText.UPDATE_FAILED
+    GIVEN_ENT_INVALID = text.CasIntText.GIVEN_ENT_INVALID
+    AUTO_UPDATE = text.CasIntText.AUTO_UPDATE
+    CAS_CHECK_FAIL_ND = text.CasIntText.CAS_CHECK_FAIL_ND
+    CAS_CHECK_ND = text.CasIntText.CAS_CHECK_ND
+    PROCESSING = text.CasIntText.PROCESSING
+    DELETD_ACCOUNT = text.CasIntText.DELETD_ACCOUNT
     USER_HEADER = text.CasIntText.USER_HEADER
     USER_ID = text.CasIntText.USER_ID
     FIRST_NAME = text.CasIntText.FIRST_NAME
@@ -393,12 +406,11 @@ class CasIntText(object):
     CAS_DATA = text.CasIntText.CAS_DATA
     RESULT = text.CasIntText.RESULT
     OFFENSES = text.CasIntText.OFFENSES
-    DAY_ADDED = text.CasIntText.DAY_ADDED
-    TIME_ADDED = text.CasIntText.TIME_ADDED
-    UTC_INFO = text.CasIntText.UTC_INFO
+    BANNED_SINCE = text.CasIntText.BANNED_SINCE
+    USER_DETECTED = text.CasIntText.USER_DETECTED
     USERS_DETECTED = text.CasIntText.USERS_DETECTED
-    NO_USRS = text.CasIntText.NO_USRS
-    NO_ADM = text.CasIntText.NO_ADM
+    NO_USERS = text.CasIntText.NO_USERS
+    NO_ADMIN = text.CasIntText.NO_ADMIN
     CAS_CHECK_FAIL = text.CasIntText.CAS_CHECK_FAIL
 
 class GitHubText(object):

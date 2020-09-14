@@ -361,21 +361,33 @@ class WebToolsText(object):
     SPD_HOSTED_BY = "Hosted by"
 
 class CasIntText(object):
-    FAIL = "Failed to extract a user from given data"
-    USER_HEADER = "<b>USER DATA</b>\n\n"
-    USER_ID = "ID: "
-    FIRST_NAME = "First name: "
-    LAST_NAME = "Last name: "
-    USERNAME = "Username: @"
-    CAS_DATA = "\n<b>CAS DATA</b>\n\n"
-    RESULT = "Result: "
-    OFFENSES = "Total of Offenses: "
-    DAY_ADDED = "Day added: "
-    TIME_ADDED = "\nTime added: "
-    UTC_INFO = "\n\nAll times are in UTC"
-    USERS_DETECTED = "Warning! `{}` of `{}` users are CAS Banned:\n"
-    NO_USRS = "No CAS Banned users found!"
-    NO_ADM = "`CAS check failed: Admin privileges are required`"
+    TOO_MANY_CAS = "`Too many CAS Banned users. Uploading list as a file...`"
+    FAIL_UPLOAD_LIST = "`Failed to upload list`"
+    SEND_MEDIA_FORBIDDEN = "`Send media isn't allowed in this chat`"
+    UPDATER_CONNECTING = "`Connecting...`"
+    UPDATER_DOWNLOADING = "`Downloading...`"
+    FAIL_APPEND_CAS = "`Failed to append CAS data`"
+    UPDATE_SUCCESS = "`Successfully updated to latest CAS CSV data`"
+    UPDATE_FAILED = "`Update CAS CSV data failed`"
+    GIVEN_ENT_INVALID = "`Given username/id/link isn't valid`"
+    AUTO_UPDATE = "`Auto updating CAS data...`"
+    CAS_CHECK_FAIL_ND = "`CAS check failed as CSV format is not valid`"
+    CAS_CHECK_ND = "`CAS data not found. Please use .casupdate command tog get the lastest CAS data`"
+    PROCESSING = "`Processing...`"
+    DELETD_ACCOUNT = "Deleted Account"
+    USER_HEADER = "USER DATA"
+    USER_ID = "ID"
+    FIRST_NAME = "First name"
+    LAST_NAME = "Last name"
+    USERNAME = "Username"
+    CAS_DATA = "CAS DATA"
+    RESULT = "Result"
+    OFFENSES = "Total of Offenses"
+    BANNED_SINCE = "Banned since"
+    USER_DETECTED = "Warning! `{}` member is CAS Banned in **{}**"  # count, chat title
+    USERS_DETECTED = "Warning! `{}` members are CAS Banned in **{}**"  # count, chat title
+    NO_USERS = "No CAS Banned users found in **{}**"
+    NO_ADMIN = "`Admin privileges are required to perform this action`"
     CAS_CHECK_FAIL = "`CAS check failed`"
 
 class GitHubText(object):
@@ -548,10 +560,11 @@ class ModuleUsages(object):
                     \n\n`.speedtest` [optional argument \"pic\"] \
                     \nUsage: Performs a speedtest and shows the result as text. Passing \"pic\" as argument will change the result to a picture."
 
-    CAS_INTERFACE_USAGE = "`.cascheck` [optional: <username>]\
-                    \nUsage: Checks if a user is CAS Banned\
-                    \n\n`.groupcheck` \
-                    \nUsage: Checks the whole group for CAS Banned users "
+    CAS_INTERFACE_USAGE = "`.casupdate`\
+                    \nUsage: Downloads/updates the CSV data for CAS check cmd.\
+                    \n\n`.cascheck` [optional: <username/id/link>] or reply\
+                    \nUsage: Checks if an user is CAS Banned or a whole group for CAS Banned users.\
+                    \nNote: cascheck can just check up to 10.000 members in a group due to Telegram's sever-side limitation."
 
     GITHUB_USAGE = "`.git` <user>/<repo> \
                   \nUsage: Checks for releases on the specified user/repo combination."
