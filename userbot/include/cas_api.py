@@ -1,9 +1,10 @@
 import json
 import datetime
 import requests
+from dateutil.parser import parse
 
 
-VERSION = "1.4.0"
+VERSION = "1.4.1"
 CAS_QUERY_URL = "https://api.cas.chat/check?user_id="
 DL_DIR = "./csvExports"
 
@@ -31,7 +32,7 @@ def offenses(userdata):
 def timeadded(userdata):
     try:
         timeEp = userdata['result']['time_added']
-        timeHuman = datetime.datetime.utcfromtimestamp(timeEp).strftime('%H:%M:%S, %d-%m-%Y')
+        timeHuman = parse(timeEp)
         return timeHuman
     except:
         return None
