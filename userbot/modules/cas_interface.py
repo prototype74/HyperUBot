@@ -24,7 +24,7 @@ from datetime import datetime
 from logging import getLogger
 from os import remove
 from os.path import basename, exists, getmtime
-from requests import get
+from requests import get, ConnectionError, Timeout
 
 
 log = getLogger(__name__)
@@ -111,6 +111,12 @@ async def casupdater(event, showinfo: bool):
         if showinfo:
             await event.edit(msgRep.UPDATE_SUCCESS)
         log.info("Updated to latest CAS CSV data")
+    except ConnectionError as c:
+        log.warning(c)
+        await event.edit(msgRep.NO_CONNECTION)
+    except Timeout as t:
+        log.warning(t)
+        await event.edit(msgRep.TIMEOUT)
     except Exception as e:
         log.error(e)
         await event.edit(msgRep.UPDATE_FAILED)

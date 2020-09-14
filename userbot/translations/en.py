@@ -368,6 +368,8 @@ class CasIntText(object):
     UPDATER_DOWNLOADING = "`Downloading...`"
     FAIL_APPEND_CAS = "`Failed to append CAS data`"
     UPDATE_SUCCESS = "`Successfully updated to latest CAS CSV data`"
+    NO_CONNECTION = "`Unable to connect to CAS server`"
+    TIMEOUT = "`Unable to update CSV as request to server timed out`"
     UPDATE_FAILED = "`Update CAS CSV data failed`"
     GIVEN_ENT_INVALID = "`Given username/id/link isn't valid`"
     AUTO_UPDATE = "`Auto updating CAS data...`"
