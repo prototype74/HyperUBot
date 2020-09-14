@@ -21,7 +21,6 @@ from telethon.tl.types import User, Chat, Channel
 
 # Misc
 from datetime import datetime
-from dateutil.parser import parse  # TODO: workaround for cas_api.timeadded()
 from logging import getLogger
 from os import remove
 from os.path import basename, exists, getmtime
@@ -155,10 +154,8 @@ async def cascheck(event):
                 cas_data = cas_api.get_user_data(user_id=entity.id if entity else int(entity_id))
             except:
                 pass
-        # TODO: workaround for cas_api.offenses()
-        offenses = cas_data["result"]["offenses"] if cas_data and cas_data["ok"] else 0
-        # TODO: workaround for cas_api.timeadded()
-        time_banned = parse(cas_data["result"]["time_added"]) if cas_data and cas_data["ok"] else 0
+        offenses = cas_api.offenses(cas_data)
+        time_banned = cas_api.timeadded(cas_data)
     except Exception as e:
         log.warning(e)
 
@@ -199,7 +196,7 @@ async def cascheck(event):
             text += f"{msgRep.RESULT}: {cas_api.isbanned(cas_data)}\n"
             if offenses:
                 text +=  f"{msgRep.OFFENSES}: `{offenses}`\n"
-            if time_banned:  # TODO: workaround for cas_api.timeadded()
+            if time_banned:
                 text +=  f"{msgRep.BANNED_SINCE}: `{time_banned.strftime('%b %d, %Y')} - {time_banned.time()} {time_banned.tzname()}`"
         elif isinstance(entity, (Chat, Channel)):
             title = entity.title if entity.title else "this chat"
@@ -228,7 +225,7 @@ async def cascheck(event):
             text += f"{msgRep.RESULT}: {cas_api.isbanned(cas_data)}\n"
             if offenses:
                 text +=  f"{msgRep.OFFENSES}: `{offenses}`\n"
-            if time_banned:  # TODO: workaround for cas_api.timeadded()
+            if time_banned:
                 text +=  f"{msgRep.BANNED_SINCE}: `{time_banned.strftime('%b %d, %Y')} - {time_banned.time()} {time_banned.tzname()}`"
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
