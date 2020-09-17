@@ -136,7 +136,7 @@ async def universe_checker(msg):
         if LOGGING:
             await event_log(msg, "MODULE INSTALL", custom_text=msgRep.INSTALL_LOG.format(md_installed_string))
         await msg.edit(msgRep.REBOOT_DONE_INS.format(md_installed_string))
-        args = [sys.executable, "-m", "userbot"]
+        args = ['"' + sys.executable + '"', "-m", "userbot"]
         os.execle(sys.executable, *args, os.environ)
         await msg.client.disconnect()
         return
@@ -161,7 +161,7 @@ async def universe_checker(msg):
         if LOGGING:
             await event_log(msg, "MODULE UNINSTALL", custom_text=msgRep.UNINSTALL_LOG.format(modName))
         await msg.edit(msgRep.REBOOT_DONE_UNINS.format(modName))
-        args = [sys.executable, "-m", "userbot"]
+        args = ['"' + sys.executable + '"', "-m", "userbot"]
         os.execle(sys.executable, *args, os.environ)
         await msg.client.disconnect()
         return
