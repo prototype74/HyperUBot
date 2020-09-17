@@ -91,7 +91,7 @@ async def restart(power_off): # Totally not a shutdown kang *sips whiskey*
     if LOGGING:
         await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
     await power_off.edit(msgRep.RESTARTED)
-    args = [sys.executable, "-m", "userbot"]
+    args = ["'" + sys.executable + "'", "-m", "userbot"]
     execle(sys.executable, *args, environ)
     await power_off.client.disconnect()
 
