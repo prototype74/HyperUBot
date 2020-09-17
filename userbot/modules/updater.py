@@ -54,7 +54,7 @@ async def updater(upd):
         if LOGGING:
             await event_log(upd, "UPDATE", custom_text=msgRep.UPD_LOG)
         await upd.edit(msgRep.RBT_COMPLETE)
-        args = [sys.executable, "-m", "userbot"]
+        args = ["\"" + sys.executable + "\"", "-m", "userbot"]
         os.execle(sys.executable, *args, os.environ)
         await upd.client.disconnect()
         return
