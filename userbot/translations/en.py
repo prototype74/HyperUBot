@@ -342,10 +342,10 @@ class HelpText(object):
 
 class WebToolsText(object):
     PING_SPEED = "Round-Trip Time: "
-    DCMESSAGE = "Country : ``{}``\nThis Datacenter : `{}`\nNearest Datacenter : `{}`"
+    DCMESSAGE = "Country : `{}`\nThis Datacenter : `{}`\nNearest Datacenter : `{}`"
     BAD_ARGS = "`Bad arguments!`"
     INVALID_HOST = "`There was a problem parsing the IP/Hostname`"
-    PINGER_VAL = "DNS: ``{}``\nPing Speed: ``{}``"
+    PINGER_VAL = "DNS: `{}`\nPing Speed: `{}`"
     SPD_START = "`Running speed test...`"
     SPD_FAILED = "Speedtest failed"
     SPD_NO_RESULT = "No result"
