@@ -82,7 +82,7 @@ After creating an App, your `API_KEY` is the `App api_id` value, and your `API_H
 **Don't share these values with anyone!** By running the same command as before,
 to open the text editor, you can copy and paste these values to between the "" in each of these fields.
 
-Note: Only one config file, either `.env` or `.py`, should be configured in "userbot" directory.
+Note: Only one config file, either `config.env` or `config.py`, should be configured in `userbot` directory.
 If both are configured there, then only `config.env` will be loaded.
 
 ### (Recommended) Generating a String Session
