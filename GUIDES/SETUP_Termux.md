@@ -28,7 +28,7 @@ This should install all the bot's requirements. After this command is done, and 
 
 ## 3. Configuring the bot.
 
-The bot relies on a config file, either `.env` or `.py`. You can find the sample configs inside "HyperUBot/userbot".
+The bot relies on a config file, either `.env` or `.py`. You can find the sample configs inside `HyperUBot/userbot`.
 Sample configs are **NOT** to be used and just serves as demonstration files, with descriptions of the supported fields.
 Some modules downloaded from community repos might require you to add extra configuration fields or classes for them to properly work!
 
@@ -75,11 +75,11 @@ class ConfigClass(object):
     COMMUNITY_REPOS = []
 ```
 
-Save it, by doing Ctrl + O, then Enter/Return key, and then Ctrl + X, to exit the editor.
-To get the API_KEY and API_HASH values, you will need to login to [My Telegram](https://my.telegram.org/).
+Save it, by doing **Ctrl + O**, then **Enter/Return key**, and then **Ctrl + X**, to exit the editor.
+To get the `API_KEY` and `API_HASH` values, you will need to login to [My Telegram](https://my.telegram.org/).
 Here you can create an App, in the API Development Tools page.
-After creating an App, your API_KEY is the "App api_id" value, and your API_HASH is the "App api_hash".
-Don't share these values with anyone! By running the same command as before,
+After creating an App, your `API_KEY` is the `App api_id` value, and your `API_HASH` is the `App api_hash`.
+**Don't share these values with anyone!** By running the same command as before,
 to open the text editor, you can copy and paste these values to between the "" in each of these fields.
 
 Note: Only one config file, either `.env` or `.py`, should be configured in "userbot" directory.
@@ -93,7 +93,7 @@ This is recommended, as you no longer need to log in everytime. To do such, you 
 `python generate_session.py`
 
 It will ask you for your phone number and the login code message. After obtaining the String session,
-you can copy the value, and the paste it in the configuration field, between the ""
+you can copy the value, and the paste it in the `STRING_SESSION` configuration field, between the ""
 
 ### (Optional) Logging, Language and Community Repos
 
