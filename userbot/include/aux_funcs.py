@@ -164,7 +164,7 @@ async def getGitReview():
 # Package Manager
 def sizeStrMaker(value: int): #
     if value < 1024:
-        return value + " B"
+        return str(value) + " B"
     newval = float(value)
     if value > 1023 and value < 1024*1024:
         newval = newval / 1024
