@@ -24,16 +24,24 @@ if OS and OS.startswith("win"):
 else:
     USER_MODULES_DIR = "./userbot/modules_user/"
 
-@tgclient.on(NewMessage(pattern=r"^\.sideload$", outgoing=True))
+@tgclient.on(NewMessage(pattern=r"^\.sideload(?: |$)(.*)", outgoing=True))
 async def sideload(event):
+    OVR_WRT_CAUT = True
+    cmd_args = event.pattern_match.group(1).split(" ", 1)
+    if cmd_args[0] == "force":
+        OVR_WRT_CAUT = False
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
         file = msg.file
         if not file.name.endswith(".py"):
             await event.edit("This is not a valid .py file! Cannot sideload this.")
             return
+        dest_path = USER_MODULES_DIR + file.name
         await event.edit("`Downloading...`")
-        await event.client.download_media(message=msg, file=USER_MODULES_DIR + file.name)
+        if os.path.isfile(dest_path) and OVR_WRT_CAUT:
+            await event.edit("There is already a usermodule named `{}`. If you wish to overwrite this, please run the command with the **force** argument!".format(file.name))
+            return
+        await event.client.download_media(message=msg, file=dest_path)
         await event.edit("Successfully installed `{}`! Rebooting...".format(file.name))
         time.sleep(1)
         args = [EXECUTABLE, "-m", "userbot"]
