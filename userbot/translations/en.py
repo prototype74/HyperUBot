@@ -461,22 +461,22 @@ class SideloaderText(object):
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
-    ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote etc.\
+    ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote, etc.\
                  \n\nNote: most commands in this module require admin privileges to work properly."
-    CHATINFO_DESC = "Get most various information from a channel, group or supergroup such as creation date, message counts, deletions, former name etc."
-    DELETIONS_DESC = "This module allows you to delete your or in groups messages faster. Someone spammed your group? use purge command to delete them all!\
+    CHATINFO_DESC = "Get most various information from a channel, group or supergroup such as creation date, message counts, deletions, former name, etc."
+    DELETIONS_DESC = "This module allows you to delete your or in groups messages faster. Someone spammed your group? Use purge command to delete them all!\
                      \nAll commands in this module require admin privileges to delete other people's messages.\
                      \n\n**Important: don't abuse this module to delete someone's else whole group history**, for real, just don't..."
-    MEMBERINFO_DESC = "Provides information from a specific group participant like permissions, restriction date, join date etc.\
+    MEMBERINFO_DESC = "Provides information from a specific group participant like permissions, restriction date, join date, etc.\
                      \n\nNote: requires admin privileges to access other member's permissions."
-    MESSAGES_DESC = "This module includes commands that a working with messages only such as msgs or topusers."
-    SCRAPPERS_DESC = "Not as it sounds like to be but still this module includes useful features like translation or text-to-speech."
+    MESSAGES_DESC = "This module includes commands that work only with messages, such as msgs or topusers."
+    SCRAPPERS_DESC = "Not exactly what it sounds like, but still this module includes useful features like translation or text-to-speech."
     SYSTOOLS_DESC = "This module contains a set of system tools for the bot. It allows you to check the bot uptime, the server uptime, the versions of all the bot's \
                     components, the specifications of the server system, and some bot power controls."
     USER_DESC = "Provides information about any user, your statistics, and contains the kickme tool."
-    WEBTOOLS_DESC = "This module contains most, if not all, of the bot's webtools, such as ping, speedtest, rtt calculator and the current datacenter."
+    WEBTOOLS_DESC = "This module contains most, if not all, of the bot's webtools, such as ping, speedtest, RTT calculator and the current datacenter."
     CAS_INTERFACE_DESC = "The interface for the Combot Anti-Spam System API. It allows you to check a specific user for CAS bans or an entire group, via the designated commands."
-    GITHUB_DESC = "A module that takes use of the GitHub API. This allows you to check for releases from a specific user and repository."
+    GITHUB_DESC = "A module that takes use of the GitHub API. This module allows you to check for releases from a specific user and repository."
     TERMINAL_DESC = "This module provides tools to run directly shell commands, in the host machine.\
                     \n\n**Attention:** Running shell commands in the bot can and will make permanent changes to the host system. **Bad things will happen if you run the bot as sudo/root!**"
     MISC_DESC = "The miscelaneous module contains a small set of tools that did not quite fit any of the other modules, but at the same time were too simple to have their own module. Check the help for more details."
