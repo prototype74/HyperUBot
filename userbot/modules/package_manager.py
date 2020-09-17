@@ -42,7 +42,7 @@ def list_updater():
         assetSize = git.getSize(asset)
         MODULE_LIST.append({"repo": UNIVERSE_NAME, "name": assetName, "url": assetURL, "size": assetSize})
     for repoURL in COMMUNITY_REPOS:
-        repoName = git.getReleaseName(git.getReleaseData(git.getData(repoURL), 0))
+        repoName = git.getReleaseTag(git.getReleaseData(git.getData(repoURL), 0))
         if repoName not in REPOS_NAMES:
             REPOS_NAMES.append(repoName)
         assets = git.getAssets(git.getReleaseData(git.getData(repoURL), 0))

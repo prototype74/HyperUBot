@@ -2,7 +2,7 @@ import urllib.request as url
 import json
 import datetime
 
-VERSION = "1.0.2"
+VERSION = "1.1.0"
 APIURL = "http://api.github.com/repos/"
 
 def vercheck() -> str:
@@ -40,6 +40,11 @@ def getReleaseName(releaseData):
     if releaseData is None:
         return None    
     return releaseData['name']
+
+def getReleaseTag(releaseData):
+    if releaseData is None:
+        return None
+    return releaseData['tag_name']
 
 def getReleaseDate(releaseData):
     if releaseData is None:
