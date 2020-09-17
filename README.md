@@ -1,6 +1,6 @@
 # HyperUBot
 
-A modular telegram userbot with it's own package manager, community repos and sideloader.
+A customizable, modular Telegram userbot, with innovative components.
 
 Copyright (C) 2020 nunopenim
 Copyright (C) 2020 prototype74
