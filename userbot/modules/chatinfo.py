@@ -6,28 +6,19 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# My stuff
 from userbot import tgclient, MODULE_DESC, MODULE_DICT
-from userbot.include.language_processor import (ChatInfoText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
-
-# Telethon stuff
-from telethon.errors import (ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError,
-                             ChatAdminRequiredError)
+from userbot.include.language_processor import ChatInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError, ChatAdminRequiredError
 from telethon.events import NewMessage
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
 from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest, ExportChatInviteRequest
 from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins, Chat, Channel
-
-# Misc imports
 from datetime import datetime
 from logging import getLogger
 from math import sqrt
 from os.path import basename
 
-
 log = getLogger(__name__)
-
 
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
@@ -65,7 +56,6 @@ async def get_chatinfo(event):
             await event.edit(msgRep.CANNOT_GET_CHATINFO.format(chat))
 
     return None
-
 
 async def fetch_info(chat, event):
     chat_obj_info = await event.client.get_entity(chat.full_chat.id)
@@ -213,7 +203,6 @@ async def fetch_info(chat, event):
 
     return caption
 
-
 @tgclient.on(NewMessage(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True))
 async def chatinfo(event):
     await event.edit(msgRep.CHAT_ANALYSIS)
@@ -232,7 +221,6 @@ async def chatinfo(event):
 
     return
 
-
 @tgclient.on(NewMessage(pattern=r"^\.chatid$", outgoing=True))
 async def chatid(event):
     chat = await event.get_chat()
@@ -241,7 +229,6 @@ async def chatid(event):
     else:
         await event.edit(msgRep.CID_NO_GROUP)
     return
-
 
 @tgclient.on(NewMessage(pattern=r"^\.link(?: |$)(.*)", outgoing=True))
 async def chatid(event):
@@ -282,7 +269,6 @@ async def chatid(event):
         await event.edit(msgRep.UNABLE_GET_LINK)
 
     return
-
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.CHATINFO_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.CHATINFO_USAGE})

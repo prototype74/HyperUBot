@@ -1,7 +1,7 @@
 All the non-original modules should be installed here to preserve
 bot integrity. This folder will also be where the package_manager
-will install the extra modules. Like this, the userbot will have
-a fully working update system.
+and sideloader will install the extra modules. Like this, the
+userbot will have a fully working update system.
 
 Any of the extra modules should be updated by the user, either with
 a reinstall or an update, using the .pkg command and the right args.

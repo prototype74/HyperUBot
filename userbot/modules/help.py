@@ -6,16 +6,10 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# tguserbot stuff
 from userbot import tgclient, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, MODULE_DESC, MODULE_DICT, USER_MODULES
 from userbot.include.language_processor import HelpText as msgRep
-
-# Telethon stuff
 from telethon.events import NewMessage
-
-# Misc
 from os.path import basename
-
 
 def modules_listing(error_text: str = None) -> str:
     if error_text:
@@ -50,7 +44,6 @@ def modules_listing(error_text: str = None) -> str:
                 num += 1
     return modules_listed
 
-
 def module_desc(module: str) -> str:
     if module in LOAD_MODULES:
         if module in MODULE_DESC.keys():
@@ -60,7 +53,6 @@ def module_desc(module: str) -> str:
     else:
         raise IndexError
 
-
 def module_usage(module: str) -> str:
     if module in LOAD_MODULES:
         if module in MODULE_DICT.keys():
@@ -69,7 +61,6 @@ def module_usage(module: str) -> str:
             return msgRep.NAME_MODULE.format(module.capitalize()) + "\n\n" + msgRep.MODULE_NO_USAGE
     else:
         raise IndexError
-
 
 @tgclient.on(NewMessage(pattern=r"^\.modules(?: |$)(.*)", outgoing=True))
 async def modules(event):
@@ -107,4 +98,3 @@ async def modules(event):
             await event.edit(modules_listing(msgRep.MODULE_NOT_FOUND.format(sec_arg)))
 
     return
-

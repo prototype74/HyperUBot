@@ -6,16 +6,11 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# My stuff
 from userbot import tgclient, PROJECT, log, MODULE_DESC, MODULE_DICT, LOGGING, OS
 from userbot.include.aux_funcs import event_log
 from userbot.include.language_processor import UpdaterText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-
-# Telethon stuff
 from telethon.events import NewMessage
 from telethon.errors.rpcerrorlist import MessageTooLongError
-
-# Misc stuff
 import time
 from git import Repo
 from subprocess import check_output, CalledProcessError
@@ -27,7 +22,6 @@ if " " not in sys.executable:
     EXECUTABLE = sys.executable
 else:
     EXECUTABLE = '"' + sys.executable + '"'
-
 
 BOT_REPO_URL = "https://github.com/nunopenim/HyperUBot"
 RAN = False

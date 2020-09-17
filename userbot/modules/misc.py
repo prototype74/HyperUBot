@@ -6,15 +6,10 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# My stuff
 from userbot import tgclient, MODULE_DESC, MODULE_DICT
 from userbot.include.language_processor import MiscText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-
-# Telethon stuff
 from telethon.events import NewMessage
 from telethon.tl.types import InputMediaDice
-
-# Misc stuff
 from os.path import basename
 import random
 import time

@@ -6,27 +6,19 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# My Stuff
 from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
 from userbot.include.aux_funcs import event_log
-from userbot.include.language_processor import (UserText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
+from userbot.include.language_processor import UserText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.include.aux_funcs import fetch_user
-
-# Telethon stuff
 from telethon.events import NewMessage
 from telethon.tl.types import User, Chat, Channel
 from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
-
-# Misc Imports
 from asyncio import sleep
 from logging import getLogger
 from os.path import basename
 
-
 log = getLogger(__name__)
-
 
 @tgclient.on(NewMessage(pattern=r"^\.userid(?: |$)(.*)", outgoing=True))
 async def userid(event):

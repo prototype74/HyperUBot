@@ -6,27 +6,19 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# tguserbot stuff
 from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
 from userbot.include.aux_funcs import event_log
-from userbot.include.language_processor import (DeletionsText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
-
-# Telethon stuff
+from userbot.include.language_processor import DeletionsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from telethon.errors import MessageDeleteForbiddenError
 from telethon.tl.functions.channels import DeleteMessagesRequest
 from telethon.tl.functions.messages import DeleteMessagesRequest as DeleteMessagesRequestGPM
 from telethon.tl.types import Chat, Channel
-
-# Misc imports
 from asyncio import sleep
 from logging import getLogger
 from os.path import basename
 
-
 log = getLogger(__name__)
-
 
 @tgclient.on(NewMessage(pattern=r"^\.del$", outgoing=True))
 async def delete(event):
@@ -51,7 +43,6 @@ async def delete(event):
         await event.edit(msgRep.REPLY_DEL_MSG)
 
     return
-
 
 @tgclient.on(NewMessage(pattern=r"^\.purge$", outgoing=True))
 async def purge(event):
@@ -103,7 +94,6 @@ async def purge(event):
         await event.edit(msgRep.REPLY_PURGE_MSG)
 
     return
-
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.DELETIONS_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.DELETIONS_USAGE})

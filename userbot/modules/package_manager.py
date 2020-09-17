@@ -6,16 +6,11 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# My stuff
 from userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, MODULE_DESC, MODULE_DICT, OS
 import userbot.include.git_api as git
 from userbot.include.aux_funcs import event_log, sizeStrMaker
 from userbot.include.language_processor import PackageManagerText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-
-# Telethon stuff
 from telethon.events import NewMessage
-
-# Misc stuff
 import requests
 import os
 import time
@@ -34,7 +29,7 @@ else:
 
 UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
-MODULE_LIST = None # the thing that should get updated if you do .pkg update
+MODULE_LIST = None
 REPOS_NAMES = []
 
 def list_updater():
@@ -60,7 +55,6 @@ def list_updater():
             MODULE_LIST.append({"repo": repoName, "name": assetName, "url": assetURL, "size": assetSize})
     return MODULE_LIST
 
-# Maybe add just a single command, but multiple arguments?
 @tgclient.on(NewMessage(pattern=r"^\.pkg(?: |$)(.*)", outgoing=True))
 async def universe_checker(msg):
     cmd_args = msg.pattern_match.group(1).split(" ", 1)

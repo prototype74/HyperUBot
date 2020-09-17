@@ -6,20 +6,14 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# My stuff
 from userbot import tgclient, VERSION, PROJECT, LOGGING, MODULE_DESC, MODULE_DICT
 from userbot.include.aux_funcs import event_log
-from userbot.include.language_processor import (StatusText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
+from userbot.include.language_processor import StatusText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.include.aux_funcs import pinger, getGitReview
 import userbot.include.cas_api as cas
 import userbot.include.git_api as git
-
-# Telethon stuff
 from telethon import version
 from telethon.events import NewMessage
-
-# Misc Imports
 from platform import python_version, uname
 from datetime import datetime, timedelta
 from uptime import uptime

@@ -6,14 +6,9 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# tguserbot stuff
 from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
-
-# Telethon Stuff
 from telethon import TelegramClient, version
 from telethon.sessions import StringSession
-
-# Misc
 from dotenv import load_dotenv
 from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
 from os import path, environ, mkdir, remove

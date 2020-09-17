@@ -8,29 +8,21 @@
 #
 # This module is powered by Combot Anti-Spam (CAS) system (https://cas.chat)
 
-# hyperubot stuff
 from userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR
 import userbot.include.cas_api as cas_api
-from userbot.include.language_processor import (CasIntText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
-
-# Telethon stuff
+from userbot.include.language_processor import CasIntText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from telethon.errors import ChatAdminRequiredError, MessageTooLongError, ChatSendMediaForbiddenError
 from telethon.tl.types import User, Chat, Channel
-
-# Misc
 from datetime import datetime
 from logging import getLogger
 from os import remove
 from os.path import basename, exists, getmtime
 from requests import get, ConnectionError, Timeout
 
-
 log = getLogger(__name__)
 CAS_CSV = TEMP_DL_DIR + "export.csv"
 CAS_USER_IDS = []
-
 
 def updateCASList() -> bool:
     global CAS_USER_IDS
@@ -51,7 +43,6 @@ def updateCASList() -> bool:
 
     return False
 
-
 def createCASFile(input_text: str, filename: str) -> tuple:
     try:
         with open(filename, "w") as cas_file:
@@ -63,7 +54,6 @@ def createCASFile(input_text: str, filename: str) -> tuple:
     except Exception as e:
         log.warning(e)
     return (filename, False)
-
 
 async def casSendAsFile(event, input_text: str):
     await event.edit(msgRep.TOO_MANY_CAS)
@@ -82,7 +72,6 @@ async def casSendAsFile(event, input_text: str):
         remove(filename)
     return
 
-
 def isCSVoutdated() -> bool:
     if not exists(CAS_CSV):
         return False
@@ -92,7 +81,6 @@ def isCSVoutdated() -> bool:
         return True
     else:
         return False
-
 
 async def casupdater(event, showinfo: bool):
     if showinfo:
@@ -123,13 +111,11 @@ async def casupdater(event, showinfo: bool):
 
     return
 
-
 @tgclient.on(NewMessage(pattern=r"^\.casupdate$", outgoing=True))
 async def casupdate(event):
     log.info("Manual CAS CSV data update started")
     await casupdater(event, showinfo=True)
     return
-
 
 @tgclient.on(NewMessage(pattern=r"^\.cascheck(?: |$)(.*)", outgoing=True))
 async def cascheck(event):
@@ -250,7 +236,6 @@ async def cascheck(event):
         await casSendAsFile(event, text)
 
     return
-
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.CAS_INTERFACE_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.CAS_INTERFACE_USAGE})

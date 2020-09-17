@@ -6,17 +6,11 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# tguserbot stuff
 from userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR, UBOT_LANG
-from userbot.include.language_processor import (ScrappersText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
-
-# Telethon stuff
+from userbot.include.language_processor import ScrappersText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.errors import ChatSendMediaForbiddenError, MessageTooLongError
 from telethon.events import NewMessage
 from telethon.tl.types import Document, DocumentAttributeAudio, DocumentAttributeFilename
-
-# Misc
 from datetime import datetime
 from currency_converter import CurrencyConverter
 from googletrans import Translator, LANGUAGES
@@ -30,10 +24,8 @@ from speech_recognition import AudioFile, Recognizer, UnknownValueError, Request
 from urllib.request import urlretrieve
 from zipfile import BadZipFile, ZipFile
 
-
 log = getLogger(__name__)
 CC_CSV_PATH = TEMP_DL_DIR + "currency.csv"
-
 
 @tgclient.on(NewMessage(pattern=r"^\.trt(?: |$)(.*)", outgoing=True))
 async def translate(event):
@@ -77,7 +69,6 @@ async def translate(event):
 
     return
 
-
 @tgclient.on(NewMessage(pattern=r"^\.tts(?: |$)(.*)", outgoing=True))
 async def text_to_speech(event):
     if event.reply_to_msg_id:
@@ -114,7 +105,6 @@ async def text_to_speech(event):
         await event.edit(msgRep.FAIL_TTS)
 
     return
-
 
 @tgclient.on(NewMessage(pattern=r"^\.stt$", outgoing=True))
 async def speech_to_text(event):
@@ -187,7 +177,6 @@ async def speech_to_text(event):
 
     return
 
-
 def update_currency_data():
     if exists(CC_CSV_PATH):
         file_date = datetime.fromtimestamp(getmtime(CC_CSV_PATH))
@@ -229,7 +218,6 @@ def update_currency_data():
         log.warning(f"Couldn't remove zip file: {e}")
 
     return
-
 
 @tgclient.on(NewMessage(pattern=r"^\.currency(?: |$)(.*)", outgoing=True))
 async def cc(event):
@@ -279,7 +267,6 @@ async def cc(event):
         await event.edit(msgRep.UNABLE_TO_CC)
 
     return
-
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.SCRAPPERS_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SCRAPPERS_USAGE})

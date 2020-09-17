@@ -6,11 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# Telethon Stuff
 from telethon.sync import TelegramClient
 from telethon.sessions import StringSession
-
-# Misc
 from sys import version_info
 
 color_yellow = "\033[33m"

@@ -6,18 +6,11 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# My stuff
 from userbot import tgclient, MODULE_DESC, MODULE_DICT
-from userbot.include.language_processor import (GitHubText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
+from userbot.include.language_processor import GitHubText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 import userbot.include.git_api as api
-
-# Telethon stuff
 from telethon.events import NewMessage
-
-# Misc
 from os.path import basename
-
 
 def getData(url, index):
     if not api.getData(url):
@@ -44,7 +37,6 @@ def getData(url, index):
         message += msgRep.DL_COUNT + str(downloadCount) + "\n\n"
     return message
 
-
 @tgclient.on(NewMessage(pattern=r"^\.git(?: |$)(.*)", outgoing=True))
 async def get_release(event):
     commandArgs = event.text.split(" ")
@@ -56,7 +48,6 @@ async def get_release(event):
     text = getData(url, index)
     await event.edit(text, parse_mode="html")
     return
-
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.GITHUB_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.GITHUB_USAGE})

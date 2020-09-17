@@ -6,27 +6,18 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# tguserbot stuff
 from userbot import tgclient, MODULE_DESC, MODULE_DICT
 from userbot.include.aux_funcs import fetch_user
-from userbot.include.language_processor import (MemberInfoText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
-
-# Telethon stuff
+from userbot.include.language_processor import MemberInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from telethon.tl.functions.channels import GetParticipantRequest
-from telethon.tl.types import (ChannelParticipantCreator, ChannelParticipantAdmin, ChannelParticipantBanned,
-                               ChannelParticipantSelf, ChannelParticipant)
+from telethon.tl.types import ChannelParticipantCreator, ChannelParticipantAdmin, ChannelParticipantBanned, ChannelParticipantSelf, ChannelParticipant
 from telethon.errors import ChannelInvalidError, UserNotParticipantError
-
-# Misc
 from datetime import datetime
 from logging import getLogger
 from os.path import basename
 
-
 log = getLogger(__name__)
-
 
 @tgclient.on(NewMessage(pattern=r"^\.minfo(?: |$)(.*)", outgoing=True))
 async def memberinfo(event):
@@ -336,7 +327,6 @@ async def memberinfo(event):
     await event.edit(caption, parse_mode="html")
 
     return
-
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.MEMBERINFO_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.MEMBERINFO_USAGE})

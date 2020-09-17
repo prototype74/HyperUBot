@@ -6,12 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# tguserbot stuff
 from .colors import Color, ColorBG, setColorText, setColorTextBG
-
-# Misc
 from logging import Formatter, INFO, WARNING, ERROR, CRITICAL
-
 
 class LogFileFormatter(Formatter):
     def format(self, logtype):

@@ -7,18 +7,12 @@
 # compliance with the PE License
 
 # tguserbot Stuff
-from userbot import (tgclient, log, fhandler, PROJECT, OS, ALL_MODULES,
-                     LOAD_MODULES, NOT_LOAD_MODULES, VERSION, USER_MODULES)
-
-# Telethon Stuff
+from userbot import tgclient, log, fhandler, PROJECT, OS, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, VERSION, USER_MODULES
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
-
-# Misc
 from logging import shutdown
 from importlib import import_module
 from glob import glob
 from os.path import dirname, basename, isfile
-
 
 class _Modules:
     def __init__(self):

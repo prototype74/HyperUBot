@@ -6,32 +6,23 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# tguserbot stuff
 from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
 from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD
-from userbot.include.language_processor import (AdminText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
-
-# Telethon Stuff
-from telethon.errors import (UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError,
-                             AdminRankEmojiNotAllowedError, ChatNotModifiedError)
+from userbot.include.language_processor import AdminText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from telethon.errors import UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError, AdminRankEmojiNotAllowedError, ChatNotModifiedError
 from telethon.events import NewMessage
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
 from telethon.tl.functions.messages import UpdatePinnedMessageRequest
 from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticipantsAdmins, User, Channel
-
-# Misc
 from asyncio import sleep
 from logging import getLogger
 from os.path import basename
-
 
 # Constant
 def tguser_url() -> str:
     return "tg://user?id="
 
 log = getLogger(__name__)
-
 
 @tgclient.on(NewMessage(pattern=r"^\.adminlist(?: |$)(.*)", outgoing=True))
 async def adminlist(event):

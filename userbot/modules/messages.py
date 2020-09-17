@@ -6,25 +6,17 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# hyperubot stuff
-from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
+from userbot import tgclient, MODULE_DESC, MODULE_DICT
 from userbot.include.aux_funcs import fetch_user, isRemoteCMD
-from userbot.include.language_processor import (MessagesText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep)
-
-# Telethon Stuff
+from userbot.include.language_processor import MessagesText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.errors import ChatAdminRequiredError, InputUserDeactivatedError, SearchQueryEmptyError
 from telethon.events import NewMessage
 from telethon.tl.functions.messages import SearchRequest
 from telethon.tl.types import InputMessagesFilterEmpty, ChannelParticipantsAdmins, Chat, Channel
-
-# Misc
 from logging import getLogger
 from os.path import basename
 
-
 log = getLogger(__name__)
-
 
 @tgclient.on(NewMessage(pattern=r"^\.msgs(?: |$)(.*)", outgoing=True))
 async def countmessages(event):
@@ -74,7 +66,6 @@ async def countmessages(event):
         else:
             await event.edit(msgRep.CANNOT_COUNT_MSG)
     return
-
 
 @tgclient.on(NewMessage(pattern=r"^\.topusers(?: |$)(.*)", outgoing=True))
 async def topusers(event):
@@ -138,7 +129,6 @@ async def topusers(event):
         count += 1
     await event.edit(text)
     return
-
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.MESSAGES_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.MESSAGES_USAGE})

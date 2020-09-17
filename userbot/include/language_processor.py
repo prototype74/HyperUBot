@@ -10,9 +10,6 @@ from userbot import UBOT_LANG
 from importlib import import_module
 from logging import getLogger
 
-# Temp because pyCharm needs for autocompletion and I am being a Lazy S.O.B. again
-import userbot.translations.en as text
-
 log = getLogger(__name__)
 
 # Language selector logic
