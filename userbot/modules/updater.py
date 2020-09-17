@@ -23,10 +23,10 @@ from os.path import basename
 import os
 import sys
 
-if OS and OS.startswith("win"):
-    EXECUTABLE = '"' + sys.executable + '"'
-else:
+if " " not in sys.executable:
     EXECUTABLE = sys.executable
+else:
+    EXECUTABLE = '"' + sys.executable + '"'
 
 
 BOT_REPO_URL = "https://github.com/nunopenim/HyperUBot"
@@ -59,7 +59,7 @@ async def updater(upd):
         if LOGGING:
             await event_log(upd, "UPDATE", custom_text=msgRep.UPD_LOG)
         await upd.edit(msgRep.RBT_COMPLETE)
-        args = ['"' + sys.executable + '"', "-m", "userbot"]
+        args = [EXECUTABLE, "-m", "userbot"]
         os.execle(sys.executable, *args, os.environ)
         await upd.client.disconnect()
         return

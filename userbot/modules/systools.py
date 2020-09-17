@@ -32,6 +32,12 @@ from os import execle, environ
 USER = uname().node # Maybe add a username in future
 STARTTIME = datetime.now()
 
+if " " not in sys.executable:
+    EXECUTABLE = sys.executable
+else:
+    EXECUTABLE = '"' + sys.executable + '"'
+
+
 @tgclient.on(NewMessage(pattern=r"^\.status$", outgoing=True))
 async def statuschecker(stat):
     global STARTTIME
@@ -91,7 +97,7 @@ async def restart(power_off): # Totally not a shutdown kang *sips whiskey*
     if LOGGING:
         await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
     await power_off.edit(msgRep.RESTARTED)
-    args = ['"' + sys.executable + '"', "-m", "userbot"]
+    args = [EXECUTABLE, "-m", "userbot"]
     execle(sys.executable, *args, environ)
     await power_off.client.disconnect()
 
