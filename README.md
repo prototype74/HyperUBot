@@ -33,6 +33,10 @@ Not avaliable yet!
 - [prototype74](https://github.com/prototype74), for his direct and indirect work on this project.
 - [KebapciEBY](https://github.com/KebapciEBY), for both the German and Turkish translations, and for the support and ideas he gave during development.
 
+## Report a bug
+
+Not avaliable yet!
+
 ## Credits
 
 Not avaliable yet!
