@@ -97,17 +97,18 @@ you can copy the value, and the paste it in the configuration field, between the
 
 ### (Optional) Logging, Language and Community Repos
 
-Setting up logging is easy, all you need is a designated log group (Do not use public groups, or you could be banned for spam!).
+Setting up logging is easy, all you need is a designated log group **(Do not use public groups, or you could be banned for spam!)**.
 Having the log group, you need to find it's ID. You can do such by using a Group Manager Bot,
 or if your userbot is working already, by the .chatinfo command.
-Copy this ID and put it in the LOGGING_CHATID field, then change LOGGING to True. That's it!
+Copy this ID and put it in the `LOGGING_CHATID` field e.g `LOGGING_CHATID = -100123456789`,
+then set `LOGGING` config to `True`. That's it!
 
-To set up a language, you will need to change the UBOT_LANG parameter,
-to any of the supported languages inside "HyperUBot/userbot/translations".
-Just replace "en" by any other language code (no need to include the .py part of the file).
+To set up a language, you will need to change the `UBOT_LANG` config,
+to any of the supported languages inside `HyperUBot/userbot/translations`.
+Just replace `en` by any other language code (no need to include the .py part of the file).
 
 Community repos are also easy to set up. All you need is the name of the repository and the author,
-in GitHub. Then add it, between "", to between the [] in the COMMUNITY_REPOS field.
+in GitHub. Then add it, between "", to between the [] in the `COMMUNITY_REPOS` field.
 If you need to add more repositories, separate them by commas (for example ["nunopenim/repo1", "nunopenim/repo2"]).
 
 ## 4. Running the bot!
