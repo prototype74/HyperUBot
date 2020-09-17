@@ -3,15 +3,13 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# My stuff
-from userbot import tgclient, OS
-
-# Telethon stuff
+from userbot import tgclient, OS, LOGGING, MODULE_DESC, MODULE_DICT
+from userbot.include.aux_funcs import event_log
+from userbot.include.language_processor import SideloaderText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
-
-# Misc imports
 import sys
 import os
+from os.path import basename
 import time
 
 if " " not in sys.executable:
@@ -34,21 +32,26 @@ async def sideload(event):
         msg = await event.get_reply_message()
         file = msg.file
         if not file.name.endswith(".py"):
-            await event.edit("This is not a valid .py file! Cannot sideload this.")
+            await event.edit(msgRep.NOT_PY_FILE)
             return
         dest_path = USER_MODULES_DIR + file.name
-        await event.edit("`Downloading...`")
+        await event.edit(msgRep.DLOADING)
         if os.path.isfile(dest_path) and OVR_WRT_CAUT:
-            await event.edit("There is already a usermodule named `{}`. If you wish to overwrite this, please run the command with the **force** argument!".format(file.name))
+            await event.edit(msgRep.MODULE_EXISTS.format(file.name))
             return
         await event.client.download_media(message=msg, file=dest_path)
-        await event.edit("Successfully installed `{}`! Rebooting...".format(file.name))
+        await event.edit(msgRep.SUCCESS.format(file.name))
+        if LOGGING:
+            await event_log(event, "SIDELOAD", custom_text=msgRep.LOG.format(file.name))
         time.sleep(1)
         args = [EXECUTABLE, "-m", "userbot"]
-        await event.edit("Reboot complete!")
+        await event.edit(msgRep.RBT_CPLT)
         os.execle(sys.executable, *args, os.environ)
         await event.client.disconnect()
         return
     else:
-        await event.edit("Please reply to a valid file!")
+        await event.edit(msgRep.INVALID_FILE)
         return
+
+MODULE_DESC.update({basename(__file__)[:-3]: descRep.SIDELOADER_DESC})
+MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SIDELOADER_USAGE})

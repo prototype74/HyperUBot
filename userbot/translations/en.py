@@ -456,6 +456,15 @@ class UpdaterText(object):
     RBT_COMPLETE = "Update complete!"
     UPD_LOG = "Userbot has successfully been updated and has rebooted!"
 
+class SideloaderText(object):
+    NOT_PY_FILE = "This is not a valid .py file! Cannot sideload this!"
+    DLOADING = "`Downloading...`"
+    MODULE_EXISTS = "There is already a userspace module named `{}`. If you wish to overwrite this, please run the command with the `force` argument!"
+    SUCCESS = "Successfully installed `{}`! Rebooting..."
+    LOG = "The module `{}` was sideloaded successfully!"
+    RBT_CPLT = "Reboot complete!"
+    INVALID_FILE = "Please reply to a valid file!"
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
     ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote etc.\
@@ -479,6 +488,9 @@ class ModuleDescriptions(object):
     MISC_DESC = "The miscelaneous module contains a small set of tools that did not quite fit any of the other modules, but at the same time were too simple to have their own module. Check the help for more details."
     PACKAGE_MANAGER_DESC = "The package manager module allows a user to manage extra apps, from external repos, either official, such as the modules-universe repo, or from external sources. It provides a way for users to customize their bots more than stock."
     UPDATER_DESC = "The updater module allows the user to check for bot updates and to update the bot, if new updates exist."
+    SIDELOADER_DESC = "The sideloader module allows you to sideload python files with ease. To do such, all you have to do is reply to a .py file sent in the chat as a document!\n\n" \
+                      "**INFORMATION**: These files must be written to work with the bot. Attempting to load unknown files might result in a 'soft brick' of the bot, requiring you to manually delete the bad user space module!\n\n" \
+                      "**CRITICAL WARNING**: Some malicious files could send some of your information (namely API KEY and/or String Session) to a malicious hacker! Only sideload modules if you trust the source!"
 
 class ModuleUsages(object):
     ADMIN_USAGE = "`.adminlist` [optional: <link/id>] \
@@ -595,3 +607,8 @@ class ModuleUsages(object):
                  \nUsage: Checks for updates, and if avaliable, displays the changelog. \
                  \n\n`.update upgrade` \
                  \nUsage: If the user has checked for updates, it will update the bot to the latest version."
+
+    SIDELOADER_USAGE = "`.sideload` <arg> \
+                       \nUsage: Sideloads a python script file sent as a document to the chat. Reply to such. You can use the `force` argument to force instalation, if a user space module with the same name already exists. \
+                       \n\n**INFORMATION**: These files must be written to work with the bot. Attempting to load unknown files might result in a 'soft brick' of the bot, requiring you to manually delete the bad user space module! \
+                       \n\n**CRITICAL WARNING**: Some malicious files could send some of your information (namely API KEY and/or String Session) to a malicious hacker! Only sideload modules if you trust the source!"

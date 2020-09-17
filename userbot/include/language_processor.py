@@ -479,6 +479,15 @@ class UpdaterText(object):
     RBT_COMPLETE = text.UpdaterText.RBT_COMPLETE
     UPD_LOG = text.UpdaterText.UPD_LOG
 
+class SideloaderText(object):
+    NOT_PY_FILE = text.SideloaderText.NOT_PY_FILE
+    DLOADING = text.SideloaderText.DLOADING
+    MODULE_EXISTS = text.SideloaderText.MODULE_EXISTS
+    SUCCESS = text.SideloaderText.SUCCESS
+    LOG = text.SideloaderText.LOG
+    RBT_CPLT = text.SideloaderText.RBT_CPLT
+    INVALID_FILE = text.SideloaderText.INVALID_FILE
+
 class ModuleDescriptions(object):
     ADMIN_DESC = text.ModuleDescriptions.ADMIN_DESC
     CHATINFO_DESC = text.ModuleDescriptions.CHATINFO_DESC
@@ -495,6 +504,7 @@ class ModuleDescriptions(object):
     MISC_DESC = text.ModuleDescriptions.MISC_DESC
     PACKAGE_MANAGER_DESC = text.ModuleDescriptions.PACKAGE_MANAGER_DESC
     UPDATER_DESC = text.ModuleDescriptions.UPDATER_DESC
+    SIDELOADER_DESC = text.ModuleDescriptions.SIDELOADER_DESC
 
 class ModuleUsages(object):
     ADMIN_USAGE = text.ModuleUsages.ADMIN_USAGE
@@ -512,3 +522,4 @@ class ModuleUsages(object):
     MISC_USAGE = text.ModuleUsages.MISC_USAGE
     PACKAGE_MANAGER_USAGE = text.ModuleUsages.PACKAGE_MANAGER_USAGE
     UPDATER_USAGE = text.ModuleUsages.UPDATER_USAGE
+    SIDELOADER_USAGE = text.ModuleUsages.SIDELOADER_USAGE
