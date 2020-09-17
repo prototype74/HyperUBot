@@ -6,7 +6,6 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-# tguserbot Stuff
 from userbot import tgclient, log, fhandler, PROJECT, OS, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, VERSION, USER_MODULES
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
 from logging import shutdown
