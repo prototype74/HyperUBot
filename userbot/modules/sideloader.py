@@ -22,7 +22,7 @@ async def sideload(event):
         if not file.name.endswith(".py"):
             await event.edit("IDIOT, this is not a .py file")
             return
-        tgclient.download_media(message=msg, file=USER_MODULES_DIR + file.name)
+        await tgclient.download_media(message=msg, file=USER_MODULES_DIR + file.name)
         await event.edit("I think the download was finished?")
         return
     else:
