@@ -32,7 +32,7 @@ shandler.setFormatter(LogColorFormatter())
 basicConfig(handlers=[fhandler, shandler], level=INFO)
 
 PROJECT = "HyperUBot"
-VERSION = "1.0.0a - Closed Alpha"
+VERSION = "1.0.0"
 OS = system()  # Current Operating System
 
 try:
