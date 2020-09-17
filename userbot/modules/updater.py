@@ -19,7 +19,6 @@ from telethon.errors.rpcerrorlist import MessageTooLongError
 import time
 from git import Repo
 from subprocess import check_output, CalledProcessError
-from sys import executable
 from os.path import basename
 import os
 import sys
@@ -44,7 +43,7 @@ async def updater(upd):
             await upd.edit(msgRep.UPDATING)
             gitpull = check_output("git pull", shell=True).decode()
             log.info(gitpull)
-            pip = check_output(executable + " -m pip install -r requirements.txt", shell=True).decode()
+            pip = check_output('"' + sys.executable + '"' + " -m pip install -r requirements.txt", shell=True).decode()
             log.info(pip)
         except CalledProcessError:
             await upd.edit(msgRep.UPD_ERROR)
