@@ -277,8 +277,8 @@ class UserText(object):
     STATS_GROUPS = "Participant in **{}** groups"
     STATS_SGC_OWNER = "Owning **{}** of them"
     STATS_GROUPS_ADMIN = "Admin in **{}** groups"
-    STATS_SUPER_GROUPS = "Participant in **{}** super groups"
-    STATS_SG_ADMIN = "Admin in **{}** super groups"
+    STATS_SUPER_GROUPS = "Participant in **{}** supergroups"
+    STATS_SG_ADMIN = "Admin in **{}** supergroups"
     STATS_CHANNELS = "Subscribed **{}** channels"
     STATS_CHAN_ADMIN = "Admin in **{}** channels"
     STATS_UNKNOWN = "**{}** unknown chats"
@@ -469,7 +469,7 @@ class SideloaderText(object):
 class ModuleDescriptions(object):
     ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote etc.\
                  \n\nNote: most commands in this module require admin privileges to work properly."
-    CHATINFO_DESC = "Get most various information from a channel, group or super group such as creation date, message counts, deletions, former name etc."
+    CHATINFO_DESC = "Get most various information from a channel, group or supergroup such as creation date, message counts, deletions, former name etc."
     DELETIONS_DESC = "This module allows you to delete your or in groups messages faster. Someone spammed your group? use purge command to delete them all!\
                      \nAll commands in this module require admin privileges to delete other people's messages.\
                      \n\n**Important: don't abuse this module to delete someone's else whole group history**, for real, just don't..."
