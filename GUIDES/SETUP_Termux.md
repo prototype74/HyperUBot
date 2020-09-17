@@ -1,11 +1,11 @@
 # HyperUBot Guide - Set up in the Termux environment
 ## 0. Pre-requisites
 
-Before starting up, make sure you have the following packages installed: ``python3 git neofetch ffmpeg flac nano``.
+Before starting up, make sure you have the following packages installed: ``python git neofetch ffmpeg flac nano``.
 
 It is required to have at least python3.8. To install the following packages, run the following command:
 
-``pkg update && pkg install python3 git neofetch ffmpeg flac nano``
+``pkg update && pkg install python git neofetch ffmpeg flac nano``
 
 ## 1. Clone the userbot repo.
 
