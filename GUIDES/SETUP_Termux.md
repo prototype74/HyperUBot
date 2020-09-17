@@ -21,7 +21,7 @@ After the command runs, you should have a folder named HyperUBot in the current 
 
 In the bot's main directory (the HyperUBot folder that you cloned in the previous step), run the following command:
 
-``python3 -m pip install -r requirements.txt``
+``python -m pip install -r requirements.txt``
 
 This should install all the bot's requirements. After this command is done, and if it ran well, you are ready to advance to #3.
 
@@ -33,7 +33,7 @@ The bot relies on a config.py file. You can find a sample_config.py file inside 
 
 This will open the nano text editor, inside you can copy the following template:
 
-``
+```python
 class ConfigClass(object):
     API_KEY = ""
     API_HASH = ""
@@ -43,7 +43,7 @@ class ConfigClass(object):
     LOGGING_CHATID = 0
     TEMP_DL_DIR = "./downloads"
     COMMUNITY_REPOS = []
-``
+```
 
 Save it, by doing Ctrl + O, then Enter/Return key, and then Ctrl + X, to exit the editor. To get the API_KEY and API_HASH values, you will need to login to the [Telegram API](https://my.telegram.org/). Here you can create an App, in the API Development Tools page. After creating an App, your API_KEY is the "App api_id" value, and your API_HASH is the "App api_hash". Don't share these values with anyone! By running the same command as before, to open the text editor, you can copy and paste these values to between the "" in each of these fields. 
 
@@ -51,7 +51,7 @@ Save it, by doing Ctrl + O, then Enter/Return key, and then Ctrl + X, to exit th
 
 We have included, in the root folder of the userbot, a python script to generate a string session. This is recommended, as you no longer need to log in everytime. To do such, you can run the command:
 
-``python3 generate_session.py``
+``python generate_session.py``
 
 It will ask you for your phone number and the login code message. After obtaining the String session, you can copy the value, and the paste it in the configuration field, between the ""
 
@@ -67,7 +67,7 @@ Community repos are also easy to set up. All you need is the name of the reposit
 
 If your configuration is valid, and everything has been set-up correctly, you are ready to start! Do such by running the following command:
 
-``python3 -m userbot``
+``python -m userbot``
 
 In the first execution, it can ask for a phone number and for the confirmation codes/2 step auth password. This is normal, and we do not register this information.
 
