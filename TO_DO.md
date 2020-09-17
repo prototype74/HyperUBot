@@ -47,3 +47,4 @@
 git neofetch ffmpeg flac net-tools
 
 ffpmeg-shared (windows)
+
