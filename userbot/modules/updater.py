@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 # My stuff
-from userbot import tgclient, PROJECT, log, MODULE_DESC, MODULE_DICT, LOGGING
+from userbot import tgclient, PROJECT, log, MODULE_DESC, MODULE_DICT, LOGGING, OS
 from userbot.include.aux_funcs import event_log
 from userbot.include.language_processor import UpdaterText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 
@@ -22,6 +22,12 @@ from subprocess import check_output, CalledProcessError
 from os.path import basename
 import os
 import sys
+
+if OS and OS.startswith("win"):
+    EXECUTABLE = '"' + sys.executable + '"'
+else:
+    EXECUTABLE = sys.executable
+
 
 BOT_REPO_URL = "https://github.com/nunopenim/HyperUBot"
 RAN = False
@@ -43,7 +49,7 @@ async def updater(upd):
             await upd.edit(msgRep.UPDATING)
             gitpull = check_output("git pull", shell=True).decode()
             log.info(gitpull)
-            pip = check_output('"' + sys.executable + '"' + " -m pip install -r requirements.txt", shell=True).decode()
+            pip = check_output(EXECUTABLE + " -m pip install -r requirements.txt", shell=True).decode()
             log.info(pip)
         except CalledProcessError:
             await upd.edit(msgRep.UPD_ERROR)
