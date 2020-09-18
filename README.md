@@ -32,19 +32,25 @@ We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier.
 | MacOS | *Not Available* |
 | Windows | *Not Available* |
 
-## Support Groups and Channels
-
-Not avaliable yet!
-
-## Special thanks
-
-- [prototype74](https://github.com/prototype74), for his direct and indirect work on this project, algorithms and problem-solving capabilities.
-- [KebapciEBY](https://github.com/KebapciEBY), for both the German and Turkish translations, and for the support and ideas he gave during development.
-
 ## Report a bug
 
-Not avaliable yet!
+*Not Available*
+
+## Support Groups and Channels
+
+*Not Available*
+
+## Maintainers
+
+- [nunopenim](https://github.com/nunopenim)
+- [prototype74](https://github.com/prototype74)
 
 ## Credits
 
-Not avaliable yet!
+### Special thanks
+
+- [KebapciEBY](https://github.com/KebapciEBY), for the support and ideas he gave during development.
+
+### Translators
+
+- [KebapciEBY](https://github.com/KebapciEBY), for the German and Turkish translations
