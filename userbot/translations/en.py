@@ -572,7 +572,7 @@ class ModuleUsages(object):
                     \nUsage: Downloads/updates the CSV data for CAS check cmd.\
                     \n\n`.cascheck` [optional: <username/id/link>] or reply\
                     \nUsage: Checks if an user is CAS Banned or a whole group for CAS Banned users.\
-                    \nNote: cascheck can just check up to 10.000 members in a group due to Telegram's sever-side limitation."
+                    \nNote: cascheck can just check up to 10.000 members in a group due to Telegram's server-side limitation."
 
     GITHUB_USAGE = "`.git` <user>/<repo> \
                   \nUsage: Checks for releases on the specified user/repo combination."
@@ -602,7 +602,7 @@ class ModuleUsages(object):
                  \n\n`.update upgrade` \
                  \nUsage: If the user has checked for updates, it will update the bot to the latest version."
 
-    SIDELOADER_USAGE = "`.sideload` <arg> \
+    SIDELOADER_USAGE = "`.sideload` <argument> \
                        \nUsage: Sideloads a python script file sent as a document to the chat. Reply to such. You can use the `force` argument to force instalation, if a user space module with the same name already exists. \
                        \n\n**INFORMATION**: These files must be written to work with the bot. Attempting to load unknown files might result in a 'soft brick' of the bot, requiring you to manually delete the bad user space module! \
                        \n\n**CRITICAL WARNING**: Some malicious files could send some of your information (namely API KEY and/or String Session) to a malicious hacker! Only sideload modules if you trust the source!"

@@ -488,122 +488,122 @@ class ModuleDescriptions(object):
                       "**AVISO CRITICO**: Alguns ficheiros maliciosos podem enviar a tua informação (geralmente a API KEY e String Session, mas não está limitado a estes itens) para hackers com propósitos maliciosos! Faz apenas sideload de módulos que confies na fonte!"
 
 class ModuleUsages(object):
-    ADMIN_USAGE = "`.adminlist` [optional: <link/id>] \
-                 \nUsage: lists all admins from a channel or group (remotely). Requires admin privileges in channels.\
-                 \n\n`.ban` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Ban a certain user from a chat (remotely). Requires admin privileges with ban permission.\
-                 \n\n`.unban` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Unban a certain user from a chat (remotely). Requires admin privileges with ban permission.\
-                 \n\n`.kick` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Kick a certain user from a chat (remotely). Requires admin privileges with ban permission.\
-                 \n\n`.promote` [optional: <username/id> and/or <title>] or reply\
-                 \nUsage: Promote an user with immortal power! Requires admin privileges with at least add admin permission and a second\
-                 \nadmin permission as promote never promotes an user with add admin permission. Title length must be <= 16 characters.\
-                 \n\n`.demote` [optional: <username/id>] or reply\
-                 \nUsage: Demote an user to a mortal user. Requires admin privileges with add admin permission. Works with admins only which are promoted by you.\
-                 \n\n`.mute` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Mute a certain user from a chat (remotely). Requires admin privileges with ban permission.\
-                 \n\n`.unmute` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Unmute a certain user from a chat (remotely). Requires admin privileges with ban permission.\
+    ADMIN_USAGE = "`.adminlist` [opcional: <link/id>] \
+                 \nUso: apresenta uma lista de todos os admins de um canal ou grupo (remotamente). Requer permissões de admin nos canais.\
+                 \n\n`.ban` [opcional: <username/id> <chat (id ou link)>] ou resposta\
+                 \nUso: Bane um utilizador de um chat (remotamente). Precisa de permissão de administrador com direito de banir.\
+                 \n\n`.unban` [opcional: <username/id> <chat (id ou link)>] ou resposta\
+                 \nUso: Desbane um utilizador de um chat (remotamente). Precisa de permissão de administrador com direito de banir.\
+                 \n\n`.kick` [opcional: <username/id> <chat (id ou link)>] ou resposta\
+                 \nUso: Kicka um utilizador de um chat (remotamente). Precisa de permissão de administrador com direito de banir.\
+                 \n\n`.promote` [optional: <username/id> e/ou <title>] ou resposta\
+                 \nUso: Promove um utilizador com direitos imortais! Requer privilegios de administraçao com direitos de admin e uma segunda\
+                 \npermissão de admin porque um promote nunca adiciona por defeito permissões de add admin. Comprimento do titulo tem de ser <= 16 caractéres.\
+                 \n\n`.demote` [optional: <username/id>] ou resposta\
+                 \nUso: Despromove um utilizador. É necessária permissão de add admin. Apenas funciona com admins promovidos por ti.\
+                 \n\n`.mute` [optional: <username/id> <chat (id ou link)>] ou resposta\
+                 \nUso: Silencia um utilizador de um chat (remotamente). Precisa de permissão de administrador com direito de banir.\
+                 \n\n`.unmute` [optional: <username/id> <chat (id ou link)>] ou resposta\
+                 \nUso: Des-silencia um utilizador de um chat (remotamente). Precisa de permissão de administrador com direito de banir.\
                  \n\n`.delaccs`\
-                 \nUsage: Tries to remove deleted accounts automatically in a chat if admin privileges with ban permission are present.\
-                 \nElse it reports the amount of deleted accounts it the specific chat.\
-                 \n\n`.pin` [optional argument \"loud\" to notify all members] or reply\
-                 \nUsage: Reply to someone's message to pin it in the chat."
+                 \nUso: Tenta remover contas excluídas de um chat. Precisa de permissão de administrador com direito de banir.\
+                 \nCaso contrário, apenas reporta o número de contas excluídas.\
+                 \n\n`.pin` [argumento opcional \"loud\" para notificar todos os membros] ou resposta\
+                 \nUso: Responde ao uma mensagem para fixares esta."
 
-    CHATINFO_USAGE = "`.chatinfo` [optional: <chat_id/link>] or reply (if channel)\
-                 \nUsage: Gets info about a chat. Some info might be limited due to missing permissions.\
+    CHATINFO_USAGE = "`.chatinfo` [opcional: <chat_id/link>] ou resposta (se canal)\
+                 \nUso: Obtém informação de um chat. Alguma informação pode estar omissa por falta de permissões.\
                  \n\n`.chatid`\
-                 \nUsage: Gets the ID of a channel or group.\
-                 \n\n`.link` [optional: <chat_id/link>]\
-                 \nUsage: Fetch the invite link from a channel or group to share it with other people. Requires admin privileges with invite users permission."
+                 \nUso: Obtém o ID do chat.\
+                 \n\n`.link` [opcional: <chat_id/link>]\
+                 \nUso: Obtém o link de convite partilhável do chat. Precisa de permissão de administrador com direito de convidar/adicionar utilizadores."
 
     DELETIONS_USAGE = "`.del`\
-         \nUsage: Deletes the replied message.\
+         \nUso: Apaga a mensagem respondida.\
          \n\n`.purge`\
-         \nUsage: Purges all messages between the latest and replied message. Admin privileges with delete permission are required if purge is being used in channels or groups.\
-         \n**Note: Please don't abuse this feature to delete whole group histories from other people!**"
+         \nUso: Apaga todas as mensagens entre a última e a mensagem respondida. Precisa de permissão de administrador com direito de apagar mensagens são necessárias se estiveres em grupos ou canais.\
+         \n**Nota: por favor não abuses deste comando para apagares o histórico de mensagens de grupos inteiros de outras pessoas**"
 
-    MEMBERINFO_USAGE = "`.minfo` [optional: <tag/id> <group>] or reply\
-          \nUsage: Get (remotely) info of a member in a supergroup."
+    MEMBERINFO_USAGE = "`.minfo` [opcional: <tag/id> <group>] ou resposta\
+          \nUso: Obtém (remotamente) informações sobre um membro de um grupo."
 
-    MESSAGES_USAGE = "`.msgs` [optional: <username/id> <group>] or reply\
-                \nUsage: Gets the amount of sent messages from an user (includes any message like text messages, voice notes, videos etc.).\
-                \nWorks remotely too.\
-                \n\n`.topusers` [optional: <group>]\
-                \nUsage: Pick the top 10 members in a group. This process may take up some time, the more members the specific group has."
+    MESSAGES_USAGE = "`.msgs` [opcional: <username/id> <group>] ou resposta\
+                \nUso: Obtém o total de mensagens d eum utilizador (inclui qualquer mensagem, como texto, voz, imagens, videos, etc...).\
+                \nFunciona remotamente também\
+                \n\n`.topusers` [opcional: <group>]\
+                \nUso: Apresenta os 10 membros mais ativos de um grupo. Este processo demora bastante tempo e está dependente do número de utilizadores de um grupo."
 
-    SCRAPPERS_USAGE = "`.trt` [optional: <text>] or reply\
-          \nUsage: Translates given text or replied message to the bot's target language.\
-          \n\n`.tts` [optional: <text>] or reply\
-          \nUsage: Converts text or replied message into spoken voice output (text-to-speech).\
-          \n\n`.stt` reply only\
-          \nUsage: Converts a replied voice message into text (speech-to-text).\
-          \n\n`.currency` <amount> <From ISO> [optional: <To ISO>] \
-          \nUsage: Converts input currency to target currency (default: USD). Requires Country ISO (EUR, USD, JPY etc.)."
+    SCRAPPERS_USAGE = "`.trt` [opcional: <text>] ou resposta\
+          \nUso: Traduz o texto ou mensagens fornecidos, para a linguagem de defeito do bot.\
+          \n\n`.tts` [opcional: <text>] ou resposta\
+          \nUso: Converte o texto dado em mensagem de voz. (text-to-speech).\
+          \n\n`.stt` resposta apenas\
+          \nUso: Converte a mensagem de voz em texto. (speech-to-text).\
+          \n\n`.currency` <amount> <From ISO> [opcional: <To ISO>] \
+          \nUso: Converte a Moeda dada para uma Moeda de destino (defeito: USD). Precisa código ISO da Moeda (EUR, USD, JPY etc.)."
 
     SYSTOOLS_USAGE = "`.status`\
-         \nUsage: Type .status to check various bot information and if it is up and running.\
+         \nUso: Apresenta vários parâmetros de execução do bot.\
          \n\n`.shutdown`\
-         \nUsage: Type .shutdown to shutdown the bot. \
+         \nUso: Desliga o bot.\
          \n\n`.reboot`\
-         \nUsage: Reboots the bot! \
+         \nUso: Reinicia o bot.\
          \n\n`.sysd`\
-         \nUsage: Type .sysd to get system details. (Requires neofetch installed)"
+         \nUso: Apresenta detalhes de sistema (Requer neofetch)"
 
-    USER_USAGE = "`.info` [optional: <username/id>] or reply\
-        \nUsage: Gets info of an user.\
+    USER_USAGE = "`.info` [opcional: <username/id>] ou resposta\
+        \nUso: Obtém informação de um utilizador.\
         \n\n`.stats`\
-        \nUsage: Gets your stats.\
+        \nUso: Obtém as tuas estatísticas.\
         \n\n`.kickme`\
-        \nUsage: Makes you leave the group.\
-        \n\n`.userid` [optional: <username>] or reply\
-        \nUsage: Get the ID from an user. If replied to a forwarded message, it gets the IDs from both, forwarder and original author."
+        \nUso: Sais do grupo.\
+        \n\n`.userid` [opcional: <username>] ou resposta\
+        \nUso: Obtém o ID de um utilizador. Se a mensagem é encaminhada, obtém os IDs dos dois (autor original e quem encaminhou)."
 
     WEBTOOLS_USAGE = "`.rtt` \
-                    \nUsage: Gets the current Round Trip Time\
+                    \nUso: Obtém o Round-Trip Time atual.\
                     \n\n`.dc` \
-                    \nUsage: Finds the near datacenter to your userbot host. \
+                    \nUso: Procura o Datacenter do Telegram mais próximo.\
                     \n\n`.ping` <DNS/IP> \
-                    \nUsage: Pings a specific DNS or IP address. \
-                    \n\n`.speedtest` [optional argument \"pic\"] \
-                    \nUsage: Performs a speedtest and shows the result as text. Passing \"pic\" as argument will change the result to a picture."
+                    \nUso: Faz ping do DNS/IP fornecido.\
+                    \n\n`.speedtest` [argumento opcional \"pic\"] \
+                    \nUso: Executa um teste de velocidade da ligação. Usando \"pic\" como argumento irá apresentar o resultado como uma imagem."
 
     CAS_INTERFACE_USAGE = "`.casupdate`\
-                    \nUsage: Downloads/updates the CSV data for CAS check cmd.\
-                    \n\n`.cascheck` [optional: <username/id/link>] or reply\
-                    \nUsage: Checks if an user is CAS Banned or a whole group for CAS Banned users.\
-                    \nNote: cascheck can just check up to 10.000 members in a group due to Telegram's sever-side limitation."
+                    \nUso: Atualiza os dados do CSV do CAS.\
+                    \n\n`.cascheck` [opcional: <username/id/link>] ou resposta\
+                    \nUso: Verifica se um utilizador está banido no CAS, ou se um grupo inteiro tem utilizadores banidos.\
+                    \nNota: o comando cascheck apenas consegue ver grupos no máximo de 10.000 membros, devido a uma limitação nos servidores do Telegram."
 
     GITHUB_USAGE = "`.git` <user>/<repo> \
-                  \nUsage: Checks for releases on the specified user/repo combination."
+                  \nUso: Obtém a release mais recente de determinado repositório de um utilizador."
 
-    TERMINAL_USAGE = "`.shell` <command> \
-                  \nUsage: Executes in the server machine shell prompt (bash, powershell or zsh) the specified command. \
-                  \n\n**WARNING: if the userbot process is running as root, this could potentially break your system irreversibly! Proceed with caution!**"
+    TERMINAL_USAGE = "`.shell` <comando> \
+                  \nUso: Executa na máquina hospedeira o comando shell fornecido (bash, powershell or zsh).\
+                  \n\n**AVISO: se o Userbot está a ser executado com permissões root, isto pode causar dados irreversíveis. Procede com cuidado!**"
 
     MISC_USAGE = "`.coinflip` \
-                 \nUsage: Flips a coin and returns heads or tails, depending on the result.\
+                 \nUso: Lança uma moeda e indica se o resultado foi cara ou coroa.\
                  \n\n`.dice` \
-                 \nUsage: This will send the dice emoji, telegram will take care of the value, totally random.\
-                 \n\n`.rand` <lower limit> <upper limit>\
-                 \nUsage: Given an upper and lower limit (both integers), the bot will generate a random number in between."
+                 \nUso: Lança o emoji do dado. Os números são calculados pelo Telegram.\
+                 \n\n`.rand` <limite inferior> <limite superior>\
+                 \nUso: Dados dois limites inteiros, gera um número aleatório, inteiro também."
 
     PACKAGE_MANAGER_USAGE = "`.pkg update` \
-                 \nUsage: Updates the Modules List with info from the repos. \
+                 \nUso: Atualiza a lista de pacotes. \
                  \n\n`.pkg list` \
-                 \nUsage: Lists the list of available modules for installation (can be outdated!) \
-                 \n\n`.pkg install <module name 1> <module name 2 (optional)> <...>` \
-                 \nUsage: Installs the list of modules given as argument. \
-                 \n\n`.pkg uninstall <module name>` \
-                 \nUsage: Uninstalls the specified module. For security measures, it only works with a single module name."
+                 \nUso: Apresenta a lista de pacotes (pode estar desatualizada!) \
+                 \n\n`.pkg install <módulo 1> <módulo 2 (opcional)> <...>` \
+                 \nUso: Instala a lista de módulos dados como argumento.\
+                 \n\n`.pkg uninstall <módulo>` \
+                 \nUso: Desinstala o módulo de utilizador. Por motivos de segurança, é possivel apenas desinstalar um módulo de cada vez."
 
     UPDATER_USAGE = "`.update` \
-                 \nUsage: Checks for updates, and if avaliable, displays the changelog. \
+                 \nUso: Verifica por updates, e se existirem, apresenta a lista de mudanças.\
                  \n\n`.update upgrade` \
-                 \nUsage: If the user has checked for updates, it will update the bot to the latest version."
+                 \nUso: Se o utilizador verificou por updates, e se existirem updates, isto instala."
 
-    SIDELOADER_USAGE = "`.sideload` <arg> \
-                       \nUsage: Sideloads a python script file sent as a document to the chat. Reply to such. You can use the `force` argument to force instalation, if a user space module with the same name already exists. \
-                       \n\n**INFORMATION**: These files must be written to work with the bot. Attempting to load unknown files might result in a 'soft brick' of the bot, requiring you to manually delete the bad user space module! \
-                       \n\n**CRITICAL WARNING**: Some malicious files could send some of your information (namely API KEY and/or String Session) to a malicious hacker! Only sideload modules if you trust the source!"
+    SIDELOADER_USAGE = "`.sideload` <argumento> \
+                       \nUso: Carrega um script python no espaço de utilizador. Funciona apenas como resposta. Podes usar o argumento `force`, caso tenhas um módulo de utilizador com o mesmo nome já.\
+                       \n\n**INFORMAÇÃO**: Estes ficheiros têm de ser escritos de maneira a funcionar com o bot. Ao realizar um sideload de um ficheiro desconhecido, o utilizador pode obter um 'soft-brick', tendo que remover um módulo defeituoso do espaço de utilizador.\
+                       \n\n**AVISO CRITICO**: Alguns ficheiros maliciosos podem enviar a tua informação (geralmente a API KEY e String Session, mas não está limitado a estes itens) para hackers com propósitos maliciosos! Faz apenas sideload de módulos que confies na fonte!"
