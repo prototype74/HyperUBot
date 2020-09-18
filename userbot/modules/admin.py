@@ -53,7 +53,10 @@ async def adminlist(event):
             if member.username:
                 text += f"{num}. @{member.username}\n"
             else:
-                text += f"{num}. [{member.first_name}]({tguser_url()}{member.id})\n"
+                if member.deleted:
+                    text += f"{num}. {msgRep.DELETED_ACCOUNT}\n"
+                else:
+                    text += f"{num}. [{member.first_name}]({tguser_url()}{member.id})\n"
             num += 1
         await event.edit(text)
     except ChatAdminRequiredError:
