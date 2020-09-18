@@ -77,10 +77,7 @@ def isCSVoutdated() -> bool:
         return False
     file_date = datetime.fromtimestamp(getmtime(CAS_CSV))
     duration = datetime.today() - file_date
-    if duration.days >= 1:
-        return True
-    else:
-        return False
+    return True if duration.days >= 1 else False
 
 async def casupdater(event, showinfo: bool):
     if showinfo:
