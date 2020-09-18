@@ -18,10 +18,6 @@ from asyncio import sleep
 from logging import getLogger
 from os.path import basename
 
-# Constant
-def tguser_url() -> str:
-    return "tg://user?id="
-
 log = getLogger(__name__)
 
 @tgclient.on(NewMessage(pattern=r"^\.adminlist(?: |$)(.*)", outgoing=True))
@@ -50,13 +46,12 @@ async def adminlist(event):
         text = msgRep.ADMINS_IN_CHAT.format(chat.title) + ":\n\n"
         num = 1
         async for member in event.client.iter_participants(chat.id, filter=ChannelParticipantsAdmins):
-            if member.username:
+            if member.deleted:
+                text += f"{num}. {msgRep.DELETED_ACCOUNT}\n"
+            elif member.username:
                 text += f"{num}. @{member.username}\n"
             else:
-                if member.deleted:
-                    text += f"{num}. {msgRep.DELETED_ACCOUNT}\n"
-                else:
-                    text += f"{num}. [{member.first_name}]({tguser_url()}{member.id})\n"
+                text += f"{num}. [{member.first_name}](tg://user?id={member.id})\n"
             num += 1
         await event.edit(text)
     except ChatAdminRequiredError:
@@ -97,7 +92,7 @@ async def ban(event):
         # if view_messages is True then all ban permissions will be set to True too
         ban_perms = ChatBannedRights(until_date=None, view_messages=True)
         await event.client(EditBannedRequest(chat.id, user.id, ban_perms))
-        name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         if remote:
             await event.edit(msgRep.BAN_SUCCESS_REMOTE.format(name, chat.title))
         else:
@@ -146,7 +141,7 @@ async def unban(event):
     try:
         unban_perms = ChatBannedRights(until_date=None, view_messages=False)
         await event.client(EditBannedRequest(chat.id, user.id, unban_perms))
-        name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         if remote:
             await event.edit(msgRep.UNBAN_SUCCESS_REMOTE.format(name, chat.title))
         else:
@@ -192,7 +187,7 @@ async def kick(event):
 
     try:
         await event.client.kick_participant(chat.id, user.id)
-        name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         if remote:
             await event.edit(msgRep.KICK_SUCCESS_REMOTE.format(name, chat.title))
         else:
@@ -281,7 +276,7 @@ async def promote(event):
                 await event.edit(msgRep.ADMIN_NOT_ENOUGH_PERMS)
                 return
         await event.client(EditAdminRequest(chat.id, user.id, admin_perms, title))
-        name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         await event.edit(msgRep.PROMOTE_SUCCESS.format(name))
         if LOGGING:
             await event_log(event, "PROMOTE", user_name=user.first_name, username=user.username, user_id=user.id,
@@ -355,7 +350,7 @@ async def demote(event):
             await event.edit(msgRep.ADD_ADMINS_REQUIRED)
             return
         await event.client(EditAdminRequest(chat.id, user.id, rm_admin_perms, ""))
-        name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         await event.edit(msgRep.DEMOTE_SUCCESS.format(name))
         if LOGGING:
             await event_log(event, "DEMOTE", user_name=user.first_name, username=user.username, user_id=user.id,
@@ -406,7 +401,7 @@ async def mute(event):
     try:
         mute_perms = ChatBannedRights(until_date=None, send_messages=True, change_info=True, invite_users=True, pin_messages=True)
         await event.client(EditBannedRequest(chat.id, user.id, mute_perms))
-        name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         if remote:
             await event.edit(msgRep.MUTE_SUCCESS_REMOTE.format(name, chat.title))
         else:
@@ -457,7 +452,7 @@ async def unmute(event):
     try:
         unmute_perms = ChatBannedRights(until_date=None, send_messages=None)
         await event.client(EditBannedRequest(chat.id, user.id, unmute_perms))
-        name = f"[{user.first_name}]({tguser_url()}{user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
+        name = f"[{user.first_name}](tg://user?id={user.id})" if user.first_name else msgRep.DELETED_ACCOUNT
         if remote:
             await event.edit(msgRep.UNMUTE_SUCCESS_REMOTE.format(name, chat.title))
         else:
