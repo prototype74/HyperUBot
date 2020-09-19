@@ -46,7 +46,7 @@ Some modules downloaded from community repos might require you to add extra conf
 ### Setup config using ENV
 To create a new config `.env` file, run the following command:
 
-`nano userbot/config.env`
+`nano userbot\config.env`
 
 This will open the nano text editor, inside you can copy the following template:
 
@@ -60,14 +60,14 @@ UBOT_LANG = "en"
 # Optional configs
 LOGGING = False
 LOGGING_CHATID = 0
-TEMP_DL_DIR = "./downloads"
+TEMP_DL_DIR = ".\downloads"
 COMMUNITY_REPOS = []
 ```
 
 ### Setup config using py script
 To create a new config `.py` file, run the following command:
 
-`nano userbot/config.py`
+`nano userbot\config.py`
 
 This will open the nano text editor, inside you can copy the following template:
 
@@ -82,7 +82,7 @@ class ConfigClass(object):
     # Optional configs
     LOGGING = False
     LOGGING_CHATID = 0
-    TEMP_DL_DIR = "./downloads"
+    TEMP_DL_DIR = ".\downloads"
     COMMUNITY_REPOS = []
 ```
 
@@ -115,7 +115,7 @@ Copy this ID and put it in the `LOGGING_CHATID` field e.g `LOGGING_CHATID = -100
 then set `LOGGING` config to `True`. That's it!
 
 To set up a language, you will need to change the `UBOT_LANG` config,
-to any of the supported languages inside `HyperUBot/userbot/translations`.
+to any of the supported languages inside `HyperUBot\userbot\translations`.
 Just replace `en` by any other language code (no need to include the .py part of the file).
 
 Community repos are also easy to set up. All you need is the name of the repository and the author,
