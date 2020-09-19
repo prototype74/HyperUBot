@@ -57,7 +57,9 @@ Bugs caused by non-official sources for example from sideloads are irrelevant an
 
 ## Support Groups and Channels
 
-*Not Available*
+Currently we have a [News Channel](https://t.me/HyperUBotNews) (Click to join). Here you can find news about bot updates, changes in modules and releases in the [module-universe](https://github.com/nunopenim/module-universe).
+
+We also have a [Support Group](https://t.me/HyperUBotSupport) (Click to join), where we will be there to discuss about the bot, fix some issues, and help you set up the bot, if you are stuck in a specific step.
 
 ## Maintainers
 
@@ -73,3 +75,4 @@ Bugs caused by non-official sources for example from sideloads are irrelevant an
 ### Translators
 
 - [KebapciEBY](https://github.com/KebapciEBY), for the German and Turkish translations
+- [nunopenim](https://github.com/nunopenim), for the Portuguese translation
