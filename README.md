@@ -28,9 +28,9 @@ We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier.
 | Platforms | Guides |
 | - | - |
 | Android ([Termux](https://play.google.com/store/apps/details?id=com.termux&hl=en)) | [SETUP_Termux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Termux.md) |
-| Debian Based Distros (Linux) | [SETUP_DebianBasedLinux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_DebianBasedLinux.md) |
-| MacOS | [SETUP_MacOS.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_MacOS.md) |
-| Windows | [SETUP_Windows.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Windows.md) |
+| Debian Based Distros (Linux, WSL) | [SETUP_DebianBasedLinux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_DebianBasedLinux.md) |
+| macOS | [SETUP_macOS.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_MacOS.md) |
+| Windows (PowerShell) | [SETUP_Windows.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Windows.md) |
 | Unsupported Platforms | [Read this...](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Unsupported.md) |
 
 ## Report a bug
