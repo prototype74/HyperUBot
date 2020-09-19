@@ -32,7 +32,7 @@
 	   - 2cb. Modifying the project to display monetized ads.  
 	   - 2cc. Modifying the project to include some sort of trial that forces the user to pay after.  
 	 
-	 2d. Circunventing any copyright protection mechanisms (if) implemented, such as DRM.  
+	 2d. Circumventing any copyright protection mechanisms (if) implemented, such as DRM.  
 	 2e. Eliminating any references to the original authors of any part of this project.  
 	 2f. Changing the license to which this project is licensed under, without proper permission from the original authors  
 	 
