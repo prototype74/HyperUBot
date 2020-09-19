@@ -1,7 +1,7 @@
 # HyperUBot Guide - Set up in a Debian Based Distro
 ## 0. Pre-requisites
 
-Before starting up, make sure you have the following packages installed: ``python3 git neofetch ffmpeg flac net-tools``.
+Before starting up, make sure you have the following packages installed: ``python3 git neofetch ffmpeg flac net-tools nano``.
 
 It is required to have at least python3.8. To install the following packages, run the following command:
 
