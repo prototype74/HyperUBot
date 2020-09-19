@@ -35,7 +35,25 @@ We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier.
 
 ## Report a bug
 
-*Not Available*
+### How to proper report a bug
+
+A bug report can be done either in the [Issues](https://github.com/nunopenim/HyperUBot/issues) section of this repository or
+in our Telegram Support Group. In order to solve the bug or issue report from you as fast as possbile, please answer the following requirements as detailed as possbile (this can be used as a template):
+
+- Which HyperUBot, Python and Telethon versions are you running?
+- On which platform(s) did you run it?
+- Describe the bug or issue as good as possible
+- Provide the log which the bot did generate!
+
+HyperUBot generates a log `hyper.log` in the bot's root directory automatically everytime you run the bot.
+Please provide us this log, as it helps us a lot to figure out the bug or issue faster.\
+Bugs or issues caused in user modules from [HyperUBot's modules universe](https://github.com/nunopenim/module-universe)
+should be reported in [it's Issues](https://github.com/nunopenim/module-universe/issues) section.
+
+### What we don't accept as a bug
+
+We only provide support, if the bug or issue was **NOT** caused by third party modules or sources, that means only bugs that are caused from HyperUBot's official sources.
+Bugs caused by non-official sources for example from sideloads are irrelevant and will be ignored (or closed in `Issues` section)
 
 ## Support Groups and Channels
 
