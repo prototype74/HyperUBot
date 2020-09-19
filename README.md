@@ -38,7 +38,7 @@ We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier.
 ### How to proper report a bug
 
 A bug report can be done either in the [Issues](https://github.com/nunopenim/HyperUBot/issues) section of this repository or
-in our Telegram Support Group. In order to solve the bug or issue report from you as fast as possbile, please answer the following requirements as detailed as possbile (this can be used as a template):
+in our Telegram Support Group. In order to solve the bug or issue report from you as fast as possbile, please answer the following requirements as detailed as possible (this can be used as a template):
 
 - Which HyperUBot, Python and Telethon versions are you running?
 - On which platform(s) did you run it?
