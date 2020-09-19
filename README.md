@@ -21,7 +21,7 @@ Instead of coming cluttered with all kinds of packages, it is fully customizable
 
 HyperUBot works with Windows, MacOS, Linux and Termux (although it's kinda the same as Linux). Right now, Heroku is not supported!
 
-We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier.
+We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
 
 ## How to configure it
 
