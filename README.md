@@ -11,15 +11,16 @@ All rights reserved.
 
 ## What is this?
 
-HyperUBot is a modular telegram userbot. It does not require any form of Database.
-It has support to be fully translatable, contains it's own package manager,
-with an official repo and the possibility to configure multiple extra community repos.
+HyperUBot is a modular Telegram userbot written in Python which uses 
+[Telethon](https://github.com/LonamiWebs/Telethon)'s API library by [LonamiWebs](https://github.com/LonamiWebs).
+It does not require any form of database. It has support to be fully translatable, contains it's own package manager,
+with an [official repo](https://github.com/nunopenim/module-universe) and the possibility to configure multiple extra community repos.
 It contains also a sideloader for `.py` files sent in chat. The aim of this userbot is to become an extension of it's own user.
 Instead of coming cluttered with all kinds of packages, it is fully customizable, aiming to be fast.
 
 ## Compatibility
 
-HyperUBot works with Windows, MacOS, Linux and Termux (although it's kinda the same as Linux). Right now, unfortunately Heroku is not supported. This is due to the way how Heroku handles bash processes, something needed for commands like .sysd, .rtt, .status or .ping.
+HyperUBot works with Windows, macOS, Linux and Termux (although it's kinda the same as Linux). Right now, unfortunately Heroku is not supported. This is due to the way how Heroku handles bash processes, something needed for commands like .sysd, .rtt, .status or .ping.
 
 We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
 
