@@ -396,7 +396,7 @@ class CasIntText(object):
     CAS_CHECK_FAIL_ND = text.CasIntText.CAS_CHECK_FAIL_ND
     CAS_CHECK_ND = text.CasIntText.CAS_CHECK_ND
     PROCESSING = text.CasIntText.PROCESSING
-    DELETD_ACCOUNT = text.CasIntText.DELETD_ACCOUNT
+    DELETED_ACCOUNT = text.CasIntText.DELETED_ACCOUNT
     USER_HEADER = text.CasIntText.USER_HEADER
     USER_ID = text.CasIntText.USER_ID
     FIRST_NAME = text.CasIntText.FIRST_NAME

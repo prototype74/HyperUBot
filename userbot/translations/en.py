@@ -376,7 +376,7 @@ class CasIntText(object):
     CAS_CHECK_FAIL_ND = "`CAS check failed as CSV format is not valid`"
     CAS_CHECK_ND = "`CAS data not found. Please use .casupdate command to get the lastest CAS data`"
     PROCESSING = "`Processing...`"
-    DELETD_ACCOUNT = "Deleted Account"
+    DELETED_ACCOUNT = "Deleted Account"
     USER_HEADER = "USER DATA"
     USER_ID = "ID"
     FIRST_NAME = "First name"

@@ -194,7 +194,7 @@ async def cascheck(event):
                 if user.id in CAS_USER_IDS:
                     cas_count += 1
                     if user.deleted:
-                        text_users += f"\n{cas_count}. Deleted Account - `{user.id}`"
+                        text_users += f"\n{cas_count}. {msgRep.DELETED_ACCOUNT} - `{user.id}`"
                     else:
                         if user.username:
                             text_users += f"\n{cas_count}. @{user.username} - `{user.id}`"
