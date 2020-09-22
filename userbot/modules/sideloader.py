@@ -12,8 +12,11 @@ from userbot.include.language_processor import SideloaderText as msgRep, ModuleD
 from telethon.events import NewMessage
 import sys
 import os
+from logging import getLogger
 from os.path import basename
 import time
+
+log = getLogger(__name__)
 
 if " " not in sys.executable:
     EXECUTABLE = sys.executable
@@ -40,12 +43,15 @@ async def sideload(event):
         dest_path = USER_MODULES_DIR + file.name
         await event.edit(msgRep.DLOADING)
         if os.path.isfile(dest_path) and OVR_WRT_CAUT:
+            log.info(f"Module '{file.name[:-3]}' installed already")
             await event.edit(msgRep.MODULE_EXISTS.format(file.name))
             return
         await event.client.download_media(message=msg, file=dest_path)
+        log.info(f"Module '{file.name[:-3]}' has been installed to userpace")
         await event.edit(msgRep.SUCCESS.format(file.name))
         if LOGGING:
             await event_log(event, "SIDELOAD", custom_text=msgRep.LOG.format(file.name))
+        log.info("Rebooting userbot...")
         time.sleep(1)
         args = [EXECUTABLE, "-m", "userbot"]
         await event.edit(msgRep.RBT_CPLT)

@@ -15,7 +15,10 @@ import requests
 import os
 import time
 import sys
+from logging import getLogger
 from os.path import basename
+
+log = getLogger(__name__)
 
 if OS and OS.startswith("win"):
     USER_MODULES_DIR = ".\\userbot\\modules_user\\"
@@ -124,12 +127,14 @@ async def universe_checker(msg):
                 os.remove(USER_MODULES_DIR + i['filename'])
             open(USER_MODULES_DIR + i['filename'], 'wb').write(request.content)
             modules_installed.append(i['filename'])
+            log.info(f"Module '{i['filename'][:-3]}' has been installed to userspace")
         md_installed_string = ""
         for md in modules_installed:
             if md_installed_string == "":
                 md_installed_string += md
             else:
                 md_installed_string += ", " + md
+        log.info("Rebooting userbot...")
         await msg.edit(msgRep.DONE_RBT)
         time.sleep(1)  # just so we can actually see a message
         if LOGGING:
@@ -155,6 +160,8 @@ async def universe_checker(msg):
             return
         await msg.edit(msgRep.UNINSTALLING.format(modName))
         os.remove(USER_MODULES_DIR + modName + ".py")
+        log.info(f"Module '{modName}' has been uninstalled from userspace")
+        log.info("Rebooting userbot...")
         await msg.edit(msgRep.DONE_RBT)
         time.sleep(1)  # just so we can actually see a message
         if LOGGING:
