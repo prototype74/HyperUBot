@@ -75,5 +75,4 @@ We also have a [Support Group](https://t.me/HyperUBotSupport) (Click to join), w
 
 ### Translators
 
-- [KebapciEBY](https://github.com/KebapciEBY), for the German and Turkish translations
 - [nunopenim](https://github.com/nunopenim), for the Portuguese translation
