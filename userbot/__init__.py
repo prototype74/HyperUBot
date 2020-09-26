@@ -10,6 +10,7 @@ from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
 from telethon import TelegramClient, version
 from telethon.sessions import StringSession
 from dotenv import load_dotenv
+from json import loads
 from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
 from os import path, environ, mkdir, remove
 from platform import platform, python_compiler, system, machine, processor
@@ -60,6 +61,13 @@ if OS and OS.lower().startswith("win"):
 else:
     CURR_PATH += "/"  # Other Linux systems or macOS
 
+def strlist_to_list(strlist: str) -> list:
+    try:
+        list_obj = loads(strlist)
+    except:
+        list_obj = []
+    return list_obj
+
 if path.exists(CURR_PATH + "config.env"):
     load_dotenv(CURR_PATH + "config.env")
     SAMPLE_CONFIG = environ.get("SAMPLE_CONFIG", None)
@@ -73,8 +81,8 @@ if path.exists(CURR_PATH + "config.env"):
     STRING_SESSION = environ.get("STRING_SESSION", None)
     TEMP_DL_DIR = environ.get("TEMP_DL_DIR", "./downloads")
     UBOT_LANG = environ.get("UBOT_LANG", "en")
-    NOT_LOAD_MODULES = environ.get("NOT_LOAD_MODULES", [])
-    COMMUNITY_REPOS = environ.get("COMMUNITY_REPOS", [])
+    NOT_LOAD_MODULES = strlist_to_list(environ.get("NOT_LOAD_MODULES", "[]"))
+    COMMUNITY_REPOS = strlist_to_list(environ.get("COMMUNITY_REPOS", "[]"))
 elif path.exists(CURR_PATH + "config.py"):
     try:
         from userbot.config import ConfigClass  # Import here, otherwise error
