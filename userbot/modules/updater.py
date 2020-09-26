@@ -32,7 +32,7 @@ async def updater(upd):
     global RAN
     global FOUND_UPD
     args = upd.pattern_match.group(1)
-    if args == "upgrade":
+    if args.lower() == "upgrade":
         if not RAN:
             await upd.edit(msgRep.UPDATES_NOT_RAN)
             return

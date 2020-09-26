@@ -61,14 +61,14 @@ def list_updater():
 @tgclient.on(NewMessage(pattern=r"^\.pkg(?: |$)(.*)", outgoing=True))
 async def universe_checker(msg):
     cmd_args = msg.pattern_match.group(1).split(" ", 1)
-    if cmd_args[0] == "update":
+    if cmd_args[0].lower() == "update":
         list_updater()
         repos = UNIVERSE_NAME
         for repo in REPOS_NAMES:
             repos += ", " + repo
         await msg.edit(msgRep.UPDATE_COMPLETE.format(repos))
         return
-    elif cmd_args[0] == "list":
+    elif cmd_args[0].lower() == "list":
         files = msgRep.INSTALLED
         count = 1
         for item in USER_MODULES:
@@ -98,7 +98,7 @@ async def universe_checker(msg):
                 files += msgRep.ALREADY_PRESENT
         await msg.edit(files, parse_mode='md')
         return
-    elif cmd_args[0] == "install":
+    elif cmd_args[0].lower() == "install":
         if MODULE_LIST is None or len(MODULE_LIST) == 0:
             await msg.edit(msgRep.EMPTY_LIST)
             return
@@ -144,7 +144,7 @@ async def universe_checker(msg):
         os.execle(sys.executable, *args, os.environ)
         await msg.client.disconnect()
         return
-    elif cmd_args[0] == "uninstall":
+    elif cmd_args[0].lower() == "uninstall":
         if len(USER_MODULES) == 0:
             await msg.edit(msgRep.NO_UNINSTALL_MODULES)
             return

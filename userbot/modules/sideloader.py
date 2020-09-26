@@ -32,7 +32,7 @@ else:
 async def sideload(event):
     OVR_WRT_CAUT = True
     cmd_args = event.pattern_match.group(1).split(" ", 1)
-    if cmd_args[0] == "force":
+    if cmd_args[0].lower() == "force":
         OVR_WRT_CAUT = False
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
