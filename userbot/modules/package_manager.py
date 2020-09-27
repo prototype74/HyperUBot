@@ -30,9 +30,32 @@ if " " not in sys.executable:
 else:
     EXECUTABLE = '"' + sys.executable + '"'
 
+PACKAGELIST = "./userbot/package_lists.hbot"
 UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
-MODULE_LIST = None
+
+def write_list():
+    global MODULE_LIST
+    if os.path.exists(PACKAGELIST):
+        os.remove(PACKAGELIST)
+    file = open(PACKAGELIST, "w+")
+    for mod in MODULE_LIST:
+        str_to_write = mod["repo"] + "|" + mod["name"] + "|" + mod["url"] + "|" + str(mod["size"]) + "\n"
+        file.write(str_to_write)
+    file.close()
+
+def read_list():
+    global MODULE_LIST
+    MODULE_LIST = []
+    if os.path.exists(PACKAGELIST):
+        file = open(PACKAGELIST, "r")
+        lines = file.readlines()
+        for line in lines:
+            params = line.split("|")
+            MODULE_LIST.append({"repo": params[0], "name": params[1], "url": params[2], "size": int(params[3])})
+    return MODULE_LIST
+
+MODULE_LIST = read_list()
 REPOS_NAMES = []
 
 def list_updater():
@@ -63,6 +86,7 @@ async def universe_checker(msg):
     cmd_args = msg.pattern_match.group(1).split(" ", 1)
     if cmd_args[0].lower() == "update":
         list_updater()
+        write_list()
         repos = UNIVERSE_NAME
         for repo in REPOS_NAMES:
             repos += ", " + repo

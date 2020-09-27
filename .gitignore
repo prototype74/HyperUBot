@@ -4,6 +4,7 @@ tguserbot.session
 userbot/config.env
 userbot/config.py
 userbot/modules_user/*.py
+userbot/*.hbot
 
 # python cache
 __pycache__/*
