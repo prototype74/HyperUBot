@@ -57,7 +57,10 @@ async def statuschecker(stat):
     uptime_machine_minutes = uptime_machine_time[1]
     uptime_machine_seconds = uptime_machine_time[2].split(".")[0]
     uptimeMacSTR = f"{uptime_machine_days} " + msgRep.DAYS + f", {uptime_machine_hours}:{uptime_machine_minutes}:{uptime_machine_seconds}"
-    commit = await getGitReview()
+    try:
+        commit = await getGitReview()
+    except IndexError:
+        commit = msgRep.NO_GITHUB
     rtt = pinger("1.1.1.1") #cloudfare's
     reply = msgRep.SYSTEM_STATUS + "`" + msgRep.ONLINE + "`" + "\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"

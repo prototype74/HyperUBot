@@ -159,6 +159,7 @@ class StatusText(object):
     RESTART = getLangString(lang, _getframe().f_code.co_name, "RESTART")
     RESTART_LOG = getLangString(lang, _getframe().f_code.co_name, "RESTART_LOG")
     RESTARTED = getLangString(lang, _getframe().f_code.co_name, "RESTARTED")
+    NO_GITHUB = getLangString(lang, _getframe().f_code.co_name, "NO_GITHUB")
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = getLangString(lang, _getframe().f_code.co_name, "CANNOT_DEL_MSG")
