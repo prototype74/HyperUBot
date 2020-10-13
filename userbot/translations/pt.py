@@ -91,6 +91,7 @@ class StatusText(object):
     RESTART = "`A reiniciar...`"
     RESTART_LOG = "O Userbot está a reiniciar!"
     RESTARTED = "Reinicio completo!"
+    NO_GITHUB = "Não disponível"
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`Não posso apagar esta mensagem`"

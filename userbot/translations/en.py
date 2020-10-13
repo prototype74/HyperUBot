@@ -89,6 +89,7 @@ class StatusText(object):
     RESTART = "`Rebooting...`"
     RESTART_LOG = "Userbot is restarting!"
     RESTARTED = "Reboot complete!"
+    NO_GITHUB = "Not available"
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`I can't delete this message`"
