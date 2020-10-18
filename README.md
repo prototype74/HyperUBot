@@ -56,6 +56,10 @@ should be reported in [it's Issues](https://github.com/nunopenim/module-universe
 We only provide support, if the bug or issue was **NOT** caused by third party modules or sources, that means only bugs that are caused from HyperUBot's official sources.
 Bugs caused by non-official sources for example from sideloads are irrelevant and will be ignored (or closed in `Issues` section)
 
+## Developing modules
+
+A small, introductory guide in how to develop your modules can be found [here](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/DEV_DevelopingModules.md). This explains the basics in how to setup your module's .py file, so that HyperUBot can load it and run it when it is called.
+
 ## Support Groups and Channels
 
 Currently we have a [News Channel](https://t.me/HyperUBotNews) (Click to join). Here you can find news about bot updates, changes in modules and releases in the [module-universe](https://github.com/nunopenim/module-universe).
