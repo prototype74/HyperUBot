@@ -32,6 +32,8 @@ This contains a short list of all the commands used in a stock HyperUBot distrib
 - `.rand` - misc module (misc.py)
 - `.reboot` - system tools module (systools.py)
 - `.rtt` - web tools module (webtools.py)
+- `.scrlang` - scrappers module (scrappers.py)
+- `.setlang` - scrappers module (scrappers.py)
 - `.shell` - terminal module (terminal.py)
 - `.shutdown` - system tools module (systools.py)
 - `.sideload` - sideloader module (sideloader.py)
