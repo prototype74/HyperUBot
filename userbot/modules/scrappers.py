@@ -26,6 +26,7 @@ from zipfile import BadZipFile, ZipFile
 
 log = getLogger(__name__)
 CC_CSV_PATH = TEMP_DL_DIR + "currency.csv"
+DEST_LANG = UBOT_LANG
 
 @tgclient.on(NewMessage(pattern=r"^\.trt(?: |$)(.*)", outgoing=True))
 async def translate(event):
@@ -43,7 +44,7 @@ async def translate(event):
 
     try:
         translator = Translator()
-        result = translator.translate(text=msg, dest=UBOT_LANG, src="auto")
+        result = translator.translate(text=msg, dest=DEST_LANG, src="auto")
         if result.src == result.dest:
             await event.edit(msgRep.SAME_SRC_TARGET_LANG)
             return
@@ -80,7 +81,7 @@ async def text_to_speech(event):
     chat = await event.get_chat()
 
     try:
-        tts = gTTS(text=msg, lang=UBOT_LANG)
+        tts = gTTS(text=msg, lang=DEST_LANG)
         file_loc = TEMP_DL_DIR + "tts.mp3"
         tts.save(file_loc)
         await event.client.send_file(chat.id, file=file_loc, voice_note=True)
