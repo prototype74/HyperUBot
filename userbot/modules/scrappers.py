@@ -28,6 +28,32 @@ log = getLogger(__name__)
 CC_CSV_PATH = TEMP_DL_DIR + "currency.csv"
 DEST_LANG = UBOT_LANG
 
+def build_supported_langs():
+    ret_val = ""
+    for i in LANGUAGES.keys():
+        ret_val += "`{}`: {}\n".format(i, LANGUAGES[i])
+    return ret_val
+
+@tgclient.on(NewMessage(pattern=r"^\.scrlang$", outgoing=True))
+async def lang_check(event):
+    await event.edit(msgRep.SCRLANG.format(LANGUAGES[DEST_LANG]))
+    return
+
+@tgclient.on(NewMessage(pattern=r"^\.setlang(?: |$)(.*)", outgoing=True))
+async def set_lang(event):
+    global DEST_LANG
+    args = event.pattern_match.group(1).split()
+    if len(args) != 1:
+        await event.edit(msgRep.MULT_ARGS)
+        return
+    args = args[0]
+    if args not in LANGUAGES.keys():
+        await event.edit(msgRep.INV_CT_CODE.format(build_supported_langs()))
+        return
+    DEST_LANG = args
+    await event.edit(msgRep.SUCCESS_LANG_CHANGE.format(LANGUAGES[args]))
+    return
+
 @tgclient.on(NewMessage(pattern=r"^\.trt(?: |$)(.*)", outgoing=True))
 async def translate(event):
     if event.reply_to_msg_id:

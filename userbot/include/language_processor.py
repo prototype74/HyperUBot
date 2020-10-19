@@ -336,6 +336,10 @@ class ScrappersText(object):
     STT_REQ_FAILED = getLangString(lang, _getframe().f_code.co_name, "STT_REQ_FAILED")
     STT_OUTPUT_TOO_LONG = getLangString(lang, _getframe().f_code.co_name, "STT_OUTPUT_TOO_LONG")
     UNABLE_TO_STT = getLangString(lang, _getframe().f_code.co_name, "UNABLE_TO_STT")
+    SCRLANG = getLangString(lang, _getframe().f_code.co_name, "SCRLANG")
+    MULT_ARGS = getLangString(lang, _getframe().f_code.co_name, "MULT_ARGS")
+    INV_CT_CODE = getLangString(lang, _getframe().f_code.co_name, "INV_CT_CODE")
+    SUCCESS_LANG_CHANGE = getLangString(lang, _getframe().f_code.co_name, "SUCCESS_LANG_CHANGE")
 
 class UserText(object):
     LEAVING = getLangString(lang, _getframe().f_code.co_name, "LEAVING")

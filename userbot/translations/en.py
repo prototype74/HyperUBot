@@ -266,6 +266,10 @@ class ScrappersText(object):
     STT_REQ_FAILED = "Request result from server failed"
     STT_OUTPUT_TOO_LONG = "`Speech-to-text output is too long!`"
     UNABLE_TO_STT = "`Unable to speech-to-text`"
+    SCRLANG = "HyperUBot Scrappers module language is currently set to: `{}`"
+    MULT_ARGS = "`Please use one argument!`"
+    INV_CT_CODE = "Invalid value! Use one of the following 2 letter country codes!\n\nAvailable codes:\n{}"
+    SUCCESS_LANG_CHANGE = "Language successfully changed to: `{}`"
 
 class UserText(object):
     LEAVING = "`Leaving chat...`"
@@ -539,6 +543,10 @@ class ModuleUsages(object):
           \nUsage: Converts text or replied message into spoken voice output (text-to-speech).\
           \n\n`.stt` reply only\
           \nUsage: Converts a replied voice message into text (speech-to-text).\
+          \n\n`.scrlang`\
+          \nUsage: Shows which is the current language that bot will translate or TTS to \
+          \n\n`.setlang` [ISO value] \
+          \nUsage: Sets a new language from the ISO value list \
           \n\n`.currency` <amount> <From ISO> [optional: <To ISO>] \
           \nUsage: Converts input currency to target currency (default: USD). Requires Country ISO (EUR, USD, JPY etc.)."
 
