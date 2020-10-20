@@ -437,7 +437,7 @@ class PackageManagerText(object):
     REBOOT_DONE_INS = "Done! Module(s) installed: `{}`"
     REBOOT_DONE_UNINS = "Done! Uninstalled `{}`!"
     INSTALL_LOG = "Userbot rebooted! Module(s) installed: `{}`"
-    UNINSTALL_LOG = "Userbot rebooted! Module uninstalled: `{}`"
+    UNINSTALL_LOG = "Userbot rebooted! Module(s) uninstalled: `{}`"
     INSTALLED = "**INSTALLED MODULES:**\n"
     ALREADY_PRESENT = "\n__* Module already present, will be updated instead of installed__"
 

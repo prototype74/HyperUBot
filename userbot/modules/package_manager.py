@@ -175,22 +175,30 @@ async def universe_checker(msg):
         if len(cmd_args) == 1:
             await msg.edit(msgRep.NO_UN_NAME)
             return
-        if len(cmd_args) > 2:
-            await msg.edit(msgRep.MULTIPLE_NAMES)
-            return
-        modName = cmd_args[1].lower()
-        if modName not in USER_MODULES:
-            await msg.edit(msgRep.NOT_IN_USERSPACE.format(modName))
-            return
-        await msg.edit(msgRep.UNINSTALLING.format(modName))
-        os.remove(USER_MODULES_DIR + modName + ".py")
-        log.info(f"Module '{modName}' has been uninstalled from userspace")
+        # if len(cmd_args) > 2:
+        #    await msg.edit(msgRep.MULTIPLE_NAMES)
+        #    return
+        del(cmd_args[0])
+        mods_uninstall = cmd_args[0].split()
+        modNames = ""
+        for i in mods_uninstall:
+            if modNames == "":
+                modNames += i
+            else:
+                modNames += ", " + i
+        await msg.edit(msgRep.UNINSTALLING.format(modNames))
+        for modName in mods_uninstall:
+            if modName not in USER_MODULES:
+                await msg.edit(msgRep.NOT_IN_USERSPACE.format(modName))
+                return
+            os.remove(USER_MODULES_DIR + modName + ".py")
+        log.info(f"Modules '{modNames}' has been uninstalled from userspace")
         log.info("Rebooting userbot...")
         await msg.edit(msgRep.DONE_RBT)
         time.sleep(1)  # just so we can actually see a message
         if LOGGING:
-            await event_log(msg, "MODULE UNINSTALL", custom_text=msgRep.UNINSTALL_LOG.format(modName))
-        await msg.edit(msgRep.REBOOT_DONE_UNINS.format(modName))
+            await event_log(msg, "MODULE UNINSTALL", custom_text=msgRep.UNINSTALL_LOG.format(modNames))
+        await msg.edit(msgRep.REBOOT_DONE_UNINS.format(modNames))
         args = [EXECUTABLE, "-m", "userbot"]
         os.execle(sys.executable, *args, os.environ)
         await msg.client.disconnect()
