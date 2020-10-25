@@ -126,16 +126,16 @@ def module_info(name_of_module: str, module: str) -> str:
         result += f"{msgRep.VERSION}: {version}\n"
         result += f"{msgRep.SIZE}: {size}\n"
         result += f"{msgRep.INSTALL_DATE}: {ctime(installation_date)}"
-        return msgRep.NAME_MODULE.format(name_of_module).replace("_", " ") + "\n\n" + result
+        return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + result
     else:
         raise IndexError
 
 def module_usage(name_of_module: str, module: str) -> str:
     if module in LOAD_MODULES:
         if module in MODULE_DICT.keys():
-            return msgRep.NAME_MODULE.format(name_of_module).replace("_", " ") + "\n\n" + MODULE_DICT.get(module)
+            return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + MODULE_DICT.get(module)
         else:
-            return msgRep.NAME_MODULE.format(name_of_module).replace("_", " ") + "\n\n" + msgRep.MODULE_NO_USAGE
+            return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + msgRep.MODULE_NO_USAGE
     else:
         raise IndexError
 
