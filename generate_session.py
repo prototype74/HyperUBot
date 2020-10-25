@@ -15,7 +15,9 @@ color_red = "\033[31m"
 color_end = "\033[0m"
 
 if (version_info.major, version_info.minor) < (3, 8):
-    print(color_yellow + "Required Python 3.8!" + color_end)
+    print(color_yellow + "Python v3.8+ is required! Please update Python to v3.8 or newer " +
+          "(current version: {}.{}.{}).".format(version_info.major, version_info.minor, version_info.micro)
+          + color_end)
     quit()
 
 con_confirmed, valid_api_key, valid_api_hash = (False,)*3

@@ -6,7 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR, UBOT_LANG
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, TEMP_DL_DIR, UBOT_LANG, VERSION
+from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import ScrappersText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.errors import ChatSendMediaForbiddenError, MessageTooLongError
 from telethon.events import NewMessage
@@ -297,3 +298,4 @@ async def cc(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.SCRAPPERS_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SCRAPPERS_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Scrappers", version=VERSION)})

@@ -6,8 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
-from userbot.include.aux_funcs import event_log
+from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot.include.aux_funcs import event_log, module_info
 from userbot.include.language_processor import DeletionsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from telethon.errors import MessageDeleteForbiddenError
@@ -97,3 +97,4 @@ async def purge(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.DELETIONS_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.DELETIONS_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Deletions", version=VERSION)})

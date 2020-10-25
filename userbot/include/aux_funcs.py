@@ -8,7 +8,7 @@
 
 from userbot import LOGGING_CHATID
 from userbot.include.language_processor import GeneralMessages as msgsLang
-from telethon.tl.types import User
+from telethon.tl.types import PeerUser, PeerChannel, User
 from telethon.tl.functions.users import GetFullUserRequest
 from logging import getLogger
 import os
@@ -24,19 +24,23 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
         return (None, None) if get_chat else None
     if event.reply_to_msg_id:
         message = await event.get_reply_message()
-        # focus to original author on forwarded messages if org_author is set to True
-        if (not message.from_id and message.fwd_from and message.fwd_from.channel_id) or \
-           (message.fwd_from and message.fwd_from.channel_id and org_author):
-            if message.from_id:  # fallback to forwarder ID if not None
-                user = message.from_id
+        if message.fwd_from and isinstance(message.fwd_from.from_id, PeerChannel):
+            # focus to forwarder if forwarded message is from a channel
+            if message.from_id and isinstance(message.from_id, PeerUser):
+                user = message.from_id.user_id
             else:
                 await event.edit(msgsLang.CHAT_NOT_USER)
                 return (None, None) if get_chat else None
+        # focus to original author and skip forwarder
         elif message.fwd_from and message.fwd_from.from_id and org_author:
-            user = message.fwd_from.from_id
+            user = message.fwd_from.from_id.user_id
         else:
-            user = message.from_id
+            user = message.from_id.user_id if message.from_id else message.sender_id
         chat_obj = await event.get_chat() if get_chat else None  # current chat
+        if not user:
+            await event.edit(msgsLang.PERSON_ANONYMOUS)
+            return (None, None) if get_chat else None
+            return
     else:
         try:
             # args_from_event becomes a list. it takes maximum of 2 arguments,
@@ -120,6 +124,9 @@ def isRemoteCMD(event, chat_id: int) -> bool:
     except Exception as e:
         log.error(e)
     return False
+
+def module_info(name: str, version: str) -> dict:
+    return {"name": name, "version": version}
 
 # Systools/Webtools
 def pinger(address):

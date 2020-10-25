@@ -6,8 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, OS, LOGGING, MODULE_DESC, MODULE_DICT
-from userbot.include.aux_funcs import event_log
+from userbot import tgclient, OS, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot.include.aux_funcs import event_log, module_info
 from userbot.include.language_processor import SideloaderText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 import sys
@@ -64,3 +64,4 @@ async def sideload(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.SIDELOADER_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SIDELOADER_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Sideloader", version=VERSION)})

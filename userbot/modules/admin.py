@@ -6,14 +6,14 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
-from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD
+from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD, module_info
 from userbot.include.language_processor import AdminText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.errors import UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError, AdminRankEmojiNotAllowedError, ChatNotModifiedError
 from telethon.events import NewMessage
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
 from telethon.tl.functions.messages import UpdatePinnedMessageRequest
-from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticipantsAdmins, User, Channel
+from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticipantsAdmins, User, Channel, PeerUser, PeerChannel
 from asyncio import sleep
 from logging import getLogger
 from os.path import basename
@@ -210,7 +210,14 @@ async def promote(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
         try:
-            user = await event.client.get_entity(msg.from_id) if msg.from_id else None
+            if isinstance(msg.from_id, PeerUser):
+                user = await event.client.get_entity(msg.from_id.user_id)
+            elif isinstance(msg.from_id, PeerChannel):
+                await event.edit(msgRep.CANNOT_PROMOTE_CHANNEL)
+                return
+            else:
+                await event.edit(msgRep.PERSON_ANONYMOUS)
+                return
         except ValueError as e:
             await event.edit(f"`{msgRep.GET_ENTITY_FAILED}: {e}`")
             return
@@ -233,7 +240,7 @@ async def promote(event):
             user = None
 
     if not user:
-        await event.edit(msgRep.NOONE_TO_PROMOTE)
+        await event.edit(msgRep.NO_ONE_TO_PROMOTE)
         return
 
     if not type(user) is User:
@@ -300,7 +307,14 @@ async def demote(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
         try:
-            user = await event.client.get_entity(msg.from_id) if msg.from_id else None
+            if isinstance(msg.from_id, PeerUser):
+                user = await event.client.get_entity(msg.from_id.user_id)
+            elif isinstance(msg.from_id, PeerChannel):
+                await event.edit(msgRep.CANNOT_DEMOTE_CHANNEL)
+                return
+            else:
+                await event.edit(msgRep.PERSON_ANONYMOUS)
+                return
         except ValueError as e:
             await event.edit(f"`{msgRep.GET_ENTITY_FAILED}: {e}`")
             return
@@ -316,7 +330,7 @@ async def demote(event):
             user = None
 
     if not user:
-        await event.edit(msgRep.NOONE_TO_DEMOTE)
+        await event.edit(msgRep.NO_ONE_TO_DEMOTE)
         return
 
     if not type(user) is User:
@@ -542,3 +556,4 @@ async def pin(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.ADMIN_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.ADMIN_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Admininstration", version=VERSION)})

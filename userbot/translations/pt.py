@@ -30,7 +30,7 @@ class AdminText(object): # Admin module
     KICK_SUCCESS_REMOTE = "{} foi kickado de **{}**"  # user name, chat tile
     KICK_SUCCESS = "{} foi kickado!"  # user name
     KICK_FAILED = "`Falha ao kickar esta pessoa!`"
-    NOONE_TO_PROMOTE = "`Não há ninguém para promover!`"
+    NO_ONE_TO_PROMOTE = "`Não há ninguém para promover!`"
     NOT_USER = "`O Username ou ID dado não é um utilizador!`"
     CANNOT_PROMOTE_SELF = "`Não me posso promover a mim próprio!`"
     ADMIN_ALREADY_SELF = "`Já sou imortal!`"
@@ -42,7 +42,7 @@ class AdminText(object): # Admin module
     EMOJI_NOT_ALLOWED = "`Não são permitidos emojis nos títulos de administradores`"
     GET_ENTITY_FAILED = "Falha ao obter identidade."
     PROMOTE_FAILED = "`Falha ao promover esta pessoa.`"
-    NOONE_TO_DEMOTE = "`Não há ninguém para despromover`"
+    NO_ONE_TO_DEMOTE = "`Não há ninguém para despromover`"
     CANNOT_DEMOTE_SELF = "`Não posso despromover-me a mim próprio!`"
     DEMOTED_ALREADY = "`Esta pessoa já é um mortal.`"
     DEMOTE_SUCCESS = "{} foi despromovido!"  # user name
@@ -116,13 +116,13 @@ class ChatInfoText(object):
     NO = "Não"
     CHATINFO = "<b>INFO DO CHAT:</b>\n"
     CHAT_ID = "ID: <code>{}</code>\n"
-    CHATTYPE = "Tipo de chat: {}\n"
+    CHAT_TYPE = "Tipo de chat: {} ({})\n"  # group/channel, private/public
     CHAT_NAME = "Nome do chat: {}\n"
     FORMER_NAME = "Nome anterior: {}\n"
-    CHAT_TYPE_PUBLIC = "Tipo de chat: Publico\n"
-    CHAT_TYPE_PRIVATE = "Tipo de chat: Privado\n"
-    CREATOR = "Criador: {}\n"
-    CREATOR_WITH_URL = "Criador: <a href=\"tg://user?id={}\">{}</a>\n"
+    CHAT_PUBLIC = "Publico"
+    CHAT_PRIVATE = "Privado"
+    OWNER = "Criador: {}\n"
+    OWNER_WITH_URL = "Criador: <a href=\"tg://user?id={}\">{}</a>\n"
     CREATED_NOT_NULL = "Criado em: <code>{} - {} {}</code>\n"
     CREATED_NULL = "Criado em: <code>{} - {} {}</code> {}\n"
     DCID = "ID do Data Center: {}\n"
@@ -333,12 +333,12 @@ class GeneralMessages(object):
 class HelpText(object):
     INVALID_ARG = "`Argumento \"{}\" inválido!`"
     USAGE = "Utilização"
-    NAME_OF_MODULE = "nome do módulo"  # lower if possible
+    #NUMBER_OF_MODULE = "nome do módulo"  !! retranslation needed !!
     AVAILABLE_MODULES = "Módulos disponíveis"
     DISABLED_MODULES = "Módulos desativados"
     NAME_MODULE = "**Módulo {}**"
-    MISSING_NAME_MODULE = "`Falta o nome do módulo`"
-    MODULE_NOT_FOUND = "`Módulo \"{}\" não encontrado!`"
+    #MISSING_NUMBER_MODULE = "`Falta o nome do módulo`"  !! retranslation needed !!
+    #MODULE_NOT_AVAILABLE = "`Módulo \"{}\" não encontrado!`"  !! retranslation needed !!
     MODULE_NO_DESC = "__Descrição não disponível__"
     MODULE_NO_USAGE = "__Utilização não disponível__"
     ASTERISK = "__* Módulo de user desinstalável__"

@@ -14,7 +14,7 @@ from json import loads
 from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
 from os import path, environ, mkdir, remove
 from platform import platform, python_compiler, system, machine, processor
-from sys import version_info  # check python version
+from sys import version_info
 
 # Terminal logging
 LOGFILE = "hyper.log"
@@ -28,7 +28,7 @@ shandler.setFormatter(LogColorFormatter())
 basicConfig(handlers=[fhandler, shandler], level=INFO)
 
 PROJECT = "HyperUBot"
-VERSION = "1.2.0"
+VERSION = "2.0.0"
 OS = system()  # Current Operating System
 
 try:
@@ -50,8 +50,17 @@ try:
 except Exception as e:
     log.warning("Unable to write system information into log: {}".format(e))
 
+# Check Python version
 if (version_info.major, version_info.minor) < (3, 8):
-    log.error("Required Python 3.8!")
+    log.error("Python v3.8+ is required! Please update Python to v3.8 or newer " +
+              "(current version: {}.{}.{}).".format(version_info.major, version_info.minor, version_info.micro))
+    quit(1)
+
+# Check Telethon version
+telethon_version = tuple(map(int, version.__version__.split(".")))
+if telethon_version < (1, 17, 4):
+    log.error("Telethon version 1.17.4+ is required! " +
+              f"Please update Telethon to v1.17.4 or newer (current version: {version.__version__}).")
     quit(1)
 
 CURR_PATH = path.dirname(__file__)
@@ -139,4 +148,5 @@ ALL_MODULES = []
 LOAD_MODULES = []
 MODULE_DESC = {}
 MODULE_DICT = {}
+MODULE_INFO = {}
 USER_MODULES = []

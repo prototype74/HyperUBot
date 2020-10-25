@@ -6,7 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import TerminalText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from os.path import basename
@@ -29,3 +30,4 @@ async def bash(command):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.TERMINAL_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.TERMINAL_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Terminal", version=VERSION)})

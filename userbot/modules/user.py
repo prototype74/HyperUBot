@@ -6,15 +6,13 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT
-from userbot.include.aux_funcs import event_log
+from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot.include.aux_funcs import event_log, fetch_user, module_info
 from userbot.include.language_processor import UserText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from userbot.include.aux_funcs import fetch_user
 from telethon.events import NewMessage
 from telethon.tl.types import User, Chat, Channel
 from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
-from asyncio import sleep
 from logging import getLogger
 from os.path import basename
 
@@ -80,7 +78,6 @@ async def userid(event):
 @tgclient.on(NewMessage(pattern=r"^\.kickme$", outgoing=True))
 async def kickme(leave):
     await leave.edit(msgRep.LEAVING)
-    await sleep(0.1) #wait to avoid bad stuff
     await leave.client.kick_participant(leave.chat_id, 'me')
     if LOGGING:
         await event_log(leave, "KICKME", chat_title=leave.chat.title, chat_id=leave.chat.id)
@@ -100,7 +97,7 @@ async def stats(event):
         block_obj = await event.client(GetBlockedRequest(offset=0, limit=0))
         if block_obj.blocked:
             for user in block_obj.blocked:
-                blocked_ids.append(user.user_id)
+                blocked_ids.append(user.peer_id.user_id)
             total_blocks = len(blocked_ids)
     except:
         pass
@@ -179,28 +176,28 @@ async def info(event):  # .info command
 
     return
 
-async def fetch_info(replied_user, event):
+async def fetch_info(user_obj, event):
     try:
-        user_pfps = await event.client(GetUserPhotosRequest(user_id=replied_user.user.id, offset=42, max_id=0, limit=80))
+        user_pfps = await event.client(GetUserPhotosRequest(user_id=user_obj.user.id, offset=42, max_id=0, limit=80))
         user_pfps_count = user_pfps.count if hasattr(user_pfps, "count") else 0
     except:
         user_pfps_count = 0
-    user_id = replied_user.user.id
-    user_deleted = replied_user.user.deleted
-    user_self = replied_user.user.is_self
-    first_name = replied_user.user.first_name if not user_deleted else msgRep.DELETED_ACCOUNT
-    last_name = replied_user.user.last_name if replied_user.user.last_name else None
+    user_id = user_obj.user.id
+    user_deleted = user_obj.user.deleted
+    user_self = user_obj.user.is_self
+    first_name = user_obj.user.first_name if not user_deleted else msgRep.DELETED_ACCOUNT
+    last_name = user_obj.user.last_name if user_obj.user.last_name else None
     dc_id = msgRep.UNKNOWN
-    if replied_user.profile_photo:
-        if hasattr(replied_user.profile_photo, "dc_id"):
-            dc_id = replied_user.profile_photo.dc_id
-    common_chat = replied_user.common_chats_count
-    username = replied_user.user.username
-    user_bio = replied_user.about
-    is_bot = f"<b>{msgRep.YES}</b>" if replied_user.user.bot else msgRep.NO
-    scam = f"<b>{msgRep.YES}</b>" if replied_user.user.scam else msgRep.NO
-    restricted = f"<b>{msgRep.YES}</b>" if replied_user.user.restricted else msgRep.NO
-    verified = f"<b>{msgRep.YES}</b>" if replied_user.user.verified else msgRep.NO
+    if user_obj.profile_photo:
+        if hasattr(user_obj.profile_photo, "dc_id"):
+            dc_id = user_obj.profile_photo.dc_id
+    common_chat = user_obj.common_chats_count
+    username = user_obj.user.username
+    user_bio = user_obj.about
+    is_bot = f"<b>{msgRep.YES}</b>" if user_obj.user.bot else msgRep.NO
+    scam = f"<b>{msgRep.YES}</b>" if user_obj.user.scam else msgRep.NO
+    restricted = f"<b>{msgRep.YES}</b>" if user_obj.user.restricted else msgRep.NO
+    verified = f"<b>{msgRep.YES}</b>" if user_obj.user.verified else msgRep.NO
     username = "@{}".format(username) if username else None
     user_bio = msgRep.USR_NO_BIO if not user_bio else user_bio
     profile_link = f"<a href=\"tg://user?id={user_id}\">link</a>"
@@ -231,3 +228,4 @@ async def fetch_info(replied_user, event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.USER_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.USER_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="User", version=VERSION)})

@@ -6,8 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT
-from userbot.include.aux_funcs import fetch_user, isRemoteCMD
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot.include.aux_funcs import fetch_user, isRemoteCMD, module_info
 from userbot.include.language_processor import MessagesText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.errors import ChatAdminRequiredError, InputUserDeactivatedError, SearchQueryEmptyError
 from telethon.events import NewMessage
@@ -132,3 +132,4 @@ async def topusers(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.MESSAGES_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.MESSAGES_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Messages", version=VERSION)})

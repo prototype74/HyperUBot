@@ -6,8 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, VERSION, PROJECT, LOGGING, MODULE_DESC, MODULE_DICT
-from userbot.include.aux_funcs import event_log
+from userbot import tgclient, VERSION, PROJECT, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO
+from userbot.include.aux_funcs import event_log, module_info
 from userbot.include.language_processor import StatusText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.include.aux_funcs import pinger, getGitReview
 import userbot.include.cas_api as cas
@@ -109,3 +109,4 @@ async def sysd(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.SYSTOOLS_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SYSTOOLS_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="System Tools", version=VERSION)})

@@ -6,8 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR
-from userbot.include.aux_funcs import pinger
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, TEMP_DL_DIR, VERSION
+from userbot.include.aux_funcs import module_info, pinger
 from userbot.include.language_processor import WebToolsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon import functions
 from telethon.events import NewMessage
@@ -114,3 +114,4 @@ async def speedtest(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.WEBTOOLS_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.WEBTOOLS_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Web Tools", version=VERSION)})

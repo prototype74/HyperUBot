@@ -8,12 +8,13 @@
 #
 # This module is powered by Combot Anti-Spam (CAS) system (https://cas.chat)
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, TEMP_DL_DIR
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION, TEMP_DL_DIR
 import userbot.include.cas_api as cas_api
+from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import CasIntText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from telethon.errors import ChatAdminRequiredError, MessageTooLongError, ChatSendMediaForbiddenError
-from telethon.tl.types import User, Chat, Channel
+from telethon.tl.types import User, Chat, Channel, PeerUser, PeerChannel
 from datetime import datetime
 from logging import getLogger
 from os import remove
@@ -118,7 +119,12 @@ async def casupdate(event):
 async def cascheck(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
-        entity_id = msg.from_id
+        if isinstance(msg.from_id, PeerUser):
+            entity_id = msg.from_id.user_id
+        elif isinstance(msg.from_id, PeerChannel):  # check the channel instead
+            entity_id = msg.from_id.channel_id
+        else:
+            entity_id = None
     else:
         entity_id = event.pattern_match.group(1)
         try:
@@ -236,3 +242,4 @@ async def cascheck(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.CAS_INTERFACE_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.CAS_INTERFACE_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="CAS Interface", version=VERSION)})

@@ -6,13 +6,15 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import ChatInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError, ChatAdminRequiredError
 from telethon.events import NewMessage
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
 from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest, ExportChatInviteRequest
-from telethon.tl.types import MessageActionChannelMigrateFrom, ChannelParticipantsAdmins, Chat, Channel
+from telethon.tl.types import (ChannelParticipantCreator, ChatParticipantCreator, MessageActionChannelMigrateFrom,
+                               ChannelParticipantsAdmins, Chat, Channel, PeerChannel)
 from datetime import datetime
 from logging import getLogger
 from math import sqrt
@@ -24,8 +26,11 @@ async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
     if event.reply_to_msg_id and not chat:
         replied_msg = await event.get_reply_message()
-        if replied_msg.fwd_from and replied_msg.fwd_from.channel_id is not None:
-            chat = replied_msg.fwd_from.channel_id
+        if replied_msg.from_id and isinstance(replied_msg.from_id, PeerChannel):
+            chat = replied_msg.from_id.channel_id
+        elif replied_msg.fwd_from and replied_msg.fwd_from.from_id and \
+             isinstance(replied_msg.fwd_from.from_id, PeerChannel):
+            chat = replied_msg.fwd_from.from_id.channel_id
         else:
             await event.edit(msgRep.REPLY_NOT_CHANNEL)
             return None
@@ -64,21 +69,21 @@ async def fetch_info(chat, event):
     chat_title = chat_obj_info.title
     warn_emoji = u"\u26A0"
     try:
-        msg_info = await event.client(GetHistoryRequest(peer=chat_obj_info.id, offset_id=0, offset_date=datetime(2010, 1, 1), add_offset=-1, limit=1, max_id=0, min_id=0, hash=0))
+        msg_info = await event.client(GetHistoryRequest(peer=chat_obj_info.id, offset_id=0,
+                                                        offset_date=datetime(2010, 1, 1), add_offset=-1,
+                                                        limit=1, max_id=0, min_id=0, hash=0))
     except:
         msg_info = None
     first_msg_valid = True if msg_info and msg_info.messages and msg_info.messages[0].id == 1 else False
-    creator_valid = True if first_msg_valid and msg_info.users else False
-    creator_id = msg_info.users[0].id if creator_valid else None
-    creator_firstname = msg_info.users[0].first_name if creator_valid and msg_info.users[0].first_name is not None else "Deleted Account"
-    creator_username = msg_info.users[0].username if creator_valid and msg_info.users[0].username is not None else None
+    owner_id, owner_firstname, owner_username, admins = (None,)*4
     created = msg_info.messages[0].date if first_msg_valid else None
-    former_title = msg_info.messages[0].action.title if first_msg_valid and type(msg_info.messages[0].action) is MessageActionChannelMigrateFrom and msg_info.messages[0].action.title != chat_title else None
+    former_title = msg_info.messages[0].action.title if first_msg_valid and \
+                                                        type(msg_info.messages[0].action) is MessageActionChannelMigrateFrom and \
+                                                        msg_info.messages[0].action.title != chat_title else None
     dc_id = chat.full_chat.chat_photo.dc_id if hasattr(chat.full_chat.chat_photo, "dc_id") else msgRep.UNKNOWN
     # Prototype's spaghetti, although already salted by me
     description = chat.full_chat.about
     members = chat.full_chat.participants_count if hasattr(chat.full_chat, "participants_count") else chat_obj_info.participants_count
-    admins = chat.full_chat.admins_count if hasattr(chat.full_chat, "admins_count") else None
     banned_users = chat.full_chat.kicked_count if hasattr(chat.full_chat, "kicked_count") else None
     restricted_users = chat.full_chat.banned_count if hasattr(chat.full_chat, "banned_count") else None
     members_online = chat.full_chat.online_count if hasattr(chat.full_chat, "online_count") else 0
@@ -93,7 +98,8 @@ async def fetch_info(chat, event):
     else:
         deleted_messages = 0
     exp_count = chat.full_chat.pts if hasattr(chat.full_chat, "pts") else None
-    username = chat_obj_info.username if hasattr(chat_obj_info, "username") else None
+    username = "@" + chat_obj_info.username if hasattr(chat_obj_info, "username") and chat_obj_info.username else None
+    chat_type_priv_or_public = msgRep.CHAT_PUBLIC if username else msgRep.CHAT_PRIVATE
     bots_list = chat.full_chat.bot_info  # this is a list
     bots = len(bots_list) if bots_list else 0
     supergroup = True if hasattr(chat_obj_info, "megagroup") and chat_obj_info.megagroup else False
@@ -102,8 +108,6 @@ async def fetch_info(chat, event):
     slowmode_time = chat.full_chat.slowmode_seconds if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else None
     restricted = msgRep.YES_BOLD if hasattr(chat_obj_info, "restricted") and chat_obj_info.restricted else msgRep.NO
     verified = msgRep.YES_BOLD if hasattr(chat_obj_info, "verified") and chat_obj_info.verified else msgRep.NO
-    username = "@{}".format(username) if username else None
-    creator_username = "@{}".format(creator_username) if creator_username else None
     linked_chat_id = chat.full_chat.linked_chat_id if hasattr(chat.full_chat, "linked_chat_id") else None
     linked_chat = msgRep.YES_BOLD if linked_chat_id is not None else msgRep.NO
     linked_chat_title = None
@@ -117,35 +121,56 @@ async def fetch_info(chat, event):
                 break
     # End of spaghetti block
 
-    if admins is None:
-        try:
-            participants_admins = await event.client(GetParticipantsRequest(channel=chat.full_chat.id, filter=ChannelParticipantsAdmins(), offset=0, limit=0, hash=0))
+    try:
+        # Super groups or channels
+        if isinstance(chat_obj_info, Channel):
+            participants_admins = await event.client(GetParticipantsRequest(channel=chat.full_chat.id,
+                                                                            filter=ChannelParticipantsAdmins(),
+                                                                            offset=0, limit=0, hash=0))
             admins = participants_admins.count if participants_admins else None
-        except:
-            pass
+            for admin in participants_admins.participants:
+                if isinstance(admin, ChannelParticipantCreator):
+                    owner_id = admin.user_id
+                    for user in participants_admins.users:
+                        if owner_id == user.id:
+                            owner_firstname = user.first_name if not user.deleted else msgRep.DELETED_ACCOUNT
+                            owner_username = "@" + user.username if user.username else None
+                            break
+                    break
+        # Normal groups
+        elif isinstance(chat_obj_info, Chat):
+            if chat.full_chat.participants and chat.full_chat.participants.participants:
+                for member in chat.full_chat.participants.participants:
+                    if isinstance(member, ChatParticipantCreator):
+                        owner_id = member.user_id
+                        for user in chat.users:
+                            if owner_id == user.id:
+                                owner_firstname = user.first_name if not user.deleted else msgRep.DELETED_ACCOUNT
+                                owner_username = "@" + user.username if user.username else None
+                                break
+                        break
+    except:
+        pass
 
     caption = msgRep.CHATINFO
     caption += msgRep.CHAT_ID.format(chat_obj_info.id)
-    caption += msgRep.CHATTYPE.format(chat_type)
-    if chat_title is not None:
+    caption += msgRep.CHAT_TYPE.format(chat_type, chat_type_priv_or_public)
+    if chat_title:
         caption += msgRep.CHAT_NAME.format(chat_title)
-    if former_title is not None:  # Meant is the very first title
+    if former_title:  # Meant is the very first title
         caption += msgRep.FORMER_NAME.format(former_title)
-    if username is not None:
-        caption += msgRep.CHAT_TYPE_PUBLIC
+    if username:
         caption += f"Link: {username}\n"
-    else:
-        caption += msgRep.CHAT_TYPE_PRIVATE
-    if creator_username is not None:
-        caption += msgRep.CREATOR.format(creator_username)
-    elif creator_valid:
-        caption += msgRep.CREATOR_WITH_URL.format(creator_id, creator_firstname)
-    if created is not None:
+    if owner_username:
+        caption += msgRep.OWNER.format(owner_username)
+    elif owner_id and owner_firstname:
+        caption += msgRep.OWNER_WITH_URL.format(owner_id, owner_firstname)
+    if created:
         caption += msgRep.CREATED_NOT_NULL.format(created.date().strftime('%b %d, %Y'), created.time(), created.tzinfo)
     else:
         caption += msgRep.CREATED_NULL.format(chat_obj_info.date.date().strftime('%b %d, %Y'), chat_obj_info.date.time(), chat_obj_info.date.tzinfo, warn_emoji)
     caption += msgRep.DCID.format(dc_id)
-    if exp_count is not None:
+    if exp_count:
         chat_level = int((1 + sqrt(1 + 7 * exp_count / 14)) / 2)
         caption += msgRep.CHAT_LEVEL.format(chat_level)
     if messages_viewable is not None:
@@ -156,26 +181,26 @@ async def fetch_info(chat, event):
         caption += msgRep.SENT_MSG.format(messages_sent)
     elif messages_sent_alt:
         caption += msgRep.SENT_MSG_PRED.format(messages_sent_alt, warn_emoji)
-    if members is not None:
+    if members:
         caption += msgRep.MEMBERS.format(members)
-    if admins is not None:
+    if admins:
         caption += msgRep.ADMINS.format(admins)
     if bots_list:
         caption += msgRep.BOT_COUNT.format(bots)
     if members_online:
         caption += msgRep.ONLINE_MEM.format(members_online)
-    if restricted_users is not None:
+    if restricted_users:
         caption += msgRep.RESTRICTED_COUNT.format(restricted_users)
-    if banned_users is not None:
+    if banned_users:
         caption += msgRep.BANNEDCOUNT.format(banned_users)
-    if group_stickers is not None:
+    if group_stickers:
         caption += msgRep.GRUP_STICKERS.format(chat.full_chat.stickerset.short_name, group_stickers)
     caption += "\n"
     if broadcast or supergroup:
         caption += msgRep.LINKED_CHAT.format(linked_chat)
-        if linked_chat_title is not None:
+        if linked_chat_title:
             caption += msgRep.LINKED_CHAT_TITLE.format(linked_chat_title)
-        if linked_chat_username is not None:
+        if linked_chat_username:
             caption += f"> Link: {linked_chat_username}\n"
         caption += "\n"
     if not broadcast:
@@ -272,3 +297,4 @@ async def chatid(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.CHATINFO_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.CHATINFO_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Chat Info", version=VERSION)})

@@ -6,8 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT
-from userbot.include.aux_funcs import fetch_user
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot.include.aux_funcs import fetch_user, module_info
 from userbot.include.language_processor import MemberInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from telethon.tl.functions.channels import GetParticipantRequest
@@ -83,7 +83,8 @@ async def memberinfo(event):
                          "ban_users": x_marks_the_spot,
                          "invite_users": x_marks_the_spot,
                          "pin_messages": x_marks_the_spot,
-                         "add_admins": x_marks_the_spot}
+                         "add_admins": x_marks_the_spot,
+                         "anonymous": x_marks_the_spot}
 
     member_permissions = {"send_messages": x_marks_the_spot,
                           "send_media": x_marks_the_spot,
@@ -99,8 +100,19 @@ async def memberinfo(event):
     until_text, by_text = (None,)*2
 
     if isinstance(member_info, ChannelParticipantCreator):  # Owner
-        change_info, delete_messages, ban_users, invite_users, \
-        pin_messages, add_admins, root_rights = (check_mark,)*7
+        admin_rights = member_info.admin_rights
+        for right in vars(admin_rights):
+            if getattr(admin_rights, right) is True:
+                if str(right) in admin_permissions.keys():
+                    admin_permissions[str(right)] = check_mark
+        change_info = admin_permissions.get("change_info")
+        delete_messages = admin_permissions.get("delete_messages")
+        ban_users = admin_permissions.get("ban_users")
+        invite_users = admin_permissions.get("invite_users")
+        pin_messages = admin_permissions.get("pin_messages")
+        add_admins = admin_permissions.get("add_admins")
+        anonymous = admin_permissions.get("anonymous")
+        root_rights = check_mark
         promoted_by = None
         member_status = msgRep.STATUS_OWNER
         is_admin = True
@@ -114,7 +126,7 @@ async def memberinfo(event):
                 if str(right) in admin_permissions.keys():
                     admin_permissions[str(right)] = check_mark
                 # these attributes are for channels, so we don't need them
-                if not str(right) in ["post_messages", "edit_messages"]:
+                if not str(right) in ["post_messages", "edit_messages", "anonymous"]:
                     enabled_rights_count += 1
         change_info = admin_permissions.get("change_info")
         delete_messages = admin_permissions.get("delete_messages")
@@ -122,6 +134,7 @@ async def memberinfo(event):
         invite_users = admin_permissions.get("invite_users")
         pin_messages = admin_permissions.get("pin_messages")
         add_admins = admin_permissions.get("add_admins")
+        anonymous = admin_permissions.get("anonymous")
         if enabled_rights_count == 6:  # max admin rights in groups
             member_status = f"{msgRep.STATUS_ADMIN} " + u"\u2605"  # full rights; star emoji
         elif enabled_rights_count < 5:
@@ -305,6 +318,7 @@ async def memberinfo(event):
         caption += f"- {msgRep.INVITE_USERS} {invite_users}\n"
         caption += f"- {msgRep.PIN_MESSAGES} {pin_messages}\n"
         caption += f"- {msgRep.ADD_ADMINS} {add_admins}\n"
+        caption += f"- {msgRep.ANONYMOUS} {anonymous}\n"
         caption += f"- {msgRep.ROOT_RIGHTS} {root_rights}\n\n"
     else:
         caption += f"- {msgRep.SEND_MESSAGES} {send_messages}\n"
@@ -330,3 +344,4 @@ async def memberinfo(event):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.MEMBERINFO_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.MEMBERINFO_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Member Info", version=VERSION)})

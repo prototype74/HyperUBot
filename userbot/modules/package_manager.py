@@ -6,9 +6,9 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, MODULE_DESC, MODULE_DICT, OS
+from userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, OS, VERSION
 import userbot.include.git_api as git
-from userbot.include.aux_funcs import event_log, sizeStrMaker
+from userbot.include.aux_funcs import event_log, module_info, sizeStrMaker
 from userbot.include.language_processor import PackageManagerText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 import requests
@@ -209,3 +209,4 @@ async def universe_checker(msg):
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.PACKAGE_MANAGER_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.PACKAGE_MANAGER_USAGE})
+MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Package Manager", version=VERSION)})
