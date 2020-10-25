@@ -58,9 +58,9 @@ if (version_info.major, version_info.minor) < (3, 8):
 
 # Check Telethon version
 telethon_version = tuple(map(int, version.__version__.split(".")))
-if telethon_version < (1, 17, 4):
-    log.error("Telethon version 1.17.4+ is required! " +
-              f"Please update Telethon to v1.17.4 or newer (current version: {version.__version__}).")
+if telethon_version < (1, 17, 5):
+    log.error("Telethon version 1.17.5+ is required! " +
+              f"Please update Telethon to v1.17.5 or newer (current version: {version.__version__}).")
     quit(1)
 
 CURR_PATH = path.dirname(__file__)
