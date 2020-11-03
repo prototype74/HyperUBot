@@ -201,7 +201,7 @@ async def cascheck(event):
             if offenses:
                 text +=  f"{msgRep.OFFENSES}: `{offenses}`\n"
             if time_banned:
-                text +=  f"{msgRep.BANNED_SINCE}: `{time_banned.strftime('%b %d, %Y')} - {time_banned.time()} {time_banned.tzname()}`\n\n"
+                text +=  f"{msgRep.BANNED_SINCE}: `{time_banned.strftime('%b %d, %Y')} - {time_banned.time()} {time_banned.tzname()}`"
         elif isinstance(entity, (Chat, Channel)):
             title = entity.title
             text_users = ""
