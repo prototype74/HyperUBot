@@ -169,13 +169,11 @@ async def getGitReview():
     return commit
 
 # Package Manager
-def sizeStrMaker(value: int): #
-    if value < 1024:
-        return str(value) + " B"
-    newval = float(value)
-    if value > 1023 and value < 1024*1024:
-        newval = newval / 1024
-        return str(round(newval, 2)) + " kB"
+def sizeStrMaker(size: float, value: int = 0):
+    if size < 1024:
+        size_units = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+        return str(round(size, 2)) + " " + size_units[value]
     else:
-        newval = newval / 1024 / 1024
-        return str(round(newval, 2)) + " MB"
+        size /= 1024
+        value += 1
+        return sizeStrMaker(size, value)

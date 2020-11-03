@@ -70,7 +70,7 @@ class AdminText(object): # Admin module
     PIN_FAILED = "`Failed to pin this message`"
     LOG_PIN_MSG_ID = "Message ID"
 
-class StatusText(object):
+class SystemToolsText(object):
     UBOT = "Userbot Project: "
     SYSTEM_STATUS = "System Status: "
     ONLINE = "Online!"
@@ -93,6 +93,13 @@ class StatusText(object):
     RESTART_LOG = "Userbot is restarting!"
     RESTARTED = "Reboot complete!"
     NO_GITHUB = "Not available"
+    STORAGE = "Storage"
+    STORAGE_TOTAL = "Total"
+    STORAGE_USED = "Used"
+    STORAGE_FREE = "Free"
+    STORAGE_SYSTEM = "System modules"
+    STORAGE_USER = "User modules"
+    STORAGE_HDD = "HDD"
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`I can't delete this message`"
@@ -338,7 +345,7 @@ class GeneralMessages(object):
     LOG_CHAT_LINK = "Link"
     LOG_CHAT_ID = "Chat ID"
 
-class HelpText(object):
+class ModulesUtilsText(object):
     INVALID_ARG = "`Invalid argument \"{}\"`"
     USAGE = "Usage"
     NUMBER_OF_MODULE = "number of module"  # lower if possible
@@ -352,7 +359,9 @@ class HelpText(object):
     ASTERISK = "__* Uninstallable user module__"
     UNKNOWN = "Unknown"
     SYSTEM = "System"
+    SYSTEM_MODULES = "System modules"
     USER = "User"
+    USER_MODULES = "User modules"
     PKG_NAME = "Package name"
     MODULE_TYPE = "Module type"
     VERSION = "Version"
@@ -383,12 +392,13 @@ class CasIntText(object):
     TOO_MANY_CAS = "`Too many CAS Banned users. Uploading list as a file...`"
     FAIL_UPLOAD_LIST = "`Failed to upload list`"
     SEND_MEDIA_FORBIDDEN = "`Send media isn't allowed in this chat`"
-    UPDATER_CONNECTING = "`Connecting...`"
-    UPDATER_DOWNLOADING = "`Downloading...`"
+    UPDATER_CONNECTING = "`Connecting to CAS server...`"
+    UPDATER_DOWNLOADING = "`Downloading latest CAS data...`"
     FAIL_APPEND_CAS = "`Failed to append CAS data`"
     UPDATE_SUCCESS = "`Successfully updated to latest CAS CSV data`"
     NO_CONNECTION = "`Unable to connect to CAS server`"
-    TIMEOUT = "`Unable to update CSV as request to server timed out`"
+    RETRY_CONNECTION = "`CAS Server is not responding\nRetrying...{}`"
+    TIMEOUT = "`Unable to update CSV as requests to server timed out`"
     UPDATE_FAILED = "`Update CAS CSV data failed`"
     GIVEN_ENT_INVALID = "`Given username/id/link isn't valid`"
     AUTO_UPDATE = "`Auto updating CAS data...`"
@@ -404,7 +414,9 @@ class CasIntText(object):
     CAS_DATA = "CAS DATA"
     RESULT = "Result"
     OFFENSES = "Total of Offenses"
+    BANNED = "Banned"
     BANNED_SINCE = "Banned since"
+    NOT_BANNED = "Not Banned"
     USER_DETECTED = "Warning! `{}` member is CAS Banned in **{}**"  # count, chat title
     USERS_DETECTED = "Warning! `{}` members are CAS Banned in **{}**"  # count, chat title
     NO_USERS = "No CAS Banned users found in **{}**"

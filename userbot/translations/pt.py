@@ -69,7 +69,7 @@ class AdminText(object): # Admin module
     PIN_FAILED = "`Falha ao fixar a mensagem!`"
     LOG_PIN_MSG_ID = "ID da Mensagem"
 
-class StatusText(object):
+class SystemToolsText(object):
     UBOT = "Projeto Userbot: "
     SYSTEM_STATUS = "Estado do sistema: "
     ONLINE = "Online!"
@@ -330,7 +330,7 @@ class GeneralMessages(object):
     LOG_CHAT_LINK = "Link"
     LOG_CHAT_ID = "ID do Chat"
 
-class HelpText(object):
+class ModulesUtilsText(object):
     INVALID_ARG = "`Argumento \"{}\" inválido!`"
     USAGE = "Utilização"
     #NUMBER_OF_MODULE = "nome do módulo"  !! retranslation needed !!
@@ -367,12 +367,12 @@ class CasIntText(object):
     TOO_MANY_CAS = "`Muitos utilizadores banidos no CAS. A fazer upload da lista como ficheiro...`"
     FAIL_UPLOAD_LIST = "`Falha ao efetuar upload da lista`"
     SEND_MEDIA_FORBIDDEN = "`O envio de média neste chat não é permitido`"
-    UPDATER_CONNECTING = "`Conectando...`"
-    UPDATER_DOWNLOADING = "`A fazer Download...`"
+    #UPDATER_CONNECTING = "`Conectando...`"  !! retranslation needed !!
+    #UPDATER_DOWNLOADING = "`A fazer Download...`"  !! retranslation needed !!
     FAIL_APPEND_CAS = "`Falha ao adicionar dados do CAS`"
     UPDATE_SUCCESS = "`Atualizado o CSV dos dados do CAS`"
     NO_CONNECTION = "`Falha na conecção com o servidor do CAS`"
-    TIMEOUT = "`Impossivel atualizar o CSV dado que o tempo de ligação excedeu o limite`"
+    #TIMEOUT = "`Impossivel atualizar o CSV dado que o tempo de ligação excedeu o limite`"  !! retranslation needed !!
     UPDATE_FAILED = "`Falha ao atualizar os dados do CSV do CAS`"
     GIVEN_ENT_INVALID = "`O ID, nome ou link dado é inváldio`"
     AUTO_UPDATE = "`A realizar um auto-update dos dados do CAS...`"

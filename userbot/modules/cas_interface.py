@@ -20,6 +20,7 @@ from logging import getLogger
 from os import remove
 from os.path import basename, exists, getmtime
 from requests import get, ConnectionError, Timeout
+from time import sleep
 
 log = getLogger(__name__)
 CAS_CSV = TEMP_DL_DIR + "export.csv"
@@ -80,7 +81,7 @@ def isCSVoutdated() -> bool:
     duration = datetime.today() - file_date
     return True if duration.days >= 1 else False
 
-async def casupdater(event, showinfo: bool):
+async def casupdater(event, showinfo: bool, tries: int = 0):
     if showinfo:
         await event.edit(msgRep.UPDATER_CONNECTING)
 
@@ -101,8 +102,15 @@ async def casupdater(event, showinfo: bool):
         log.warning(c)
         await event.edit(msgRep.NO_CONNECTION)
     except Timeout as t:
-        log.warning(t)
-        await event.edit(msgRep.TIMEOUT)
+        if tries <= 5:
+            log.info(f"Reconnecting to CAS server...({tries})")
+            await event.edit(msgRep.RETRY_CONNECTION.format(tries))
+            sleep(0.5)
+            tries += 1
+            await casupdater(event, False, tries)
+        else:
+            log.warning(t)
+            await event.edit(msgRep.TIMEOUT)
     except Exception as e:
         log.error(e)
         await event.edit(msgRep.UPDATE_FAILED)
@@ -181,6 +189,7 @@ async def cascheck(event):
             firstname = entity.first_name if not entity.deleted else msgRep.DELETED_ACCOUNT
             lastname = entity.last_name  # can be None
             username = entity.username  # can be None
+            is_banned = f"[{msgRep.BANNED}](https://api.cas.chat/check?user_id={entity.id})" if cas_api.isbanned(cas_data) else msgRep.NOT_BANNED
             text = f"**{msgRep.USER_HEADER}**\n\n"
             text += f"{msgRep.USER_ID}: `{entity.id}`\n"
             text += f"{msgRep.FIRST_NAME}: {firstname}\n"
@@ -188,13 +197,13 @@ async def cascheck(event):
                 text += f"{msgRep.LAST_NAME}: {lastname}\n"
             text += f"{msgRep.USERNAME}: @{username}\n\n" if username else "\n"
             text += f"**{msgRep.CAS_DATA}**\n\n"
-            text += f"{msgRep.RESULT}: {cas_api.isbanned(cas_data)}\n"
+            text += f"{msgRep.RESULT}: {is_banned}\n"
             if offenses:
                 text +=  f"{msgRep.OFFENSES}: `{offenses}`\n"
             if time_banned:
-                text +=  f"{msgRep.BANNED_SINCE}: `{time_banned.strftime('%b %d, %Y')} - {time_banned.time()} {time_banned.tzname()}`"
+                text +=  f"{msgRep.BANNED_SINCE}: `{time_banned.strftime('%b %d, %Y')} - {time_banned.time()} {time_banned.tzname()}`\n\n"
         elif isinstance(entity, (Chat, Channel)):
-            title = entity.title if entity.title else "this chat"
+            title = entity.title
             text_users = ""
             async for user in event.client.iter_participants(entity.id):
                 if user.id in CAS_USER_IDS:
@@ -214,10 +223,11 @@ async def cascheck(event):
             if not cas_count:
                 text = msgRep.NO_USERS.format(title)
         elif not entity and cas_data:
+            is_banned = f"[{msgRep.BANNED}](https://api.cas.chat/check?user_id={entity_id})" if cas_api.isbanned(cas_data) else msgRep.NOT_BANNED
             text = f"**{msgRep.USER_HEADER}**\n\n"
             text += f"{msgRep.USER_ID}: `{entity_id}`\n\n"
             text += f"**{msgRep.CAS_DATA}**\n\n"
-            text += f"{msgRep.RESULT}: {cas_api.isbanned(cas_data)}\n"
+            text += f"{msgRep.RESULT}: {is_banned}\n"
             if offenses:
                 text +=  f"{msgRep.OFFENSES}: `{offenses}`\n"
             if time_banned:

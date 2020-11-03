@@ -140,7 +140,7 @@ class AdminText(object):
     PIN_FAILED = getLangString(lang, _getframe().f_code.co_name, "PIN_FAILED")
     LOG_PIN_MSG_ID = getLangString(lang, _getframe().f_code.co_name, "LOG_PIN_MSG_ID")
 
-class StatusText(object):
+class SystemToolsText(object):
     UBOT = getLangString(lang, _getframe().f_code.co_name, "UBOT")
     SYSTEM_STATUS = getLangString(lang, _getframe().f_code.co_name, "SYSTEM_STATUS")
     ONLINE = getLangString(lang, _getframe().f_code.co_name, "ONLINE")
@@ -163,6 +163,13 @@ class StatusText(object):
     RESTART_LOG = getLangString(lang, _getframe().f_code.co_name, "RESTART_LOG")
     RESTARTED = getLangString(lang, _getframe().f_code.co_name, "RESTARTED")
     NO_GITHUB = getLangString(lang, _getframe().f_code.co_name, "NO_GITHUB")
+    STORAGE = getLangString(lang, _getframe().f_code.co_name, "STORAGE")
+    STORAGE_TOTAL = getLangString(lang, _getframe().f_code.co_name, "STORAGE_TOTAL")
+    STORAGE_USED = getLangString(lang, _getframe().f_code.co_name, "STORAGE_USED")
+    STORAGE_FREE = getLangString(lang, _getframe().f_code.co_name, "STORAGE_FREE")
+    STORAGE_SYSTEM = getLangString(lang, _getframe().f_code.co_name, "STORAGE_SYSTEM")
+    STORAGE_USER = getLangString(lang, _getframe().f_code.co_name, "STORAGE_USER")
+    STORAGE_HDD = getLangString(lang, _getframe().f_code.co_name, "STORAGE_HDD")
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = getLangString(lang, _getframe().f_code.co_name, "CANNOT_DEL_MSG")
@@ -408,7 +415,7 @@ class GeneralMessages(object):
     LOG_CHAT_LINK = getLangString(lang, _getframe().f_code.co_name, "LOG_CHAT_LINK")
     LOG_CHAT_ID = getLangString(lang, _getframe().f_code.co_name, "LOG_CHAT_ID")
 
-class HelpText(object):
+class ModulesUtilsText(object):
     INVALID_ARG = getLangString(lang, _getframe().f_code.co_name, "INVALID_ARG")
     USAGE = getLangString(lang, _getframe().f_code.co_name, "USAGE")
     NUMBER_OF_MODULE = getLangString(lang, _getframe().f_code.co_name, "NUMBER_OF_MODULE")
@@ -422,7 +429,9 @@ class HelpText(object):
     ASTERISK = getLangString(lang, _getframe().f_code.co_name, "ASTERISK")
     UNKNOWN = getLangString(lang, _getframe().f_code.co_name, "UNKNOWN")
     SYSTEM = getLangString(lang, _getframe().f_code.co_name, "SYSTEM")
+    SYSTEM_MODULES = getLangString(lang, _getframe().f_code.co_name, "SYSTEM_MODULES")
     USER = getLangString(lang, _getframe().f_code.co_name, "USER")
+    USER_MODULES = getLangString(lang, _getframe().f_code.co_name, "USER_MODULES")
     PKG_NAME = getLangString(lang, _getframe().f_code.co_name, "PKG_NAME")
     MODULE_TYPE = getLangString(lang, _getframe().f_code.co_name, "MODULE_TYPE")
     VERSION = getLangString(lang, _getframe().f_code.co_name, "VERSION")
@@ -458,6 +467,7 @@ class CasIntText(object):
     FAIL_APPEND_CAS = getLangString(lang, _getframe().f_code.co_name, "FAIL_APPEND_CAS")
     UPDATE_SUCCESS = getLangString(lang, _getframe().f_code.co_name, "UPDATE_SUCCESS")
     NO_CONNECTION = getLangString(lang, _getframe().f_code.co_name, "NO_CONNECTION")
+    RETRY_CONNECTION = getLangString(lang, _getframe().f_code.co_name, "RETRY_CONNECTION")
     TIMEOUT = getLangString(lang, _getframe().f_code.co_name, "TIMEOUT")
     UPDATE_FAILED = getLangString(lang, _getframe().f_code.co_name, "UPDATE_FAILED")
     GIVEN_ENT_INVALID = getLangString(lang, _getframe().f_code.co_name, "GIVEN_ENT_INVALID")
@@ -474,7 +484,9 @@ class CasIntText(object):
     CAS_DATA = getLangString(lang, _getframe().f_code.co_name, "CAS_DATA")
     RESULT = getLangString(lang, _getframe().f_code.co_name, "RESULT")
     OFFENSES = getLangString(lang, _getframe().f_code.co_name, "OFFENSES")
+    BANNED = getLangString(lang, _getframe().f_code.co_name, "BANNED")
     BANNED_SINCE = getLangString(lang, _getframe().f_code.co_name, "BANNED_SINCE")
+    NOT_BANNED = getLangString(lang, _getframe().f_code.co_name, "NOT_BANNED")
     USER_DETECTED = getLangString(lang, _getframe().f_code.co_name, "USER_DETECTED")
     USERS_DETECTED = getLangString(lang, _getframe().f_code.co_name, "USERS_DETECTED")
     NO_USERS = getLangString(lang, _getframe().f_code.co_name, "NO_USERS")

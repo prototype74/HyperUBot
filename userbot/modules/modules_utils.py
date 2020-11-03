@@ -9,7 +9,7 @@
 from userbot import (tgclient, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, MODULE_DESC,
                      MODULE_DICT, MODULE_INFO, OS, USER_MODULES)
 from userbot.include.aux_funcs import sizeStrMaker
-from userbot.include.language_processor import HelpText as msgRep
+from userbot.include.language_processor import ModulesUtilsText as msgRep
 from telethon.events import NewMessage
 from os.path import basename, exists, getctime, getsize
 from os import stat
@@ -37,12 +37,29 @@ def update_list() -> list:
     if MODULES_LISTED:
         MODULES_LISTED = {}  # reset dict
 
-    num = 1
+    num = 0
 
     for module_name, module in sorted(modules_list):
-        MODULES_LISTED[str(num)] = module
         num += 1
+        MODULES_LISTED[str(num)] = module
     return sorted(modules_list)
+
+def installed_modules() -> tuple:
+    if OS and OS.lower().startswith("win"):
+        syspath = ".\\userbot\\modules\\"
+        userpath = ".\\userbot\\modules_user\\"
+    else:
+        syspath = "./userbot/modules/"
+        userpath = "./userbot/modules_user/"
+
+    sys_count, user_count = (0,)*2
+
+    for module in ALL_MODULES:
+        if exists(syspath + (module + ".py")):
+            sys_count += 1
+        elif exists(userpath + (module + ".py")):
+            user_count += 1
+    return (sys_count, user_count)
 
 def modules_listing(error_text: str = None) -> str:
     modules_listed = f"**Modules**\n\n"
@@ -50,21 +67,26 @@ def modules_listing(error_text: str = None) -> str:
     if error_text:
         modules_listed += f"{error_text}\n\n"
 
-    modules_listed += f"{msgRep.USAGE}:\n`.modules -d, --desc, --description [{msgRep.NUMBER_OF_MODULE}]`\n"\
-                                       f"`.modules -i, --info, --information [{msgRep.NUMBER_OF_MODULE}]`\n"\
+    modules_listed += f"{msgRep.USAGE}:\n`.modules -d, --desc [{msgRep.NUMBER_OF_MODULE}]`\n"\
+                                       f"`.modules -i, --info [{msgRep.NUMBER_OF_MODULE}]`\n"\
                                        f"`.modules -u, --usage [{msgRep.NUMBER_OF_MODULE}]`\n\n"
 
-    num = 1
+    sys_count, user_count = installed_modules()
+
+    modules_listed += f"`{msgRep.SYSTEM_MODULES}: {sys_count}`\n"
+    modules_listed += f"`{msgRep.USER_MODULES}: {user_count}`\n\n"
+
     modules_listed += f"{msgRep.AVAILABLE_MODULES}:\n"
 
     modules_list = update_list()
+    num = 0
 
     for module_name, module in modules_list:
+        num += 1
         if module in USER_MODULES:
             modules_listed += f"`({str(num)}) {module_name}* ({module})`\n"
         else:
             modules_listed += f"`({str(num)}) {module_name} ({module})`\n"
-        num += 1
 
     if USER_MODULES:
         modules_listed += "\n" + msgRep.ASTERISK + "\n"
@@ -153,9 +175,9 @@ async def modules(event):
         await event.edit(modules_listing())
         return
 
-    if first_arg.lower() in ("-d", "--desc", "--description"):
+    if first_arg.lower() in ("-d", "--desc"):
         desc = True
-    elif first_arg.lower() in ("-i", "--info", "--information"):
+    elif first_arg.lower() in ("-i", "--info"):
         info = True
     elif first_arg.lower() in ("-u", "--usage"):
         usage = True

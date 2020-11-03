@@ -6,9 +6,9 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, VERSION, PROJECT, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO
-from userbot.include.aux_funcs import event_log, module_info
-from userbot.include.language_processor import StatusText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot import tgclient, OS, VERSION, PROJECT, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO
+from userbot.include.aux_funcs import event_log, module_info, sizeStrMaker
+from userbot.include.language_processor import SystemToolsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.include.aux_funcs import pinger, getGitReview
 import userbot.include.cas_api as cas
 import userbot.include.git_api as git
@@ -18,9 +18,10 @@ from platform import python_version, uname
 from datetime import datetime, timedelta
 from uptime import uptime
 from subprocess import check_output
-from os.path import basename
+from os.path import basename, getsize, isfile, join
+from shutil import disk_usage
 import sys, time
-from os import execle, environ
+from os import execle, environ, listdir
 
 # Module Global Variables
 USER = uname().node # Maybe add a username in future
@@ -31,6 +32,19 @@ if " " not in sys.executable:
 else:
     EXECUTABLE = '"' + sys.executable + '"'
 
+
+def textProgressBar(barLength: int, totalVal, usedVal) -> str:
+    used_percentage = round((usedVal * 100 / totalVal), 2)
+    bar_used_length = used_percentage * barLength / 100
+
+    if bar_used_length > barLength:
+        bar_used_length = barLength
+    elif bar_used_length < 0:
+        bar_used_length = 0
+
+    bar_used = "#" * int(bar_used_length)
+    bar_free = "-" * int(barLength - bar_used_length)
+    return f"[{(bar_used + bar_free)}] {used_percentage}%"
 
 @tgclient.on(NewMessage(pattern=r"^\.status$", outgoing=True))
 async def statuschecker(stat):
@@ -79,6 +93,41 @@ async def statuschecker(stat):
     reply += msgRep.CASAPI_VER + "`" + cas.vercheck() + "`" + "\n"
     await stat.edit(reply)
     return
+
+@tgclient.on(NewMessage(pattern=r"^\.storage$", outgoing=True))
+async def storage(event):
+    result = f"**{msgRep.STORAGE}**\n\n"
+
+    if OS and OS.lower().startswith("win"):
+        syspath = ".\\userbot\\modules\\"
+        userpath = ".\\userbot\\modules_user\\"
+    else:
+        syspath = "./userbot/modules/"
+        userpath = "./userbot/modules_user/"
+
+    size = getsize(syspath)
+    for module in listdir(syspath):
+        item = join(syspath, module)
+        if isfile(item):
+            size += getsize(item)
+    sys_size = size
+
+    size = getsize(userpath)
+    for module in listdir(userpath):
+        item = join(userpath, module)
+        if isfile(item):
+            size += getsize(item)
+    user_size = size
+
+    hdd = disk_usage("./")
+    result += f"`{msgRep.STORAGE_TOTAL}: {sizeStrMaker(hdd.total)}`\n"
+    result += f"`{msgRep.STORAGE_USED}: {sizeStrMaker(hdd.used)}`\n"
+    result += f"`{msgRep.STORAGE_FREE}: {sizeStrMaker(hdd.free)}`\n"
+    result += f"`{msgRep.STORAGE_SYSTEM}: {sizeStrMaker(sys_size)}`\n"
+    result += f"`{msgRep.STORAGE_USER}: {sizeStrMaker(user_size)}`\n"
+    result += f"`{msgRep.STORAGE_HDD} {textProgressBar(22, hdd.total, hdd.used)}`"
+
+    await event.edit(result)
 
 @tgclient.on(NewMessage(pattern=r"^\.shutdown$", outgoing=True))
 async def shutdown(power_off):

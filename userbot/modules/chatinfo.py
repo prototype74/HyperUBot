@@ -122,33 +122,13 @@ async def fetch_info(chat, event):
     # End of spaghetti block
 
     try:
-        # Super groups or channels
-        if isinstance(chat_obj_info, Channel):
-            participants_admins = await event.client(GetParticipantsRequest(channel=chat.full_chat.id,
-                                                                            filter=ChannelParticipantsAdmins(),
-                                                                            offset=0, limit=0, hash=0))
-            admins = participants_admins.count if participants_admins else None
-            for admin in participants_admins.participants:
-                if isinstance(admin, ChannelParticipantCreator):
-                    owner_id = admin.user_id
-                    for user in participants_admins.users:
-                        if owner_id == user.id:
-                            owner_firstname = user.first_name if not user.deleted else msgRep.DELETED_ACCOUNT
-                            owner_username = "@" + user.username if user.username else None
-                            break
-                    break
-        # Normal groups
-        elif isinstance(chat_obj_info, Chat):
-            if chat.full_chat.participants and chat.full_chat.participants.participants:
-                for member in chat.full_chat.participants.participants:
-                    if isinstance(member, ChatParticipantCreator):
-                        owner_id = member.user_id
-                        for user in chat.users:
-                            if owner_id == user.id:
-                                owner_firstname = user.first_name if not user.deleted else msgRep.DELETED_ACCOUNT
-                                owner_username = "@" + user.username if user.username else None
-                                break
-                        break
+        is_channel_obj = True if isinstance(chat_obj_info, Channel) else False
+        async for admin in event.client.iter_participants(entity=chat.full_chat.id,
+                                                          filter=ChannelParticipantsAdmins() if is_channel_obj else None):
+            if isinstance(admin.participant, (ChannelParticipantCreator, ChatParticipantCreator)):
+                owner_id = admin.id
+                owner_username = "@" + admin.username if admin.username else None
+                break
     except:
         pass
 
