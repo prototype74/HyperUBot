@@ -338,6 +338,7 @@ class GeneralMessages(object):
     CHAT_NOT_USER = "`Canais não são objetos User`"
     FAIL_FETCH_USER = "`Falha ao adquirir informação do utilizador`"
     ENTITY_NOT_USER = "`A entidade não é um objeto User`"
+    PERSON_ANONYMOUS = "A pessoa é anónima"
     CALL_UREQ_FAIL = "`O request para a chamada de User falhou`"
     LOG_USER = "Utilizador"
     LOG_USERNAME = "Nome de utilizador"
