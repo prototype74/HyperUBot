@@ -30,6 +30,8 @@ class AdminText(object): # Admin module
     KICK_SUCCESS_REMOTE = "{} foi kickado de **{}**"  # user name, chat tile
     KICK_SUCCESS = "{} foi kickado!"  # user name
     KICK_FAILED = "`Falha ao kickar esta pessoa!`"
+    PERSON_ANONYMOUS = "Este utilizador é anónimo"
+    CANNOT_PROMOTE_CHANNEL = "Não consigo promover um canal!"
     NO_ONE_TO_PROMOTE = "`Não há ninguém para promover!`"
     NOT_USER = "`O Username ou ID dado não é um utilizador!`"
     CANNOT_PROMOTE_SELF = "`Não me posso promover a mim próprio!`"
@@ -42,6 +44,7 @@ class AdminText(object): # Admin module
     EMOJI_NOT_ALLOWED = "`Não são permitidos emojis nos títulos de administradores`"
     GET_ENTITY_FAILED = "Falha ao obter identidade."
     PROMOTE_FAILED = "`Falha ao promover esta pessoa.`"
+    CANNOT_DEMOTE_CHANNEL = "Não consigo despromover um canal!"
     NO_ONE_TO_DEMOTE = "`Não há ninguém para despromover`"
     CANNOT_DEMOTE_SELF = "`Não posso despromover-me a mim próprio!`"
     DEMOTED_ALREADY = "`Esta pessoa já é um mortal.`"
@@ -92,6 +95,13 @@ class SystemToolsText(object):
     RESTART_LOG = "O Userbot está a reiniciar!"
     RESTARTED = "Reinicio completo!"
     NO_GITHUB = "Não disponível"
+    STORAGE = "Armazenamento"
+    STORAGE_TOTAL = "Total"
+    STORAGE_USED = "Usado"
+    STORAGE_FREE = "Livre"
+    STORAGE_SYSTEM = "Módulos de sistema"
+    STORAGE_USER = "Módulos de utilizador"
+    STORAGE_HDD = "HDD"
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`Não posso apagar esta mensagem`"
@@ -114,6 +124,7 @@ class ChatInfoText(object):
     NO_BOLD = "<b>Não</b>"
     YES = "Sim"
     NO = "Não"
+    DELETED_ACCOUNT = "Conta Excluída"
     CHATINFO = "<b>INFO DO CHAT:</b>\n"
     CHAT_ID = "ID: <code>{}</code>\n"
     CHAT_TYPE = "Tipo de chat: {} ({})\n"  # group/channel, private/public
