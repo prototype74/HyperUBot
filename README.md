@@ -31,6 +31,7 @@ We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier, and str
 | Android ([Termux](https://play.google.com/store/apps/details?id=com.termux&hl=en)) | [SETUP_Termux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Termux.md) |
 | Arch Based Distros (Native Linux) | [SETUP_ArchBasedLinux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_ArchBasedLinux.md) |
 | Debian Based Distros (Native Linux, WSL) | [SETUP_DebianBasedLinux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_DebianBasedLinux.md) |
+| Red Hat Based Distros (Native Linux) | [SETUP_RHELBasedLinux](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_RHELBasedLinux.md) |
 | macOS | [SETUP_macOS.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_MacOS.md) |
 | Windows (PowerShell) | [SETUP_Windows.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Windows.md) |
 | Unsupported Platforms | [Read this...](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Unsupported.md) |
