@@ -7,7 +7,7 @@ It is required to have at least python3.8. To install the following packages, ru
 
 ``sudo pacman -Sy python3 python-pip git neofetch ffmpeg flac nano``
 
-This guide is written specifically to an installation of Arch Linux, however Arch Based Distros (such as Manjaro) should work with no issues either.
+This guide is written specifically to an installation of Arch Linux, however it can be also applicable to Arch Based Distros (such as Manjaro).
 
 ## 1. Clone the userbot repo.
 
@@ -28,7 +28,7 @@ In the bot's main directory (the HyperUBot folder that you cloned in the previou
 
 This should install all the bot's requirements. After this command is done, and if it ran well, you are ready to advance to #3.
 
-**Note**: By default, Arch does not have $USER/.local/bin in the PATH environment variable, which is why it is recommended to install the python requirements as sudo. **Everything else however does not require sudo privileges, so don't run it as sudo!**
+**Note**: By default, Arch does not have $USER/.local/bin in the PATH environment variable, which is why it is recommended to install the userbot requirements as sudo. **Everything else however does not require sudo privileges, so don't run it as sudo!**
 
 ## 3. Configuring the bot.
 
