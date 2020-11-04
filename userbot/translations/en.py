@@ -1,3 +1,5 @@
+# English Language file
+#
 # Copyright 2020 nunopenim @github
 # Copyright 2020 prototype74 @github
 #
@@ -582,6 +584,8 @@ class ModuleUsages(object):
          \nUsage: Type .shutdown to shutdown the bot. \
          \n\n`.reboot`\
          \nUsage: Reboots the bot! \
+         \n\n`.storage`\
+         \nUsage: Shows info on bot server HDD storage. \
          \n\n`.sysd`\
          \nUsage: Type .sysd to get system details. (Requires neofetch installed)"
 
