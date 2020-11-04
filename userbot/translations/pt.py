@@ -350,15 +350,25 @@ class GeneralMessages(object):
 class ModulesUtilsText(object):
     INVALID_ARG = "`Argumento \"{}\" inválido!`"
     USAGE = "Utilização"
-    #NUMBER_OF_MODULE = "nome do módulo"  !! retranslation needed !!
+    NUMBER_OF_MODULE = "número do módulo"
     AVAILABLE_MODULES = "Módulos disponíveis"
     DISABLED_MODULES = "Módulos desativados"
     NAME_MODULE = "**Módulo {}**"
-    #MISSING_NUMBER_MODULE = "`Falta o nome do módulo`"  !! retranslation needed !!
-    #MODULE_NOT_AVAILABLE = "`Módulo \"{}\" não encontrado!`"  !! retranslation needed !!
+    MISSING_NUMBER_MODULE = "`Falta o número do módulo`"
+    MODULE_NOT_AVAILABLE = "`Módulo número \"{}\" não encontrado!`"
     MODULE_NO_DESC = "__Descrição não disponível__"
     MODULE_NO_USAGE = "__Utilização não disponível__"
     ASTERISK = "__* Módulo de user desinstalável__"
+    UNKNOWN = "Desconhecido"
+    SYSTEM = "Sistema"
+    SYSTEM_MODULES = "Módulos de sistema"
+    USER = "Utilizador"
+    USER_MODULES = "Módulos de utilizador"
+    PKG_NAME = "Nome do pacote"
+    MODULE_TYPE = "Tipo de módulo"
+    VERSION = "Versão"
+    SIZE = "Tamanho"
+    INSTALL_DATE = "Data de instalação"
 
 class WebToolsText(object):
     PING_SPEED = "Round-Trip Time: "
