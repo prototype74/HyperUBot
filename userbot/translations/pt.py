@@ -218,6 +218,7 @@ class MemberInfoText(object):
     INVITE_USERS = "Adicionar/convidar utilizadores"
     PIN_MESSAGES = "Fixar mensagens"
     ADD_ADMINS = "Adicionar administradores"
+    ANONYMOUS = "Enviar anonimamente"
     ROOT_RIGHTS = "Permissões root"
     SEND_MESSAGES = "Enviar mensagens"
     SEND_MEDIA = "Enviar média"
