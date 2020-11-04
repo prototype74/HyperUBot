@@ -394,12 +394,13 @@ class CasIntText(object):
     TOO_MANY_CAS = "`Muitos utilizadores banidos no CAS. A fazer upload da lista como ficheiro...`"
     FAIL_UPLOAD_LIST = "`Falha ao efetuar upload da lista`"
     SEND_MEDIA_FORBIDDEN = "`O envio de média neste chat não é permitido`"
-    #UPDATER_CONNECTING = "`Conectando...`"  !! retranslation needed !!
-    #UPDATER_DOWNLOADING = "`A fazer Download...`"  !! retranslation needed !!
+    UPDATER_CONNECTING = "`Conectando ao servidor CAS...`"
+    UPDATER_DOWNLOADING = "`A fazer Download da última informação CAS...`"
     FAIL_APPEND_CAS = "`Falha ao adicionar dados do CAS`"
     UPDATE_SUCCESS = "`Atualizado o CSV dos dados do CAS`"
     NO_CONNECTION = "`Falha na conecção com o servidor do CAS`"
-    #TIMEOUT = "`Impossivel atualizar o CSV dado que o tempo de ligação excedeu o limite`"  !! retranslation needed !!
+    RETRY_CONNECTION = "`Servidor CAS não responde!\nA tentar estabelecer ligação...{}`"
+    TIMEOUT = "`Impossivel atualizar o CSV dado que o tempo de ligação excedeu o limite`"
     UPDATE_FAILED = "`Falha ao atualizar os dados do CSV do CAS`"
     GIVEN_ENT_INVALID = "`O ID, nome ou link dado é inváldio`"
     AUTO_UPDATE = "`A realizar um auto-update dos dados do CAS...`"
@@ -415,7 +416,9 @@ class CasIntText(object):
     CAS_DATA = "DADOS DO CAS"
     RESULT = "Resultado"
     OFFENSES = "Total de Ofensas"
+    BANNED = "Banido"
     BANNED_SINCE = "Banido desde"
+    NOT_BANNED = "Não banido"
     USER_DETECTED = "Aviso! `{}` membro está banido no CAS em **{}**"  # count, chat title
     USERS_DETECTED = "Aviso! `{}` membros estão banidos no CAS em **{}**"  # count, chat title
     NO_USERS = "Nenhum utilizador banido no CAS encontrado em **{}**"
