@@ -1,7 +1,7 @@
 # HyperUBot Guide - Set up in macOS
 ## 0. Pre-requisites
 
-The HyperUBot project has only been tested in macOS Catalina 10.15.3, 10.15.4, 10.15.5 and 10.15.6, so these are the only supported versions. When the new Big Sur gets stable, if changes are needed, the guide will be updated.
+The HyperUBot project has only been tested in macOS Catalina 10.15, so this is the only supported version. When the new Big Sur gets stable, if changes are needed, the guide will be updated.
 
 You will need [The Homebrew Package Manager](https://brew.sh/) for macOS. It is easy to setup, as explained in the front page of their website.
 
