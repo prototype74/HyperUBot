@@ -280,6 +280,10 @@ class ScrappersText(object):
     STT_REQ_FAILED = "Resultado do pedido inválido!"
     STT_OUTPUT_TOO_LONG = "`O output do Speech-to-text é demasiado longo!`"
     UNABLE_TO_STT = "`Impossível realizar speech-to-text`"
+    SCRLANG = "A linguagem do módulo de Scrappers do HyperUBot está definida para: `{}`"
+    MULT_ARGS = "`Por favor, use apenas um argumento!`"
+    INV_CT_CODE = "Valor inválido! Use um dos seguintes códigos de duas letras diponíveis!\n\nCódigos disponíveis:\n{}"
+    SUCCESS_LANG_CHANGE = "Linguagem definida com sucesso para: `{}`"
 
 class UserText(object):
     LEAVING = "`A abandonar chat...`"
