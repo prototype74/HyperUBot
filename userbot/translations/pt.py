@@ -1,4 +1,4 @@
-# Portuguese Language file!
+# Portuguese Language file
 #
 # Copyright 2020 nunopenim @github
 # Copyright 2020 prototype74 @github
@@ -570,6 +570,10 @@ class ModuleUsages(object):
           \n\n`.tts` [opcional: <text>] ou resposta\
           \nUso: Converte o texto dado em mensagem de voz. (text-to-speech).\
           \n\n`.stt` resposta apenas\
+          \n\n`.scrlang`\
+          \nUso: Apresenta a linguagem para a qual o bot vai traduzir ou realizar TTS para. \
+          \n\n`.setlang` [ISO value] \
+          \nUsage: Define uma nova linguagem para o tradutor. \
           \nUso: Converte a mensagem de voz em texto. (speech-to-text).\
           \n\n`.currency` <amount> <From ISO> [opcional: <To ISO>] \
           \nUso: Converte a Moeda dada para uma Moeda de destino (defeito: USD). Precisa código ISO da Moeda (EUR, USD, JPY etc.)."
@@ -580,6 +584,8 @@ class ModuleUsages(object):
          \nUso: Desliga o bot.\
          \n\n`.reboot`\
          \nUso: Reinicia o bot.\
+         \n\n`.storage`\
+         \nUso: Apresenta informação sobre o armazenamento do servidor \
          \n\n`.sysd`\
          \nUso: Apresenta detalhes de sistema (Requer neofetch)"
 
