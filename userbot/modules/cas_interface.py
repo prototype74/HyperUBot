@@ -104,7 +104,7 @@ async def casupdater(event, showinfo: bool, tries: int = 0):
             await event.edit(msgRep.RETRY_CONNECTION.format(tries))
             sleep(0.5)
             tries += 1
-            await casupdater(event, showinfo=True, tries=tries)
+            await casupdater(event, showinfo, tries)
         else:
             log.warning(t)
             await event.edit(msgRep.TIMEOUT)
