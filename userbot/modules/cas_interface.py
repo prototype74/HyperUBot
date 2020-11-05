@@ -82,9 +82,6 @@ def isCSVoutdated() -> bool:
     return True if duration.days >= 1 else False
 
 async def casupdater(event, showinfo: bool, tries: int = 0):
-    if showinfo:
-        await event.edit(msgRep.UPDATER_CONNECTING)
-
     try:
         request = get("https://api.cas.chat/export.csv", timeout=10)
         if showinfo:
@@ -107,7 +104,7 @@ async def casupdater(event, showinfo: bool, tries: int = 0):
             await event.edit(msgRep.RETRY_CONNECTION.format(tries))
             sleep(0.5)
             tries += 1
-            await casupdater(event, False, tries)
+            await casupdater(event, showinfo=True, tries=tries)
         else:
             log.warning(t)
             await event.edit(msgRep.TIMEOUT)
@@ -120,6 +117,7 @@ async def casupdater(event, showinfo: bool, tries: int = 0):
 @tgclient.on(NewMessage(pattern=r"^\.casupdate$", outgoing=True))
 async def casupdate(event):
     log.info("Manual CAS CSV data update started")
+    await event.edit(msgRep.UPDATER_CONNECTING)
     await casupdater(event, showinfo=True)
     return
 
