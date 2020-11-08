@@ -16,6 +16,8 @@ from telethon.tl.functions.photos import GetUserPhotosRequest
 from logging import getLogger
 from os.path import basename
 
+MAXINT = 2147483647 # I sure do love hammering down shit
+
 log = getLogger(__name__)
 
 @tgclient.on(NewMessage(pattern=r"^\.userid(?: |$)(.*)", outgoing=True))
@@ -94,7 +96,7 @@ async def stats(event):
     await event.edit(msgRep.STATS_PROCESSING)
 
     try:
-        block_obj = await event.client(GetBlockedRequest(offset=0, limit=1000))
+        block_obj = await event.client(GetBlockedRequest(offset=0, limit=MAXINT))
         if block_obj.blocked:
             for user in block_obj.blocked:
                 blocked_ids.append(user.peer_id.user_id)
