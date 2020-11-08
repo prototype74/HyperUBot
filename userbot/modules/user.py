@@ -94,7 +94,7 @@ async def stats(event):
     await event.edit(msgRep.STATS_PROCESSING)
 
     try:
-        block_obj = await event.client(GetBlockedRequest(offset=0, limit=0))
+        block_obj = await event.client(GetBlockedRequest(offset=0, limit=1000))
         if block_obj.blocked:
             for user in block_obj.blocked:
                 blocked_ids.append(user.peer_id.user_id)
