@@ -128,7 +128,7 @@ def isRemoteCMD(event, chat_id: int) -> bool:
 def module_info(name: str, version: str) -> dict:
     return {"name": name, "version": version}
 
-def terminal(commands: list):
+def shell_runner(commands: list):
     full_cmd = ""
     for cmd in commands:
         full_cmd += cmd + " "
