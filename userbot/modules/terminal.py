@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import module_info
+from userbot.include.aux_funcs import module_info, terminal
 from userbot.include.language_processor import TerminalText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from os.path import basename
@@ -16,15 +16,11 @@ from subprocess import check_output, CalledProcessError
 @tgclient.on(NewMessage(pattern=r"^\.shell(?: |$)(.*)", outgoing=True))
 async def bash(command):
     commandArray = command.text.split(" ")
-    bashCmd = ""
-    for word in commandArray: # building the command
-        if not word == ".shell": # Probably I should find a way not to have this hardcoded
-            bashCmd += word + " "
-    try:
-        cmd_output = check_output(bashCmd, shell=True).decode()
-    except CalledProcessError:
+    del(commandArray[0])
+    cmd_output = terminal(commandArray)
+    if cmd_output == None:
         cmd_output = msgRep.BASH_ERROR
-    output = "$ " + bashCmd + "\n\n" + cmd_output
+    output = "$ " + commandArray[0] + "\n\n" + cmd_output
     await command.edit("`" + output + "`")
     return
 

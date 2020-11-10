@@ -12,7 +12,7 @@ from telethon.tl.types import PeerUser, PeerChannel, User
 from telethon.tl.functions.users import GetFullUserRequest
 from logging import getLogger
 import os
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 from asyncio import create_subprocess_exec as asyncr
 from asyncio.subprocess import PIPE as asyncPIPE
 from shutil import which
@@ -128,7 +128,15 @@ def isRemoteCMD(event, chat_id: int) -> bool:
 def module_info(name: str, version: str) -> dict:
     return {"name": name, "version": version}
 
-# Systools/Webtools
+def terminal(commands: list):
+    full_cmd = ""
+    for cmd in commands:
+        full_cmd += cmd + " "
+    try:
+        return check_output(full_cmd, shell=True).decode()
+    except CalledProcessError:
+        return None
+
 def pinger(address):
     if os.name == "nt":
         output = check_output("ping -n 1 " + address + " | findstr time*", shell=True).decode()
@@ -168,7 +176,6 @@ async def getGitReview():
         commit = verdiv[2]
     return commit
 
-# Package Manager
 def sizeStrMaker(size: float, value: int = 0):
     if size < 1024:
         size_units = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
