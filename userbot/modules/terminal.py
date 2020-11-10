@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import module_info, terminal
+from userbot.include.aux_funcs import module_info, shell_runner
 from userbot.include.language_processor import TerminalText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from os.path import basename
@@ -16,7 +16,7 @@ from os.path import basename
 async def bash(command):
     commandArray = command.text.split(" ")
     del(commandArray[0])
-    cmd_output = terminal(commandArray)
+    cmd_output = shell_runner(commandArray)
     if cmd_output == None:
         cmd_output = msgRep.BASH_ERROR
     output = "$ " + commandArray[0] + "\n\n" + cmd_output
