@@ -11,7 +11,6 @@ from userbot.include.aux_funcs import module_info, terminal
 from userbot.include.language_processor import TerminalText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from telethon.events import NewMessage
 from os.path import basename
-from subprocess import check_output, CalledProcessError
 
 @tgclient.on(NewMessage(pattern=r"^\.shell(?: |$)(.*)", outgoing=True))
 async def bash(command):
