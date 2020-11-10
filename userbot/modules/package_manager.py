@@ -175,9 +175,6 @@ async def universe_checker(msg):
         if len(cmd_args) == 1:
             await msg.edit(msgRep.NO_UN_NAME)
             return
-        # if len(cmd_args) > 2:
-        #    await msg.edit(msgRep.MULTIPLE_NAMES)
-        #    return
         del(cmd_args[0])
         mods_uninstall = cmd_args[0].split()
         modNames = ""
