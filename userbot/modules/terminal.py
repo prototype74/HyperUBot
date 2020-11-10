@@ -14,12 +14,13 @@ from os.path import basename
 
 @tgclient.on(NewMessage(pattern=r"^\.shell(?: |$)(.*)", outgoing=True))
 async def bash(command):
+    full_cmd_str = command.pattern_match.group(1)
     commandArray = command.text.split(" ")
     del(commandArray[0])
     cmd_output = shell_runner(commandArray)
     if cmd_output is None:
         cmd_output = msgRep.BASH_ERROR
-    output = "$ " + commandArray[0] + "\n\n" + cmd_output
+    output = "$ " + full_cmd_str + "\n\n" + cmd_output
     await command.edit("`" + output + "`")
     return
 
