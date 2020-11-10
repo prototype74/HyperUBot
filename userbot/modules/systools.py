@@ -156,6 +156,15 @@ async def sysd(event):
         await event.edit(msgRep.SYSD_NEOFETCH_REQ)
     return
 
+@tgclient.on(NewMessage(pattern=r"^\.sendlog$", outgoing=True))
+async def send_log(event):
+    chat = await event.get_chat()
+    await event.edit(msgRep.UPLD_LOG)
+    time.sleep(1)
+    await event.client.send_file(chat, "hyper.log")
+    await event.edit(msgRep.SUCCESS_UPLD_LOG)
+    return
+
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.SYSTOOLS_DESC})
 MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SYSTOOLS_USAGE})
 MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="System Tools", version=VERSION)})

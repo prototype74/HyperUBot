@@ -102,6 +102,8 @@ class SystemToolsText(object):
     STORAGE_SYSTEM = "Módulos de sistema"
     STORAGE_USER = "Módulos de utilizador"
     STORAGE_HDD = "HDD"
+    UPLD_LOG = "`A fazer upload do log...`"
+    SUCCESS_UPLD_LOG = "O Log do HyperUBot foi enviado com sucesso!"
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`Não posso apagar esta mensagem`"

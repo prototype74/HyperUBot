@@ -170,6 +170,8 @@ class SystemToolsText(object):
     STORAGE_SYSTEM = getLangString(lang, _getframe().f_code.co_name, "STORAGE_SYSTEM")
     STORAGE_USER = getLangString(lang, _getframe().f_code.co_name, "STORAGE_USER")
     STORAGE_HDD = getLangString(lang, _getframe().f_code.co_name, "STORAGE_HDD")
+    UPLD_LOG = getLangString(lang, _getframe().f_code.co_name, "UPLD_LOG")
+    SUCCESS_UPLD_LOG = getLangString(lang, _getframe().f_code.co_name, "SUCCESS_UPLD_LOG")
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = getLangString(lang, _getframe().f_code.co_name, "CANNOT_DEL_MSG")

@@ -102,6 +102,8 @@ class SystemToolsText(object):
     STORAGE_SYSTEM = "System modules"
     STORAGE_USER = "User modules"
     STORAGE_HDD = "HDD"
+    UPLD_LOG = "`Uploading userbot log...`"
+    SUCCESS_UPLD_LOG = "HyperUBot Log successfully uploaded!"
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`I can't delete this message`"
@@ -587,7 +589,10 @@ class ModuleUsages(object):
          \n\n`.storage`\
          \nUsage: Shows info on bot server HDD storage. \
          \n\n`.sysd`\
-         \nUsage: Type .sysd to get system details. (Requires neofetch installed)"
+         \nUsage: Type .sysd to get system details. (Requires neofetch installed)\
+         \n\n`.sendlog`\
+         \nUsage: Uploads the log file to the current chat."
+
 
     USER_USAGE = "`.info` [optional: <username/id>] or reply\
         \nUsage: Gets info of an user.\
