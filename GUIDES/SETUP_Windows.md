@@ -33,7 +33,7 @@ Change directory to it, so we advance to the next step:
 
 In the bot's main directory (the HyperUBot folder that you cloned in the previous step), run the following command:
 
-`python3 -m pip install -r requirements.txt`
+`python -m pip install -r requirements.txt`
 
 This should install all the bot's requirements. After this command is done, and if it ran well, you are ready to advance to #3.
 
@@ -101,7 +101,7 @@ If both are configured there, then only `config.env` will be loaded.
 We have included, in the root folder of the userbot, a python script to generate a string session.
 This is recommended, as you no longer need to log in everytime. To do such, you can run the command:
 
-`python3 generate_session.py`
+`python generate_session.py`
 
 It will ask you for your phone number and the login code message. After obtaining the String session,
 you can copy the value, and the paste it in the `STRING_SESSION` configuration field, between the ""
@@ -127,7 +127,7 @@ If you need to add more repositories, separate them by commas (for example ["nun
 If your configuration is valid, and everything has been set-up correctly, you are ready to start!
 Do such by running the following command:
 
-`python3 -m userbot`
+`python -m userbot`
 
 In the first execution, it can ask for a phone number and for the confirmation codes/2 step auth password.
 This is normal, and we do not register this information.
