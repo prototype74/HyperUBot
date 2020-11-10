@@ -17,7 +17,7 @@ async def bash(command):
     commandArray = command.text.split(" ")
     del(commandArray[0])
     cmd_output = shell_runner(commandArray)
-    if cmd_output == None:
+    if cmd_output is None:
         cmd_output = msgRep.BASH_ERROR
     output = "$ " + commandArray[0] + "\n\n" + cmd_output
     await command.edit("`" + output + "`")
