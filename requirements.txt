@@ -1,4 +1,4 @@
-Telethon>=1.17.5
+Telethon==1.17.5
 python-dotenv
 uptime>=3.0.1
 emoji
