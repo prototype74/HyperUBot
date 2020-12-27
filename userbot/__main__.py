@@ -18,7 +18,7 @@ class _Modules:
     def __init__(self):
         self.__imported_module = None
         self.__load_modules_count = 0
-        self.__not_load_modules = getConfig("NOT_LOAD_MODULES")
+        self.__not_load_modules = getConfig("NOT_LOAD_MODULES", [])
 
     def __load_modules(self) -> tuple:
         all_modules = []
