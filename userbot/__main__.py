@@ -56,8 +56,6 @@ class _Modules:
                 return True
             except ModuleNotFoundError as mnfe:
                 raise ModuleNotFoundError(mnfe)
-            except ImportError as ie:
-                raise ImportError(ie)
             except Exception:
                 log.error(f"Unable to start module '{module}' due to an unhandled exception", exc_info=True)
             return False
@@ -83,8 +81,6 @@ class _Modules:
             return True
         except ModuleNotFoundError as mnfe:
             log.error(f"Unable to load module: {mnfe}", exc_info=True)
-        except ImportError as ie:
-            log.error(f"Unable to import module: {ie}", exc_info=True)
         return False
 
     def loaded_modules(self) -> int:
