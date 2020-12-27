@@ -6,6 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot.sysutils.configuration import addConfig, getConfig
 from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
 from telethon import TelegramClient, version
 from telethon.sessions import StringSession
@@ -28,7 +29,7 @@ shandler.setFormatter(LogColorFormatter())
 basicConfig(handlers=[fhandler, shandler], level=INFO)
 
 PROJECT = "HyperUBot"
-VERSION = "2.3.1"
+VERSION = "3.0.0"
 OS = system()  # Current Operating System
 
 try:
@@ -58,9 +59,9 @@ if (version_info.major, version_info.minor) < (3, 8):
 
 # Check Telethon version
 telethon_version = tuple(map(int, version.__version__.split(".")))
-if telethon_version < (1, 17, 5):
-    log.error("Telethon version 1.17.5+ is required! " +
-              f"Please update Telethon to v1.17.5 or newer (current version: {version.__version__}).")
+if telethon_version < (1, 18, 2):
+    log.error("Telethon version 1.18.2+ is required! " +
+              f"Please update Telethon to v1.18.2 or newer (current version: {version.__version__}).")
     quit(1)
 
 CURR_PATH = path.dirname(__file__)
@@ -77,63 +78,95 @@ def strlist_to_list(strlist: str) -> list:
         list_obj = []
     return list_obj
 
+def str_to_bool(strbool: str) -> bool:
+    if strbool in ("True", "true"):
+        return True
+    elif strbool in ("False", "false"):
+        return False
+    raise ValueError(f"{strbool} is not a bool")
+
+log.info("Loading configurations")
+
 if path.exists(CURR_PATH + "config.env"):
+    len_before = len(environ.items())
     load_dotenv(CURR_PATH + "config.env")
-    SAMPLE_CONFIG = environ.get("SAMPLE_CONFIG", None)
-    if SAMPLE_CONFIG:
+    loaded_env =  {key: value for key, value in list(environ.items())[len_before:]}
+    for key, value in loaded_env.items():
+        if not key in ("API_KEY", "API_HASH", "STRING_SESSION"):
+            if key == "TEMP_DL_DIR":
+                if OS and OS.lower().startswith("win"):
+                    value += "\\"
+                else:
+                    value += "/"
+            if value.startswith("[") and value.endswith("]"):
+                addConfig(key, strlist_to_list(value))
+            elif value in ("True", "true", "False", "false"):
+                addConfig(key, str_to_bool(value))
+            else:  # default case
+                addConfig(key, int(value) if value.isnumeric() else value)
+    if getConfig("SAMPLE_CONFIG", None):
         log.error("Please remove SAMPLE_CONFIG from config.env!")
         quit(1)
     API_KEY = environ.get("API_KEY", None)
     API_HASH = environ.get("API_HASH", None)
-    LOGGING = environ.get("LOGGING", False)
-    LOGGING_CHATID = int(environ.get("LOGGING_CHATID", "0"))
     STRING_SESSION = environ.get("STRING_SESSION", None)
-    TEMP_DL_DIR = environ.get("TEMP_DL_DIR", "./downloads")
-    UBOT_LANG = environ.get("UBOT_LANG", "en")
-    NOT_LOAD_MODULES = strlist_to_list(environ.get("NOT_LOAD_MODULES", "[]"))
-    COMMUNITY_REPOS = strlist_to_list(environ.get("COMMUNITY_REPOS", "[]"))
+    environ["API_KEY"] = "0"
+    environ["API_HASH"] = "None"
+    environ["STRING_SESSION"] = "None"
+    del loaded_env
 elif path.exists(CURR_PATH + "config.py"):
     try:
-        from userbot.config import ConfigClass  # Import here, otherwise error
+        import userbot.config
+        from inspect import getmembers, isclass, isfunction
     except ImportError as ie:
-        log.error(f"Couldn't import ConfigClass: {ie}")
+        log.error(f"Couldn't import configurations: {ie}", exc_info=True)
         quit(1)
-    API_KEY = ConfigClass.API_KEY if hasattr(ConfigClass, "API_KEY") else None
-    API_HASH = ConfigClass.API_HASH if hasattr(ConfigClass, "API_HASH") else None
-    LOGGING = ConfigClass.LOGGING if hasattr(ConfigClass, "LOGGING") else False
-    LOGGING_CHATID = ConfigClass.LOGGING_CHATID if hasattr(ConfigClass, "LOGGING_CHATID") else 0
-    STRING_SESSION = ConfigClass.STRING_SESSION if hasattr(ConfigClass, "STRING_SESSION") else None
-    TEMP_DL_DIR = ConfigClass.TEMP_DL_DIR if hasattr(ConfigClass, "TEMP_DL_DIR") else "./downloads"
-    UBOT_LANG = ConfigClass.UBOT_LANG if hasattr(ConfigClass, "UBOT_LANG") else "en"
-    NOT_LOAD_MODULES = ConfigClass.NOT_LOAD_MODULES if hasattr(ConfigClass, "NOT_LOAD_MODULES") else []
-    COMMUNITY_REPOS = ConfigClass.COMMUNITY_REPOS if hasattr(ConfigClass, "COMMUNITY_REPOS") else []
+    for name, cfgclass in getmembers(userbot.config, isclass):
+        for attr_name in vars(cfgclass):
+            attr_val = getattr(cfgclass, attr_name)
+            if not attr_name.startswith("__") and \
+               not isfunction(attr_val):
+                if not attr_name in ("API_KEY", "API_HASH", "STRING_SESSION"):
+                    if attr_name == "TEMP_DL_DIR":
+                        if OS and OS.lower().startswith("win"):
+                            new_val = attr_val + "\\"
+                        else:
+                            new_val = attr_val + "/"
+                        addConfig(attr_name, new_val)
+                    else:
+                        addConfig(attr_name, attr_val)
+    API_KEY = userbot.config.ConfigClass.API_KEY if hasattr(userbot.config.ConfigClass, "API_KEY") else None
+    API_HASH = userbot.config.ConfigClass.API_HASH if hasattr(userbot.config.ConfigClass, "API_HASH") else None
+    STRING_SESSION = userbot.config.ConfigClass.STRING_SESSION if hasattr(userbot.config.ConfigClass, "STRING_SESSION") else None
+    del userbot.config
 else:
-    log.error("No Config file found! Make sure it's located in ./userbot/config.* or setup your config file first if you didn't. " +
+    log.error("No Config file found! Make sure it's located in \"userbot\" directory or setup your config file first if you didn't. " +
     "Environment and py scripts are supported.")
     quit(1)
 
-if OS and OS.lower().startswith("win"):
-    TEMP_DL_DIR += "\\"
-else:
-    TEMP_DL_DIR += "/"
+log.info("Configurations loaded")
 
 try:
-    if not path.exists(TEMP_DL_DIR):
-        mkdir(TEMP_DL_DIR)
+    if not path.exists(getConfig("TEMP_DL_DIR")):
+        mkdir(getConfig("TEMP_DL_DIR"))
 except OSError:
     log.error("Failed to initialize download directory.")
 
 if not API_KEY:
-    log.error("API KEY is empty! Obtain your API KEY from https://my.telegram.org if you don't have one.")
+    log.error("API_KEY is empty! Obtain your API KEY from https://my.telegram.org if you don't have one.")
     quit(1)
 
 if not API_HASH:
-    log.error("API HASH is empty! Obtain your API HASH from https://my.telegram.org if you don't have one.")
+    log.error("API_HASH is empty! Obtain your API HASH from https://my.telegram.org if you don't have one.")
     quit(1)
 
 try:
     if STRING_SESSION:
         tgclient = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
+        # delete vars after tgclient
+        del API_KEY
+        del API_HASH
+        del STRING_SESSION
     else:
         log.error("STRING SESSION is empty!")
         log.error("Please run 'generate_session.py' to get a new string session or if present, set your string session to STRING_SESSION in your config.* file")
@@ -144,9 +177,9 @@ except Exception as e:
     quit(1)
 
 # SYSVARS
-ALL_MODULES = []
-LOAD_MODULES = []
-MODULE_DESC = {}
-MODULE_DICT = {}
-MODULE_INFO = {}
-USER_MODULES = []
+ALL_MODULES = []  # [sys + user] name of modules
+LOAD_MODULES = {}  # {Module name: isRunning}
+USER_MODULES = []  # [Name of user module]
+MODULE_DESC = {}  # {Module name: MODULE_DESC}
+MODULE_DICT = {}  # {Module name: MODULE_USAGE}
+MODULE_INFO = {}  # {Module name: MODULE_INFO}

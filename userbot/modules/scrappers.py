@@ -6,11 +6,12 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, TEMP_DL_DIR, UBOT_LANG, VERSION
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import ScrappersText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 from telethon.errors import ChatSendMediaForbiddenError, MessageTooLongError
-from telethon.events import NewMessage
 from telethon.tl.types import Document, DocumentAttributeAudio, DocumentAttributeFilename
 from datetime import datetime
 from currency_converter import CurrencyConverter
@@ -26,8 +27,10 @@ from urllib.request import urlretrieve
 from zipfile import BadZipFile, ZipFile
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
+TEMP_DL_DIR = getConfig("TEMP_DL_DIR")
 CC_CSV_PATH = TEMP_DL_DIR + "currency.csv"
-DEST_LANG = UBOT_LANG
+DEST_LANG = getConfig("UBOT_LANG")
 
 def build_supported_langs():
     ret_val = ""
@@ -35,12 +38,12 @@ def build_supported_langs():
         ret_val += "`{}`: {}\n".format(i, LANGUAGES[i])
     return ret_val
 
-@tgclient.on(NewMessage(pattern=r"^\.scrlang$", outgoing=True))
+@ehandler.on(pattern=r"^\.scrlang$", outgoing=True)
 async def lang_check(event):
     await event.edit(msgRep.SCRLANG.format(LANGUAGES[DEST_LANG]))
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.setlang(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.setlang(?: |$)(.*)", outgoing=True)
 async def set_lang(event):
     global DEST_LANG
     args = event.pattern_match.group(1).split()
@@ -55,7 +58,7 @@ async def set_lang(event):
     await event.edit(msgRep.SUCCESS_LANG_CHANGE.format(LANGUAGES[args]))
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.trt(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.trt(?: |$)(.*)", outgoing=True)
 async def translate(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -97,7 +100,7 @@ async def translate(event):
 
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.tts(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.tts(?: |$)(.*)", outgoing=True)
 async def text_to_speech(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -134,7 +137,7 @@ async def text_to_speech(event):
 
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.stt$", outgoing=True))
+@ehandler.on(pattern=r"^\.stt$", outgoing=True)
 async def speech_to_text(event):
     """ Note: telethon may borrow a different DC id to download audio """
     if event.reply_to_msg_id:
@@ -247,7 +250,7 @@ def update_currency_data():
 
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.currency(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.currency(?: |$)(.*)", outgoing=True)
 async def cc(event):
     args_from_event = event.pattern_match.group(1).split(" ", 2)
     if len(args_from_event) == 3:

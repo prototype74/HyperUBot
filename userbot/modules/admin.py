@@ -6,21 +6,23 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD, module_info
 from userbot.include.language_processor import AdminText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 from telethon.errors import UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError, AdminRankEmojiNotAllowedError, ChatNotModifiedError
-from telethon.events import NewMessage
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
-from telethon.tl.functions.messages import UpdatePinnedMessageRequest
 from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticipantsAdmins, User, Channel, PeerUser, PeerChannel
 from asyncio import sleep
 from logging import getLogger
 from os.path import basename
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
+LOGGING = getConfig("LOGGING")
 
-@tgclient.on(NewMessage(pattern=r"^\.adminlist(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.adminlist(?: |$)(.*)", outgoing=True)
 async def adminlist(event):
     arg = event.pattern_match.group(1)
     if arg:
@@ -62,7 +64,7 @@ async def adminlist(event):
     return
 
 
-@tgclient.on(NewMessage(pattern=r"^\.ban(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.ban(?: |$)(.*)", outgoing=True)
 async def ban(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -112,7 +114,7 @@ async def ban(event):
     return
 
 
-@tgclient.on(NewMessage(pattern=r"^\.unban(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.unban(?: |$)(.*)", outgoing=True)
 async def unban(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -159,7 +161,7 @@ async def unban(event):
     return
 
 
-@tgclient.on(NewMessage(pattern=r"^\.kick(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.kick(?: |$)(.*)", outgoing=True)
 async def kick(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -205,7 +207,7 @@ async def kick(event):
     return
 
 
-@tgclient.on(NewMessage(pattern=r"^\.promote(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.promote(?: |$)(.*)", outgoing=True)
 async def promote(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -302,7 +304,7 @@ async def promote(event):
     return
 
 
-@tgclient.on(NewMessage(pattern=r"^\.demote(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.demote(?: |$)(.*)", outgoing=True)
 async def demote(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -382,7 +384,7 @@ async def demote(event):
     return
 
 
-@tgclient.on(NewMessage(pattern=r"^\.mute(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.mute(?: |$)(.*)", outgoing=True)
 async def mute(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -433,7 +435,7 @@ async def mute(event):
     return
 
 
-@tgclient.on(NewMessage(pattern=r"^\.unmute(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.unmute(?: |$)(.*)", outgoing=True)
 async def unmute(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -484,7 +486,7 @@ async def unmute(event):
     return
 
 
-@tgclient.on(NewMessage(pattern=r"^\.delaccs$", outgoing=True))
+@ehandler.on(pattern=r"^\.delaccs$", outgoing=True)
 async def delaccs(event):
     chat = await event.get_chat()
     if type(chat) is User:
@@ -513,43 +515,6 @@ async def delaccs(event):
                             chat_link=chat.username if hasattr(chat, "username") else None, chat_id=chat.id)
     else:
         await event.edit(msgRep.NO_DEL_ACCOUNTS)
-
-    return
-
-
-@tgclient.on(NewMessage(pattern=r"^\.pin(?: |$)(.*)", outgoing=True))
-async def pin(event):
-    if event.reply_to_msg_id:
-        msg_id = event.reply_to_msg_id
-    else:
-        await event.edit(msgRep.REPLY_TO_MSG)
-        return
-
-    chat = await event.get_chat()
-    if not chat:
-        await event.edit(msgRep.FAIL_CHAT)
-        return
-
-    if type(chat) is User and not chat.is_self:
-        await event.edit(msgRep.NO_GROUP_CHAN)
-        return
-
-    arg_from_event = event.pattern_match.group(1)
-    silently = False if arg_from_event.lower() == "loud" else True
-    try:
-        await event.client(UpdatePinnedMessageRequest(chat.id, msg_id, silent=silently))
-        await event.edit(msgRep.PIN_SUCCESS)
-        if LOGGING:
-            await event_log(event, "PINNED MESSAGE", chat_title=chat.title if hasattr(chat, "title") else None,
-                            chat_link=chat.username if hasattr(chat, "username") else None,
-                            chat_id=chat.id, custom_text=f"{msgRep.LOG_PIN_MSG_ID}: {event.reply_to_msg_id}")
-    except ChatNotModifiedError:
-        await event.edit(msgRep.PINNED_ALREADY)
-    except ChatAdminRequiredError:
-        await event.edit(msgRep.NO_ADMIN)
-    except Exception as e:
-        log.warning(e)
-        await event.edit(msgRep.PIN_FAILED)
 
     return
 

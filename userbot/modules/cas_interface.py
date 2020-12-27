@@ -8,11 +8,12 @@
 #
 # This module is powered by Combot Anti-Spam (CAS) system (https://cas.chat)
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION, TEMP_DL_DIR
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 import userbot.include.cas_api as cas_api
 from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import CasIntText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from telethon.events import NewMessage
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 from telethon.errors import ChatAdminRequiredError, MessageTooLongError, ChatSendMediaForbiddenError
 from telethon.tl.types import User, Chat, Channel, PeerUser, PeerChannel
 from datetime import datetime
@@ -23,7 +24,8 @@ from requests import get, ConnectionError, Timeout
 from time import sleep
 
 log = getLogger(__name__)
-CAS_CSV = TEMP_DL_DIR + "export.csv"
+ehandler = EventHandler(log)
+CAS_CSV = getConfig("TEMP_DL_DIR") + "export.csv"
 CAS_USER_IDS = []
 
 def updateCASList() -> bool:
@@ -60,7 +62,7 @@ def createCASFile(input_text: str, filename: str) -> tuple:
 async def casSendAsFile(event, input_text: str):
     await event.edit(msgRep.TOO_MANY_CAS)
     try:
-        filename, success = createCASFile(input_text, TEMP_DL_DIR + "caslist.txt")
+        filename, success = createCASFile(input_text, getConfig("TEMP_DL_DIR") + "caslist.txt")
         if success:
             await event.client.send_file(event.chat_id, filename)
         else:
@@ -114,14 +116,14 @@ async def casupdater(event, showinfo: bool, tries: int = 0):
 
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.casupdate$", outgoing=True))
+@ehandler.on(pattern=r"^\.casupdate$", outgoing=True)
 async def casupdate(event):
     log.info("Manual CAS CSV data update started")
     await event.edit(msgRep.UPDATER_CONNECTING)
     await casupdater(event, showinfo=True)
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.cascheck(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.cascheck(?: |$)(.*)", outgoing=True)
 async def cascheck(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()

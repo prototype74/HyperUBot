@@ -8,6 +8,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+NAME = "English"  # default language
+
 class AdminText(object): # Admin module
     ADMINS_IN_CHAT = "Admins in **{}**"
     UNABLE_GET_ADMINS = "`Unable to get admins from this chat`"
@@ -66,16 +68,10 @@ class AdminText(object): # Admin module
     DEL_ACCS_COUNT = "`{} deleted accounts found in this chat`"
     REM_DEL_ACCS_COUNT = "`Removed {} of {} deleted accounts`"  # rem count, total count
     NO_DEL_ACCOUNTS = "`No deleted accounts found in this chat`"
-    REPLY_TO_MSG = "`Reply to a message to pin it`"
-    PIN_SUCCESS = "`Message pinned successfully`"
-    PINNED_ALREADY = "`This message is pinned already`"
-    PIN_FAILED = "`Failed to pin this message`"
-    LOG_PIN_MSG_ID = "Message ID"
 
 class SystemToolsText(object):
     UBOT = "Userbot Project: "
-    SYSTEM_STATUS = "System Status: "
-    ONLINE = "Online!"
+    SYSTEM_STATUS = "System Status"
     VER_TEXT = "Version: "
     USR_TEXT = "User: "
     RTT = "RTT: "
@@ -127,7 +123,7 @@ class ChatInfoText(object):
     YES = "Yes"
     NO = "No"
     DELETED_ACCOUNT = "Deleted Account"
-    CHATINFO = "<b>CHAT INFO:</b>\n"
+    CHATINFO = "<b>Chat info</b>\n\n"
     CHAT_ID = "ID: <code>{}</code>\n"
     CHAT_TYPE = "Chat type: {} ({})\n"  # group/channel, private/public
     CHAT_NAME = "Chat name: {}\n"
@@ -190,7 +186,7 @@ class MemberInfoText(object):
     TIME_FOREVER = "Forever"
     ME_NOT_MEMBER = "`I am not a member of {}`"
     USER_NOT_MEMBER = "`This user isn't a member of {}`"
-    MEMBERINFO = "MEMBER INFO"
+    MEMBERINFO = "Member info"
     GENERAL = "General"
     MINFO_ID = "ID"
     FIRST_NAME = "First Name"
@@ -242,11 +238,15 @@ class MessagesText(object):
     USER_HAS_SENT_REMOTE = "{} has sent `{}` messages in **{}**"  # userlink, msg count, chat title
     CANNOT_COUNT_MSG = "`Can't count messages in this chat!`"
     CANNOT_COUNT_MSG_REMOTE = "`Can't count messages in {}!`"
-    NO_GROUP_CHAN = "`This chat isn't a group or channel`"
-    PICKING_MEMBERS = "`Picking the most active members. This might take up some time...`"
-    FAILED_TO_PICK = "`Failed to pick the most active members`"
-    TOP_USERS_TEXT = "Top **{}** active members in **{}**"  # count, chat title
-    TOP_USERS_MSGS = "Messages"
+    PIN_REPLY_TO_MSG = "`Reply to a message to pin it`"
+    PIN_SUCCESS = "`Message pinned successfully`"
+    PIN_FAILED = "`Failed to pin this message`"
+    LOG_PIN_MSG_ID = "Message ID"
+    UNPIN_REPLY_TO_MSG = "`Reply to a message to unpin it or use \".unpin all\" to unpin all messages`"
+    UNPIN_ALL_SUCCESS = "`All messages unpinned successfully`"
+    UNPIN_SUCCESS = "`Message unpinned successfully`"
+    UNPIN_FAILED = "`Failed to unpin this message`"
+    LOG_UNPIN_ALL_TEXT = "All messages unpinned"
 
 class ScrappersText(object):
     NO_TEXT_OR_MSG = "`No text or message to translate`"
@@ -311,7 +311,7 @@ class UserText(object):
     YES = "Yes"
     NO = "No"
     USR_NO_BIO = "This User has no Bio"
-    USR_INFO = "USER INFO"
+    USR_INFO = "User info"
     FIRST_NAME = "First Name"
     LAST_NAME = "Last Name"
     USERNAME = "Username"
@@ -335,13 +335,16 @@ class UserText(object):
     ID_NOT_ACCESSIBLE = "the ID from {} is not accessible"
     ORG_HAS_ID_OF = "The original author {} has an ID of `{}`"  # name of person, ID
 
+class SystemUtilitiesText(object):
+    CMD_STOPPED = "{} has stopped!"
+
 class GeneralMessages(object):
     ERROR = "ERROR!"
     CHAT_NOT_USER = "`Channels are not User objects`"
     FAIL_FETCH_USER = "`Failed to fetch user`"
     ENTITY_NOT_USER = "`Entity is not an User object`"
     PERSON_ANONYMOUS = "Person is anonymous"
-    CALL_UREQ_FAIL = "`Call User request failed`"
+    CANT_FETCH_REQ_AS_USER = "`Couldn't fetch entity '{}' as an user`"
     LOG_USER = "User"
     LOG_USERNAME = "Username"
     LOG_USER_ID = "User ID"
@@ -360,7 +363,8 @@ class ModulesUtilsText(object):
     MODULE_NOT_AVAILABLE = "`Module number \"{}\" not available`"
     MODULE_NO_DESC = "__No description available__"
     MODULE_NO_USAGE = "__No usage available__"
-    ASTERISK = "__* Uninstallable user module__"
+    ASTERISK = "Uninstallable user module"
+    NOT_RUNNING_INFO = "Not running"
     UNKNOWN = "Unknown"
     SYSTEM = "System"
     SYSTEM_MODULES = "System modules"
@@ -378,7 +382,10 @@ class WebToolsText(object):
     BAD_ARGS = "`Bad arguments!`"
     INVALID_HOST = "`There was a problem parsing the IP/Hostname`"
     PINGER_VAL = "DNS: `{}`\nPing Speed: `{}`"
-    SPD_START = "`Running speed test...`"
+    SPD_TEST_SELECT_SERVER = "Selecting best server"
+    SPD_TEST_DOWNLOAD = "Testing download speed"
+    SPD_TEST_UPLOAD = "Testing upload speed"
+    SPD_PROCESSING = "Processing"
     SPD_FAILED = "Speedtest failed"
     SPD_NO_RESULT = "No result"
     SPD_NO_MEMORY = "Out of memory"
@@ -410,12 +417,12 @@ class CasIntText(object):
     CAS_CHECK_ND = "`CAS data not found. Please use .casupdate command to get the lastest CAS data`"
     PROCESSING = "`Processing...`"
     DELETED_ACCOUNT = "Deleted Account"
-    USER_HEADER = "USER DATA"
+    USER_HEADER = "User data"
     USER_ID = "ID"
     FIRST_NAME = "First name"
     LAST_NAME = "Last name"
     USERNAME = "Username"
-    CAS_DATA = "CAS DATA"
+    CAS_DATA = "CAS data"
     RESULT = "Result"
     OFFENSES = "Total of Offenses"
     BANNED = "Banned"
@@ -496,157 +503,167 @@ class SideloaderText(object):
 
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
-    ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote, etc.\
-                 \n\nNote: most commands in this module require admin privileges to work properly."
+    ADMIN_DESC = "A module to help you to manage your or a friend's group easier. Includes common commands such as ban, unban, promote, etc."\
+                 "\n\nNote: most commands in this module require admin privileges to work properly."
     CHATINFO_DESC = "Get most various information from a channel, group or supergroup such as creation date, message counts, deletions, former name, etc."
-    DELETIONS_DESC = "This module allows you to delete your or in groups messages faster. Someone spammed your group? Use purge command to delete them all!\
-                     \nAll commands in this module require admin privileges to delete other people's messages.\
-                     \n\n**Important: don't abuse this module to delete someone's else whole group history**, for real, just don't..."
-    MEMBERINFO_DESC = "Provides information from a specific group participant like permissions, restriction date, join date, etc.\
-                     \n\nNote: requires admin privileges to access other member's permissions."
-    MESSAGES_DESC = "This module includes commands that work only with messages, such as msgs or topusers."
+    DELETIONS_DESC = "This module allows you to delete your or in groups messages faster. Someone spammed your group? Use purge command to delete them all!"\
+                     "\nAll commands in this module require admin privileges to delete other people's messages."\
+                     "\n\n**Important: don't abuse this module to delete someone's else whole group history**, for real, just don't..."
+    MEMBERINFO_DESC = "Provides information from a specific group participant like permissions, restriction date, join date, etc."\
+                     "\n\nNote: requires admin privileges to access other member's permissions."
+    MESSAGES_DESC = "This module includes commands that work only with messages, such as msgs or pin."
     SCRAPPERS_DESC = "Not exactly what it sounds like, but still this module includes useful features like translation or text-to-speech."
-    SYSTOOLS_DESC = "This module contains a set of system tools for the bot. It allows you to check the bot uptime, the server uptime, the versions of all the bot's \
-                    components, the specifications of the server system, and some bot power controls."
+    SYSTOOLS_DESC = "This module contains a set of system tools for the bot. It allows you to check the bot uptime, the server uptime, the versions of all the bot's "\
+                    "components, the specifications of the server system, and some bot power controls."
     USER_DESC = "Provides information about any user, your statistics, and contains the kickme tool."
     WEBTOOLS_DESC = "This module contains most, if not all, of the bot's webtools, such as ping, speedtest, RTT calculator and the current datacenter."
     CAS_INTERFACE_DESC = "The interface for the Combot Anti-Spam System API. It allows you to check a specific user for CAS bans or an entire group, via the designated commands."
     GITHUB_DESC = "A module that takes use of the GitHub API. This module allows you to check for releases from a specific user and repository."
-    TERMINAL_DESC = "This module provides tools to run directly shell commands, in the host machine.\
-                    \n\n**Attention:** Running shell commands in the bot can and will make permanent changes to the host system. **Bad things will happen if you run the bot as sudo/root!**"
-    MISC_DESC = "The miscelaneous module contains a small set of tools that did not quite fit any of the other modules, but at the same time were too simple to have their own module. Check the help for more details."
-    PACKAGE_MANAGER_DESC = "The package manager module allows a user to manage extra apps, from external repos, either official, such as the modules-universe repo, or from external sources. It provides a way for users to customize their bots more than stock."
+    TERMINAL_DESC = "This module provides tools to run directly shell commands, in the host machine."\
+                    "\n\n**Attention:** Running shell commands in the bot can and will make permanent changes to the host "\
+                    "system. **Bad things will happen if you run the bot as sudo/root!**"
+    MISC_DESC = "The miscelaneous module contains a small set of tools that did not quite fit any of the other modules, but at the same time were too simple "\
+                "to have their own module. Check the help for more details."
+    PACKAGE_MANAGER_DESC = "The package manager module allows a user to manage extra apps, from external repos, either official, such as the modules-universe "\
+                           "repo, or from external sources. It provides a way for users to customize their bots more than stock."
     UPDATER_DESC = "The updater module allows the user to check for bot updates and to update the bot, if new updates exist."
-    SIDELOADER_DESC = "The sideloader module allows you to sideload python files with ease. To do such, all you have to do is reply to a .py file sent in the chat as a document!\n\n" \
-                      "**INFORMATION**: These files must be written to work with the bot. Attempting to load unknown files might result in a 'soft brick' of the bot, requiring you to manually delete the bad user space module!\n\n" \
-                      "**CRITICAL WARNING**: Some malicious files could send some of your information (namely API KEY and/or String Session) to a malicious hacker! Only sideload modules if you trust the source!"
+    SIDELOADER_DESC = "The sideloader module allows you to sideload python files with ease. To do such, all you have to do is reply to a .py file sent in the chat as a document!\n\n"\
+                      "**INFORMATION**: These files must be written to work with the bot. Attempting to load unknown files might result in a 'soft brick' of "\
+                      "the bot, requiring you to manually delete the bad user space module!\n\n"\
+                      "**CRITICAL WARNING**: Some malicious files could send some of your information (namely API KEY and/or String Session) to a malicious "\
+                      "hacker! Only sideload modules if you trust the source!"
 
 class ModuleUsages(object):
-    ADMIN_USAGE = "`.adminlist` [optional: <link/id>] \
-                 \nUsage: lists all admins from a channel or group (remotely). Requires admin privileges in channels.\
-                 \n\n`.ban` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Ban a certain user from a chat (remotely). Requires admin privileges with ban permission.\
-                 \n\n`.unban` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Unban a certain user from a chat (remotely). Requires admin privileges with ban permission.\
-                 \n\n`.kick` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Kick a certain user from a chat (remotely). Requires admin privileges with ban permission.\
-                 \n\n`.promote` [optional: <username/id> and/or <title>] or reply\
-                 \nUsage: Promote an user with immortal power! Requires admin privileges with at least add admin permission and a second\
-                 \nadmin permission as promote never promotes an user with add admin permission. Title length must be <= 16 characters.\
-                 \n\n`.demote` [optional: <username/id>] or reply\
-                 \nUsage: Demote an user to a mortal user. Requires admin privileges with add admin permission. Works with admins only which are promoted by you.\
-                 \n\n`.mute` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Mute a certain user from a chat (remotely). Requires admin privileges with ban permission.\
-                 \n\n`.unmute` [optional: <username/id> <chat (id or link)>] or reply\
-                 \nUsage: Unmute a certain user from a chat (remotely). Requires admin privileges with ban permission.\
-                 \n\n`.delaccs`\
-                 \nUsage: Tries to remove deleted accounts automatically in a chat if admin privileges with ban permission are present.\
-                 \nElse it reports the amount of deleted accounts it the specific chat.\
-                 \n\n`.pin` [optional argument \"loud\" to notify all members] or reply\
-                 \nUsage: Reply to someone's message to pin it in the chat."
+    ADMIN_USAGE = "`.adminlist` [optional: <link/id>]"\
+                  "\nUsage: lists all admins from a channel or group (remotely). Requires admin privileges in channels."\
+                  "\n\n`.ban` [optional: <username/id> <chat (id or link)>] or reply"\
+                  "\nUsage: Ban a certain user from a chat (remotely). Requires admin privileges with ban permission."\
+                  "\n\n`.unban` [optional: <username/id> <chat (id or link)>] or reply"\
+                  "\nUsage: Unban a certain user from a chat (remotely). Requires admin privileges with ban permission."\
+                  "\n\n`.kick` [optional: <username/id> <chat (id or link)>] or reply"\
+                  "\nUsage: Kick a certain user from a chat (remotely). Requires admin privileges with ban permission."\
+                  "\n\n`.promote` [optional: <username/id> and/or <title>] or reply"\
+                  "\nUsage: Promote an user with immortal power! Requires admin privileges with at least add admin permission and a second"\
+                  "\nadmin permission as promote never promotes an user with add admin permission. Title length must be <= 16 characters."\
+                  "\n\n`.demote` [optional: <username/id>] or reply"\
+                  "\nUsage: Demote an user to a mortal user. Requires admin privileges with add admin permission. Works with admins only which are promoted by you."\
+                  "\n\n`.mute` [optional: <username/id> <chat (id or link)>] or reply"\
+                  "\nUsage: Mute a certain user from a chat (remotely). Requires admin privileges with ban permission."\
+                  "\n\n`.unmute` [optional: <username/id> <chat (id or link)>] or reply"\
+                  "\nUsage: Unmute a certain user from a chat (remotely). Requires admin privileges with ban permission."\
+                  "\n\n`.delaccs`"\
+                  "\nUsage: Tries to remove deleted accounts automatically in a chat if admin privileges with ban permission are present."\
+                  "\nElse it reports the amount of deleted accounts it the specific chat."
 
-    CHATINFO_USAGE = "`.chatinfo` [optional: <chat_id/link>] or reply (if channel)\
-                 \nUsage: Gets info about a chat. Some info might be limited due to missing permissions.\
-                 \n\n`.chatid`\
-                 \nUsage: Gets the ID of a channel or group.\
-                 \n\n`.link` [optional: <chat_id/link>]\
-                 \nUsage: Fetch the invite link from a channel or group to share it with other people. Requires admin privileges with invite users permission."
+    CHATINFO_USAGE = "`.chatinfo` [optional: <chat_id/link>] or reply (if channel)"\
+                     "\nUsage: Gets info about a chat. Some info might be limited due to missing permissions."\
+                     "\n\n`.chatid`"\
+                     "\nUsage: Gets the ID of a channel or group."\
+                     "\n\n`.link` [optional: <chat_id/link>]"\
+                     "\nUsage: Fetch the invite link from a channel or group to share it with other people. "\
+                     "Requires admin privileges with invite users permission."
 
-    DELETIONS_USAGE = "`.del`\
-         \nUsage: Deletes the replied message.\
-         \n\n`.purge`\
-         \nUsage: Purges all messages between the latest and replied message. Admin privileges with delete permission are required if purge is being used in channels or groups.\
-         \n**Note: Please don't abuse this feature to delete whole group histories from other people!**"
+    DELETIONS_USAGE = "`.del`"\
+                      "\nUsage: Deletes the replied message."\
+                      "\n\n`.purge`"\
+                      "\nUsage: Purges all messages between the latest and replied message. Admin privileges "\
+                      "with delete permission are required if purge is being used in channels or groups."\
+                      "\n**Note: Please don't abuse this feature to delete whole group histories from other people!**"
 
-    MEMBERINFO_USAGE = "`.minfo` [optional: <tag/id> <group>] or reply\
-          \nUsage: Get (remotely) info of a member in a supergroup."
+    MEMBERINFO_USAGE = "`.minfo` [optional: <tag/id> <group>] or reply"\
+                       "\nUsage: Get (remotely) info of a member in a supergroup."
 
-    MESSAGES_USAGE = "`.msgs` [optional: <username/id> <group>] or reply\
-                \nUsage: Gets the amount of sent messages from an user (includes any message like text messages, voice notes, videos etc.).\
-                \nWorks remotely too.\
-                \n\n`.topusers` [optional: <group>]\
-                \nUsage: Pick the top 10 members in a group. This process may take up some time, the more members the specific group has."
+    MESSAGES_USAGE = "`.msgs` [optional: <username/id> <group>] or reply"\
+                     "\nUsage: Gets the amount of sent messages from an user (includes any message like text messages, voice notes, videos etc.)."\
+                     "\nWorks remotely too."\
+                     "\n\n`.pin` [optional argument \"loud\" to notify all members] or reply"\
+                     "\nUsage: Reply to someone's message to pin it in the chat."\
+                     "\n\n`.unpin` [optional argument \"all\"] or reply"\
+                     "\nUsage: Reply to someone's message to unpin it or send \".unpin all\" to unpin all messages in a chat."
 
-    SCRAPPERS_USAGE = "`.trt` [optional: <text>] or reply\
-          \nUsage: Translates given text or replied message to the bot's target language.\
-          \n\n`.tts` [optional: <text>] or reply\
-          \nUsage: Converts text or replied message into spoken voice output (text-to-speech).\
-          \n\n`.stt` reply only\
-          \nUsage: Converts a replied voice message into text (speech-to-text).\
-          \n\n`.scrlang`\
-          \nUsage: Shows which is the current language that bot will translate or TTS to \
-          \n\n`.setlang` [ISO value] \
-          \nUsage: Sets a new language from the ISO value list \
-          \n\n`.currency` <amount> <From ISO> [optional: <To ISO>] \
-          \nUsage: Converts input currency to target currency (default: USD). Requires Country ISO (EUR, USD, JPY etc.)."
+    SCRAPPERS_USAGE = "`.trt` [optional: <text>] or reply"\
+                      "\nUsage: Translates given text or replied message to the bot's target language."\
+                      "\n\n`.tts` [optional: <text>] or reply"\
+                      "\nUsage: Converts text or replied message into spoken voice output (text-to-speech)."\
+                      "\n\n`.stt` reply only"\
+                      "\nUsage: Converts a replied voice message into text (speech-to-text)."\
+                      "\n\n`.scrlang`"\
+                      "\nUsage: Shows which is the current language that bot will translate or TTS to"\
+                      "\n\n`.setlang` [ISO value]"\
+                      "\nUsage: Sets a new language from the ISO value list"\
+                      "\n\n`.currency` <amount> <From ISO> [optional: <To ISO>]"\
+                      "\nUsage: Converts input currency to target currency (default: USD). Requires Country ISO (EUR, USD, JPY etc.)."
 
-    SYSTOOLS_USAGE = "`.status`\
-         \nUsage: Type .status to check various bot information and if it is up and running.\
-         \n\n`.shutdown`\
-         \nUsage: Type .shutdown to shutdown the bot. \
-         \n\n`.reboot`\
-         \nUsage: Reboots the bot! \
-         \n\n`.storage`\
-         \nUsage: Shows info on bot server HDD storage. \
-         \n\n`.sysd`\
-         \nUsage: Type .sysd to get system details. (Requires neofetch installed)\
-         \n\n`.sendlog`\
-         \nUsage: Uploads the log file to the current chat."
+    SYSTOOLS_USAGE = "`.status`"\
+                     "\nUsage: Type .status to check various bot information and if it is up and running."\
+                     "\n\n`.shutdown`"\
+                     "\nUsage: Type .shutdown to shutdown the bot."\
+                     "\n\n`.reboot`"\
+                     "\nUsage: Reboots the bot!"\
+                     "\n\n`.storage`"\
+                     "\nUsage: Shows info on bot server HDD storage."\
+                     "\n\n`.sysd`"\
+                     "\nUsage: Type .sysd to get system details. (Requires neofetch installed)"\
+                     "\n\n`.sendlog`"\
+                     "\nUsage: Uploads the log file to the current chat."
 
 
-    USER_USAGE = "`.info` [optional: <username/id>] or reply\
-        \nUsage: Gets info of an user.\
-        \n\n`.stats`\
-        \nUsage: Gets your stats.\
-        \n\n`.kickme`\
-        \nUsage: Makes you leave the group.\
-        \n\n`.userid` [optional: <username>] or reply\
-        \nUsage: Get the ID from an user. If replied to a forwarded message, it gets the IDs from both, forwarder and original author."
+    USER_USAGE = "`.info` [optional: <username/id>] or reply"\
+                 "\nUsage: Gets info of an user."\
+                 "\n\n`.stats`"\
+                 "\nUsage: Gets your stats."\
+                 "\n\n`.kickme`"\
+                 "\nUsage: Makes you leave the group."\
+                 "\n\n`.userid` [optional: <username>] or reply"\
+                 "\nUsage: Get the ID from an user. If replied to a forwarded message, it gets the IDs from both, forwarder and original author."
 
-    WEBTOOLS_USAGE = "`.rtt` \
-                    \nUsage: Gets the current Round Trip Time\
-                    \n\n`.dc` \
-                    \nUsage: Finds the near datacenter to your userbot host. \
-                    \n\n`.ping` <DNS/IP> \
-                    \nUsage: Pings a specific DNS or IP address. \
-                    \n\n`.speedtest` [optional argument \"pic\"] \
-                    \nUsage: Performs a speedtest and shows the result as text. Passing \"pic\" as argument will change the result to a picture."
+    WEBTOOLS_USAGE = "`.rtt`"\
+                     "\nUsage: Gets the current Round Trip Time"\
+                     "\n\n`.dc`"\
+                     "\nUsage: Finds the near datacenter to your userbot host."\
+                     "\n\n`.ping` <DNS/IP>"\
+                     "\nUsage: Pings a specific DNS or IP address."\
+                     "\n\n`.speedtest` [optional argument \"pic\"]"\
+                     "\nUsage: Performs a speedtest and shows the result as text. Passing \"pic\" as argument will change the result to a picture."
 
-    CAS_INTERFACE_USAGE = "`.casupdate`\
-                    \nUsage: Downloads/updates the CSV data for CAS check cmd.\
-                    \n\n`.cascheck` [optional: <username/id/link>] or reply\
-                    \nUsage: Checks if an user is CAS Banned or a whole group for CAS Banned users.\
-                    \nNote: cascheck can just check up to 10.000 members in a group due to Telegram's server-side limitation."
+    CAS_INTERFACE_USAGE = "`.casupdate`"\
+                          "\nUsage: Downloads/updates the CSV data for CAS check cmd."\
+                          "\n\n`.cascheck` [optional: <username/id/link>] or reply"\
+                          "\nUsage: Checks if an user is CAS Banned or a whole group for CAS Banned users."\
+                          "\nNote: cascheck can just check up to 10.000 members in a group due to Telegram's server-side limitation."
 
-    GITHUB_USAGE = "`.git` <user>/<repo> \
-                  \nUsage: Checks for releases on the specified user/repo combination."
+    GITHUB_USAGE = "`.git` <user>/<repo>"\
+                   "\nUsage: Checks for releases on the specified user/repo combination."
 
-    TERMINAL_USAGE = "`.shell` <command> \
-                  \nUsage: Executes in the server machine shell prompt (bash, powershell or zsh) the specified command. \
-                  \n\n**WARNING: if the userbot process is running as root, this could potentially break your system irreversibly! Proceed with caution!**"
+    TERMINAL_USAGE = "`.shell` <command>"\
+                     "\nUsage: Executes in the server machine shell prompt (bash, powershell or zsh) the specified command."\
+                     "\n\n**WARNING: if the userbot process is running as root, this could potentially break your system irreversibly! Proceed with caution!**"
 
-    MISC_USAGE = "`.coinflip` \
-                 \nUsage: Flips a coin and returns heads or tails, depending on the result.\
-                 \n\n`.dice` \
-                 \nUsage: This will send the dice emoji, telegram will take care of the value, totally random.\
-                 \n\n`.rand` <lower limit> <upper limit>\
-                 \nUsage: Given an upper and lower limit (both integers), the bot will generate a random number in between."
+    MISC_USAGE = "`.coinflip`"\
+                 "\nUsage: Flips a coin and returns heads or tails, depending on the result."\
+                 "\n\n`.dice`"\
+                 "\nUsage: This will send the dice emoji, telegram will take care of the value, totally random."\
+                 "\n\n`.rand` <lower limit> <upper limit>"\
+                 "\nUsage: Given an upper and lower limit (both integers), the bot will generate a random number in between."
 
-    PACKAGE_MANAGER_USAGE = "`.pkg update` \
-                 \nUsage: Updates the Modules List with info from the repos. \
-                 \n\n`.pkg list` \
-                 \nUsage: Lists the list of available modules for installation (can be outdated!) \
-                 \n\n`.pkg install <module name 1> <module name 2 (optional)> <...>` \
-                 \nUsage: Installs the list of modules given as argument. \
-                 \n\n`.pkg uninstall <module name>` \
-                 \nUsage: Uninstalls the specified module. For security measures, it only works with a single module name."
+    PACKAGE_MANAGER_USAGE = "`.pkg update`"\
+                            "\nUsage: Updates the Modules List with info from the repos."\
+                            "\n\n`.pkg list`"\
+                            "\nUsage: Lists the list of available modules for installation (can be outdated!)"\
+                            "\n\n`.pkg install <module name 1> <module name 2 (optional)> <...>`"\
+                            "\nUsage: Installs the list of modules given as argument."\
+                            "\n\n`.pkg uninstall <module name>`"\
+                            "\nUsage: Uninstalls the specified module. For security measures, it only works with a single module name."
 
-    UPDATER_USAGE = "`.update` \
-                 \nUsage: Checks for updates, and if avaliable, displays the changelog. \
-                 \n\n`.update upgrade` \
-                 \nUsage: If the user has checked for updates, it will update the bot to the latest version."
+    UPDATER_USAGE = "`.update`"\
+                    "\nUsage: Checks for updates, and if avaliable, displays the changelog."\
+                    "\n\n`.update upgrade`"\
+                    "\nUsage: If the user has checked for updates, it will update the bot to the latest version."
 
-    SIDELOADER_USAGE = "`.sideload` <argument> \
-                       \nUsage: Sideloads a python script file sent as a document to the chat. Reply to such. You can use the `force` argument to force instalation, if a user space module with the same name already exists. \
-                       \n\n**INFORMATION**: These files must be written to work with the bot. Attempting to load unknown files might result in a 'soft brick' of the bot, requiring you to manually delete the bad user space module! \
-                       \n\n**CRITICAL WARNING**: Some malicious files could send some of your information (namely API KEY and/or String Session) to a malicious hacker! Only sideload modules if you trust the source!"
+    SIDELOADER_USAGE = "`.sideload` <argument>"\
+                       "\nUsage: Sideloads a python script file sent as a document to the chat. Reply to such. You can use the `force` "\
+                       "argument to force instalation, if a user space module with the same name already exists."\
+                       "\n\n**INFORMATION**: These files must be written to work with the bot. Attempting to load unknown files might result "\
+                       "in a 'soft brick' of the bot, requiring you to manually delete the bad user space module!"\
+                       "\n\n**CRITICAL WARNING**: Some malicious files could send some of your information (namely API KEY and/or String Session) "\
+                       "to a malicious hacker! Only sideload modules if you trust the source!"

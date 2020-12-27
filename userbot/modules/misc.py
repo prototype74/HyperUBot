@@ -6,16 +6,18 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import MiscText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from telethon.events import NewMessage
+from userbot.sysutils.event_handler import EventHandler
 from telethon.tl.types import InputMediaDice
 from os.path import basename
 import random
 import time
 
-@tgclient.on(NewMessage(pattern=r"^\.coinflip$", outgoing=True))
+ehandler = EventHandler()
+
+@ehandler.on(pattern=r"^\.coinflip$", outgoing=True)
 async def coinflipper(coin):
     retStr = msgRep.COIN_LANDED_VAL
     await coin.edit(msgRep.THRWING_COIN)
@@ -28,13 +30,13 @@ async def coinflipper(coin):
     await coin.edit(retStr)
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.dice$", outgoing=True))
+@ehandler.on(pattern=r"^\.dice$", outgoing=True)
 async def dice(rolling):
     await rolling.client.send_message(rolling.to_id, file=InputMediaDice("🎲"))
     await rolling.delete()
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.rand(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.rand(?: |$)(.*)", outgoing=True)
 async def randomizer(msg):
     limit1 = 0
     limit2 = 0

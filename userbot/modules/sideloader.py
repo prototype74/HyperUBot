@@ -6,10 +6,11 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, OS, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot import OS, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import event_log, module_info
 from userbot.include.language_processor import SideloaderText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from telethon.events import NewMessage
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 import sys
 import os
 from logging import getLogger
@@ -17,6 +18,7 @@ from os.path import basename
 import time
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
 
 if " " not in sys.executable:
     EXECUTABLE = sys.executable
@@ -28,7 +30,7 @@ if OS and OS.startswith("win"):
 else:
     USER_MODULES_DIR = "./userbot/modules_user/"
 
-@tgclient.on(NewMessage(pattern=r"^\.sideload(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.sideload(?: |$)(.*)", outgoing=True)
 async def sideload(event):
     OVR_WRT_CAUT = True
     cmd_args = event.pattern_match.group(1).split(" ", 1)
@@ -49,7 +51,7 @@ async def sideload(event):
         await event.client.download_media(message=msg, file=dest_path)
         log.info(f"Module '{file.name[:-3]}' has been installed to userpace")
         await event.edit(msgRep.SUCCESS.format(file.name))
-        if LOGGING:
+        if getConfig("LOGGING"):
             await event_log(event, "SIDELOAD", custom_text=msgRep.LOG.format(file.name))
         log.info("Rebooting userbot...")
         time.sleep(1)

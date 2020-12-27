@@ -6,11 +6,11 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import ChatInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.sysutils.event_handler import EventHandler
 from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError, ChatAdminRequiredError
-from telethon.events import NewMessage
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
 from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest, ExportChatInviteRequest
 from telethon.tl.types import (ChannelParticipantCreator, ChatParticipantCreator, MessageActionChannelMigrateFrom,
@@ -21,6 +21,7 @@ from math import sqrt
 from os.path import basename
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
 
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
@@ -75,7 +76,8 @@ async def fetch_info(chat, event):
     except:
         msg_info = None
     first_msg_valid = True if msg_info and msg_info.messages and msg_info.messages[0].id == 1 else False
-    owner_id, owner_firstname, owner_username, admins = (None,)*4
+    owner_id, owner_firstname, owner_username = (None,)*3
+    admins = 0
     created = msg_info.messages[0].date if first_msg_valid else None
     former_title = msg_info.messages[0].action.title if first_msg_valid and \
                                                         type(msg_info.messages[0].action) is MessageActionChannelMigrateFrom and \
@@ -128,7 +130,10 @@ async def fetch_info(chat, event):
             if isinstance(admin.participant, (ChannelParticipantCreator, ChatParticipantCreator)):
                 owner_id = admin.id
                 owner_username = "@" + admin.username if admin.username else None
-                break
+                if not is_channel_obj:
+                    break
+            if is_channel_obj:
+                admins += 1
     except:
         pass
 
@@ -208,7 +213,7 @@ async def fetch_info(chat, event):
 
     return caption
 
-@tgclient.on(NewMessage(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True)
 async def chatinfo(event):
     await event.edit(msgRep.CHAT_ANALYSIS)
 
@@ -226,7 +231,7 @@ async def chatinfo(event):
 
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.chatid$", outgoing=True))
+@ehandler.on(pattern=r"^\.chatid$", outgoing=True)
 async def chatid(event):
     chat = await event.get_chat()
     if isinstance(chat, (Chat, Channel)):
@@ -235,7 +240,7 @@ async def chatid(event):
         await event.edit(msgRep.CID_NO_GROUP)
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.link(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.link(?: |$)(.*)", outgoing=True)
 async def chatid(event):
     arg = event.pattern_match.group(1)
     if arg:

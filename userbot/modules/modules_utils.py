@@ -6,31 +6,36 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import (tgclient, ALL_MODULES, LOAD_MODULES, NOT_LOAD_MODULES, MODULE_DESC,
-                     MODULE_DICT, MODULE_INFO, OS, USER_MODULES)
+from userbot import (ALL_MODULES, LOAD_MODULES, MODULE_DESC, MODULE_DICT,
+                     MODULE_INFO, OS, USER_MODULES)
 from userbot.include.aux_funcs import sizeStrMaker
 from userbot.include.language_processor import ModulesUtilsText as msgRep
-from telethon.events import NewMessage
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
+from logging import getLogger
 from os.path import basename, exists, getctime, getsize
 from os import stat
 from time import ctime
 
+log = getLogger(__name__)
+ehandler = EventHandler(log)
 MODULES_LISTED = {}
 
 def update_list() -> list:
     modules_list = []
-    for module in sorted(LOAD_MODULES):
+    for module, isRunning in LOAD_MODULES.items():
         if not module == basename(__file__)[:-3]:  # exclude this module
             if module in USER_MODULES:
                 if module in MODULE_INFO.keys():
-                    modules_list.append([MODULE_INFO.get(module, {}).get("name", msgRep.UNKNOWN), module])  # [Name of module, filename of module]
+                    # Append [Name of module, filename of module, running] -> []
+                    modules_list.append([MODULE_INFO.get(module, {}).get("name", msgRep.UNKNOWN), module, isRunning])
                 else:
-                    modules_list.append([module, module])
+                    modules_list.append([module, module, isRunning])
             else:
                 if module in MODULE_INFO.keys():
-                    modules_list.append([MODULE_INFO.get(module, {}).get("name", msgRep.UNKNOWN), module])
+                    modules_list.append([MODULE_INFO.get(module, {}).get("name", msgRep.UNKNOWN), module, isRunning])
                 else:
-                    modules_list.append([module, module])
+                    modules_list.append([module, module, isRunning])
 
     global MODULES_LISTED
 
@@ -39,7 +44,7 @@ def update_list() -> list:
 
     num = 0
 
-    for module_name, module in sorted(modules_list):
+    for module in [modules[1] for modules in sorted(modules_list)]:
         num += 1
         MODULES_LISTED[str(num)] = module
     return sorted(modules_list)
@@ -79,28 +84,45 @@ def modules_listing(error_text: str = None) -> str:
     modules_listed += f"{msgRep.AVAILABLE_MODULES}:\n"
 
     modules_list = update_list()
+    all_running = all(ir == True for ir in [modules[-1] for modules in modules_list])
     num = 0
+    warning = u"\u26A0"  # warn emoji
 
-    for module_name, module in modules_list:
+    for module_name, module, isRunning in modules_list:
         num += 1
         if module in USER_MODULES:
-            modules_listed += f"`({str(num)}) {module_name}* ({module})`\n"
+            if isRunning:
+                modules_listed += f"`({str(num)}) {module_name}* ({module})`\n"
+            else:
+                modules_listed += f"`({str(num)}) {module_name}* ({module}) {warning}`\n"
         else:
-            modules_listed += f"`({str(num)}) {module_name} ({module})`\n"
+            if isRunning:
+                modules_listed += f"`({str(num)}) {module_name} ({module})`\n"
+            else:
+                modules_listed += f"`({str(num)}) {module_name} ({module}) {warning}`\n"
 
-    if USER_MODULES:
-        modules_listed += "\n" + msgRep.ASTERISK + "\n"
+    not_load_modules = getConfig("NOT_LOAD_MODULES")
 
-    if NOT_LOAD_MODULES:
-        for module in NOT_LOAD_MODULES:
+    if not_load_modules:
+        for module in not_load_modules:
             if module in ALL_MODULES:
                 modules_listed += "\n"
                 modules_listed += f"{msgRep.DISABLED_MODULES}:\n"
                 break
-        for module in sorted(NOT_LOAD_MODULES):
+        for module in sorted(not_load_modules):
             if module in ALL_MODULES:
-                modules_listed += f"`- {module}`\n"
+                if module in USER_MODULES:
+                    modules_listed += f"`- {module}*`\n"
+                else:
+                    modules_listed += f"`- {module}`\n"
                 num += 1
+
+    if USER_MODULES or not all_running:
+        modules_listed += "--------------------------------\n"
+        if USER_MODULES:
+            modules_listed += f"__* = {msgRep.ASTERISK}__\n"
+        if not all_running:
+            modules_listed += f"__{warning} = {msgRep.NOT_RUNNING_INFO}__\n"
     return modules_listed
 
 def module_desc(name_of_module: str, module: str) -> str:
@@ -161,7 +183,7 @@ def module_usage(name_of_module: str, module: str) -> str:
     else:
         raise IndexError
 
-@tgclient.on(NewMessage(pattern=r"^\.modules(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.modules(?: |$)(.*)", outgoing=True)
 async def modules(event):
     args_from_event = event.pattern_match.group(1).split(" ", 1)
     if len(args_from_event) == 2:
@@ -194,7 +216,7 @@ async def modules(event):
         global MODULES_LISTED
         name_of_module = None
         module_to_load = MODULES_LISTED.get(sec_arg)
-        for module_name, module in modules_list:
+        for module_name, module in [modules[:-1] for modules in modules_list]:
             if module_to_load is module:
                 name_of_module = module_name
                 break

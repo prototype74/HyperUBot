@@ -8,6 +8,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+NAME = "Portuguese"
+
 class AdminText(object): # Admin module
     ADMINS_IN_CHAT = "Administradores em **{}**"
     UNABLE_GET_ADMINS = "`Não foi possível obter os administratores neste chat`"
@@ -66,16 +68,10 @@ class AdminText(object): # Admin module
     DEL_ACCS_COUNT = "`Foram encontradas {} contas excluídas`"
     REM_DEL_ACCS_COUNT = "`Removidas {} de {} contas excluídas presentes`"  # rem count, total count
     NO_DEL_ACCOUNTS = "`Não existem contas excluídas neste chat.`"
-    REPLY_TO_MSG = "`Responde a uma mensagem para a fixar.`"
-    PIN_SUCCESS = "`Mensagem fixada com sucesso.`"
-    PINNED_ALREADY = "`Esta mensagem já está fixada!`"
-    PIN_FAILED = "`Falha ao fixar a mensagem!`"
-    LOG_PIN_MSG_ID = "ID da Mensagem"
 
 class SystemToolsText(object):
     UBOT = "Projeto Userbot: "
-    SYSTEM_STATUS = "Estado do sistema: "
-    ONLINE = "Online!"
+    SYSTEM_STATUS = "Estado do sistema"
     VER_TEXT = "Versão: "
     USR_TEXT = "Utilizador: "
     RTT = "RTT: "
@@ -127,7 +123,7 @@ class ChatInfoText(object):
     YES = "Sim"
     NO = "Não"
     DELETED_ACCOUNT = "Conta Excluída"
-    CHATINFO = "<b>INFO DO CHAT:</b>\n"
+    CHATINFO = "<b>Info do chat</b>\n\n"
     CHAT_ID = "ID: <code>{}</code>\n"
     CHAT_TYPE = "Tipo de chat: {} ({})\n"  # group/channel, private/public
     CHAT_NAME = "Nome do chat: {}\n"
@@ -190,7 +186,7 @@ class MemberInfoText(object):
     TIME_FOREVER = "Para sempre"
     ME_NOT_MEMBER = "`Não sou um membro de {}`"
     USER_NOT_MEMBER = "`Este utilizador não é um membro de {}`"
-    MEMBERINFO = "INFO DO MEMBRO"
+    MEMBERINFO = "Info do membro"
     GENERAL = "Geral"
     MINFO_ID = "ID"
     FIRST_NAME = "Primeiro nome"
@@ -242,11 +238,10 @@ class MessagesText(object):
     USER_HAS_SENT_REMOTE = "{} enviou `{}` messagens em **{}**"  # userlink, msg count, chat title
     CANNOT_COUNT_MSG = "`Não consigo contar mensagens neste chat`"
     CANNOT_COUNT_MSG_REMOTE = "`Não consigo contar mensagens em {}!`"
-    NO_GROUP_CHAN = "`Este chat não é um grupo ou canal!`"
-    PICKING_MEMBERS = "`A escolher os membros mais ativos. Isto pode demorar algum tempo...`"
-    FAILED_TO_PICK = "`Falha ao escolher os membros mais ativos!`"
-    TOP_USERS_TEXT = "Top **{}** de membros ativos em **{}**"  # count, chat title
-    TOP_USERS_MSGS = "Mensagens"
+    PIN_REPLY_TO_MSG = "`Responde a uma mensagem para a fixar.`"
+    PIN_SUCCESS = "`Mensagem fixada com sucesso.`"
+    PIN_FAILED = "`Falha ao fixar a mensagem!`"
+    LOG_PIN_MSG_ID = "ID da Mensagem"
 
 class ScrappersText(object):
     NO_TEXT_OR_MSG = "`Sem texto ou mensagem para traduzir!`"
@@ -311,7 +306,7 @@ class UserText(object):
     YES = "Sim"
     NO = "Não"
     USR_NO_BIO = "Este utilizador não tem bio"
-    USR_INFO = "INFO DO USER"
+    USR_INFO = "Info do user"
     FIRST_NAME = "Primeiro nome"
     LAST_NAME = "Último nome"
     USERNAME = "Nome de utilizador"
@@ -341,7 +336,7 @@ class GeneralMessages(object):
     FAIL_FETCH_USER = "`Falha ao adquirir informação do utilizador`"
     ENTITY_NOT_USER = "`A entidade não é um objeto User`"
     PERSON_ANONYMOUS = "A pessoa é anónima"
-    CALL_UREQ_FAIL = "`O request para a chamada de User falhou`"
+    #CANT_FETCH_REQ_AS_USER = "`O request para a chamada de User falhou`"
     LOG_USER = "Utilizador"
     LOG_USERNAME = "Nome de utilizador"
     LOG_USER_ID = "ID de utilizador"
@@ -360,7 +355,7 @@ class ModulesUtilsText(object):
     MODULE_NOT_AVAILABLE = "`Módulo número \"{}\" não encontrado!`"
     MODULE_NO_DESC = "__Descrição não disponível__"
     MODULE_NO_USAGE = "__Utilização não disponível__"
-    ASTERISK = "__* Módulo de user desinstalável__"
+    ASTERISK = "Módulo de user desinstalável"
     UNKNOWN = "Desconhecido"
     SYSTEM = "Sistema"
     SYSTEM_MODULES = "Módulos de sistema"
@@ -378,7 +373,6 @@ class WebToolsText(object):
     BAD_ARGS = "`Maus argumentos`"
     INVALID_HOST = "`Ocorreu um problema a interpretar o IP/Hostname`"
     PINGER_VAL = "DNS: `{}`\nVelocidade de ping: `{}`"
-    SPD_START = "`A efetuar um teste de velocidade...`"
     SPD_FAILED = "Falha no teste de velocidade"
     SPD_NO_RESULT = "Sem resultados"
     SPD_NO_MEMORY = "Sem memória"
@@ -410,12 +404,12 @@ class CasIntText(object):
     CAS_CHECK_ND = "`Dados CAS não encontrados. Por favor usa o comando .casupdate para obter os últimos dados CAS`"
     PROCESSING = "`Processando...`"
     DELETED_ACCOUNT = "Conta Excluída"
-    USER_HEADER = "DADOS DO USER"
+    USER_HEADER = "Dados do user"
     USER_ID = "ID"
     FIRST_NAME = "Primeiro nome"
     LAST_NAME = "Último nome"
     USERNAME = "Nome de utilizador"
-    CAS_DATA = "DADOS DO CAS"
+    CAS_DATA = "Dados do CAS"
     RESULT = "Resultado"
     OFFENSES = "Total de Ofensas"
     BANNED = "Banido"
@@ -504,7 +498,7 @@ class ModuleDescriptions(object):
                      \n\n**Importante: não abuses deste módulo para apagares o histórico de mensagens do grupo de outra pessoa**, a sério, não o faças..."
     MEMBERINFO_DESC = "Fornece informação sobre um participante no chat como permissões, data de limitação, data de entrada, etc.\
                      \n\nNota: necessita de permissões de administrador para ver permissões de outros utilizadores."
-    MESSAGES_DESC = "Este módulo inclui comandos que apenas funcionam com mensagens, como msgs ou topusers."
+    MESSAGES_DESC = "Este módulo inclui comandos que apenas funcionam com mensagens, como msgs ou pin."
     SCRAPPERS_DESC = "Este módulo inclui ferramentas úteis, como o tradutor ou o text-to-speech"
     SYSTOOLS_DESC = "Este módulo contém um conjunto de ferramentas úteis para o bot. Permite ver o uptime do bot, o uptime do servidor, as versões de todos os componentes \
                     do bot, as especificações do servidor do bot, e contém alguns controlos de energia do bot."
@@ -541,9 +535,7 @@ class ModuleUsages(object):
                  \nUso: Des-silencia um utilizador de um chat (remotamente). Precisa de permissão de administrador com direito de banir.\
                  \n\n`.delaccs`\
                  \nUso: Tenta remover contas excluídas de um chat. Precisa de permissão de administrador com direito de banir.\
-                 \nCaso contrário, apenas reporta o número de contas excluídas.\
-                 \n\n`.pin` [argumento opcional \"loud\" para notificar todos os membros] ou resposta\
-                 \nUso: Responde ao uma mensagem para fixares esta."
+                 \nCaso contrário, apenas reporta o número de contas excluídas."
 
     CHATINFO_USAGE = "`.chatinfo` [opcional: <chat_id/link>] ou resposta (se canal)\
                  \nUso: Obtém informação de um chat. Alguma informação pode estar omissa por falta de permissões.\
@@ -564,8 +556,8 @@ class ModuleUsages(object):
     MESSAGES_USAGE = "`.msgs` [opcional: <username/id> <group>] ou resposta\
                 \nUso: Obtém o total de mensagens d eum utilizador (inclui qualquer mensagem, como texto, voz, imagens, videos, etc...).\
                 \nFunciona remotamente também\
-                \n\n`.topusers` [opcional: <group>]\
-                \nUso: Apresenta os 10 membros mais ativos de um grupo. Este processo demora bastante tempo e está dependente do número de utilizadores de um grupo."
+                \n\n`.pin` [argumento opcional \"loud\" para notificar todos os membros] ou resposta\
+                \nUso: Responde ao uma mensagem para fixares esta."
 
     SCRAPPERS_USAGE = "`.trt` [opcional: <text>] ou resposta\
           \nUso: Traduz o texto ou mensagens fornecidos, para a linguagem de defeito do bot.\

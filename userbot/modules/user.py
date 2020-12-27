@@ -6,10 +6,11 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import event_log, fetch_user, module_info
 from userbot.include.language_processor import UserText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from telethon.events import NewMessage
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 from telethon.tl.types import User, Chat, Channel
 from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
@@ -19,8 +20,9 @@ from os.path import basename
 MAXINT = 2147483647 # I sure do love hammering down shit
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
 
-@tgclient.on(NewMessage(pattern=r"^\.userid(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.userid(?: |$)(.*)", outgoing=True)
 async def userid(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -77,15 +79,15 @@ async def userid(event):
     await event.edit(text)
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.kickme$", outgoing=True))
+@ehandler.on(pattern=r"^\.kickme$", outgoing=True)
 async def kickme(leave):
     await leave.edit(msgRep.LEAVING)
     await leave.client.kick_participant(leave.chat_id, 'me')
-    if LOGGING:
+    if getConfig("LOGGING"):
         await event_log(leave, "KICKME", chat_title=leave.chat.title, chat_id=leave.chat.id)
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.stats$", outgoing=True))
+@ehandler.on(pattern=r"^\.stats$", outgoing=True)
 async def stats(event):
     (groups, channels, super_groups, bots, users, unknown, total,
      group_owner, group_admin, super_group_owner, super_group_admin,
@@ -139,7 +141,7 @@ async def stats(event):
         else:
             unknown += 1
 
-    result = f"**{msgRep.STATS_HEADER}:**\n\n"
+    result = f"**{msgRep.STATS_HEADER}**\n\n"
     result += msgRep.STATS_USERS.format(users) + "\n"
     result += "> " + msgRep.STATS_BLOCKED.format(user_blocked) + "\n\n"
     result += msgRep.STATS_BOTS.format(bots) + "\n"
@@ -161,7 +163,7 @@ async def stats(event):
 
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.info(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.info(?: |$)(.*)", outgoing=True)
 async def info(event):  # .info command
     await event.edit(msgRep.FETCH_INFO)
 
@@ -204,7 +206,7 @@ async def fetch_info(user_obj, event):
     user_bio = msgRep.USR_NO_BIO if not user_bio else user_bio
     profile_link = f"<a href=\"tg://user?id={user_id}\">link</a>"
 
-    caption = f"<b>{msgRep.USR_INFO}:</b>\n\n"
+    caption = f"<b>{msgRep.USR_INFO}</b>\n\n"
     caption += f"{msgRep.USR_ID}: <code>{user_id}</code>\n"
     caption += f"{msgRep.FIRST_NAME}: {first_name}\n"
     if last_name:

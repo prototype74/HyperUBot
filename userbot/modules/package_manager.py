@@ -6,11 +6,12 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, USER_MODULES, COMMUNITY_REPOS, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, OS, VERSION
+from userbot import USER_MODULES, MODULE_DESC, MODULE_DICT, MODULE_INFO, OS, VERSION
 import userbot.include.git_api as git
 from userbot.include.aux_funcs import event_log, module_info, sizeStrMaker
 from userbot.include.language_processor import PackageManagerText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from telethon.events import NewMessage
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 import requests
 import os
 import time
@@ -19,6 +20,8 @@ from logging import getLogger
 from os.path import basename
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
+LOGGING = getConfig("LOGGING")
 
 if OS and OS.startswith("win"):
     USER_MODULES_DIR = ".\\userbot\\modules_user\\"
@@ -67,7 +70,7 @@ def list_updater():
         assetURL = git.getReleaseFileURL(asset)
         assetSize = git.getSize(asset)
         MODULE_LIST.append({"repo": UNIVERSE_NAME, "name": assetName, "url": assetURL, "size": assetSize})
-    for repoURL in COMMUNITY_REPOS:
+    for repoURL in getConfig("COMMUNITY_REPOS", []):
         repoName = git.getReleaseTag(git.getReleaseData(git.getData(repoURL), 0))
         if repoName not in REPOS_NAMES:
             REPOS_NAMES.append(repoName)
@@ -81,7 +84,7 @@ def list_updater():
             MODULE_LIST.append({"repo": repoName, "name": assetName, "url": assetURL, "size": assetSize})
     return MODULE_LIST
 
-@tgclient.on(NewMessage(pattern=r"^\.pkg(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.pkg(?: |$)(.*)", outgoing=True)
 async def universe_checker(msg):
     cmd_args = msg.pattern_match.group(1).split(" ", 1)
     if cmd_args[0].lower() == "update":

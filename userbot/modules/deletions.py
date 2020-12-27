@@ -6,10 +6,11 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import event_log, module_info
 from userbot.include.language_processor import DeletionsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from telethon.events import NewMessage
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 from telethon.errors import MessageDeleteForbiddenError
 from telethon.tl.functions.channels import DeleteMessagesRequest
 from telethon.tl.functions.messages import DeleteMessagesRequest as DeleteMessagesRequestGPM
@@ -19,8 +20,10 @@ from logging import getLogger
 from os.path import basename
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
+LOGGING = getConfig("LOGGING")
 
-@tgclient.on(NewMessage(pattern=r"^\.del$", outgoing=True))
+@ehandler.on(pattern=r"^\.del$", outgoing=True)
 async def delete(event):
     if event.reply_to_msg_id:
         chat = await event.get_chat()
@@ -44,7 +47,7 @@ async def delete(event):
 
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.purge$", outgoing=True))
+@ehandler.on(pattern=r"^\.purge$", outgoing=True)
 async def purge(event):
     """ Please don't abuse this feature to delete someone's else whole group history, for real, just don't """
     if event.reply_to_msg_id:

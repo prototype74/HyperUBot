@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import UBOT_LANG
+from userbot.sysutils.configuration import getConfig
 from importlib import import_module
 from logging import getLogger
 from sys import _getframe
@@ -16,15 +16,38 @@ log = getLogger(__name__)
 # Language selector logic
 
 try:
-    lang = import_module("userbot.translations." + UBOT_LANG)
-except:
-    log.warning("There was a problem loading the '{}' language file. Make sure it exists! "
-                "Should have the same name as the UBOT_LANG variable in config.py. "
-                "Attempting to load default language".format(UBOT_LANG))
-    try:
-        lang = import_module("userbot.translations.en")
-    except:
-        log.error("English language file not found, bot quitting!")
+    lang = import_module("userbot.translations." + getConfig("UBOT_LANG"))
+    log.info("Loading {} language".format(lang.NAME if hasattr(lang, "NAME") else "Unknown"))
+except ModuleNotFoundError:  # Language file not found
+    if not getConfig("UBOT_LANG") == "en":
+        log.warning("'{}' language file not found. Make sure it exists! "
+                    "Should have the same name as the UBOT_LANG variable in your config file. "
+                    "Attempting to load default language...".format(getConfig("UBOT_LANG")))
+        try:
+            lang = import_module("userbot.translations.en")
+        except ModuleNotFoundError:
+            log.error("Default language file not found, bot quitting!")
+            quit(1)
+        except:
+            log.error("Unable to load default language file, bot quitting!", exc_info=True)
+            quit(1)
+    else:
+        log.error("Default language file not found, bot quitting!")
+        quit(1)
+except:  # Unhandled exception in language file
+    if not getConfig("UBOT_LANG") == "en":
+        log.warning("There was a problem loading the '{}' language file. "
+                    "Attempting to load default language...".format(getConfig("UBOT_LANG")), exc_info=True)
+        try:
+            lang = import_module("userbot.translations.en")
+        except ModuleNotFoundError:
+            log.error("Default language file not found, bot quitting!")
+            quit(1)
+        except:
+            log.error("Unable to load default language file, bot quitting!", exc_info=True)
+            quit(1)
+    else:
+        log.error("Unable to load default language file, bot quitting!", exc_info=True)
         quit(1)
 
 try:
@@ -32,8 +55,11 @@ try:
         dlang = lang
     else:
         dlang = import_module("userbot.translations.en")
+except ModuleNotFoundError:
+    log.error("Default language file not found, bot quitting!")
+    quit(1)
 except:
-    log.error("English language file not found, bot quitting!")
+    log.error("Unable to load default language file, bot quitting!", exc_info=True)
     quit(1)
 
 # Language processor!
@@ -44,11 +70,11 @@ def getLangString(obj: object, name_of_class: str, attribute: str) -> str:
             try:
                 class_name = getattr(obj, name_of_class)
             except AttributeError:
-                log.error("Class '{}' not found in 'en' language resource".format(name_of_class), exc_info=True)
+                log.error("Class '{}' not found in default language resource".format(name_of_class), exc_info=True)
                 quit(1)
             return getattr(class_name, attribute)
         except AttributeError:
-            log.error("Attribute '{}' not found in class '{}' of 'en' language resource".format(attribute, name_of_class), exc_info=True)
+            log.error("Attribute '{}' not found in class '{}' of default language resource".format(attribute, name_of_class), exc_info=True)
             quit(1)
         except Exception as e:
             log.error("Unable to load language string: {}".format(e), exc_info=True)
@@ -61,16 +87,19 @@ def getLangString(obj: object, name_of_class: str, attribute: str) -> str:
             try:
                 class_name = getattr(dlang, name_of_class)
             except:
-                log.error("Class '{}' not found in '{}' and default language resources".format(name_of_class, UBOT_LANG), exc_info=True)
+                log.error("Class '{}' not found in {} and default language resources".format(name_of_class,
+                          lang.NAME if hasattr(lang, "NAME") else "Unknown"), exc_info=True)
                 quit(1)
             try:
                 def_attr = getattr(class_name, attribute)
-                log.warning("Attribute '{}' not found in class '{}' of '{}' language resource "
-                            "or class doesn't exist. Using default attribute".format(attribute, name_of_class, UBOT_LANG))
+                log.warning("Attribute '{}' not found in class '{}' of {} language resource "
+                            "or class doesn't exist. Using default attribute".format(attribute, name_of_class,
+                            lang.NAME if hasattr(lang, "NAME") else "Unknown"))
                 return def_attr
             except AttributeError:
                 log.error("Attribute '{}' not found in classes '{}' of "
-                          "'{}' and default language resources ".format(attribute, name_of_class, UBOT_LANG), exc_info=True)
+                          "{} and default language resources ".format(attribute, name_of_class,
+                          lang.NAME if hasattr(lang, "NAME") else "Unknown"), exc_info=True)
                 quit(1)
         except Exception as e:
             log.error("Unable to load language string: {}".format(e), exc_info=True)
@@ -134,16 +163,10 @@ class AdminText(object):
     DEL_ACCS_COUNT = getLangString(lang, _getframe().f_code.co_name, "DEL_ACCS_COUNT")
     REM_DEL_ACCS_COUNT = getLangString(lang, _getframe().f_code.co_name, "REM_DEL_ACCS_COUNT")
     NO_DEL_ACCOUNTS = getLangString(lang, _getframe().f_code.co_name, "NO_DEL_ACCOUNTS")
-    REPLY_TO_MSG = getLangString(lang, _getframe().f_code.co_name, "REPLY_TO_MSG")
-    PIN_SUCCESS = getLangString(lang, _getframe().f_code.co_name, "PIN_SUCCESS")
-    PINNED_ALREADY = getLangString(lang, _getframe().f_code.co_name, "PINNED_ALREADY")
-    PIN_FAILED = getLangString(lang, _getframe().f_code.co_name, "PIN_FAILED")
-    LOG_PIN_MSG_ID = getLangString(lang, _getframe().f_code.co_name, "LOG_PIN_MSG_ID")
 
 class SystemToolsText(object):
     UBOT = getLangString(lang, _getframe().f_code.co_name, "UBOT")
     SYSTEM_STATUS = getLangString(lang, _getframe().f_code.co_name, "SYSTEM_STATUS")
-    ONLINE = getLangString(lang, _getframe().f_code.co_name, "ONLINE")
     VER_TEXT = getLangString(lang, _getframe().f_code.co_name, "VER_TEXT")
     USR_TEXT = getLangString(lang, _getframe().f_code.co_name, "USR_TEXT")
     RTT = getLangString(lang, _getframe().f_code.co_name, "RTT")
@@ -310,11 +333,15 @@ class MessagesText(object):
     USER_HAS_SENT_REMOTE = getLangString(lang, _getframe().f_code.co_name, "USER_HAS_SENT_REMOTE")
     CANNOT_COUNT_MSG = getLangString(lang, _getframe().f_code.co_name, "CANNOT_COUNT_MSG")
     CANNOT_COUNT_MSG_REMOTE = getLangString(lang, _getframe().f_code.co_name, "CANNOT_COUNT_MSG_REMOTE")
-    NO_GROUP_CHAN = getLangString(lang, _getframe().f_code.co_name, "NO_GROUP_CHAN")
-    PICKING_MEMBERS = getLangString(lang, _getframe().f_code.co_name, "PICKING_MEMBERS")
-    FAILED_TO_PICK = getLangString(lang, _getframe().f_code.co_name, "FAILED_TO_PICK")
-    TOP_USERS_TEXT = getLangString(lang, _getframe().f_code.co_name, "TOP_USERS_TEXT")
-    TOP_USERS_MSGS = getLangString(lang, _getframe().f_code.co_name, "TOP_USERS_MSGS")
+    PIN_REPLY_TO_MSG = getLangString(lang, _getframe().f_code.co_name, "PIN_REPLY_TO_MSG")
+    PIN_SUCCESS = getLangString(lang, _getframe().f_code.co_name, "PIN_SUCCESS")
+    PIN_FAILED = getLangString(lang, _getframe().f_code.co_name, "PIN_FAILED")
+    LOG_PIN_MSG_ID = getLangString(lang, _getframe().f_code.co_name, "LOG_PIN_MSG_ID")
+    UNPIN_REPLY_TO_MSG = getLangString(lang, _getframe().f_code.co_name, "UNPIN_REPLY_TO_MSG")
+    UNPIN_ALL_SUCCESS = getLangString(lang, _getframe().f_code.co_name, "UNPIN_ALL_SUCCESS")
+    UNPIN_SUCCESS = getLangString(lang, _getframe().f_code.co_name, "UNPIN_SUCCESS")
+    UNPIN_FAILED = getLangString(lang, _getframe().f_code.co_name, "UNPIN_FAILED")
+    LOG_UNPIN_ALL_TEXT = getLangString(lang, _getframe().f_code.co_name, "LOG_UNPIN_ALL_TEXT")
 
 class ScrappersText(object):
     NO_TEXT_OR_MSG = getLangString(lang, _getframe().f_code.co_name, "NO_TEXT_OR_MSG")
@@ -403,13 +430,16 @@ class UserText(object):
     ID_NOT_ACCESSIBLE = getLangString(lang, _getframe().f_code.co_name, "ID_NOT_ACCESSIBLE")
     ORG_HAS_ID_OF = getLangString(lang, _getframe().f_code.co_name, "ORG_HAS_ID_OF")
 
+class SystemUtilitiesText(object):
+    CMD_STOPPED = getLangString(lang, _getframe().f_code.co_name, "CMD_STOPPED")
+
 class GeneralMessages(object):
     ERROR = getLangString(lang, _getframe().f_code.co_name, "ERROR")
     CHAT_NOT_USER = getLangString(lang, _getframe().f_code.co_name, "CHAT_NOT_USER")
     FAIL_FETCH_USER = getLangString(lang, _getframe().f_code.co_name, "FAIL_FETCH_USER")
     ENTITY_NOT_USER = getLangString(lang, _getframe().f_code.co_name, "ENTITY_NOT_USER")
     PERSON_ANONYMOUS = getLangString(lang, _getframe().f_code.co_name, "PERSON_ANONYMOUS")
-    CALL_UREQ_FAIL = getLangString(lang, _getframe().f_code.co_name, "CALL_UREQ_FAIL")
+    CANT_FETCH_REQ_AS_USER = getLangString(lang, _getframe().f_code.co_name, "CANT_FETCH_REQ_AS_USER")
     LOG_USER = getLangString(lang, _getframe().f_code.co_name, "LOG_USER")
     LOG_USERNAME = getLangString(lang, _getframe().f_code.co_name, "LOG_USERNAME")
     LOG_USER_ID = getLangString(lang, _getframe().f_code.co_name, "LOG_USER_ID")
@@ -429,6 +459,7 @@ class ModulesUtilsText(object):
     MODULE_NO_DESC = getLangString(lang, _getframe().f_code.co_name, "MODULE_NO_DESC")
     MODULE_NO_USAGE = getLangString(lang, _getframe().f_code.co_name, "MODULE_NO_USAGE")
     ASTERISK = getLangString(lang, _getframe().f_code.co_name, "ASTERISK")
+    NOT_RUNNING_INFO = getLangString(lang, _getframe().f_code.co_name, "NOT_RUNNING_INFO")
     UNKNOWN = getLangString(lang, _getframe().f_code.co_name, "UNKNOWN")
     SYSTEM = getLangString(lang, _getframe().f_code.co_name, "SYSTEM")
     SYSTEM_MODULES = getLangString(lang, _getframe().f_code.co_name, "SYSTEM_MODULES")
@@ -446,7 +477,10 @@ class WebToolsText(object):
     BAD_ARGS = getLangString(lang, _getframe().f_code.co_name, "BAD_ARGS")
     INVALID_HOST = getLangString(lang, _getframe().f_code.co_name, "INVALID_HOST")
     PINGER_VAL = getLangString(lang, _getframe().f_code.co_name, "PINGER_VAL")
-    SPD_START = getLangString(lang, _getframe().f_code.co_name, "SPD_START")
+    SPD_TEST_SELECT_SERVER = getLangString(lang, _getframe().f_code.co_name, "SPD_TEST_SELECT_SERVER")
+    SPD_TEST_DOWNLOAD = getLangString(lang, _getframe().f_code.co_name, "SPD_TEST_DOWNLOAD")
+    SPD_TEST_UPLOAD = getLangString(lang, _getframe().f_code.co_name, "SPD_TEST_UPLOAD")
+    SPD_PROCESSING = getLangString(lang, _getframe().f_code.co_name, "SPD_PROCESSING")
     SPD_FAILED = getLangString(lang, _getframe().f_code.co_name, "SPD_FAILED")
     SPD_NO_RESULT = getLangString(lang, _getframe().f_code.co_name, "SPD_NO_RESULT")
     SPD_NO_MEMORY = getLangString(lang, _getframe().f_code.co_name, "SPD_NO_MEMORY")
@@ -597,3 +631,5 @@ class ModuleUsages(object):
     PACKAGE_MANAGER_USAGE = getLangString(lang, _getframe().f_code.co_name, "PACKAGE_MANAGER_USAGE")
     UPDATER_USAGE = getLangString(lang, _getframe().f_code.co_name, "UPDATER_USAGE")
     SIDELOADER_USAGE = getLangString(lang, _getframe().f_code.co_name, "SIDELOADER_USAGE")
+
+log.info("{} language loaded successfully".format(lang.NAME if hasattr(lang, "NAME") else "Unknown"))

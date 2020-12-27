@@ -25,7 +25,33 @@ class ColorBG:
     END = "\033[0m"
 
 def setColorText(text: str, color: Color) -> str:
+    """
+    (Terminal only) Wrap the given string with a color
+
+    Args:
+        text (str): text to color
+        color (Color): color type from class Color
+
+    Example:
+        setColorText("Hello", Color.BLUE)
+
+    Returns:
+        Given string with wrapped color
+    """
     return color + text + Color.END
 
 def setColorTextBG(text: str, colorbg: ColorBG) -> str:
+    """
+    (Terminal only) Wrap the given string with a background color
+
+    Args:
+        text (str): text to color
+        colorbg (ColorBG): color type from class ColorBG
+
+    Example:
+        setColorTextBG("Hello", ColorBG.BLUE)
+
+    Returns:
+        Given string with wrapped background color
+    """
     return colorbg + text + ColorBG.END

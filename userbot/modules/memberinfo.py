@@ -6,10 +6,10 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import fetch_user, module_info
 from userbot.include.language_processor import MemberInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from telethon.events import NewMessage
+from userbot.sysutils.event_handler import EventHandler
 from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.types import ChannelParticipantCreator, ChannelParticipantAdmin, ChannelParticipantBanned, ChannelParticipantSelf, ChannelParticipant
 from telethon.errors import ChannelInvalidError, UserNotParticipantError
@@ -18,8 +18,9 @@ from logging import getLogger
 from os.path import basename
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
 
-@tgclient.on(NewMessage(pattern=r"^\.minfo(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.minfo(?: |$)(.*)", outgoing=True)
 async def memberinfo(event):
     await event.edit(msgRep.SCAN)
 
@@ -288,7 +289,7 @@ async def memberinfo(event):
     else:
         added_by = None
 
-    caption = f"<b>{msgRep.MEMBERINFO}:</b>\n"
+    caption = f"<b>{msgRep.MEMBERINFO}</b>\n\n"
     caption += f"<b>{msgRep.GENERAL}</b>\n"
     caption += f"{msgRep.MINFO_ID}: <code>{member_id}</code>\n"
     if member_username is not None:

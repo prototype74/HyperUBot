@@ -6,14 +6,14 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, OS, VERSION, PROJECT, LOGGING, MODULE_DESC, MODULE_DICT, MODULE_INFO
-from userbot.include.aux_funcs import event_log, module_info, sizeStrMaker
+from userbot import OS, VERSION, PROJECT, MODULE_DESC, MODULE_DICT, MODULE_INFO
+from userbot.include.aux_funcs import event_log, module_info, sizeStrMaker, pinger, getGitReview
 from userbot.include.language_processor import SystemToolsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from userbot.include.aux_funcs import pinger, getGitReview
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 import userbot.include.cas_api as cas
 import userbot.include.git_api as git
 from telethon import version
-from telethon.events import NewMessage
 from platform import python_version, uname
 from datetime import datetime, timedelta
 from uptime import uptime
@@ -22,6 +22,8 @@ from os.path import basename, getsize, isfile, join
 from shutil import disk_usage
 import sys, time
 from os import execle, environ, listdir
+
+ehandler = EventHandler()
 
 # Module Global Variables
 USER = uname().node # Maybe add a username in future
@@ -46,7 +48,7 @@ def textProgressBar(barLength: int, totalVal, usedVal) -> str:
     bar_free = "-" * int(barLength - bar_used_length)
     return f"[{(bar_used + bar_free)}] {used_percentage}%"
 
-@tgclient.on(NewMessage(pattern=r"^\.status$", outgoing=True))
+@ehandler.on(pattern=r"^\.status$", outgoing=True)
 async def statuschecker(stat):
     global STARTTIME
     uptimebot = datetime.now() - STARTTIME
@@ -76,7 +78,7 @@ async def statuschecker(stat):
     except IndexError:
         commit = msgRep.NO_GITHUB
     rtt = pinger("1.1.1.1") #cloudfare's
-    reply = msgRep.SYSTEM_STATUS + "`" + msgRep.ONLINE + "`" + "\n\n"
+    reply = f"**{msgRep.SYSTEM_STATUS}**\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"
     reply += msgRep.VER_TEXT + "`" + VERSION + "`" + "\n"
     reply += msgRep.COMMIT_NUM + "`" + commit + "`" + "\n"
@@ -94,7 +96,7 @@ async def statuschecker(stat):
     await stat.edit(reply)
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.storage$", outgoing=True))
+@ehandler.on(pattern=r"^\.storage$", outgoing=True)
 async def storage(event):
     result = f"**{msgRep.STORAGE}**\n\n"
 
@@ -129,25 +131,25 @@ async def storage(event):
 
     await event.edit(result)
 
-@tgclient.on(NewMessage(pattern=r"^\.shutdown$", outgoing=True))
+@ehandler.on(pattern=r"^\.shutdown$", outgoing=True)
 async def shutdown(power_off):
     await power_off.edit(msgRep.SHUTDOWN)
-    if LOGGING:
+    if getConfig("LOGGING"):
         await event_log(power_off, "SHUTDOWN", custom_text=msgRep.SHUTDOWN_LOG)
     await power_off.client.disconnect()
 
-@tgclient.on(NewMessage(pattern=r"^\.reboot$", outgoing=True))
+@ehandler.on(pattern=r"^\.reboot$", outgoing=True)
 async def restart(power_off): # Totally not a shutdown kang *sips whiskey*
     await power_off.edit(msgRep.RESTART)
     time.sleep(1) # just so we can actually see a message
-    if LOGGING:
+    if getConfig("LOGGING"):
         await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
     await power_off.edit(msgRep.RESTARTED)
     args = [EXECUTABLE, "-m", "userbot"]
     execle(sys.executable, *args, environ)
     await power_off.client.disconnect()
 
-@tgclient.on(NewMessage(pattern=r"^\.sysd$", outgoing=True))
+@ehandler.on(pattern=r"^\.sysd$", outgoing=True)
 async def sysd(event):
     try:
         result = check_output("neofetch --stdout", shell=True).decode()
@@ -156,7 +158,7 @@ async def sysd(event):
         await event.edit(msgRep.SYSD_NEOFETCH_REQ)
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.sendlog$", outgoing=True))
+@ehandler.on(pattern=r"^\.sendlog$", outgoing=True)
 async def send_log(event):
     chat = await event.get_chat()
     await event.edit(msgRep.UPLD_LOG)

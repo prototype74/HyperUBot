@@ -6,11 +6,12 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, TEMP_DL_DIR, VERSION
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import module_info, pinger
 from userbot.include.language_processor import WebToolsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 from telethon import functions
-from telethon.events import NewMessage
 from dateutil.parser import parse
 from logging import getLogger
 from os import remove
@@ -19,21 +20,22 @@ from speedtest import Speedtest
 from urllib.request import urlretrieve
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
 DEFAULT_ADD = "1.0.0.1"
 
-@tgclient.on(NewMessage(pattern=r"^\.rtt$", outgoing=True))
+@ehandler.on(pattern=r"^\.rtt$", outgoing=True)
 async def rtt(message):
     rtt = pinger(DEFAULT_ADD)
     await message.edit(msgRep.PING_SPEED + rtt)
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.dc$", outgoing=True))
+@ehandler.on(pattern=r"^\.dc$", outgoing=True)
 async def datacenter(event):
     result = await event.client(functions.help.GetNearestDcRequest())
     await event.edit(msgRep.DCMESSAGE.format(result.country, result.this_dc, result.nearest_dc))
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.ping(?: |$)?", outgoing=True))
+@ehandler.on(pattern=r"^\.ping(?: |$)?", outgoing=True)
 async def ping(args):
     commandParser = str(args.message.message).split(' ')
     if len(commandParser) != 2:
@@ -49,7 +51,7 @@ async def ping(args):
         await args.edit(msgRep.PINGER_VAL.format(dns, duration))
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.speedtest(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.speedtest(?: |$)(.*)", outgoing=True)
 async def speedtest(event):
     arg_from_event = event.pattern_match.group(1)
     chat =  await event.get_chat()
@@ -59,28 +61,53 @@ async def speedtest(event):
         if hasattr(chat, "default_banned_rights") and not chat.creator and not chat.admin_rights and \
            chat.default_banned_rights.send_media:
             share_as_pic = False  # disable
-    await event.edit(msgRep.SPD_START)
+    process = None
+    all_test_passed = False
+    check_mark = u"\u2705"
+    warning = u"\u26A0"
     try:
+        process = f"**Speedtest by Ookla**\n\n- {msgRep.SPD_TEST_SELECT_SERVER}..."
+        await event.edit(process)
         s = Speedtest()
         s.get_best_server()
+        process = f"**Speedtest by Ookla**\n\n- {msgRep.SPD_TEST_SELECT_SERVER} {check_mark}\n" \
+                  f"- {msgRep.SPD_TEST_DOWNLOAD}..."
+        await event.edit(process)
         s.download()
+        process = f"**Speedtest by Ookla**\n\n- {msgRep.SPD_TEST_SELECT_SERVER} {check_mark}\n" \
+                  f"- {msgRep.SPD_TEST_DOWNLOAD} {check_mark}\n- {msgRep.SPD_TEST_UPLOAD}..."
+        await event.edit(process)
         s.upload()
+        process = f"**Speedtest by Ookla**\n\n- {msgRep.SPD_TEST_SELECT_SERVER} {check_mark}\n" \
+                  f"- {msgRep.SPD_TEST_DOWNLOAD} {check_mark}\n- {msgRep.SPD_TEST_UPLOAD} {check_mark}"
+        all_test_passed = True
         if share_as_pic:
             s.results.share()
         result = s.results.dict()
         if not result:
-            await event.edit(f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_RESULT}`")
+            await event.edit(process + "\n\n" + f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_RESULT}`")
             return
     except MemoryError as me:
         log.error(me)
-        await event.edit(f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_MEMORY}`")
+        if not all_test_passed:
+            process = process[:-3] + f" {warning}"
+            await event.edit(process + "\n\n" + f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_MEMORY}`")
+        else:
+            await event.edit(process + "\n\n" + f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_MEMORY}`")
+        return
     except Exception as e:
         log.error(e)
-        await event.edit(msgRep.SPD_FAILED)
+        if not all_test_passed:
+            process = process[:-3] + f" {warning}"
+            await event.edit(process + "\n\n" + msgRep.SPD_FAILED)
+        else:
+            await event.edit(process + "\n\n" + msgRep.SPD_FAILED)
+        return
 
     if share_as_pic:
         try:
-            png_file = TEMP_DL_DIR + "speedtest.png"
+            await event.edit(process + "\n\n" + f"{msgRep.SPD_PROCESSING}...")
+            png_file = getConfig("TEMP_DL_DIR") + "speedtest.png"
             urlretrieve(result["share"], png_file)
             await event.client.send_file(chat.id, png_file)
             await event.delete()

@@ -6,13 +6,16 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import module_info, shell_runner
 from userbot.include.language_processor import TerminalText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from telethon.events import NewMessage
+from userbot.sysutils.event_handler import EventHandler
 from os.path import basename
+from subprocess import check_output, CalledProcessError
 
-@tgclient.on(NewMessage(pattern=r"^\.shell(?: |$)(.*)", outgoing=True))
+ehandler = EventHandler()
+
+@ehandler.on(pattern=r"^\.shell(?: |$)(.*)", outgoing=True)
 async def bash(command):
     full_cmd_str = command.pattern_match.group(1)
     commandArray = command.text.split(" ")

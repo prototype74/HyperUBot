@@ -46,7 +46,7 @@ class ConfigClass(object):
     #
     # Skips load specific module(s) e.g. ["admin"]
     #
-    NOT_LOAD_MODUES = []  # must be a list or config will not work
+    NOT_LOAD_MODULES = []  # must be a list or config will not work
 
     #
     # To store downloaded file(s) (temporary)

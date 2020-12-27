@@ -6,19 +6,22 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import fetch_user, isRemoteCMD, module_info
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD, module_info
 from userbot.include.language_processor import MessagesText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 from telethon.errors import ChatAdminRequiredError, InputUserDeactivatedError, SearchQueryEmptyError
-from telethon.events import NewMessage
 from telethon.tl.functions.messages import SearchRequest
-from telethon.tl.types import InputMessagesFilterEmpty, ChannelParticipantsAdmins, Chat, Channel
+from telethon.tl.types import InputMessagesFilterEmpty, ChannelParticipantsAdmins
 from logging import getLogger
 from os.path import basename
 
 log = getLogger(__name__)
+ehandler = EventHandler(log)
+LOGGING = getConfig("LOGGING")
 
-@tgclient.on(NewMessage(pattern=r"^\.msgs(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.msgs(?: |$)(.*)", outgoing=True)
 async def countmessages(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -67,67 +70,73 @@ async def countmessages(event):
             await event.edit(msgRep.CANNOT_COUNT_MSG)
     return
 
-@tgclient.on(NewMessage(pattern=r"^\.topusers(?: |$)(.*)", outgoing=True))
-async def topusers(event):
-    arg = event.pattern_match.group(1)
+@ehandler.on(pattern=r"^\.pin(?: |$)(.*)", outgoing=True)
+async def pin(event):
+    if event.reply_to_msg_id:
+        msg_id = event.reply_to_msg_id
+    else:
+        await event.edit(msgRep.PIN_REPLY_TO_MSG)
+        return
 
-    try:
-        arg = int(arg)
-    except:
-        pass
-
-    if not arg:
-        arg = event.chat_id
-
-    try:
-        chat = await event.client.get_entity(arg)
-    except Exception as e:
-        log.warning(e)
+    chat = await event.get_chat()
+    if not chat:
         await event.edit(msgRep.FAIL_CHAT)
         return
 
-    if not isinstance(chat, (Chat, Channel)):
-        await event.edit(msgRep.NO_GROUP_CHAN)
-        return
-
-    users = {}
-    count = 0
-    # if this feature is being used in channels, then filter by admins only
-    channel = True if hasattr(chat, "broadcast") and chat.broadcast else False
-
+    arg_from_event = event.pattern_match.group(1)
+    notify = True if arg_from_event.lower() == "loud" else False
     try:
-        await event.edit(msgRep.PICKING_MEMBERS)
-        async for user in event.client.iter_participants(chat.id, filter=ChannelParticipantsAdmins() if channel else None):
-            # counting messages from deleted users would trigger InputUserDeactivatedError exception,
-            # so skip them.
-            if not user.deleted:
-                user_link  = "@" + user.username if user.username else f"[{user.first_name}](tg://user?id={user.id})"
-                if not user_link in users.keys():
-                    msg_info = await event.client(SearchRequest(peer=chat.id,
-                                                                q="",  # search for any message
-                                                                filter=InputMessagesFilterEmpty(),
-                                                                min_date=None, max_date=None,
-                                                                add_offset=0, offset_id=0,
-                                                                limit=0, max_id=0, min_id=0,
-                                                                hash=0, from_id=user.id))
-                    users[user_link] = msg_info.count  # add new key
-        count = len(users.keys()) if len(users.keys()) < 10 else 10
-        # sort the dictionary by highest value and limit it to 10 keys or lower
-        users = {key: value for key, value in sorted(users.items(), key=lambda item: item[1], reverse=True)[:count]}
+        await event.client.pin_message(chat.id, msg_id, notify=notify)
+        await event.edit(msgRep.PIN_SUCCESS)
+        if LOGGING:
+            await event_log(event, "PINNED MESSAGE", chat_title=chat.title if hasattr(chat, "title") else None,
+                            chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id, custom_text=f"{msgRep.LOG_PIN_MSG_ID}: {event.reply_to_msg_id}")
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
-        return
     except Exception as e:
         log.warning(e)
-        await event.edit(msgRep.FAILED_TO_PICK)
+        await event.edit(msgRep.PIN_FAILED)
+
+    return
+
+@ehandler.on(pattern=r"^\.unpin(?: |$)(.*)", outgoing=True)
+async def pin(event):
+    arg_from_event = event.pattern_match.group(1)
+    all_msgs = True if arg_from_event.lower() == "all" else False
+
+    if not all_msgs:
+        if event.reply_to_msg_id:
+            msg_id = event.reply_to_msg_id
+        else:
+            await event.edit(msgRep.UNPIN_REPLY_TO_MSG)
+            return
+
+    chat = await event.get_chat()
+    if not chat:
+        await event.edit(msgRep.FAIL_CHAT)
         return
 
-    text = msgRep.TOP_USERS_TEXT.format(count, chat.title) + ":\n\n"
-    count = 1
-    for key, value in users.items():
-        text += "{}. {}: `{}` {}\n".format(count, key, value, msgRep.TOP_USERS_MSGS)
-        count += 1
-    await event.edit(text)
+    try:
+        if all_msgs:
+            await event.client.unpin_message(chat.id)
+            await event.edit(msgRep.UNPIN_ALL_SUCCESS)
+            log_text = f"**{msgRep.LOG_UNPIN_ALL_TEXT}**"
+        else:
+            await event.client.unpin_message(chat.id, msg_id)
+            await event.edit(msgRep.UNPIN_SUCCESS)
+            log_text = f"{msgRep.LOG_PIN_MSG_ID}: {event.reply_to_msg_id}"
+        if LOGGING:
+            await event_log(event, "UNPINNED MESSAGES" if all_msgs else "UNPINNED MESSAGE",
+                            chat_title=chat.title if hasattr(chat, "title") else None,
+                            chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=chat.id, custom_text=log_text)
+    except ChatAdminRequiredError:
+        await event.edit(msgRep.NO_ADMIN)
+    except Exception as e:
+        log.warning(e)
+        await event.edit(msgRep.UNPIN_FAILED)
+
     return
 
 MODULE_DESC.update({basename(__file__)[:-3]: descRep.MESSAGES_DESC})

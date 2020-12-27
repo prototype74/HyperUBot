@@ -6,12 +6,14 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
+from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import GitHubText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.sysutils.event_handler import EventHandler
 import userbot.include.git_api as api
-from telethon.events import NewMessage
 from os.path import basename
+
+ehandler = EventHandler()
 
 def getData(url, index):
     if not api.getData(url):
@@ -38,7 +40,7 @@ def getData(url, index):
         message += msgRep.DL_COUNT + str(downloadCount) + "\n\n"
     return message
 
-@tgclient.on(NewMessage(pattern=r"^\.git(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.git(?: |$)(.*)", outgoing=True)
 async def get_release(event):
     commandArgs = event.text.split(" ")
     if len(commandArgs) != 2 or not "/" in commandArgs[1]:

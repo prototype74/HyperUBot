@@ -6,17 +6,22 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, PROJECT, log, MODULE_DESC, MODULE_DICT, MODULE_INFO, LOGGING, OS, VERSION
+from userbot import PROJECT, MODULE_DESC, MODULE_DICT, MODULE_INFO, OS, VERSION
 from userbot.include.aux_funcs import event_log, module_info
 from userbot.include.language_processor import UpdaterText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from telethon.events import NewMessage
+from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.event_handler import EventHandler
 from telethon.errors.rpcerrorlist import MessageTooLongError
 import time
 from git import Repo
+from logging import getLogger
 from subprocess import check_output, CalledProcessError
 from os.path import basename
 import os
 import sys
+
+log = getLogger(__name__)
+ehandler = EventHandler(log)
 
 if " " not in sys.executable:
     EXECUTABLE = sys.executable
@@ -27,7 +32,7 @@ BOT_REPO_URL = "https://github.com/nunopenim/HyperUBot"
 RAN = False
 FOUND_UPD = False
 
-@tgclient.on(NewMessage(pattern=r"^\.update(?: |$)(.*)$", outgoing=True))
+@ehandler.on(pattern=r"^\.update(?: |$)(.*)$", outgoing=True)
 async def updater(upd):
     global RAN
     global FOUND_UPD
@@ -50,7 +55,7 @@ async def updater(upd):
             return
         await upd.edit(msgRep.UPD_SUCCESS)
         time.sleep(1)
-        if LOGGING:
+        if getConfig("LOGGING"):
             await event_log(upd, "UPDATE", custom_text=msgRep.UPD_LOG)
         await upd.edit(msgRep.RBT_COMPLETE)
         args = [EXECUTABLE, "-m", "userbot"]
