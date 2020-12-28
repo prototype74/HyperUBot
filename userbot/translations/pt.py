@@ -242,6 +242,11 @@ class MessagesText(object):
     PIN_SUCCESS = "`Mensagem fixada com sucesso.`"
     PIN_FAILED = "`Falha ao fixar a mensagem!`"
     LOG_PIN_MSG_ID = "ID da Mensagem"
+    UNPIN_REPLY_TO_MSG = "`Responde a uma mensagem para desafixar ou usa \".unpin all\" para desafixar todas as mensagens`"
+    UNPIN_ALL_SUCCESS = "`Todas as mensagens desafixadas com sucesso`"
+    UNPIN_SUCCESS = "`Mensagem desafixada com sucesso`"
+    UNPIN_FAILED = "`Falha ao desafixar a mensagem`"
+    LOG_UNPIN_ALL_TEXT = "Todas as mensagens desafixadas"
 
 class ScrappersText(object):
     NO_TEXT_OR_MSG = "`Sem texto ou mensagem para traduzir!`"
@@ -330,6 +335,9 @@ class UserText(object):
     ID_NOT_ACCESSIBLE = "o ID de {} não é acessível"
     ORG_HAS_ID_OF = "O autor original {} tem um ID de `{}`"  # name of person, ID
 
+class SystemUtilitiesText(object):
+    CMD_STOPPED = "{} parou!"
+
 class GeneralMessages(object):
     ERROR = "ERRO!"
     CHAT_NOT_USER = "`Canais não são objetos User`"
@@ -356,6 +364,7 @@ class ModulesUtilsText(object):
     MODULE_NO_DESC = "__Descrição não disponível__"
     MODULE_NO_USAGE = "__Utilização não disponível__"
     ASTERISK = "Módulo de user desinstalável"
+    NOT_RUNNING_INFO = "Não carregada"
     UNKNOWN = "Desconhecido"
     SYSTEM = "Sistema"
     SYSTEM_MODULES = "Módulos de sistema"
@@ -373,6 +382,10 @@ class WebToolsText(object):
     BAD_ARGS = "`Maus argumentos`"
     INVALID_HOST = "`Ocorreu um problema a interpretar o IP/Hostname`"
     PINGER_VAL = "DNS: `{}`\nVelocidade de ping: `{}`"
+    SPD_TEST_SELECT_SERVER = "Escolhendo o melhor servidor"
+    SPD_TEST_DOWNLOAD = "Testando velocidade de download"
+    SPD_TEST_UPLOAD = "Testando velocidade de upload"
+    SPD_PROCESSING = "Processando"
     SPD_FAILED = "Falha no teste de velocidade"
     SPD_NO_RESULT = "Sem resultados"
     SPD_NO_MEMORY = "Sem memória"
