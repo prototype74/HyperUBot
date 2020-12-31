@@ -1,5 +1,7 @@
 # HyperUBot Guide - Developing Modules for HyperUBot
 
+# THIS GUIDE IS OUTDATED! A NEW ONE IS BEING PREPARED!
+
 ## Requirements
 
 You might need some python knowledge for this, or at least some other programming language knowledge.
