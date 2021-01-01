@@ -29,7 +29,7 @@ shandler.setFormatter(LogColorFormatter())
 basicConfig(handlers=[fhandler, shandler], level=INFO)
 
 PROJECT = "HyperUBot"
-VERSION = "3.0.0"
+VERSION = "3.0.1"
 OS = system()  # Current Operating System
 
 try:
@@ -143,6 +143,9 @@ else:
     log.error("No Config file found! Make sure it's located in \"userbot\" directory or setup your config file first if you didn't. " +
     "Environment and py scripts are supported.")
     quit(1)
+
+if not getConfig("TEMP_DL_DIR"):
+    addConfig("TEMP_DL_DIR", ".\\downloads\\" if OS and OS.lower().startswith("win") else "./downloads/")
 
 log.info("Configurations loaded")
 

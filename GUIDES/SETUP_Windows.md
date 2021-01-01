@@ -55,12 +55,13 @@ This will open the nano text editor, inside you can copy the following template:
 API_KEY = ""
 API_HASH = ""
 STRING_SESSION = ""
-UBOT_LANG = "en"
 
 # Optional configs
+UBOT_LANG = "en"
 LOGGING = False
 LOGGING_CHATID = 0
-TEMP_DL_DIR = ".\downloads"
+TEMP_DL_DIR = ".\\downloads"
+NOT_LOAD_MODULES = []
 COMMUNITY_REPOS = []
 ```
 
@@ -77,12 +78,13 @@ class ConfigClass(object):
     API_KEY = ""
     API_HASH = ""
     STRING_SESSION = ""
-    UBOT_LANG = "en"
 
     # Optional configs
+    UBOT_LANG = "en"
     LOGGING = False
     LOGGING_CHATID = 0
-    TEMP_DL_DIR = ".\downloads"
+    TEMP_DL_DIR = ".\\downloads"
+    NOT_LOAD_MODULES = []
     COMMUNITY_REPOS = []
 ```
 

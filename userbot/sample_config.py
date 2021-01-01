@@ -30,13 +30,13 @@ class ConfigClass(object):
     #
     STRING_SESSION = ""  # Your string session
 
+
+    ### Optional configurations
     #
     # Userbot display language. Default is english ('en')
     #
     UBOT_LANG = "en"  # must match language code
 
-
-    ### Optional configurations
     #
     # Logs any bot event to the specific chat
     #
@@ -44,19 +44,19 @@ class ConfigClass(object):
     LOGGING_CHATID = None  # Chat ID. Must be an integer
 
     #
-    # Skips load specific module(s) e.g. ["admin"]
-    #
-    NOT_LOAD_MODULES = []  # must be a list or config will not work
-
-    #
     # To store downloaded file(s) (temporary)
     #
     TEMP_DL_DIR = "./downloads"  # Default
 
     #
+    # Skips load specific module(s) e.g. ["admin"]
+    #
+    NOT_LOAD_MODULES = []  # must be a list or config will not work
+
+    #
     # Community extra repos, leave as list of strings (or not)
     # The format of the repo should be "<github_username>/<github_repo>"
-    # Example: "nunopenim/modules-universe" , although this is not a community repo :)
+    # Example: "nunopenim/modules-universe", although this is not a community repo :)
     #
     COMMUNITY_REPOS = []
 

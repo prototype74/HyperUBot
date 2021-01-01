@@ -8,7 +8,8 @@
 
 from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 from userbot.include.aux_funcs import module_info
-from userbot.include.language_processor import ScrappersText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.include.language_processor import (getBotLangCode, ScrappersText as msgRep,
+                                                ModuleDescriptions as descRep, ModuleUsages as usageRep)
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
 from telethon.errors import ChatSendMediaForbiddenError, MessageTooLongError
@@ -30,7 +31,7 @@ log = getLogger(__name__)
 ehandler = EventHandler(log)
 TEMP_DL_DIR = getConfig("TEMP_DL_DIR")
 CC_CSV_PATH = TEMP_DL_DIR + "currency.csv"
-DEST_LANG = getConfig("UBOT_LANG")
+DEST_LANG = getBotLangCode()
 
 def build_supported_langs():
     ret_val = ""

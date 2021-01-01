@@ -133,6 +133,12 @@ async def event_log(event, event_name: str, user_name=None, user_id=None, userna
             user = fetch_user(event)
             await event_log(event, "BAN", user_name=user.first_name, chat_id=event.chat_id)
     """
+    chat_id = getConfig("LOGGING_CHATID")
+
+    if not chat_id:
+        log.warning(f"EVENT_LOG logging event '{event_name}' failed: LOGGING_CHATID is not set")
+        return
+
     text = f"**{event_name}**\n"
     if user_name and user_id and not username:
         text += f"{msgsLang.LOG_USER}: [{user_name}](tg://user?id={user_id})\n"
@@ -152,7 +158,7 @@ async def event_log(event, event_name: str, user_name=None, user_id=None, userna
         text += f"{custom_text}"
 
     try:
-        await event.client.send_message(getConfig("LOGGING_CHATID"), text)
+        await event.client.send_message(chat_id, text)
     except Exception as e:
         log.warning(f"EVENT_LOG ({event_name}): {e}")
     return

@@ -15,14 +15,29 @@ log = getLogger(__name__)
 
 # Language selector logic
 
+def getBotLangCode() -> str:
+    """
+    Get the current bot language code from bot configuration. Default is 'en' if
+    config doesn't exist
+
+    Example:
+        from userbot.include.language_processor import getBotLangCode
+
+        print(f"Current bot language code is {getBotLangCode()}")
+
+    Returns:
+        the bot language code e.g. 'en'
+    """
+    return getConfig("UBOT_LANG", "en")
+
 try:
-    lang = import_module("userbot.translations." + getConfig("UBOT_LANG"))
+    lang = import_module("userbot.translations." + getBotLangCode())
     log.info("Loading {} language".format(lang.NAME if hasattr(lang, "NAME") else "Unknown"))
 except ModuleNotFoundError:  # Language file not found
-    if not getConfig("UBOT_LANG") == "en":
+    if not getBotLangCode() == "en":
         log.warning("'{}' language file not found. Make sure it exists! "
-                    "Should have the same name as the UBOT_LANG variable in your config file. "
-                    "Attempting to load default language...".format(getConfig("UBOT_LANG")))
+                    "Should have the same name as the UBOT_LANG config in your config file. "
+                    "Attempting to load default language...".format(getBotLangCode()))
         try:
             lang = import_module("userbot.translations.en")
         except ModuleNotFoundError:
@@ -35,9 +50,9 @@ except ModuleNotFoundError:  # Language file not found
         log.error("Default language file not found, bot quitting!")
         quit(1)
 except:  # Unhandled exception in language file
-    if not getConfig("UBOT_LANG") == "en":
+    if not getBotLangCode() == "en":
         log.warning("There was a problem loading the '{}' language file. "
-                    "Attempting to load default language...".format(getConfig("UBOT_LANG")), exc_info=True)
+                    "Attempting to load default language...".format(getBotLangCode()), exc_info=True)
         try:
             lang = import_module("userbot.translations.en")
         except ModuleNotFoundError:
@@ -632,4 +647,18 @@ class ModuleUsages(object):
     UPDATER_USAGE = getLangString(lang, _getframe().f_code.co_name, "UPDATER_USAGE")
     SIDELOADER_USAGE = getLangString(lang, _getframe().f_code.co_name, "SIDELOADER_USAGE")
 
-log.info("{} language loaded successfully".format(lang.NAME if hasattr(lang, "NAME") else "Unknown"))
+def getBotLang() -> str:
+    """
+    Get the current bot language if language pack has 'NAME' attribute
+
+    Example:
+        from userbot.include.language_processor import getBotLang
+
+        print(f"Current bot language is '{getBotLangCode()}'")
+
+    Returns:
+        the bot language e.g. 'English' else 'Unknown'
+    """
+    return "{}".format(lang.NAME if hasattr(lang, "NAME") else "Unknown")
+
+log.info("{} language loaded successfully".format(getBotLang()))
