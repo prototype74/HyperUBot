@@ -556,6 +556,10 @@ class GitHubText(object):
 
 class TerminalText(object):
     BASH_ERROR = getLangString(lang, _getframe().f_code.co_name, "BASH_ERROR")
+    BASH_CRT_FILE_FAILED_RO = getLangString(lang, _getframe().f_code.co_name, "BASH_CRT_FILE_FAILED_RO")
+    BASH_CRT_FILE_FAILED = getLangString(lang, _getframe().f_code.co_name, "BASH_CRT_FILE_FAILED")
+    BASH_SEND_FILE_MTLO = getLangString(lang, _getframe().f_code.co_name, "BASH_SEND_FILE_MTLO")
+    BASH_SEND_FILE_FAILED = getLangString(lang, _getframe().f_code.co_name, "BASH_SEND_FILE_FAILED")
 
 class MiscText(object):
     COIN_LANDED_VAL = getLangString(lang, _getframe().f_code.co_name, "COIN_LANDED_VAL")

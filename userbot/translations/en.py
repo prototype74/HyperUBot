@@ -446,6 +446,10 @@ class GitHubText(object):
 
 class TerminalText(object):
     BASH_ERROR = "There has been an unspecified error, likely bad arguments or that command does not exist"
+    BASH_CRT_FILE_FAILED_RO = "Failed to create shell output as a file. Read-only filesystem?"
+    BASH_CRT_FILE_FAILED = "Failed to create shell output as a file"
+    BASH_SEND_FILE_MTLO = "Can't shell output as a file as send media isn't allowed in this chat"
+    BASH_SEND_FILE_FAILED = "Unable to send shell output as a file"
 
 class MiscText(object):
     COIN_LANDED_VAL = "The coin landed on: "
