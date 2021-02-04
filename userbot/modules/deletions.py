@@ -65,18 +65,31 @@ async def purge(event):
 
         message_ids = []
         wait_time_sec = 2  # Prevent FloodWaitError
+        msg_count = 0
+        msg_ids = []
         async for message in event.client.iter_messages(entity=chat.id, min_id=event.reply_to_msg_id,
                                                         wait_time=wait_time_sec):
-            message_ids.append(message.id)
+            msg_ids.append(message.id)
+            msg_count += 1
 
-        message_ids.append(event.reply_to_msg_id)  # last but not least add replied message
-        msg_count = len(message_ids)
-
+            if msg_count % 100 == 0: # delete every 100 msgs
+                try:
+                    if channel_obj:
+                        await event.client(DeleteMessagesRequest(chat.id, msg_ids))
+                    else:
+                        await event.client(DeleteMessagesRequestGPM(msg_ids, revoke=True))
+                    msg_ids = []
+                except Exception as e:
+                    log.warning(e)
+                    await event.edit(msgRep.PURGE_MSG_FAILED)
+                    return
+        # lastly, delete replied msg and any leftovers
+        msg_ids.append(event.reply_to_msg_id)
         try:
             if channel_obj:
-                await event.client(DeleteMessagesRequest(chat.id, message_ids))
+                await event.client(DeleteMessagesRequest(chat.id, msg_ids))
             else:
-                await event.client(DeleteMessagesRequestGPM(message_ids, revoke=True))
+                await event.client(DeleteMessagesRequestGPM(msg_ids, revoke=True))
         except Exception as e:
             log.warning(e)
             await event.edit(msgRep.PURGE_MSG_FAILED)
