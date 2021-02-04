@@ -1,28 +1,27 @@
 # HyperUBot Guide - Developing Modules for HyperUBot
 
-# THIS GUIDE IS OUTDATED! A NEW ONE IS BEING PREPARED!
-
 ## Requirements
 
 You might need some python knowledge for this, or at least some other programming language knowledge.
 
 ## Knowing the basics
 
-For a python script to be minimally compatible with the bot, and having the possibility to be run as a command, you will need to import 2 dependencies, one from Telethon, and one from the bot itself:
+For a python script to be minimally compatible with the bot, and having the possibility to be run as a command, you will need to import the EventHandler, from the bot's system utilities. After this, create a new EventHandler object, like the example below:
 
 ```python
-from userbot import tgclient # This is the bot's client
-from telethon.events import NewMessage # This is the trigger of a bot action
+from userbot.sysutils.event_handler import EventHandler # The event handler object
+
+ehandler = EventHandler() # The specific handler of our new module
 ```
 
 ## Outgoing commands (the most common solution)
 
-Due to Telethon's way of handling things, your bot command functions should be asynchronous. This can be done, while declaring a function, by using the keyword "async". Before declaring the function, however, you should add a line referencing to the tgclient dependency, specifying the command that triggers that action. An example could be:
+Due to Telethon's way of handling things, your bot command functions should be asynchronous. This can be done, while declaring a function, by using the keyword "async". Before declaring the function, however, you should add a line referencing to the Event Handler you created, specifying the command that triggers that action. An example could be:
 
 ```python
-@tgclient.on(NewMessage(pattern=r"^\.mycommand(?: |$)(.*)", outgoing=True))
+@ehandler.on(pattern=r"^\.mycommand(?: |$)(.*)", outgoing=True)
 async def action(event):
-    # Do things
+    # Do things, using or not using the event variable
     return
 ```
 
@@ -33,9 +32,9 @@ This will perform an action if the account in which the bot is running sends the
 Analogously, you also have the possibility to make an account "answer" commands by others. This is done in a similar fashion of the Outgoing solution:
 
 ```python
-@tgclient.on(NewMessage(pattern=r"^\.mycommand(?: |$)(.*)",incoming=True))
+@ehandler.on(pattern=r"^\.mycommand(?: |$)(.*)", incoming=True)
 async def action(event):
-    # Do things
+    # Do things, using or not using the event variable
     return
 ```
 

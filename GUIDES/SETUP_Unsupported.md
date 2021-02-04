@@ -8,8 +8,10 @@ It is also recommended, but not a requirement, to have the ``neofetch`` package 
 
 In these platforms, we cannot help you much, as we lack knowledge.
 
+You must also have Read and Write access to use the package manager, and a persistent storage. Platforms like Heroku will delete any extra content you place there, so the package manager will lose the package list.
+
 ## Full package list:
 
 ``python3 git ffmpeg flac neofetch`` 
 
-Package that contains ping.
+Bash package that will contain ping.

@@ -13,7 +13,7 @@ Besides the common sense rules, such as "don't host malware", the modules you ma
 
 ### 0.3 - Advices:
 
-If you create your own repo, you should also create a channel to release information in how to install, updates and the requirements of such modules (pip dependencies). If your module needs extra pip dependencies, you should tell users to install them via the req_install module, available in the modules-universe. If you want to go more exotic, pip can be imported into your module. You could create some function to check if there is a dependency missing. Be creative :)
+If you create your own repo, you should also create a Telegram channel to release information in how to install, updates and the requirements of such modules (pip dependencies). If your module needs extra pip dependencies, you should tell users to install them via the req_install module, available in the modules-universe. If you want to go more exotic, pip can be imported into your module. You could create some function to check if there is a dependency missing. Be creative :)
 You should also include the licenses under which your modules (or the modules you are redistributing) in a separate "Licenses" folder. The source codes should also be available in a src folder.
 Last but not least, if you want to make an extension of official modules (such as admin.py), you should name them admin_ext.py. You could include commands here such as tban or tmute, that we didn't implement.
 
