@@ -6,13 +6,25 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, log, fhandler, PROJECT, OS, ALL_MODULES, LOAD_MODULES, VERSION, USER_MODULES
+from userbot import tgclient, log, fhandler, PROJECT, OS, ALL_MODULES, LOAD_MODULES, VERSION, USER_MODULES, MODULE_DEPS
 from userbot.sysutils.configuration import getConfig
 from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
 from logging import shutdown
 from importlib import import_module
 from glob import glob
 from os.path import dirname, basename, isfile
+import subprocess
+import sys
+
+if " " not in sys.executable:
+    EXECUTABLE = sys.executable
+else:
+    EXECUTABLE = '"' + sys.executable + '"'
+
+if OS and OS.startswith("win"):
+    PIP_COMMAND = "pip install {}"
+else:
+    PIP_COMMAND = EXECUTABLE + " -m pip install {}"
 
 class _Modules:
     def __init__(self):
@@ -86,6 +98,18 @@ class _Modules:
     def loaded_modules(self) -> int:
         return self.__load_modules_count
 
+def installDeps():
+    success = 0
+    for r in MODULE_DEPS:
+        try:
+            bout = subprocess.check_output(PIP_COMMAND.format(MODULE_DEPS[r]).split())
+            output = bout.decode('ascii')
+            if not f"Requirement already satisfied: {MODULE_DEPS[r]}" in output:
+                success = success + 1
+        except subprocess.CalledProcessError:
+            log.error(f"Error installing dependency {MODULE_DEPS[r]}")
+    return success
+
 if __name__ == "__main__":
     try:
         log.info("Loading resources and modules")
@@ -94,6 +118,9 @@ if __name__ == "__main__":
             quit(1)
         load_modules_count = modules.loaded_modules()
         sum_modules = len(ALL_MODULES)
+        log.info("Installing dependencies")
+        suc = installDeps()
+        log.info(f"Installed {suc}/{len(MODULE_DEPS)} pip packages")
         if not load_modules_count:
             log.warning("No module(s) loaded!")
         elif load_modules_count > 0:
