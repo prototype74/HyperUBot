@@ -186,3 +186,4 @@ USER_MODULES = []  # [Name of user module]
 MODULE_DESC = {}  # {Module name: MODULE_DESC}
 MODULE_DICT = {}  # {Module name: MODULE_USAGE}
 MODULE_INFO = {}  # {Module name: MODULE_INFO}
+MODULE_DEPS = {}  # {Module name: MODULE_DEPS}
