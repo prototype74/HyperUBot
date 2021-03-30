@@ -208,6 +208,23 @@ def module_info(name: str, version: str) -> dict:
     """
     return {"name": name, "version": version}
 
+def dependency(name: str, source: str) -> dict:
+    """
+    Put name and source of a dependency to a new dictionary
+
+    Args:
+        name (str): name of module
+        source (str): should be either "pip" or "repo"
+
+    Example:
+        dependency("Pillow", "pip")
+        dependency("example", "repo")
+
+    Returns:
+        A dictionary with 2 keys
+    """
+    return {"name": name, "source": source}
+
 def shell_runner(commands: list):
     """
     Execute shell commands from given list with strings

@@ -101,13 +101,18 @@ class _Modules:
 def installDeps():
     success = 0
     for r in MODULE_DEPS:
-        try:
-            bout = subprocess.check_output(PIP_COMMAND.format(MODULE_DEPS[r]).split())
-            output = bout.decode('ascii')
-            if not f"Requirement already satisfied: {MODULE_DEPS[r]}" in output:
-                success = success + 1
-        except subprocess.CalledProcessError:
-            log.error(f"Error installing dependency {MODULE_DEPS[r]}")
+        if MODULE_DEPS[r].source = "pip":
+            try:
+                bout = subprocess.check_output(PIP_COMMAND.format(MODULE_DEPS[r]).split())
+                output = bout.decode('ascii')
+                if not f"Requirement already satisfied: {MODULE_DEPS[r]}" in output:
+                    success = success + 1
+            except subprocess.CalledProcessError:
+                log.error(f"Error installing dependency {MODULE_DEPS[r]}")
+        elif MODULE_DEPS[r].source == "repo":
+            # todo
+        else:
+            log.warn(f"Module {r} depends on {MODULE_DEPS[r].name} from unknown source {MODULE_DEPS[r].source}.")
     return success
 
 if __name__ == "__main__":
