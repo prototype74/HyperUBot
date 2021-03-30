@@ -102,7 +102,7 @@ class _Modules:
 def installDeps():
     success = 0
     for r in MODULE_DEPS:
-        if MODULE_DEPS[r].source = "pip":
+        if MODULE_DEPS[r].source == "pip":
             try:
                 bout = subprocess.check_output(PIP_COMMAND.format(MODULE_DEPS[r]).split())
                 output = bout.decode('ascii')
