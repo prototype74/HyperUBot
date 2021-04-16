@@ -2,25 +2,42 @@
 
 ## Requirements
 
-You might need some python knowledge for this, or at least some other programming language knowledge.
+You might need some Python knowledge for this, or at least some other programming language knowledge.
 
 ## Knowing the basics
 
-For a python script to be minimally compatible with the bot, and having the possibility to be run as a command, you will need to import the EventHandler, from the bot's system utilities. After this, create a new EventHandler object, like the example below:
+For a Python script to be minimally compatible with the bot, and having the possibility to be run as a command, you will need to import the EventHandler, from the bot's system utilities. After this, create a new EventHandler object, like the example below:
 
 ```python
-from userbot.sysutils.event_handler import EventHandler # The event handler object
+from userbot.sysutils.event_handler import EventHandler  # The EventHandler object
 
-ehandler = EventHandler() # The specific handler of our new module
+ehandler = EventHandler()  # The specific handler of our new module
+```
+
+You can also pass a logger to EventHandler to identify traces easier:
+
+```python
+from userbot.sysutils.event_handler import EventHandler  # The EventHandler object
+from logging import getLogger  # import getLogger
+
+log = getLogger(__name__)  # pass the current module's name
+ehandler = EventHandler(log)  # set logger as parameter to EventHandler
 ```
 
 ## Outgoing commands (the most common solution)
 
-Due to Telethon's way of handling things, your bot command functions should be asynchronous. This can be done, while declaring a function, by using the keyword "async". Before declaring the function, however, you should add a line referencing to the Event Handler you created, specifying the command that triggers that action. An example could be:
+Due to Telethon's way of handling things, your bot command functions should be asynchronous. This can be done, while declaring a function, by using the keyword "async". Before declaring the function, however, you should add a line referencing to the EventHandler you created, specifying the command that triggers that action. An example could be:
 
 ```python
-@ehandler.on(pattern=r"^\.mycommand(?: |$)(.*)", outgoing=True)
+from userbot.sysutils.event_handler import EventHandler
+from logging import getLogger
+
+log = getLogger(__name__)
+ehandler = EventHandler(log)
+
+@ehandler.on(command="example", hasArgs=True, outgoing=True)
 async def action(event):
+    await event.edit("This is an example!")
     # Do things, using or not using the event variable
     return
 ```
@@ -32,8 +49,15 @@ This will perform an action if the account in which the bot is running sends the
 Analogously, you also have the possibility to make an account "answer" commands by others. This is done in a similar fashion of the Outgoing solution:
 
 ```python
-@ehandler.on(pattern=r"^\.mycommand(?: |$)(.*)", incoming=True)
+from userbot.sysutils.event_handler import EventHandler
+from logging import getLogger
+
+log = getLogger(__name__)
+ehandler = EventHandler(log)
+
+@ehandler.on(command="example", hasArgs=True, incoming=True)
 async def action(event):
+    await event.reply("This is an example response!")
     # Do things, using or not using the event variable
     return
 ```
@@ -42,35 +66,36 @@ In this example, if another account sends the user a message ".mycommand", the h
 
 ## Extra configurations
 
-The recommended way of storing the configurations for your module is to create a new class in the config.py file. If using env, you should only import what you need. An example of a config.py file with a new class:
+If a specific configuration is required for your module, add your custom configuration to the existing configurations in your config file. HyperUBot loads all configurations independent from config.env or config.py automatically, so any special instruction is not required to add custom configurations.
+
+## Get a certain configuration
+
+To get a certain configuration you need to import the configuration Util from sysutils of HyperUBot. A prefunction allows you to get any config stored in the global dictionary which works as followed:
 
 ```python
-class ConfigClass(object): # This is the bot's config class
-    API_KEY = None
-    API_HASH = None
-    STRING_SESSION = None
-    UBOT_LANG = "en"
-    LOGGING = False
-    LOGGING_CHATID = 0
-    TEMP_DL_DIR = "./downloads"
-    COMMUNITY_REPOS = []
-
-class ExampleConfigClass(object):
-    EXAMPLE1 = None
+getConfig(config_name[, default_value])
 ```
 
-Considering that your module's configurations are stored in this new ExampleConfigClass, all you need to do is to import it into your module. To do this, on the top of the module, write:
+config_name: is the name of your custom configuration\
+default_value (optional): default value in case config_name doesn't exist\
+getConfig() returns the value from config_name else from default_value
+
+Example usage:
 
 ```python
-from userbot.config import ExampleConfigClass as cfg
+from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.configuration import getConfig  # import getConfig
+
+ehandler = EventHandler()
+
+@ehandler.on(command="myconfig", hasArgs=True, outgoing=True)
+async def action(event):
+    myConfig = getConfig("myCustomConfig")  # get your custom config
+    await event.edit("This is my custom config: " + myConfig)
+    return
 ```
 
-With this done, if you need to access a configuration field in a function, all you need to do is:
+if `config_name` does not exist and `default_value` is not set, `None` will be returned instead
 
-```python
-async def function(event):
-    # some code
-    configurationNeededHere = cfg.EXAMPLE1
-```
 
-Hopefully, this mechanic is now simple.
+Hopefully, this mechanic is now simple and have fun developing modules!

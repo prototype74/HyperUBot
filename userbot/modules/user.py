@@ -1,28 +1,29 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import event_log, fetch_user, module_info
+from userbot import tgclient
+from userbot.include.aux_funcs import event_log, fetch_user
 from userbot.include.language_processor import UserText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 from telethon.tl.types import User, Chat, Channel
 from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
 from logging import getLogger
-from os.path import basename
 
 MAXINT = 2147483647 # I sure do love hammering down shit
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 
-@ehandler.on(pattern=r"^\.userid(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="userid", hasArgs=True, outgoing=True)
 async def userid(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -79,7 +80,7 @@ async def userid(event):
     await event.edit(text)
     return
 
-@ehandler.on(pattern=r"^\.kickme$", outgoing=True)
+@ehandler.on(command="kickme", alt="leave", outgoing=True)
 async def kickme(leave):
     await leave.edit(msgRep.LEAVING)
     await leave.client.kick_participant(leave.chat_id, 'me')
@@ -87,7 +88,7 @@ async def kickme(leave):
         await event_log(leave, "KICKME", chat_title=leave.chat.title, chat_id=leave.chat.id)
     return
 
-@ehandler.on(pattern=r"^\.stats$", outgoing=True)
+@ehandler.on(command="stats", outgoing=True)
 async def stats(event):
     (groups, channels, super_groups, bots, users, unknown, total,
      group_owner, group_admin, super_group_owner, super_group_admin,
@@ -163,7 +164,7 @@ async def stats(event):
 
     return
 
-@ehandler.on(pattern=r"^\.info(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="info", hasArgs=True, outgoing=True)
 async def info(event):  # .info command
     await event.edit(msgRep.FETCH_INFO)
 
@@ -230,6 +231,12 @@ async def fetch_info(user_obj, event):
 
     return caption
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.USER_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.USER_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="User", version=VERSION)})
+for cmd in ("info", "kickme", "stats", "userid"):
+    register_cmd_usage(cmd, usageRep.USER_USAGE.get(cmd, {}).get("args"), usageRep.USER_USAGE.get(cmd, {}).get("usage"))
+
+register_module_desc(descRep.USER_DESC)
+register_module_info(
+    name="User",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

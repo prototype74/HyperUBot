@@ -1,36 +1,27 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import OS, MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import event_log, module_info
+from userbot.include.aux_funcs import event_log
 from userbot.include.language_processor import SideloaderText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.configuration import getConfig, setConfig
 from userbot.sysutils.event_handler import EventHandler
-import sys
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 import os
 from logging import getLogger
-from os.path import basename
 import time
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 
-if " " not in sys.executable:
-    EXECUTABLE = sys.executable
-else:
-    EXECUTABLE = '"' + sys.executable + '"'
+USER_MODULES_DIR = os.path.join(".", "userbot", "modules_user")
 
-if OS and OS.startswith("win"):
-    USER_MODULES_DIR = ".\\userbot\\modules_user\\"
-else:
-    USER_MODULES_DIR = "./userbot/modules_user/"
-
-@ehandler.on(pattern=r"^\.sideload(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="sideload", hasArgs=True, outgoing=True)
 async def sideload(event):
     OVR_WRT_CAUT = True
     cmd_args = event.pattern_match.group(1).split(" ", 1)
@@ -42,7 +33,7 @@ async def sideload(event):
         if not file.name.endswith(".py"):
             await event.edit(msgRep.NOT_PY_FILE)
             return
-        dest_path = USER_MODULES_DIR + file.name
+        dest_path = os.path.join(USER_MODULES_DIR, file.name)
         await event.edit(msgRep.DLOADING)
         if os.path.isfile(dest_path) and OVR_WRT_CAUT:
             log.info(f"Module '{file.name[:-3]}' installed already")
@@ -55,15 +46,17 @@ async def sideload(event):
             await event_log(event, "SIDELOAD", custom_text=msgRep.LOG.format(file.name))
         log.info("Rebooting userbot...")
         time.sleep(1)
-        args = [EXECUTABLE, "-m", "userbot"]
         await event.edit(msgRep.RBT_CPLT)
-        os.execle(sys.executable, *args, os.environ)
+        setConfig("REBOOT", True)
         await event.client.disconnect()
-        return
     else:
         await event.edit(msgRep.INVALID_FILE)
-        return
+    return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.SIDELOADER_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SIDELOADER_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Sideloader", version=VERSION)})
+register_cmd_usage("sideload", usageRep.SIDELOADER_USAGE.get("sideload", {}).get("args"), usageRep.SIDELOADER_USAGE.get("sideload", {}).get("usage"))
+register_module_desc(descRep.SIDELOADER_DESC)
+register_module_info(
+    name="Sideloader",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

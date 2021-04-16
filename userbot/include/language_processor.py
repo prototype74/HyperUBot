@@ -1,5 +1,5 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
@@ -28,7 +28,10 @@ def getBotLangCode() -> str:
     Returns:
         the bot language code e.g. 'en'
     """
-    return getConfig("UBOT_LANG", "en")
+    ubot_lang = getConfig("UBOT_LANG", "en")
+    if not ubot_lang:
+        ubot_lang = "en"
+    return ubot_lang
 
 try:
     lang = import_module("userbot.translations." + getBotLangCode())
@@ -177,6 +180,7 @@ class AdminText(object):
     TRY_DEL_ACCOUNTS = getLangString(lang, _getframe().f_code.co_name, "TRY_DEL_ACCOUNTS")
     DEL_ACCS_COUNT = getLangString(lang, _getframe().f_code.co_name, "DEL_ACCS_COUNT")
     REM_DEL_ACCS_COUNT = getLangString(lang, _getframe().f_code.co_name, "REM_DEL_ACCS_COUNT")
+    REM_DEL_ACCS_COUNT_EXCP = getLangString(lang, _getframe().f_code.co_name, "REM_DEL_ACCS_COUNT_EXCP")
     NO_DEL_ACCOUNTS = getLangString(lang, _getframe().f_code.co_name, "NO_DEL_ACCOUNTS")
 
 class SystemToolsText(object):
@@ -184,6 +188,10 @@ class SystemToolsText(object):
     SYSTEM_STATUS = getLangString(lang, _getframe().f_code.co_name, "SYSTEM_STATUS")
     VER_TEXT = getLangString(lang, _getframe().f_code.co_name, "VER_TEXT")
     USR_TEXT = getLangString(lang, _getframe().f_code.co_name, "USR_TEXT")
+    SAFEMODE = getLangString(lang, _getframe().f_code.co_name, "SAFEMODE")
+    ON = getLangString(lang, _getframe().f_code.co_name, "ON")
+    OFF = getLangString(lang, _getframe().f_code.co_name, "OFF")
+    LANG = getLangString(lang, _getframe().f_code.co_name, "LANG")
     RTT = getLangString(lang, _getframe().f_code.co_name, "RTT")
     TELETON_VER = getLangString(lang, _getframe().f_code.co_name, "TELETON_VER")
     PYTHON_VER = getLangString(lang, _getframe().f_code.co_name, "PYTHON_VER")
@@ -196,11 +204,11 @@ class SystemToolsText(object):
     MAC_UPTIMETXT = getLangString(lang, _getframe().f_code.co_name, "MAC_UPTIMETXT")
     SHUTDOWN = getLangString(lang, _getframe().f_code.co_name, "SHUTDOWN")
     SHUTDOWN_LOG = getLangString(lang, _getframe().f_code.co_name, "SHUTDOWN_LOG")
+    SYSD_GATHER_INFO = getLangString(lang, _getframe().f_code.co_name, "SYSD_GATHER_INFO")
     SYSD_NEOFETCH_REQ = getLangString(lang, _getframe().f_code.co_name, "SYSD_NEOFETCH_REQ")
     RESTART = getLangString(lang, _getframe().f_code.co_name, "RESTART")
     RESTART_LOG = getLangString(lang, _getframe().f_code.co_name, "RESTART_LOG")
     RESTARTED = getLangString(lang, _getframe().f_code.co_name, "RESTARTED")
-    NO_GITHUB = getLangString(lang, _getframe().f_code.co_name, "NO_GITHUB")
     STORAGE = getLangString(lang, _getframe().f_code.co_name, "STORAGE")
     STORAGE_TOTAL = getLangString(lang, _getframe().f_code.co_name, "STORAGE_TOTAL")
     STORAGE_USED = getLangString(lang, _getframe().f_code.co_name, "STORAGE_USED")
@@ -210,10 +218,10 @@ class SystemToolsText(object):
     STORAGE_HDD = getLangString(lang, _getframe().f_code.co_name, "STORAGE_HDD")
     UPLD_LOG = getLangString(lang, _getframe().f_code.co_name, "UPLD_LOG")
     SUCCESS_UPLD_LOG = getLangString(lang, _getframe().f_code.co_name, "SUCCESS_UPLD_LOG")
+    FAILED_UPLD_LOG = getLangString(lang, _getframe().f_code.co_name, "FAILED_UPLD_LOG")
 
 class DeletionsText(object):
     CANNOT_DEL_MSG = getLangString(lang, _getframe().f_code.co_name, "CANNOT_DEL_MSG")
-    UNABLE_DEL_MSG = getLangString(lang, _getframe().f_code.co_name, "UNABLE_DEL_MSG")
     DEL_MSG_FAILED = getLangString(lang, _getframe().f_code.co_name, "DEL_MSG_FAILED")
     REPLY_DEL_MSG = getLangString(lang, _getframe().f_code.co_name, "REPLY_DEL_MSG")
     NO_ADMIN_PURGE = getLangString(lang, _getframe().f_code.co_name, "NO_ADMIN_PURGE")
@@ -235,17 +243,22 @@ class ChatInfoText(object):
     DELETED_ACCOUNT = getLangString(lang, _getframe().f_code.co_name, "DELETED_ACCOUNT")
     CHATINFO = getLangString(lang, _getframe().f_code.co_name, "CHATINFO")
     CHAT_ID = getLangString(lang, _getframe().f_code.co_name, "CHAT_ID")
+    CHANNEL = getLangString(lang, _getframe().f_code.co_name, "CHANNEL")
+    GROUP = getLangString(lang, _getframe().f_code.co_name, "GROUP")
     CHAT_TYPE = getLangString(lang, _getframe().f_code.co_name, "CHAT_TYPE")
     CHAT_NAME = getLangString(lang, _getframe().f_code.co_name, "CHAT_NAME")
     FORMER_NAME = getLangString(lang, _getframe().f_code.co_name, "FORMER_NAME")
     CHAT_PUBLIC = getLangString(lang, _getframe().f_code.co_name, "CHAT_PUBLIC")
     CHAT_PRIVATE = getLangString(lang, _getframe().f_code.co_name, "CHAT_PRIVATE")
+    GROUP_TYPE = getLangString(lang, _getframe().f_code.co_name, "GROUP_TYPE")
+    GROUP_TYPE_GIGAGROUP = getLangString(lang, _getframe().f_code.co_name, "GROUP_TYPE_GIGAGROUP")
+    GROUP_TYPE_SUPERGROUP = getLangString(lang, _getframe().f_code.co_name, "GROUP_TYPE_SUPERGROUP")
+    GROUP_TYPE_NORMAL = getLangString(lang, _getframe().f_code.co_name, "GROUP_TYPE_NORMAL")
     OWNER = getLangString(lang, _getframe().f_code.co_name, "OWNER")
     OWNER_WITH_URL = getLangString(lang, _getframe().f_code.co_name, "OWNER_WITH_URL")
     CREATED_NOT_NULL = getLangString(lang, _getframe().f_code.co_name, "CREATED_NOT_NULL")
     CREATED_NULL = getLangString(lang, _getframe().f_code.co_name, "CREATED_NULL")
     DCID = getLangString(lang, _getframe().f_code.co_name, "DCID")
-    CHAT_LEVEL = getLangString(lang, _getframe().f_code.co_name, "CHAT_LEVEL")
     VIEWABLE_MSG = getLangString(lang, _getframe().f_code.co_name, "VIEWABLE_MSG")
     DELETED_MSG = getLangString(lang, _getframe().f_code.co_name, "DELETED_MSG")
     SENT_MSG = getLangString(lang, _getframe().f_code.co_name, "SENT_MSG")
@@ -261,7 +274,6 @@ class ChatInfoText(object):
     LINKED_CHAT_TITLE = getLangString(lang, _getframe().f_code.co_name, "LINKED_CHAT_TITLE")
     SLW_MODE = getLangString(lang, _getframe().f_code.co_name, "SLW_MODE")
     SLW_MODE_TIME = getLangString(lang, _getframe().f_code.co_name, "SLW_MODE_TIME")
-    SPER_GRP = getLangString(lang, _getframe().f_code.co_name, "SPER_GRP")
     RESTR = getLangString(lang, _getframe().f_code.co_name, "RESTR")
     PFORM = getLangString(lang, _getframe().f_code.co_name, "PFORM")
     REASON = getLangString(lang, _getframe().f_code.co_name, "REASON")
@@ -326,6 +338,7 @@ class MemberInfoText(object):
     INVITE_USERS = getLangString(lang, _getframe().f_code.co_name, "INVITE_USERS")
     PIN_MESSAGES = getLangString(lang, _getframe().f_code.co_name, "PIN_MESSAGES")
     ADD_ADMINS = getLangString(lang, _getframe().f_code.co_name, "ADD_ADMINS")
+    MANAGE_CALLS = getLangString(lang, _getframe().f_code.co_name, "MANAGE_CALLS")
     ANONYMOUS = getLangString(lang, _getframe().f_code.co_name, "ANONYMOUS")
     ROOT_RIGHTS = getLangString(lang, _getframe().f_code.co_name, "ROOT_RIGHTS")
     SEND_MESSAGES = getLangString(lang, _getframe().f_code.co_name, "SEND_MESSAGES")
@@ -461,6 +474,7 @@ class GeneralMessages(object):
     LOG_CHAT_TITLE = getLangString(lang, _getframe().f_code.co_name, "LOG_CHAT_TITLE")
     LOG_CHAT_LINK = getLangString(lang, _getframe().f_code.co_name, "LOG_CHAT_LINK")
     LOG_CHAT_ID = getLangString(lang, _getframe().f_code.co_name, "LOG_CHAT_ID")
+    UNKNOWN = getLangString(lang, _getframe().f_code.co_name, "UNKNOWN")
 
 class ModulesUtilsText(object):
     INVALID_ARG = getLangString(lang, _getframe().f_code.co_name, "INVALID_ARG")
@@ -482,9 +496,15 @@ class ModulesUtilsText(object):
     USER_MODULES = getLangString(lang, _getframe().f_code.co_name, "USER_MODULES")
     PKG_NAME = getLangString(lang, _getframe().f_code.co_name, "PKG_NAME")
     MODULE_TYPE = getLangString(lang, _getframe().f_code.co_name, "MODULE_TYPE")
+    AUTHORS = getLangString(lang, _getframe().f_code.co_name, "AUTHORS")
     VERSION = getLangString(lang, _getframe().f_code.co_name, "VERSION")
     SIZE = getLangString(lang, _getframe().f_code.co_name, "SIZE")
     INSTALL_DATE = getLangString(lang, _getframe().f_code.co_name, "INSTALL_DATE")
+    LISTCMDS_TITLE = getLangString(lang, _getframe().f_code.co_name, "LISTCMDS_TITLE")
+    LISTCMDS_USAGE = getLangString(lang, _getframe().f_code.co_name, "LISTCMDS_USAGE")
+    ARGS_NOT_REQ = getLangString(lang, _getframe().f_code.co_name, "ARGS_NOT_REQ")
+    ARGS_NOT_AVAILABLE = getLangString(lang, _getframe().f_code.co_name, "ARGS_NOT_AVAILABLE")
+    CMD_NOT_FOUND = getLangString(lang, _getframe().f_code.co_name, "CMD_NOT_FOUND")
 
 class WebToolsText(object):
     PING_SPEED = getLangString(lang, _getframe().f_code.co_name, "PING_SPEED")
@@ -525,7 +545,9 @@ class CasIntText(object):
     AUTO_UPDATE = getLangString(lang, _getframe().f_code.co_name, "AUTO_UPDATE")
     CAS_CHECK_FAIL_ND = getLangString(lang, _getframe().f_code.co_name, "CAS_CHECK_FAIL_ND")
     CAS_CHECK_ND = getLangString(lang, _getframe().f_code.co_name, "CAS_CHECK_ND")
-    PROCESSING = getLangString(lang, _getframe().f_code.co_name, "PROCESSING")
+    CHECK_USER = getLangString(lang, _getframe().f_code.co_name, "CHECK_USER")
+    CHECK_CHAT = getLangString(lang, _getframe().f_code.co_name, "CHECK_CHAT")
+    CHECK_USER_ID = getLangString(lang, _getframe().f_code.co_name, "CHECK_USER_ID")
     DELETED_ACCOUNT = getLangString(lang, _getframe().f_code.co_name, "DELETED_ACCOUNT")
     USER_HEADER = getLangString(lang, _getframe().f_code.co_name, "USER_HEADER")
     USER_ID = getLangString(lang, _getframe().f_code.co_name, "USER_ID")
@@ -591,20 +613,23 @@ class PackageManagerText(object):
     UNINSTALL_LOG = getLangString(lang, _getframe().f_code.co_name, "UNINSTALL_LOG")
     INSTALLED = getLangString(lang, _getframe().f_code.co_name, "INSTALLED")
     ALREADY_PRESENT = getLangString(lang, _getframe().f_code.co_name, "ALREADY_PRESENT")
+    NO_MOD_IN_USERSPACE = getLangString(lang, _getframe().f_code.co_name, "NO_MOD_IN_USERSPACE")
+    BOT_IN_SAFEMODE = getLangString(lang, _getframe().f_code.co_name, "BOT_IN_SAFEMODE")
+    INSTALL_DSBLD_SAFEMODE = getLangString(lang, _getframe().f_code.co_name, "INSTALL_DSBLD_SAFEMODE")
 
 class UpdaterText(object):
-    UPDATES_NOT_RAN = getLangString(lang, _getframe().f_code.co_name, "UPDATES_NOT_RAN")
-    NO_UPDATES = getLangString(lang, _getframe().f_code.co_name, "NO_UPDATES")
-    UPDATING = getLangString(lang, _getframe().f_code.co_name, "UPDATING")
-    UPD_ERROR = getLangString(lang, _getframe().f_code.co_name, "UPD_ERROR")
-    UPD_SUCCESS = getLangString(lang, _getframe().f_code.co_name, "UPD_SUCCESS")
-    UNKWN_BRANCH = getLangString(lang, _getframe().f_code.co_name, "UNKWN_BRANCH")
-    LATS_VERSION = getLangString(lang, _getframe().f_code.co_name, "LATS_VERSION")
-    UPD_AVAIL = getLangString(lang, _getframe().f_code.co_name, "UPD_AVAIL")
-    RUN_UPD = getLangString(lang, _getframe().f_code.co_name, "RUN_UPD")
-    CHLG_TOO_LONG = getLangString(lang, _getframe().f_code.co_name, "CHLG_TOO_LONG")
-    RBT_COMPLETE = getLangString(lang, _getframe().f_code.co_name, "RBT_COMPLETE")
-    UPD_LOG = getLangString(lang, _getframe().f_code.co_name, "UPD_LOG")
+    CHECKING_UPDATES = getLangString(lang, _getframe().f_code.co_name, "CHECKING_UPDATES")
+    DOWNLOADING_RELEASE = getLangString(lang, _getframe().f_code.co_name, "DOWNLOADING_RELEASE")
+    UPDATE_FAILED = getLangString(lang, _getframe().f_code.co_name, "UPDATE_FAILED")
+    UPDATE_INTERNAL_FAILED = getLangString(lang, _getframe().f_code.co_name, "UPDATE_INTERNAL_FAILED")
+    START_RECOVERY_FAILED = getLangString(lang, _getframe().f_code.co_name, "START_RECOVERY_FAILED")
+    ALREADY_UP_TO_DATE = getLangString(lang, _getframe().f_code.co_name, "ALREADY_UP_TO_DATE")
+    LATEST = getLangString(lang, _getframe().f_code.co_name, "LATEST")
+    CURRENT = getLangString(lang, _getframe().f_code.co_name, "CURRENT")
+    UPDATE_AVAILABLE = getLangString(lang, _getframe().f_code.co_name, "UPDATE_AVAILABLE")
+    CHANGELOG_AT = getLangString(lang, _getframe().f_code.co_name, "CHANGELOG_AT")
+    DOWNLOAD_SUCCESS = getLangString(lang, _getframe().f_code.co_name, "DOWNLOAD_SUCCESS")
+    UPDATE_QUEUED = getLangString(lang, _getframe().f_code.co_name, "UPDATE_QUEUED")
 
 class SideloaderText(object):
     NOT_PY_FILE = getLangString(lang, _getframe().f_code.co_name, "NOT_PY_FILE")
@@ -650,6 +675,7 @@ class ModuleUsages(object):
     PACKAGE_MANAGER_USAGE = getLangString(lang, _getframe().f_code.co_name, "PACKAGE_MANAGER_USAGE")
     UPDATER_USAGE = getLangString(lang, _getframe().f_code.co_name, "UPDATER_USAGE")
     SIDELOADER_USAGE = getLangString(lang, _getframe().f_code.co_name, "SIDELOADER_USAGE")
+    MODULES_UTILS_USAGE = getLangString(lang, _getframe().f_code.co_name, "MODULES_UTILS_USAGE")
 
 def getBotLang() -> str:
     """
@@ -663,6 +689,6 @@ def getBotLang() -> str:
     Returns:
         the bot language e.g. 'English' else 'Unknown'
     """
-    return "{}".format(lang.NAME if hasattr(lang, "NAME") else "Unknown")
+    return "{}".format(lang.NAME if hasattr(lang, "NAME") else GeneralMessages.UNKNOWN)
 
-log.info("{} language loaded successfully".format(getBotLang()))
+log.info("{} language loaded successfully".format(getBotLang().replace(GeneralMessages.UNKNOWN, "Unknown")))

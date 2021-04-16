@@ -1,5 +1,5 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
@@ -11,11 +11,12 @@ from userbot.sysutils.configuration import getConfig
 from telethon.tl.types import PeerUser, PeerChannel, User
 from telethon.tl.functions.users import GetFullUserRequest
 from logging import getLogger
-import os
 from subprocess import check_output, CalledProcessError
 from asyncio import create_subprocess_exec as asyncr
 from asyncio.subprocess import PIPE as asyncPIPE
 from shutil import which
+from icmplib import ping
+import os
 
 log = getLogger(__name__)
 
@@ -30,7 +31,7 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
         org_author (bool): focus to original author of a replied message
 
     Example:
-        @client.on(NewMessage(pattern="^\.example$", outgoing=True))
+        @ehandler.on(command="example", outgoing=True)
         async def example_handler(event):
             user, chat = fetch_user(event, full_user=True, get_chat=True)
             await event.edit(f"hi {user.first_name}, welcome in {chat.title}!")
@@ -128,7 +129,7 @@ async def event_log(event, event_name: str, user_name=None, user_id=None, userna
         custom_text: any custom text e.g. a note to the event. Default to None
 
     Example:
-        @client.on(NewMessage(pattern="^\.example$", outgoing=True))
+        @ehandler.on(command="example", outgoing=True)
         async def example_handler(event):
             user = fetch_user(event)
             await event_log(event, "BAN", user_name=user.first_name, chat_id=event.chat_id)
@@ -173,7 +174,7 @@ def isRemoteCMD(event, chat_id: int) -> bool:
         chat_id (int): ID from targeted chat
 
     Example:
-        @client.on(NewMessage(pattern="^\.example$", outgoing=True))
+        @ehandler.on(command="example", outgoing=True)
         async def example_handler(event):
             user, chat = fetch_user(event, get_chat=True)
             isRemote = isRemoteCMD(event.chat_id, chat.id)
@@ -192,21 +193,53 @@ def isRemoteCMD(event, chat_id: int) -> bool:
         log.error(e)
     return False
 
-def module_info(name: str, version: str) -> dict:
+def format_chat_id(chat) -> int:
     """
-    Put name and version about a module to a new dictionary
+    Formats the chat id to a correct formation
+
+    Args:
+        chat (Channel/Chat): any chat object
+
+    Example:
+        @ehandler.on(command="example", outgoing=True)
+        async def example_handler(event):
+            user, chat = fetch_user(event, get_chat=True)
+            await event.client.edit(format_chat_id(chat))
+
+    Returns:
+        An Integer
+    """
+    chat_id = chat.id
+    try:
+        if (hasattr(chat, "broadcast") and chat.broadcast) or \
+           (hasattr(chat, "megagroup") and chat.megagroup):
+            chat_id = f"-100{chat_id}"
+        else:
+            chat_id = f"-{chat_id}"
+        chat_id = int(chat_id)
+    except Exception as e:
+        log.error(f"Failed to format chat id")
+    return chat_id
+
+def module_info(name: str = None, authors: str = None, version: str = None) -> dict:
+    """
+    Put name, author(s) and version about a module to a new dictionary
 
     Args:
         name (str): name of module
+        authors (str): name of author(s)
         version (str): version of module
 
+    Note:
+        Obsolete feature and may be removed in future updates!
+
     Example:
-        module_info("Example", "1.0")
+        module_info("Example", "Paul",  "1.0")
 
     Returns:
-        A dictionary with 2 keys
+        A dictionary with 3 keys
     """
-    return {"name": name, "version": version}
+    return {"name": name, "authors": authors, "version": version}
 
 def shell_runner(commands: list):
     """
@@ -231,7 +264,7 @@ def shell_runner(commands: list):
         return None
 
 # Systools/Webtools
-def pinger(address):
+def pinger(address) -> str:
     """
     Ping an IP or DNS server from given address
 
@@ -244,33 +277,25 @@ def pinger(address):
     Returns:
         Ping result as a string
     """
-    if os.name == "nt":
-        output = check_output("ping -n 1 " + address + " | findstr time*", shell=True).decode()
-        outS = output.splitlines()
-        out = outS[0]
-    else:
-        out = check_output("ping -c 1 " + address + " | grep time=", shell=True).decode()
-    splitOut = out.split(' ')
-    under = False
-    stringtocut = ""
-    for line in splitOut:
-        if (line.startswith('time=') or line.startswith('time<')):
-            stringtocut = line
-            break
-    newstra = stringtocut.split('=')
-    if len(newstra) == 1:
-        under = True
-        newstra = stringtocut.split('<')
-    newstr = ""
-    if os.name == 'nt':
-        newstr = newstra[1].split('ms')
-    else:
-        newstr = newstra[1].split(' ')  # redundant split, but to try and not break windows ping
-    ping_time = float(newstr[0])
-    if os.name == 'nt' and under:
-        return "<" + str(ping_time) + " ms"
-    else:
-        return str(ping_time) + " ms"
+    try:
+        result = ping(address, count=1, interval=0.1, timeout=2, privileged=False)
+        return f"{result.avg_rtt} ms"
+    except:
+        try:
+            out = check_output(f"ping -c 1 {address} | grep time=", shell=True).decode()
+            splitOut = out.split(" ")
+            stringtocut = ""
+            for line in splitOut:
+                if line.startswith("time="):
+                    stringtocut = line
+                    break
+            newstra = stringtocut.split("=")
+            newstr = newstra[1].split(" ")
+            ping_time = float(newstr[0])
+            return f"{ping_time} ms"
+        except Exception as e:
+            log.warning(f"pinger: {e}")
+    return "-- ms"
 
 async def getGitReview():
     """

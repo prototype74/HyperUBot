@@ -1,6 +1,8 @@
-# tguserbot stuff
+# HyperUBot stuff
 hyper.log
 tguserbot.session
+backup/*
+releases/*
 userbot/config.env
 userbot/config.py
 userbot/modules_user/*.py

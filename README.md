@@ -2,8 +2,8 @@
 
 A customizable, modular Telegram userbot, with innovative components.
 
-Copyright (C) 2020 nunopenim\
-Copyright (C) 2020 prototype74
+Copyright (C) 2020-2021 nunopenim\
+Copyright (C) 2020-2021 prototype74
 
 > Licensed under [PEL](https://github.com/nunopenim/HyperUBot/blob/master/LICENSE.md)
 
@@ -20,15 +20,15 @@ Instead of coming cluttered with all kinds of packages, it is fully customizable
 
 ## Compatibility
 
-HyperUBot works with Windows, macOS, Linux and Termux (although it's kinda the same as Linux). Right now, unfortunately Heroku is not supported. This is due to the way how Heroku handles bash processes, something needed for commands like .sysd, .rtt, .status or .ping.
+HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch linux etc.)_ and Android. Cloud plaforms like Heroku are **not** supported, due to the way how these platforms handle bash processes, something needed for some bash based commands.
 
 We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
 
-## How to configure it
+## How to get and configure HyperUBot
 
 | Platforms | Guides |
 | - | - |
-| Android ([Termux](https://play.google.com/store/apps/details?id=com.termux&hl=en)) | [SETUP_Termux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Termux.md) |
+| Android (Termux) | [SETUP_Android.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Android.md) |
 | Arch Based Distros (Native Linux) | [SETUP_ArchBasedLinux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_ArchBasedLinux.md) |
 | Debian Based Distros (Native Linux, WSL) | [SETUP_DebianBasedLinux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_DebianBasedLinux.md) |
 | Red Hat Based Distros (Native Linux) | [SETUP_RHELBasedLinux](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_RHELBasedLinux.md) |
@@ -82,3 +82,4 @@ We also have a [Support Group](https://t.me/HyperUBotSupport) (Click to join), w
 ### Translators
 
 - [nunopenim](https://github.com/nunopenim), for the Portuguese translation
+- [prototype74](https://github.com/prototype74), for the German translation

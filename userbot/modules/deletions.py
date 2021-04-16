@@ -1,59 +1,59 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import event_log, module_info
+from userbot.include.aux_funcs import event_log
 from userbot.include.language_processor import DeletionsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
-from telethon.errors import MessageDeleteForbiddenError
-from telethon.tl.functions.channels import DeleteMessagesRequest
-from telethon.tl.functions.messages import DeleteMessagesRequest as DeleteMessagesRequestGPM
-from telethon.tl.types import Chat, Channel
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
+from telethon.tl.types import Chat, Channel, User
 from asyncio import sleep
 from logging import getLogger
-from os.path import basename
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 LOGGING = getConfig("LOGGING")
 
-@ehandler.on(pattern=r"^\.del$", outgoing=True)
+async def del_msgs(event, chat_id, messages: list) -> int:
+    msgs_count = 0
+    try:
+        # delete_messages() revokes messages by default (revoke=True)
+        affected_msgs = await event.client.delete_messages(entity=chat_id, message_ids=messages)
+        for am in affected_msgs:
+            msgs_count += am.pts_count
+    except Exception as e:
+        raise Exception(e)
+    return msgs_count
+
+@ehandler.on(command="del", outgoing=True)
 async def delete(event):
     if event.reply_to_msg_id:
-        chat = await event.get_chat()
         try:
-            if isinstance(chat, Channel):  # channel or supergroup
-                update = await event.client(DeleteMessagesRequest(chat.id, [event.reply_to_msg_id]))
-            else:
-                # chat id isn't required to delete messages in normal groups or in PMs
-                update = await event.client(DeleteMessagesRequestGPM([event.reply_to_msg_id], revoke=True))
-            if not update.pts_count:  # pts_count is set to 1 if target message has been deleted
+            msgs_count = await del_msgs(event, chat_id=event.chat_id, messages=[event.reply_to_msg_id])
+            if not msgs_count:  # del_msgs should return 1 if target message has been deleted
                 await event.edit(msgRep.CANNOT_DEL_MSG)
                 return
             await event.delete()
-        except MessageDeleteForbiddenError:
-            await event.edit(msgRep.UNABLE_DEL_MSG)
         except Exception as e:
             log.warning(e)
             await event.edit(msgRep.DEL_MSG_FAILED)
     else:
         await event.edit(msgRep.REPLY_DEL_MSG)
-
     return
 
-@ehandler.on(pattern=r"^\.purge$", outgoing=True)
+@ehandler.on(command="purge", outgoing=True)
 async def purge(event):
     """ Please don't abuse this feature to delete someone's else whole group history, for real, just don't """
     if event.reply_to_msg_id:
         chat = await event.get_chat()
-        channel_obj = True if isinstance(chat, Channel) else False  # Channel or supergroup
-        chat_obj = True if isinstance(chat, Chat) else False  # Normal group
+        channel_obj = True if isinstance(chat, Channel) else False
+        chat_obj = True if isinstance(chat, Chat) else False
 
         if channel_obj or chat_obj:
             if not chat.creator and not chat.admin_rights:
@@ -64,53 +64,60 @@ async def purge(event):
                 return
 
         message_ids = []
-        wait_time_sec = 2  # Prevent FloodWaitError
-        msg_count = 0
-        msg_ids = []
-        async for message in event.client.iter_messages(entity=chat.id, min_id=event.reply_to_msg_id,
-                                                        wait_time=wait_time_sec):
-            msg_ids.append(message.id)
-            msg_count += 1
+        if chat_obj or isinstance(chat, User):
+            # For normal groups and PMs
+            async for message in event.client.iter_messages(entity=chat.id, min_id=event.reply_to_msg_id):
+                if not message.id == event.message.id:
+                    message_ids.append(message.id)
+            message_ids.append(event.reply_to_msg_id)
+        else:
+            # For channel objects (Channels and Super groups)
+            # Instead of using iter_messages we just create a range of IDs between
+            # the replied msg' ID and this event's ID (e.g. 24 (replied msg) to 48 (.'purge' msg))
+            # regardless if there are gaps (due to deletions) between the min and max ID.
+            # This method works for channels and super groups only as channel objects have their own
+            # message IDs. Using this method in PMs or normal groups may accidentally cause
+            # deletions in different PM conversations or normal chats
+            for i in range(event.reply_to_msg_id, event.message.id):
+                if not i == event.message.id:
+                    message_ids.append(i)
+            message_ids.reverse()
 
-            if msg_count % 100 == 0: # delete every 100 msgs
-                try:
-                    if channel_obj:
-                        await event.client(DeleteMessagesRequest(chat.id, msg_ids))
-                    else:
-                        await event.client(DeleteMessagesRequestGPM(msg_ids, revoke=True))
-                    msg_ids = []
-                except Exception as e:
-                    log.warning(e)
-                    await event.edit(msgRep.PURGE_MSG_FAILED)
-                    return
-        # lastly, delete replied msg and any leftovers
-        msg_ids.append(event.reply_to_msg_id)
+        nested_msgs = []
+
+        # As Telegram only allows to delete up to 100 messages at once,
+        # nest every 100th ID into a new list
+        for i in range(0, len(message_ids), 100):
+            nested_msgs.append(message_ids[i:i+100])
+
+        msgs_count = 0
         try:
-            if channel_obj:
-                await event.client(DeleteMessagesRequest(chat.id, msg_ids))
-            else:
-                await event.client(DeleteMessagesRequestGPM(msg_ids, revoke=True))
+            for msgs_list in nested_msgs:
+                msgs_count += await del_msgs(event, chat_id=chat.id, messages=msgs_list)
         except Exception as e:
             log.warning(e)
             await event.edit(msgRep.PURGE_MSG_FAILED)
             return
 
         try:
-            result = await event.client.send_message(chat.id, msgRep.PURGE_COMPLETE.format(msg_count))
-            await sleep(2.5)
-            await result.delete()
+            await event.edit(msgRep.PURGE_COMPLETE.format(msgs_count))
+            await sleep(2)
+            await event.delete()
             if LOGGING:
                 await event_log(event, "PURGE", chat_title=chat.title if hasattr(chat, "title") else None,
                                 chat_link=chat.username if hasattr(chat, "username") else None,
-                                chat_id=chat.id if hasattr(chat, "id") else None,
-                                custom_text= msgRep.LOG_PURGE.format(msg_count))
+                                chat_id=event.chat_id, custom_text=msgRep.LOG_PURGE.format(msgs_count))
         except Exception as e:
             log.error(e)
     else:
         await event.edit(msgRep.REPLY_PURGE_MSG)
-
     return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.DELETIONS_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.DELETIONS_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Deletions", version=VERSION)})
+register_cmd_usage("del", usageRep.DELETIONS_USAGE.get("del", {}).get("args"), usageRep.DELETIONS_USAGE.get("del", {}).get("usage"))
+register_cmd_usage("purge", usageRep.DELETIONS_USAGE.get("purge", {}).get("args"), usageRep.DELETIONS_USAGE.get("purge", {}).get("usage"))
+register_module_desc(descRep.DELETIONS_DESC)
+register_module_info(
+    name="Deletions",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

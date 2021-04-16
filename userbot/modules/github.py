@@ -1,17 +1,16 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import GitHubText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 import userbot.include.git_api as api
-from os.path import basename
 
 ehandler = EventHandler()
 
@@ -40,7 +39,7 @@ def getData(url, index):
         message += msgRep.DL_COUNT + str(downloadCount) + "\n\n"
     return message
 
-@ehandler.on(pattern=r"^\.git(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="git", hasArgs=True, outgoing=True)
 async def get_release(event):
     commandArgs = event.text.split(" ")
     if len(commandArgs) != 2 or not "/" in commandArgs[1]:
@@ -52,6 +51,10 @@ async def get_release(event):
     await event.edit(text, parse_mode="html")
     return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.GITHUB_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.GITHUB_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="GitHub", version=VERSION)})
+register_cmd_usage("git", usageRep.GITHUB_USAGE.get("git", {}).get("args"), usageRep.GITHUB_USAGE.get("git", {}).get("usage"))
+register_module_desc(descRep.GITHUB_DESC)
+register_module_info(
+    name="GitHub",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

@@ -1,16 +1,17 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD, module_info
+from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD
 from userbot.include.language_processor import MessagesText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 from telethon.errors import ChatAdminRequiredError, InputUserDeactivatedError, SearchQueryEmptyError
 from telethon.tl.functions.messages import SearchRequest
 from telethon.tl.types import InputMessagesFilterEmpty, ChannelParticipantsAdmins
@@ -21,7 +22,7 @@ log = getLogger(__name__)
 ehandler = EventHandler(log)
 LOGGING = getConfig("LOGGING")
 
-@ehandler.on(pattern=r"^\.msgs(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="msgs", hasArgs=True, outgoing=True)
 async def countmessages(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -70,7 +71,7 @@ async def countmessages(event):
             await event.edit(msgRep.CANNOT_COUNT_MSG)
     return
 
-@ehandler.on(pattern=r"^\.pin(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="pin", hasArgs=True, outgoing=True)
 async def pin(event):
     if event.reply_to_msg_id:
         msg_id = event.reply_to_msg_id
@@ -100,7 +101,7 @@ async def pin(event):
 
     return
 
-@ehandler.on(pattern=r"^\.unpin(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="unpin", hasArgs=True, outgoing=True)
 async def pin(event):
     arg_from_event = event.pattern_match.group(1)
     all_msgs = True if arg_from_event.lower() == "all" else False
@@ -139,6 +140,12 @@ async def pin(event):
 
     return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.MESSAGES_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.MESSAGES_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Messages", version=VERSION)})
+for cmd in ("msgs", "pin", "unpin"):
+    register_cmd_usage(cmd, usageRep.MESSAGES_USAGE.get(cmd, {}).get("args"), usageRep.MESSAGES_USAGE.get(cmd, {}).get("usage"))
+
+register_module_desc(descRep.MESSAGES_DESC)
+register_module_info(
+    name="Messages",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

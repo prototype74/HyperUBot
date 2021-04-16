@@ -1,24 +1,24 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import module_info
+from userbot.include.aux_funcs import format_chat_id
 from userbot.include.language_processor import ChatInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError, ChatAdminRequiredError
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
-from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest, ExportChatInviteRequest
+from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest, GetExportedChatInvitesRequest
 from telethon.tl.types import (ChannelParticipantCreator, ChatParticipantCreator, MessageActionChannelMigrateFrom,
                                ChannelParticipantsAdmins, Chat, Channel, PeerChannel)
 from datetime import datetime
 from logging import getLogger
 from math import sqrt
-from os.path import basename
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
@@ -66,7 +66,7 @@ async def get_chatinfo(event):
 async def fetch_info(chat, event):
     chat_obj_info = await event.client.get_entity(chat.full_chat.id)
     broadcast = chat_obj_info.broadcast if hasattr(chat_obj_info, "broadcast") else False
-    chat_type = "Channel" if broadcast else "Group"
+    chat_type = msgRep.CHANNEL if broadcast else msgRep.GROUP
     chat_title = chat_obj_info.title
     warn_emoji = u"\u26A0"
     try:
@@ -90,7 +90,7 @@ async def fetch_info(chat, event):
     restricted_users = chat.full_chat.banned_count if hasattr(chat.full_chat, "banned_count") else None
     members_online = chat.full_chat.online_count if hasattr(chat.full_chat, "online_count") else 0
     group_stickers = chat.full_chat.stickerset.title if hasattr(chat.full_chat, "stickerset") and chat.full_chat.stickerset else None
-    messages_viewable = msg_info.count if msg_info else None
+    messages_viewable = msg_info.count if msg_info and hasattr(msg_info, "count") else None
     messages_sent = chat.full_chat.read_inbox_max_id if hasattr(chat.full_chat, "read_inbox_max_id") else None
     messages_sent_alt = chat.full_chat.read_outbox_max_id if hasattr(chat.full_chat, "read_outbox_max_id") else None
     if messages_sent and messages_viewable:
@@ -99,13 +99,12 @@ async def fetch_info(chat, event):
         deleted_messages = (messages_sent_alt - messages_viewable) if messages_sent_alt >= messages_viewable else 0
     else:
         deleted_messages = 0
-    exp_count = chat.full_chat.pts if hasattr(chat.full_chat, "pts") else None
     username = "@" + chat_obj_info.username if hasattr(chat_obj_info, "username") and chat_obj_info.username else None
     chat_type_priv_or_public = msgRep.CHAT_PUBLIC if username else msgRep.CHAT_PRIVATE
     bots_list = chat.full_chat.bot_info  # this is a list
     bots = len(bots_list) if bots_list else 0
     supergroup = True if hasattr(chat_obj_info, "megagroup") and chat_obj_info.megagroup else False
-    is_supergroup = msgRep.YES_BOLD if supergroup else msgRep.NO
+    gigagroup = True if hasattr(chat_obj_info, "gigagroup") and chat_obj_info.gigagroup else False
     slowmode = msgRep.YES_BOLD if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else msgRep.NO
     slowmode_time = chat.full_chat.slowmode_seconds if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else None
     restricted = msgRep.YES_BOLD if hasattr(chat_obj_info, "restricted") and chat_obj_info.restricted else msgRep.NO
@@ -138,8 +137,16 @@ async def fetch_info(chat, event):
         pass
 
     caption = msgRep.CHATINFO
-    caption += msgRep.CHAT_ID.format(chat_obj_info.id)
+    caption += msgRep.CHAT_ID.format(format_chat_id(chat_obj_info))
     caption += msgRep.CHAT_TYPE.format(chat_type, chat_type_priv_or_public)
+    if not broadcast:
+        if gigagroup:
+            group_type = msgRep.GROUP_TYPE_GIGAGROUP
+        elif supergroup:
+            group_type = msgRep.GROUP_TYPE_SUPERGROUP
+        else:
+            group_type = msgRep.GROUP_TYPE_NORMAL
+        caption += f"{msgRep.GROUP_TYPE}: {group_type}\n"
     if chat_title:
         caption += msgRep.CHAT_NAME.format(chat_title)
     if former_title:  # Meant is the very first title
@@ -155,9 +162,6 @@ async def fetch_info(chat, event):
     else:
         caption += msgRep.CREATED_NULL.format(chat_obj_info.date.date().strftime('%b %d, %Y'), chat_obj_info.date.time(), chat_obj_info.date.tzinfo, warn_emoji)
     caption += msgRep.DCID.format(dc_id)
-    if exp_count:
-        chat_level = int((1 + sqrt(1 + 7 * exp_count / 14)) / 2)
-        caption += msgRep.CHAT_LEVEL.format(chat_level)
     if messages_viewable is not None:
         caption += msgRep.VIEWABLE_MSG.format(messages_viewable)
     if deleted_messages:
@@ -194,8 +198,6 @@ async def fetch_info(chat, event):
             caption += msgRep.SLW_MODE_TIME.format(slowmode_time)
         else:
             caption += "\n\n"
-    if not broadcast:
-        caption += msgRep.SPER_GRP.format(is_supergroup)
     if hasattr(chat_obj_info, "restricted"):
         caption += msgRep.RESTR.format(restricted)
         if chat_obj_info.restricted:
@@ -213,7 +215,7 @@ async def fetch_info(chat, event):
 
     return caption
 
-@ehandler.on(pattern=r"^\.chatinfo(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="chatinfo", hasArgs=True, outgoing=True)
 async def chatinfo(event):
     await event.edit(msgRep.CHAT_ANALYSIS)
 
@@ -231,7 +233,7 @@ async def chatinfo(event):
 
     return
 
-@ehandler.on(pattern=r"^\.chatid$", outgoing=True)
+@ehandler.on(command="chatid", outgoing=True)
 async def chatid(event):
     chat = await event.get_chat()
     if isinstance(chat, (Chat, Channel)):
@@ -240,7 +242,7 @@ async def chatid(event):
         await event.edit(msgRep.CID_NO_GROUP)
     return
 
-@ehandler.on(pattern=r"^\.link(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="getlink", hasArgs=True, outgoing=True)
 async def chatid(event):
     arg = event.pattern_match.group(1)
     if arg:
@@ -262,10 +264,13 @@ async def chatid(event):
         return
 
     try:
-        result = await event.client(ExportChatInviteRequest(chat.id))
-        if hasattr(result, "link"):  # might return ChatInviteEmpty object
-            text = msgRep.LINK_TEXT.format(chat.title) + ":\n"
-            text += result.link
+        result = await event.client(GetExportedChatInvitesRequest(chat.id, "me", 0))
+        text = msgRep.LINK_TEXT.format(chat.title) + ":\n"
+        if result.invites:
+            for link in result.invites:
+                if link.permanent and not link.revoked:
+                    text += link.link
+                    break
             await event.edit(text)
         else:
             await event.edit(msgRep.NO_LINK)
@@ -280,6 +285,12 @@ async def chatid(event):
 
     return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.CHATINFO_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.CHATINFO_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Chat Info", version=VERSION)})
+for cmd in ("chatinfo", "chatid", "getlink"):
+    register_cmd_usage(cmd, usageRep.CHATINFO_USAGE.get(cmd, {}).get("args"), usageRep.CHATINFO_USAGE.get(cmd, {}).get("usage"))
+
+register_module_desc(descRep.CHATINFO_DESC)
+register_module_info(
+    name="Chat Info",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

@@ -2,7 +2,7 @@ import urllib.request as url
 import json
 import datetime
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 APIURL = "http://api.github.com/repos/"
 
 def vercheck() -> str:
@@ -13,6 +13,14 @@ def vercheck() -> str:
 def getData(repoURL):
     try:
         with url.urlopen(APIURL + repoURL + "/releases") as data_raw:
+            repoData = json.loads(data_raw.read().decode())
+            return repoData
+    except:
+        return None
+
+def getLatestData(repoURL):
+    try:
+        with url.urlopen(APIURL + repoURL + "/releases/latest") as data_raw:
             repoData = json.loads(data_raw.read().decode())
             return repoData
     except:

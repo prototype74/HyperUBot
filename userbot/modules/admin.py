@@ -1,28 +1,29 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD, module_info
+from userbot.include.aux_funcs import event_log, fetch_user, format_chat_id, isRemoteCMD
 from userbot.include.language_processor import AdminText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 from telethon.errors import UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError, AdminRankEmojiNotAllowedError, ChatNotModifiedError
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
 from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticipantsAdmins, User, Channel, PeerUser, PeerChannel
 from asyncio import sleep
 from logging import getLogger
-from os.path import basename
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 LOGGING = getConfig("LOGGING")
 
-@ehandler.on(pattern=r"^\.adminlist(?: |$)(.*)", outgoing=True)
+
+@ehandler.on(command="adminlist", hasArgs=True, outgoing=True)
 async def adminlist(event):
     arg = event.pattern_match.group(1)
     if arg:
@@ -64,7 +65,7 @@ async def adminlist(event):
     return
 
 
-@ehandler.on(pattern=r"^\.ban(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="ban", hasArgs=True, outgoing=True)
 async def ban(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -102,19 +103,19 @@ async def ban(event):
         if LOGGING:
             await event_log(event, "BAN", user_name=user.first_name, username=user.username, user_id=user.id,
                             chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
-                            chat_id=chat.id)
+                            chat_id=format_chat_id(chat) if remote else event.chat_id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except UserAdminInvalidError:
         await event.edit(msgRep.CANNOT_BAN_ADMIN)
     except Exception as e:
-        log.warning(f"{basename(__file__)[:-3]}: {e}")
+        log.warning(e)
         await event.edit(msgRep.BAN_FAILED)
 
     return
 
 
-@ehandler.on(pattern=r"^\.unban(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="unban", hasArgs=True, outgoing=True)
 async def unban(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -151,7 +152,7 @@ async def unban(event):
         if LOGGING:
             await event_log(event, "UNBAN", user_name=user.first_name, username=user.username, user_id=user.id,
                             chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
-                            chat_id=chat.id)
+                            chat_id=format_chat_id(chat) if remote else event.chat_id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
@@ -161,7 +162,7 @@ async def unban(event):
     return
 
 
-@ehandler.on(pattern=r"^\.kick(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="kick", hasArgs=True, outgoing=True)
 async def kick(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -197,7 +198,7 @@ async def kick(event):
         if LOGGING:
             await event_log(event, "KICK", user_name=user.first_name, username=user.username, user_id=user.id,
                             chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
-                            chat_id=chat.id)
+                            chat_id=format_chat_id(chat) if remote else event.chat_id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
@@ -207,7 +208,7 @@ async def kick(event):
     return
 
 
-@ehandler.on(pattern=r"^\.promote(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="promote", hasArgs=True, outgoing=True)
 async def promote(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -290,7 +291,7 @@ async def promote(event):
         if LOGGING:
             await event_log(event, "PROMOTE", user_name=user.first_name, username=user.username, user_id=user.id,
                             chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
-                            chat_id=chat.id)
+                            chat_id=event.chat_id)
     except AdminsTooMuchError:
         await event.edit(msgRep.TOO_MANY_ADMINS)
     except AdminRankEmojiNotAllowedError:
@@ -304,7 +305,7 @@ async def promote(event):
     return
 
 
-@ehandler.on(pattern=r"^\.demote(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="demote", hasArgs=True, outgoing=True)
 async def demote(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -371,7 +372,7 @@ async def demote(event):
         if LOGGING:
             await event_log(event, "DEMOTE", user_name=user.first_name, username=user.username, user_id=user.id,
                             chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
-                            chat_id=chat.id)
+                            chat_id=event.chat_id)
     except ChatAdminRequiredError:
         if user_is_admin:
             await event.edit(msgRep.CANNOT_DEMOTE_ADMIN)
@@ -384,7 +385,7 @@ async def demote(event):
     return
 
 
-@ehandler.on(pattern=r"^\.mute(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="mute", hasArgs=True, outgoing=True)
 async def mute(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -425,7 +426,7 @@ async def mute(event):
         if LOGGING:
             await event_log(event, "MUTE", user_name=user.first_name, username=user.username, user_id=user.id,
                             chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
-                            chat_id=chat.id)
+                            chat_id=format_chat_id(chat) if remote else event.chat_id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
@@ -435,7 +436,7 @@ async def mute(event):
     return
 
 
-@ehandler.on(pattern=r"^\.unmute(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="unmute", hasArgs=True, outgoing=True)
 async def unmute(event):
     user, chat = await fetch_user(event, get_chat=True)
 
@@ -476,7 +477,7 @@ async def unmute(event):
         if LOGGING:
             await event_log(event, "UNMUTE", user_name=user.first_name, username=user.username, user_id=user.id,
                             chat_title=chat.title, chat_link=chat.username if hasattr(chat, "username") else None,
-                            chat_id=chat.id)
+                            chat_id=format_chat_id(chat) if remote else event.chat_id)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
@@ -486,7 +487,7 @@ async def unmute(event):
     return
 
 
-@ehandler.on(pattern=r"^\.delaccs$", outgoing=True)
+@ehandler.on(command="delaccs", outgoing=True)
 async def delaccs(event):
     chat = await event.get_chat()
     if type(chat) is User:
@@ -509,16 +510,28 @@ async def delaccs(event):
     if deleted_accounts > 0 and not rem_del_accounts:
         await event.edit(msgRep.DEL_ACCS_COUNT.format(deleted_accounts))
     elif rem_del_accounts > 0 and rem_del_accounts <= deleted_accounts:
-        await event.edit(msgRep.REM_DEL_ACCS_COUNT.format(rem_del_accounts, deleted_accounts))
+        if not (deleted_accounts - rem_del_accounts) == 0:
+            rem_accs_text = msgRep.REM_DEL_ACCS_COUNT.format(rem_del_accounts)
+            rem_accs_excp_text = msgRep.REM_DEL_ACCS_COUNT_EXCP.format(deleted_accounts - rem_del_accounts)
+            await event.edit(f"{rem_accs_text}`. `{rem_accs_excp_text}")
+        else:
+            await event.edit(msgRep.REM_DEL_ACCS_COUNT.format(rem_del_accounts))
         if LOGGING:
             await event_log(event, "DELACCS", chat_title=chat.title,
-                            chat_link=chat.username if hasattr(chat, "username") else None, chat_id=chat.id)
+                            chat_link=chat.username if hasattr(chat, "username") else None,
+                            chat_id=event.chat_id)
     else:
         await event.edit(msgRep.NO_DEL_ACCOUNTS)
 
     return
 
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.ADMIN_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.ADMIN_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Admininstration", version=VERSION)})
+for cmd in ("adminlist", "ban", "unban", "kick", "promote", "demote", "mute", "unmute", "delaccs"):
+    register_cmd_usage(cmd, usageRep.ADMIN_USAGE.get(cmd, {}).get("args"), usageRep.ADMIN_USAGE.get(cmd, {}).get("usage"))
+
+register_module_desc(descRep.ADMIN_DESC)
+register_module_info(
+    name="Admininstration",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

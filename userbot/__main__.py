@@ -1,18 +1,22 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, log, fhandler, PROJECT, OS, ALL_MODULES, LOAD_MODULES, VERSION, USER_MODULES
+from userbot import tgclient, log, fhandler, PROJECT, SAFEMODE
 from userbot.sysutils.configuration import getConfig
-from telethon.errors.rpcerrorlist import PhoneNumberInvalidError
+from userbot.sysutils.registration import (update_all_modules, update_load_modules,
+                                           update_user_modules, getAllModules)
+from userbot.version import VERSION
 from logging import shutdown
 from importlib import import_module
 from glob import glob
-from os.path import dirname, basename, isfile
+from os import execle, environ
+from os.path import dirname, basename, isfile, join
+from sys import executable
 
 class _Modules:
     def __init__(self):
@@ -24,12 +28,8 @@ class _Modules:
         all_modules = []
         sys_modules = []
         user_modules = []
-        if OS and OS.startswith("win"):
-            sys_module_paths = sorted(glob(dirname(__file__) + "\\modules\\*.py"))
-            user_module_paths = sorted(glob(dirname(__file__) + "\\modules_user\\*.py"))
-        else:
-            sys_module_paths = sorted(glob(dirname(__file__) + "/modules/*.py"))
-            user_module_paths = sorted(glob(dirname(__file__) + "/modules_user/*.py"))
+        sys_module_paths = sorted(glob(join(dirname(__file__), "modules", "*.py")))
+        user_module_paths = sorted(glob(join(dirname(__file__), "modules_user", "*.py")))
         for module in sys_module_paths:
             if isfile(module) and module.endswith(".py"):
                 filename = basename(module)[:-3]
@@ -45,17 +45,15 @@ class _Modules:
                 all_modules.append(filename)
                 if not filename in sys_modules:
                     user_modules.append(filename)
-                else:
+                elif not SAFEMODE:
                     log.warning(f"Module '{filename}' not loaded as present in sys already")
         return (all_modules, sys_modules, user_modules)
 
-    def import_load_modules(self) -> bool:
+    def import_load_modules(self):
         def tryImportModule(path, module) -> bool:
             try:
                 self.__imported_module = import_module(path + module)
                 return True
-            except ModuleNotFoundError as mnfe:
-                raise ModuleNotFoundError(mnfe)
             except Exception:
                 log.error(f"Unable to start module '{module}' due to an unhandled exception", exc_info=True)
             return False
@@ -63,37 +61,40 @@ class _Modules:
         all_modules, sys_modules, user_modules = self.__load_modules()
         try:
             for module in sorted(all_modules):
-                ALL_MODULES.append(module)
+                update_all_modules(module)
             for module in sys_modules:
                 if tryImportModule("userbot.modules.", module):
-                    LOAD_MODULES[module] = True
+                    update_load_modules(module, True)
                     self.__load_modules_count += 1
                 else:
-                    LOAD_MODULES[module] = False
+                    update_load_modules(module, False)
             for module in user_modules:
-                if not module in self.__not_load_modules:
-                    if tryImportModule("userbot.modules_user.", module):
-                        LOAD_MODULES[module] = True
-                        self.__load_modules_count += 1
-                    else:
-                        LOAD_MODULES[module] = False
-                USER_MODULES.append(module)
-            return True
-        except ModuleNotFoundError as mnfe:
-            log.error(f"Unable to load module: {mnfe}", exc_info=True)
-        return False
+                if not SAFEMODE:
+                    if not module in self.__not_load_modules:
+                        if tryImportModule("userbot.modules_user.", module):
+                            update_load_modules(module, True)
+                            self.__load_modules_count += 1
+                        else:
+                            update_load_modules(module, False)
+                update_user_modules(module)
+        except Exception as e:
+            log.critical(f"Failed to load modules [CORE]: {e}", exc_info=True)
+            quit(1)
+        return
 
     def loaded_modules(self) -> int:
         return self.__load_modules_count
 
 if __name__ == "__main__":
     try:
-        log.info("Loading resources and modules")
+        if SAFEMODE:
+            log.info("Loading resources and system modules")
+        else:
+            log.info("Loading resources and modules")
         modules = _Modules()
-        if not modules.import_load_modules():
-            quit(1)
+        modules.import_load_modules()
         load_modules_count = modules.loaded_modules()
-        sum_modules = len(ALL_MODULES)
+        sum_modules = len(getAllModules())
         if not load_modules_count:
             log.warning("No module(s) loaded!")
         elif load_modules_count > 0:
@@ -104,15 +105,46 @@ if __name__ == "__main__":
             log.info("You're running %s v%s as %s (ID: %s)", PROJECT, VERSION, me.first_name, me.id)
             tgclient.run_until_disconnected()
     except KeyboardInterrupt:
-        log.info("Keyboard interruption. Terminating...")
-    except PhoneNumberInvalidError:
-        log.error("Invalid phone number!")
+        log.info("Keyboard interruption. Exiting...")
     except Exception as e:
-        log.critical(f"Unable to start userbot: {e}", exc_info=True)
+        log.critical(f"Unable to start HyperUBot: {e}", exc_info=True)
+
+    try:
+        # reboot reasons
+        perf_reboot = getConfig("REBOOT", False)
+        start_recovery = getConfig("START_RECOVERY", False)
+        if perf_reboot or start_recovery:
+            PY_EXEC = executable if not " " in executable else '"' + executable + '"'
+            if perf_reboot:  # preferred if True
+                if getConfig("REBOOT_SAFEMODE"):
+                    log.info("Rebooting into safe mode...")
+                    tcmd = [PY_EXEC, "-m", "userbot", "-safemode"]
+                else:
+                    log.info("Performing normal reboot...")
+                    tcmd = [PY_EXEC, "-m", "userbot"]
+            elif start_recovery:
+                commit_id = getConfig("UPDATE_COMMIT_ID")
+                if commit_id:
+                    log.info("Starting auto update in recovery...")
+                    tcmd = [PY_EXEC, "recovery.py", "-autoupdate", commit_id]
+                else:
+                    log.info("Rebooting into recovery...")
+                    tcmd = [PY_EXEC, "recovery.py"]
+            try:
+                if fhandler:
+                    fhandler.close()
+                shutdown()  # shutdown logging
+            except:
+                pass
+            execle(PY_EXEC, *tcmd, environ)
+    except:
+        pass
 
     try:
         if fhandler:
             fhandler.close()
-        shutdown()  # shutdown logging
+        shutdown()
     except:
         pass
+
+    quit()

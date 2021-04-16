@@ -1,23 +1,22 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import MiscText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 from telethon.tl.types import InputMediaDice
-from os.path import basename
 import random
 import time
 
 ehandler = EventHandler()
 
-@ehandler.on(pattern=r"^\.coinflip$", outgoing=True)
+@ehandler.on(command="coinflip", outgoing=True)
 async def coinflipper(coin):
     retStr = msgRep.COIN_LANDED_VAL
     await coin.edit(msgRep.THRWING_COIN)
@@ -30,13 +29,13 @@ async def coinflipper(coin):
     await coin.edit(retStr)
     return
 
-@ehandler.on(pattern=r"^\.dice$", outgoing=True)
+@ehandler.on(command="dice", outgoing=True)
 async def dice(rolling):
     await rolling.client.send_message(rolling.to_id, file=InputMediaDice("🎲"))
     await rolling.delete()
     return
 
-@ehandler.on(pattern=r"^\.rand(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="rand", hasArgs=True, outgoing=True)
 async def randomizer(msg):
     limit1 = 0
     limit2 = 0
@@ -62,6 +61,12 @@ async def randomizer(msg):
     await msg.edit(msgRep.RAND_NUM_GEN.format(limit1, limit2, rand_num))
     return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.MISC_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.MISC_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Miscellaneous", version=VERSION)})
+for cmd in ("coinflip", "dice", "rand"):
+    register_cmd_usage(cmd, usageRep.MISC_USAGE.get(cmd, {}).get("args"), usageRep.MISC_USAGE.get(cmd, {}).get("usage"))
+
+register_module_desc(descRep.MISC_DESC)
+register_module_info(
+    name="Miscellaneous",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

@@ -1,38 +1,29 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import USER_MODULES, MODULE_DESC, MODULE_DICT, MODULE_INFO, OS, VERSION
+from userbot import SAFEMODE
 import userbot.include.git_api as git
-from userbot.include.aux_funcs import event_log, module_info, sizeStrMaker
+from userbot.include.aux_funcs import event_log, sizeStrMaker
 from userbot.include.language_processor import PackageManagerText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from userbot.sysutils.configuration import getConfig
+from userbot.sysutils.configuration import getConfig, setConfig
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import getUserModules, register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 import requests
 import os
 import time
-import sys
 from logging import getLogger
-from os.path import basename
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 LOGGING = getConfig("LOGGING")
 
-if OS and OS.startswith("win"):
-    USER_MODULES_DIR = ".\\userbot\\modules_user\\"
-else:
-    USER_MODULES_DIR = "./userbot/modules_user/"
-
-if " " not in sys.executable:
-    EXECUTABLE = sys.executable
-else:
-    EXECUTABLE = '"' + sys.executable + '"'
-
+USER_MODULES_DIR = os.path.join(".", "userbot", "modules_user")
 PACKAGELIST = "./userbot/package_lists.hbot"
 UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
@@ -84,9 +75,10 @@ def list_updater():
             MODULE_LIST.append({"repo": repoName, "name": assetName, "url": assetURL, "size": assetSize})
     return MODULE_LIST
 
-@ehandler.on(pattern=r"^\.pkg(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="pkg", hasArgs=True, outgoing=True)
 async def universe_checker(msg):
     cmd_args = msg.pattern_match.group(1).split(" ", 1)
+    user_modules = getUserModules()
     if cmd_args[0].lower() == "update":
         list_updater()
         write_list()
@@ -94,15 +86,14 @@ async def universe_checker(msg):
         for repo in REPOS_NAMES:
             repos += ", " + repo
         await msg.edit(msgRep.UPDATE_COMPLETE.format(repos))
-        return
     elif cmd_args[0].lower() == "list":
         files = msgRep.INSTALLED
         count = 1
-        for item in USER_MODULES:
+        for item in user_modules:
             files += str(count) + ". " + item + "\n"
             count += 1
-        if len(USER_MODULES) == 0:
-            files += "__No modules installed in userspace__\n"
+        if len(user_modules) == 0:
+            files += msgRep.NO_MOD_IN_USERSPACE
         count = 1
         if MODULE_LIST is None or len(MODULE_LIST) == 0:
             files += msgRep.EMPTY_LIST
@@ -116,21 +107,25 @@ async def universe_checker(msg):
                     count = 1
                 size = sizeStrMaker(int(m["size"]))
                 mdName = m["name"].split(".py")[0]
-                if mdName in USER_MODULES:
+                if mdName in user_modules:
                     mdName += "*"
                     mdInstalled = True
                 files += msgRep.FILE_DSC.format(count, mdName, m["url"], size)
                 count += 1
             if mdInstalled:
                 files += msgRep.ALREADY_PRESENT
+        if SAFEMODE:
+            files += msgRep.BOT_IN_SAFEMODE
         await msg.edit(files, parse_mode='md')
-        return
     elif cmd_args[0].lower() == "install":
         if MODULE_LIST is None or len(MODULE_LIST) == 0:
             await msg.edit(msgRep.EMPTY_LIST)
             return
         if len(cmd_args) == 1:
             await msg.edit(msgRep.NO_PKG)
+            return
+        if SAFEMODE:
+            await msg.edit(msgRep.INSTALL_DSBLD_SAFEMODE)
             return
         del(cmd_args[0])
         fileURLs = []
@@ -150,9 +145,9 @@ async def universe_checker(msg):
                 return
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
-            if os.path.exists(USER_MODULES_DIR + i['filename']): # We remove first, in case exists for updates
-                os.remove(USER_MODULES_DIR + i['filename'])
-            open(USER_MODULES_DIR + i['filename'], 'wb').write(request.content)
+            if os.path.exists(os.path.join(USER_MODULES_DIR, i['filename'])): # We remove first, in case exists for updates
+                os.remove(os.path.join(USER_MODULES_DIR, i['filename']))
+            open(os.path.join(USER_MODULES_DIR, i['filename']), 'wb').write(request.content)
             modules_installed.append(i['filename'])
             log.info(f"Module '{i['filename'][:-3]}' has been installed to userspace")
         md_installed_string = ""
@@ -167,12 +162,10 @@ async def universe_checker(msg):
         if LOGGING:
             await event_log(msg, "MODULE INSTALL", custom_text=msgRep.INSTALL_LOG.format(md_installed_string))
         await msg.edit(msgRep.REBOOT_DONE_INS.format(md_installed_string))
-        args = [EXECUTABLE, "-m", "userbot"]
-        os.execle(sys.executable, *args, os.environ)
+        setConfig("REBOOT", True)
         await msg.client.disconnect()
-        return
     elif cmd_args[0].lower() == "uninstall":
-        if len(USER_MODULES) == 0:
+        if len(user_modules) == 0:
             await msg.edit(msgRep.NO_UNINSTALL_MODULES)
             return
         if len(cmd_args) == 1:
@@ -188,10 +181,10 @@ async def universe_checker(msg):
                 modNames += ", " + i
         await msg.edit(msgRep.UNINSTALLING.format(modNames))
         for modName in mods_uninstall:
-            if modName not in USER_MODULES:
+            if modName not in user_modules:
                 await msg.edit(msgRep.NOT_IN_USERSPACE.format(modName))
                 return
-            os.remove(USER_MODULES_DIR + modName + ".py")
+            os.remove(os.path.join(USER_MODULES_DIR, modName + ".py"))
         log.info(f"Modules '{modNames}' has been uninstalled from userspace")
         log.info("Rebooting userbot...")
         await msg.edit(msgRep.DONE_RBT)
@@ -199,14 +192,18 @@ async def universe_checker(msg):
         if LOGGING:
             await event_log(msg, "MODULE UNINSTALL", custom_text=msgRep.UNINSTALL_LOG.format(modNames))
         await msg.edit(msgRep.REBOOT_DONE_UNINS.format(modNames))
-        args = [EXECUTABLE, "-m", "userbot"]
-        os.execle(sys.executable, *args, os.environ)
+        if SAFEMODE:
+            setConfig("REBOOT_SAFEMODE", True)
+        setConfig("REBOOT", True)
         await msg.client.disconnect()
-        return
     else:
         await msg.edit(msgRep.INVALID_ARG)
-        return
+    return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.PACKAGE_MANAGER_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.PACKAGE_MANAGER_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Package Manager", version=VERSION)})
+register_cmd_usage("pkg", usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("args"), usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("usage"))
+register_module_desc(descRep.PACKAGE_MANAGER_DESC)
+register_module_info(
+    name="Package Manager",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

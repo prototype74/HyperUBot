@@ -1,21 +1,21 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import module_info, pinger
+from userbot.include.aux_funcs import pinger
 from userbot.include.language_processor import WebToolsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 from telethon import functions
 from dateutil.parser import parse
 from logging import getLogger
-from os import remove
-from os.path import basename
+from os import path, remove
 from speedtest import Speedtest
 from urllib.request import urlretrieve
 
@@ -23,19 +23,19 @@ log = getLogger(__name__)
 ehandler = EventHandler(log)
 DEFAULT_ADD = "1.0.0.1"
 
-@ehandler.on(pattern=r"^\.rtt$", outgoing=True)
+@ehandler.on(command="rtt", outgoing=True)
 async def rtt(message):
     rtt = pinger(DEFAULT_ADD)
     await message.edit(msgRep.PING_SPEED + rtt)
     return
 
-@ehandler.on(pattern=r"^\.dc$", outgoing=True)
+@ehandler.on(command="dc", outgoing=True)
 async def datacenter(event):
     result = await event.client(functions.help.GetNearestDcRequest())
     await event.edit(msgRep.DCMESSAGE.format(result.country, result.this_dc, result.nearest_dc))
     return
 
-@ehandler.on(pattern=r"^\.ping(?: |$)?", outgoing=True)
+@ehandler.on(command="ping", hasArgs=True, outgoing=True)
 async def ping(args):
     commandParser = str(args.message.message).split(' ')
     if len(commandParser) != 2:
@@ -51,7 +51,7 @@ async def ping(args):
         await args.edit(msgRep.PINGER_VAL.format(dns, duration))
     return
 
-@ehandler.on(pattern=r"^\.speedtest(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="speedtest", hasArgs=True, outgoing=True)
 async def speedtest(event):
     arg_from_event = event.pattern_match.group(1)
     chat =  await event.get_chat()
@@ -107,7 +107,7 @@ async def speedtest(event):
     if share_as_pic:
         try:
             await event.edit(process + "\n\n" + f"{msgRep.SPD_PROCESSING}...")
-            png_file = getConfig("TEMP_DL_DIR") + "speedtest.png"
+            png_file = path.join(getConfig("TEMP_DL_DIR"), "speedtest.png")
             urlretrieve(result["share"], png_file)
             await event.client.send_file(chat.id, png_file)
             await event.delete()
@@ -139,6 +139,12 @@ async def speedtest(event):
 
     return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.WEBTOOLS_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.WEBTOOLS_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Web Tools", version=VERSION)})
+for cmd in ("dc", "ping", "rtt", "speedtest"):
+    register_cmd_usage(cmd, usageRep.WEBTOOLS_USAGE.get(cmd, {}).get("args"), usageRep.WEBTOOLS_USAGE.get(cmd, {}).get("usage"))
+
+register_module_desc(descRep.WEBTOOLS_DESC)
+register_module_info(
+    name="Web Tools",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

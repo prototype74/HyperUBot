@@ -1,5 +1,5 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
@@ -8,24 +8,24 @@
 #
 # This module is powered by Combot Anti-Spam (CAS) system (https://cas.chat)
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
 import userbot.include.cas_api as cas_api
-from userbot.include.aux_funcs import module_info
 from userbot.include.language_processor import CasIntText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 from telethon.errors import ChatAdminRequiredError, MessageTooLongError, ChatSendMediaForbiddenError
 from telethon.tl.types import User, Chat, Channel, PeerUser, PeerChannel
 from datetime import datetime
 from logging import getLogger
-from os import remove
-from os.path import basename, exists, getmtime
+from os import path, remove
+from os.path import exists, getmtime
 from requests import get, ConnectionError, Timeout
 from time import sleep
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
-CAS_CSV = getConfig("TEMP_DL_DIR") + "export.csv"
+CAS_CSV = path.join(getConfig("TEMP_DL_DIR"), "export.csv")
 CAS_USER_IDS = []
 
 def updateCASList() -> bool:
@@ -62,7 +62,7 @@ def createCASFile(input_text: str, filename: str) -> tuple:
 async def casSendAsFile(event, input_text: str):
     await event.edit(msgRep.TOO_MANY_CAS)
     try:
-        filename, success = createCASFile(input_text, getConfig("TEMP_DL_DIR") + "caslist.txt")
+        filename, success = createCASFile(input_text, path.join(getConfig("TEMP_DL_DIR"), "caslist.txt"))
         if success:
             await event.client.send_file(event.chat_id, filename)
         else:
@@ -116,14 +116,14 @@ async def casupdater(event, showinfo: bool, tries: int = 0):
 
     return
 
-@ehandler.on(pattern=r"^\.casupdate$", outgoing=True)
+@ehandler.on(command="casupdate", outgoing=True)
 async def casupdate(event):
     log.info("Manual CAS CSV data update started")
     await event.edit(msgRep.UPDATER_CONNECTING)
     await casupdater(event, showinfo=True)
     return
 
-@ehandler.on(pattern=r"^\.cascheck(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="cascheck", hasArgs=True, outgoing=True)
 async def cascheck(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -177,18 +177,19 @@ async def cascheck(event):
             log.warning("Export CSV format from cas.chat is not valid")
             return
     else:
-        await event.edit(msgRep.CAS_CHECK_ND)
         log.info("CAS CSV data not available")
-        return
+        if not cas_data and is_chat:
+            await event.edit(msgRep.CAS_CHECK_ND)
+            return
 
     cas_count = 0
-    await event.edit(msgRep.PROCESSING)
 
     try:
         if isinstance(entity, User):
             firstname = entity.first_name if not entity.deleted else msgRep.DELETED_ACCOUNT
             lastname = entity.last_name  # can be None
             username = entity.username  # can be None
+            await event.edit(msgRep.CHECK_USER_ID.format(firstname))
             is_banned = f"[{msgRep.BANNED}](https://api.cas.chat/check?user_id={entity.id})" if cas_api.isbanned(cas_data) else msgRep.NOT_BANNED
             text = f"**{msgRep.USER_HEADER}**\n\n"
             text += f"{msgRep.USER_ID}: `{entity.id}`\n"
@@ -203,6 +204,7 @@ async def cascheck(event):
             if time_banned:
                 text +=  f"{msgRep.BANNED_SINCE}: `{time_banned.strftime('%b %d, %Y')} - {time_banned.time()} {time_banned.tzname()}`"
         elif isinstance(entity, (Chat, Channel)):
+            await event.edit(msgRep.CHECK_CHAT)
             title = entity.title
             text_users = ""
             async for user in event.client.iter_participants(entity.id):
@@ -223,6 +225,7 @@ async def cascheck(event):
             if not cas_count:
                 text = msgRep.NO_USERS.format(title)
         elif not entity and cas_data:
+            await event.edit(msgRep.CHECK_USER_ID.format(entity_id))
             is_banned = f"[{msgRep.BANNED}](https://api.cas.chat/check?user_id={entity_id})" if cas_api.isbanned(cas_data) else msgRep.NOT_BANNED
             text = f"**{msgRep.USER_HEADER}**\n\n"
             text += f"{msgRep.USER_ID}: `{entity_id}`\n\n"
@@ -250,6 +253,12 @@ async def cascheck(event):
 
     return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.CAS_INTERFACE_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.CAS_INTERFACE_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="CAS Interface", version=VERSION)})
+for cmd in ("casupdate", "cascheck"):
+    register_cmd_usage(cmd, usageRep.CAS_INTERFACE_USAGE.get(cmd, {}).get("args"), usageRep.CAS_INTERFACE_USAGE.get(cmd, {}).get("usage"))
+
+register_module_desc(descRep.CAS_INTERFACE_DESC)
+register_module_info(
+    name="CAS Interface",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

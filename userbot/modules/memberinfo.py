@@ -1,26 +1,26 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, VERSION
-from userbot.include.aux_funcs import fetch_user, module_info
+from userbot.include.aux_funcs import fetch_user
 from userbot.include.language_processor import MemberInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.types import ChannelParticipantCreator, ChannelParticipantAdmin, ChannelParticipantBanned, ChannelParticipantSelf, ChannelParticipant
 from telethon.errors import ChannelInvalidError, UserNotParticipantError
 from datetime import datetime
 from logging import getLogger
-from os.path import basename
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 
-@ehandler.on(pattern=r"^\.minfo(?: |$)(.*)", outgoing=True)
+@ehandler.on(command="minfo", hasArgs=True, outgoing=True)
 async def memberinfo(event):
     await event.edit(msgRep.SCAN)
 
@@ -85,7 +85,8 @@ async def memberinfo(event):
                          "invite_users": x_marks_the_spot,
                          "pin_messages": x_marks_the_spot,
                          "add_admins": x_marks_the_spot,
-                         "anonymous": x_marks_the_spot}
+                         "anonymous": x_marks_the_spot,
+                         "manage_call": x_marks_the_spot}
 
     member_permissions = {"send_messages": x_marks_the_spot,
                           "send_media": x_marks_the_spot,
@@ -113,6 +114,7 @@ async def memberinfo(event):
         pin_messages = admin_permissions.get("pin_messages")
         add_admins = admin_permissions.get("add_admins")
         anonymous = admin_permissions.get("anonymous")
+        manage_call = admin_permissions.get("manage_call")
         root_rights = check_mark
         promoted_by = None
         member_status = msgRep.STATUS_OWNER
@@ -136,6 +138,7 @@ async def memberinfo(event):
         pin_messages = admin_permissions.get("pin_messages")
         add_admins = admin_permissions.get("add_admins")
         anonymous = admin_permissions.get("anonymous")
+        manage_call = admin_permissions.get("manage_call")
         if enabled_rights_count == 6:  # max admin rights in groups
             member_status = f"{msgRep.STATUS_ADMIN} " + u"\u2605"  # full rights; star emoji
         elif enabled_rights_count < 5:
@@ -319,6 +322,7 @@ async def memberinfo(event):
         caption += f"- {msgRep.INVITE_USERS} {invite_users}\n"
         caption += f"- {msgRep.PIN_MESSAGES} {pin_messages}\n"
         caption += f"- {msgRep.ADD_ADMINS} {add_admins}\n"
+        caption += f"- {msgRep.MANAGE_CALLS} {manage_call}\n"
         caption += f"- {msgRep.ANONYMOUS} {anonymous}\n"
         caption += f"- {msgRep.ROOT_RIGHTS} {root_rights}\n\n"
     else:
@@ -343,6 +347,10 @@ async def memberinfo(event):
 
     return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.MEMBERINFO_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.MEMBERINFO_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="Member Info", version=VERSION)})
+register_cmd_usage("minfo", usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("args"), usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("usage"))
+register_module_desc(descRep.MEMBERINFO_DESC)
+register_module_info(
+    name="Member Info",
+    authors="nunopenim, prototype74",
+    version=VERSION
+)

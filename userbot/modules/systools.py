@@ -1,16 +1,19 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import OS, VERSION, PROJECT, MODULE_DESC, MODULE_DICT, MODULE_INFO
-from userbot.include.aux_funcs import event_log, module_info, sizeStrMaker, pinger, getGitReview
-from userbot.include.language_processor import SystemToolsText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from userbot.sysutils.configuration import getConfig
+from userbot import PROJECT, SAFEMODE
+from userbot.include.aux_funcs import event_log, sizeStrMaker, pinger, getGitReview
+from userbot.include.language_processor import (SystemToolsText as msgRep, ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep, getBotLangCode, getBotLang)
+from userbot.sysutils.configuration import getConfig, setConfig
 from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.version import VERSION
 import userbot.include.cas_api as cas
 import userbot.include.git_api as git
 from telethon import version
@@ -18,21 +21,18 @@ from platform import python_version, uname
 from datetime import datetime, timedelta
 from uptime import uptime
 from subprocess import check_output
-from os.path import basename, getsize, isfile, join
+from logging import getLogger
+from os.path import getsize, isfile, join
 from shutil import disk_usage
-import sys, time
-from os import execle, environ, listdir
+import time
+from os import listdir
 
-ehandler = EventHandler()
+log = getLogger(__name__)
+ehandler = EventHandler(log)
 
 # Module Global Variables
 USER = uname().node # Maybe add a username in future
 STARTTIME = datetime.now()
-
-if " " not in sys.executable:
-    EXECUTABLE = sys.executable
-else:
-    EXECUTABLE = '"' + sys.executable + '"'
 
 
 def textProgressBar(barLength: int, totalVal, usedVal) -> str:
@@ -48,7 +48,7 @@ def textProgressBar(barLength: int, totalVal, usedVal) -> str:
     bar_free = "-" * int(barLength - bar_used_length)
     return f"[{(bar_used + bar_free)}] {used_percentage}%"
 
-@ehandler.on(pattern=r"^\.status$", outgoing=True)
+@ehandler.on(command="status", outgoing=True)
 async def statuschecker(stat):
     global STARTTIME
     uptimebot = datetime.now() - STARTTIME
@@ -73,15 +73,19 @@ async def statuschecker(stat):
     uptime_machine_minutes = uptime_machine_time[1]
     uptime_machine_seconds = uptime_machine_time[2].split(".")[0]
     uptimeMacSTR = f"{uptime_machine_days} " + msgRep.DAYS + f", {uptime_machine_hours}:{uptime_machine_minutes}:{uptime_machine_seconds}"
+    commit = None
     try:
         commit = await getGitReview()
-    except IndexError:
-        commit = msgRep.NO_GITHUB
+    except:
+        pass
     rtt = pinger("1.1.1.1") #cloudfare's
     reply = f"**{msgRep.SYSTEM_STATUS}**\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"
     reply += msgRep.VER_TEXT + "`" + VERSION + "`" + "\n"
-    reply += msgRep.COMMIT_NUM + "`" + commit + "`" + "\n"
+    if commit:
+        reply += msgRep.COMMIT_NUM + "`" + commit + "`" + "\n"
+    reply += msgRep.SAFEMODE + f"{msgRep.ON if SAFEMODE else msgRep.OFF}\n"
+    reply += msgRep.LANG + f"{getBotLang()} ({getBotLangCode().upper()})\n"
     if rtt:
         reply += msgRep.RTT + "`" + str(rtt) + "`" + "\n"
     else:
@@ -96,16 +100,12 @@ async def statuschecker(stat):
     await stat.edit(reply)
     return
 
-@ehandler.on(pattern=r"^\.storage$", outgoing=True)
+@ehandler.on(command="storage", outgoing=True)
 async def storage(event):
     result = f"**{msgRep.STORAGE}**\n\n"
 
-    if OS and OS.lower().startswith("win"):
-        syspath = ".\\userbot\\modules\\"
-        userpath = ".\\userbot\\modules_user\\"
-    else:
-        syspath = "./userbot/modules/"
-        userpath = "./userbot/modules_user/"
+    syspath = join(".", "userbot", "modules")
+    userpath = join(".", "userbot", "modules_user")
 
     size = getsize(syspath)
     for module in listdir(syspath):
@@ -131,42 +131,56 @@ async def storage(event):
 
     await event.edit(result)
 
-@ehandler.on(pattern=r"^\.shutdown$", outgoing=True)
+@ehandler.on(command="shutdown", outgoing=True)
 async def shutdown(power_off):
     await power_off.edit(msgRep.SHUTDOWN)
     if getConfig("LOGGING"):
         await event_log(power_off, "SHUTDOWN", custom_text=msgRep.SHUTDOWN_LOG)
     await power_off.client.disconnect()
 
-@ehandler.on(pattern=r"^\.reboot$", outgoing=True)
+@ehandler.on(command="reboot", hasArgs=True, outgoing=True)
 async def restart(power_off): # Totally not a shutdown kang *sips whiskey*
+    cmd_args = power_off.pattern_match.group(1).split(" ", 1)
+    if cmd_args[0] == "safemode":
+        setConfig("REBOOT_SAFEMODE", True)
+    setConfig("REBOOT", True)
     await power_off.edit(msgRep.RESTART)
     time.sleep(1) # just so we can actually see a message
     if getConfig("LOGGING"):
         await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
     await power_off.edit(msgRep.RESTARTED)
-    args = [EXECUTABLE, "-m", "userbot"]
-    execle(sys.executable, *args, environ)
     await power_off.client.disconnect()
 
-@ehandler.on(pattern=r"^\.sysd$", outgoing=True)
+@ehandler.on(command="sysd", outgoing=True)
 async def sysd(event):
     try:
+        await event.edit(msgRep.SYSD_GATHER_INFO)
         result = check_output("neofetch --stdout", shell=True).decode()
         await event.edit(f"`{result}`")
-    except:
+    except Exception as e:
+        log.warning(e)
         await event.edit(msgRep.SYSD_NEOFETCH_REQ)
     return
 
-@ehandler.on(pattern=r"^\.sendlog$", outgoing=True)
+@ehandler.on(command="sendlog", outgoing=True)
 async def send_log(event):
     chat = await event.get_chat()
     await event.edit(msgRep.UPLD_LOG)
     time.sleep(1)
-    await event.client.send_file(chat, "hyper.log")
-    await event.edit(msgRep.SUCCESS_UPLD_LOG)
+    try:
+        await event.client.send_file(chat, "hyper.log")
+        await event.edit(msgRep.SUCCESS_UPLD_LOG)
+    except Exception as e:
+        log.error(f"Failed to upload HyperUBot log file: {e}")
+        await event.edit(msgRep.FAILED_UPLD_LOG)
     return
 
-MODULE_DESC.update({basename(__file__)[:-3]: descRep.SYSTOOLS_DESC})
-MODULE_DICT.update({basename(__file__)[:-3]: usageRep.SYSTOOLS_USAGE})
-MODULE_INFO.update({basename(__file__)[:-3]: module_info(name="System Tools", version=VERSION)})
+for cmd in ("status", "storage", "shutdown", "reboot", "sysd", "sendlog"):
+    register_cmd_usage(cmd, usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("args"), usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("usage"))
+
+register_module_desc(descRep.SYSTOOLS_DESC)
+register_module_info(
+    name="System Tools",
+    authors="nunopenim, prototpye74",
+    version=VERSION
+)
