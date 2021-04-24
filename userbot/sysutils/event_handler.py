@@ -92,6 +92,10 @@ class EventHandler:
             MessageEdited.Event or NewMessage.Event
         """
         def decorator(function):
+            if not function:
+                return None
+            if not callable(function):
+                return None
             nonlocal command
             nonlocal alt
             pattern_no_cmd = False
@@ -166,6 +170,10 @@ class EventHandler:
             NewMessage.Event
         """
         def decorator(function):
+            if not function:
+                return None
+            if not callable(function):
+                return None
             nonlocal command
             nonlocal alt
             pattern_no_cmd = False
