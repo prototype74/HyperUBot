@@ -65,13 +65,13 @@ class EventHandler:
     #        return False
     #    return True
 
-    def on(self, command: str = None, alt: str = None, hasArgs: bool = False, **args):
+    def on(self, command: str, alt: str = None, hasArgs: bool = False, **args):
         """
         Default listen on function which uses MessageEdited and NewMessage events.
         Recommended for outgoing messages/updates.
 
         Args:
-            command (string): command to listen to (must be None)
+            command (string): command to listen to (must not be None)
             alt (string): alternative way to 'command' (must be None)
             hasArgs (bool): whether 'command' takes arguments (default to False)
 
@@ -128,12 +128,12 @@ class EventHandler:
             return func_callback
         return decorator
 
-    def on_NewMessage(self, command: str = None, alt: str = None, hasArgs: bool = False, **args):
+    def on_NewMessage(self, command: str, alt: str = None, hasArgs: bool = False, **args):
         """
         Listen to NewMessage events only.
 
         Args:
-            command (string): command to listen to (must be None)
+            command (string): command to listen to (must not be None)
             alt (string): alternative way to 'command' (must be None)
             hasArgs (bool): whether 'command' takes arguments (default to False)
 
