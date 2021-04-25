@@ -20,7 +20,8 @@ from subprocess import check_call
 from sys import executable
 import os
 
-IS_WINDOWS = True if system().lower().startswith("win") else False
+IS_WINDOWS = True if system().lower().startswith("windows") or \
+             os.name == "nt" else False
 PY_EXEC = executable if not " " in executable else '"' + executable + '"'
 WIN_COLOR_ENABLED = False
 
