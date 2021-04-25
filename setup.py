@@ -172,17 +172,14 @@ if __name__ == "__main__":
             quit()
 
         install_telethon_started = False
-        tl_import_success = False
 
         while True:
             try:
                 from telethon import version
                 from telethon.sync import TelegramClient
                 from telethon.sessions import StringSession
-                tl_import_success = True
+                break
             except:
-                pass
-            if not tl_import_success:
                 if not install_telethon_started:
                     print("Telethon package not installed. Installing...")
                     install_telethon_started = True
@@ -193,8 +190,6 @@ if __name__ == "__main__":
                                        "install the Telethon package",
                                        Colors.RED))
                     quit(1)
-            else:
-                break
 
         telethon_version = tuple(map(int, version.__version__.split(".")))
         if telethon_version < (1, 21, 1):
