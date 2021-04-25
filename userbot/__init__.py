@@ -35,7 +35,6 @@ shandler.setFormatter(LogColorFormatter())
 basicConfig(handlers=[fhandler, shandler], level=INFO)
 
 PROJECT = "HyperUBot"
-VERSION = hubot_version  # obsolete, may be removed in future updates
 OS = system()  # Current Operating System
 SAFEMODE = False
 
@@ -190,9 +189,3 @@ except PhoneNumberInvalidError as pe:
 except Exception as e:
     log.critical(f"Failed to create Telegram Client: {e}", exc_info=True)
     quit(1)
-
-# SYSVARS
-# NOTICE: All vars below are obsolete and may be removed in future updates!
-MODULE_DESC = {}  # {Module name: MODULE_DESC}
-MODULE_DICT = {}  # {Module name: MODULE_USAGE}
-MODULE_INFO = {}  # {Module name: MODULE_INFO}

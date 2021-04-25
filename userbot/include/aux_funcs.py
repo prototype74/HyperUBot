@@ -221,26 +221,6 @@ def format_chat_id(chat) -> int:
         log.error(f"Failed to format chat id")
     return chat_id
 
-def module_info(name: str = None, authors: str = None, version: str = None) -> dict:
-    """
-    Put name, author(s) and version about a module to a new dictionary
-
-    Args:
-        name (str): name of module
-        authors (str): name of author(s)
-        version (str): version of module
-
-    Note:
-        Obsolete feature and may be removed in future updates!
-
-    Example:
-        module_info("Example", "Paul",  "1.0")
-
-    Returns:
-        A dictionary with 3 keys
-    """
-    return {"name": name, "authors": authors, "version": version}
-
 def shell_runner(commands: list):
     """
     Execute shell commands from given list with strings

@@ -46,38 +46,36 @@ class EventHandler:
         """
         return sub(r"\W", "", pattern)
 
-    def __isRegExCMD(self, pattern: str) -> bool:
-        """
-        Check if pattern has regular expressions
+    #def __isRegExCMD(self, pattern: str) -> bool:  # TODO
+    #    """
+    #    Check if pattern has regular expressions
+    #
+    #    Args:
+    #        pattern (string): pattern to check for regex
+    #
+    #    Returns:
+    #        True if valid regex found else False
+    #    """
+    #    pattern_no_regex = self.__removeRegEx(pattern)
+    #    if pattern == pattern_no_regex:
+    #        return False
+    #    try:
+    #        compile(pattern)
+    #    except:
+    #        return False
+    #    return True
 
-        Args:
-            pattern (string): pattern to check for regex
-
-        Returns:
-            True if valid regex found else False
-        """
-        pattern_no_regex = self.__removeRegEx(pattern)
-        if pattern == pattern_no_regex:
-            return False
-        try:
-            compile(pattern)
-        except:
-            return False
-        return True
-
-    def on(self, pattern: str = None, command: str = None, alt: str = None, hasArgs: bool = False, **args):
+    def on(self, command: str = None, alt: str = None, hasArgs: bool = False, **args):
         """
         Default listen on function which uses MessageEdited and NewMessage events.
         Recommended for outgoing messages/updates.
 
         Args:
-            pattern (string): pattern to listen to (regex required; must be None; obsolete)
             command (string): command to listen to (must be None)
             alt (string): alternative way to 'command' (must be None)
             hasArgs (bool): whether 'command' takes arguments (default to False)
 
         Note:
-            Argument 'command' is preferred, if pattern and command are used then pattern will be ignored.
             Function accepts any further arguments as supported by MessageEdited and NewMessage events
 
         Example:
@@ -96,21 +94,12 @@ class EventHandler:
                 return None
             if not callable(function):
                 return None
-            nonlocal command
-            nonlocal alt
-            pattern_no_cmd = False
-            if not pattern and not command:
-                return None
-            if pattern and not command:
-                command = pattern
-                pattern_no_cmd = True
-                self.log.info(f"[EventHandler.on()] parameter 'pattern' is obsolete, please update to "\
-                              f"'command' instead (in function '{function.__name__}')")
-            command_no_regex = self.__removeRegEx(command)  # remove any symbols from regex
-            if alt:
-                alt = self.__removeRegEx(alt)
-            if not pre_register_cmd(command_no_regex, alt, hasArgs, function):
-                self.log.error(f"Unable to add command '{command_no_regex}' in function '{function.__name__}' "\
+            cmd = command
+            curr_alt = alt
+            if curr_alt:
+                curr_alt = self.__removeRegEx(curr_alt)
+            if not pre_register_cmd(cmd, curr_alt, hasArgs, function):
+                self.log.error(f"Unable to add command '{cmd}' in function '{function.__name__}' "\
                                 "to event handler as previous registration failed")
                 return None
             async def func_callback(event):
@@ -121,41 +110,34 @@ class EventHandler:
                     # being used, has no own exception handler(s)
                     try:
                         # get current executed command
-                        command_no_regex = event.pattern_match.group(0).split(" ")[0][1:]
+                        curr_cmd = event.pattern_match.group(0).split(" ")[0][1:]
                     except:
-                        pass
-                    self.log.error(f"Command '{command_no_regex}' stopped due to an unhandled exception "
+                        curr_cmd = cmd
+                    self.log.error(f"Command '{curr_cmd}' stopped due to an unhandled exception "
                                    f"in function '{function.__name__}'", exc_info=True if self.traceback else False)
                     try:  # in case editing messages isn't allowed (channels)
-                        await event.edit(f"`{msgResp.CMD_STOPPED.format(f'{command_no_regex}.exe')}`")
+                        await event.edit(f"`{msgResp.CMD_STOPPED.format(f'{curr_cmd}.exe')}`")
                     except:
                         pass
-            if not pattern_no_cmd:
-                if self.__isRegExCMD(command):
-                    command = self.__removeRegEx(command)  # TODO
-                if alt:
-                    command = fr"^\.(?:{command}|{alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{command}|{alt})$"
-                else:
-                    command = fr"^\.{command}(?: |$)(.*)" if hasArgs else fr"^\.{command}$"
+            if curr_alt:
+                cmd_regex = fr"^\.(?:{cmd}|{curr_alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{cmd}|{curr_alt})$"
             else:
-                command = pattern  # 'restore' regex
-            tgclient.add_event_handler(func_callback, MessageEdited(pattern=command, **args))
-            tgclient.add_event_handler(func_callback, NewMessage(pattern=command, **args))
+                cmd_regex = fr"^\.{cmd}(?: |$)(.*)" if hasArgs else fr"^\.{cmd}$"
+            tgclient.add_event_handler(func_callback, MessageEdited(pattern=cmd_regex, **args))
+            tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, **args))
             return func_callback
         return decorator
 
-    def on_NewMessage(self, pattern: str = None, command: str = None, alt: str = None, hasArgs: bool = False, **args):
+    def on_NewMessage(self, command: str = None, alt: str = None, hasArgs: bool = False, **args):
         """
         Listen to NewMessage events only.
 
         Args:
-            pattern (string): pattern to listen to (regex required; must be None; obsolete)
             command (string): command to listen to (must be None)
             alt (string): alternative way to 'command' (must be None)
             hasArgs (bool): whether 'command' takes arguments (default to False)
 
         Note:
-            Argument 'command' is preferred, if pattern and command are used then pattern will be ignored.
             Function accepts any further arguments as supported by NewMessage events
 
         Example:
@@ -174,21 +156,12 @@ class EventHandler:
                 return None
             if not callable(function):
                 return None
-            nonlocal command
-            nonlocal alt
-            pattern_no_cmd = False
-            if not pattern and not command:
-                return None
-            if pattern and not command:
-                command = pattern
-                pattern_no_cmd = True
-                self.log.info(f"[EventHandler.on_NewMessage()] parameter 'pattern' is obsolete, please update to "\
-                              f"'command' instead (in function '{function.__name__}')")
-            command_no_regex = self.__removeRegEx(command)
-            if alt:
-                alt = self.__removeRegEx(alt)
-            if not pre_register_cmd(command_no_regex, alt, hasArgs, function):
-                self.log.error(f"Unable to add command '{command_no_regex}' in function '{function.__name__}' "\
+            cmd = command
+            curr_alt = alt
+            if curr_alt:
+                curr_alt = self.__removeRegEx(curr_alt)
+            if not pre_register_cmd(cmd, curr_alt, hasArgs, function):
+                self.log.error(f"Unable to add command '{cmd}' in function '{function.__name__}' "\
                                 "to event handler as previous registration failed")
                 return None
             async def func_callback(event):
@@ -196,25 +169,20 @@ class EventHandler:
                     await function(event)
                 except Exception as e:
                     try:
-                        command_no_regex = event.pattern_match.group(0).split(" ")[0][1:]
+                        curr_cmd = event.pattern_match.group(0).split(" ")[0][1:]
                     except:
-                        pass
-                    self.log.error(f"Command '{command_no_regex}' stopped due to an unhandled exception "
+                        curr_cmd = cmd
+                    self.log.error(f"Command '{curr_cmd}' stopped due to an unhandled exception "
                                    f"in function '{function.__name__}'", exc_info=True if self.traceback else False)
                     try:
-                        await event.edit(f"`{msgResp.CMD_STOPPED.format(f'{command_no_regex}.exe')}`")
+                        await event.edit(f"`{msgResp.CMD_STOPPED.format(f'{curr_cmd}.exe')}`")
                     except:
                         pass
-            if not pattern_no_cmd:
-                if self.__isRegExCMD(command):
-                    command = self.__removeRegEx(command)  # TODO
-                if alt:
-                    command = fr"^\.(?:{command}|{alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{command}|{alt})$"
-                else:
-                    command = fr"^\.{command}(?: |$)(.*)" if hasArgs else fr"^\.{command}$"
+            if curr_alt:
+                cmd_regex = fr"^\.(?:{cmd}|{curr_alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{cmd}|{curr_alt})$"
             else:
-                command = pattern
-            tgclient.add_event_handler(func_callback, NewMessage(pattern=command, **args))
+                cmd_regex = fr"^\.{cmd}(?: |$)(.*)" if hasArgs else fr"^\.{cmd}$"
+            tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, **args))
             return func_callback
         return decorator
 

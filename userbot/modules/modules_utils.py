@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import MODULE_DESC, MODULE_DICT, MODULE_INFO, OS, SAFEMODE
+from userbot import OS, SAFEMODE
 from userbot.include.aux_funcs import sizeStrMaker
 from userbot.include.language_processor import ModulesUtilsText as msgRep, ModuleUsages as usageRep
 from userbot.sysutils.configuration import getConfig
@@ -41,13 +41,6 @@ async def list_commands(event):
                 break
 
         if command_value:
-            if not command_value.get("success"):
-                name_of_module = command_value.get("module_name")
-                if name_of_module in MODULE_DICT.keys():
-                    log.info(f"MODULE_DICT is obsolete, please use register_cmd_usage() instead (in module '{name_of_module}')")
-                    cmd_info = MODULE_DICT.get(name_of_module)
-                    await event.edit(cmd_info)
-                    return
             cmd_alt = command_value.get("alt_cmd")
             cmd_hasArgs = command_value.get("hasArgs")
             cmd_args = command_value.get("args")
@@ -87,8 +80,6 @@ def update_list() -> list:
             if module in getModuleInfo().keys():
                 # Append [Name of module, filename of module, running] -> []
                 modules_list.append([getModuleInfo().get(module, {}).get("name", msgRep.UNKNOWN), module, isRunning])
-            elif module in MODULE_INFO.keys():
-                modules_list.append([MODULE_INFO.get(module, {}).get("name", msgRep.UNKNOWN), module, isRunning])
             else:
                 modules_list.append([module, module, isRunning])
 
@@ -182,9 +173,6 @@ def module_desc(name_of_module: str, module: str) -> str:
     if module in getLoadModules().keys():
         if module in getModuleDesc().keys():
             return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + getModuleDesc().get(module)
-        elif module in MODULE_DESC.keys():
-            log.info(f"MODULE_DESC is obsolete, please use register_module_desc() instead (in module '{module}')")
-            return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + MODULE_DESC.get(module)
         else:
             return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + msgRep.MODULE_NO_DESC
     else:
@@ -194,17 +182,8 @@ def module_info(name_of_module: str, module: str) -> str:
     if module in getLoadModules().keys():
         package_name, moduletype, installation_date = (msgRep.UNKNOWN,)*3
         size = 0
-        if module in getModuleInfo().keys():
-            authors = getModuleInfo().get(module, {}).get("authors", msgRep.UNKNOWN)
-            version = getModuleInfo().get(module, {}).get("version", 0)
-        elif module in MODULE_INFO.keys():
-            log.info(f"MODULE_INFO is obsolete, please use register_module_info() instead (in module '{module}')")
-            authors = MODULE_INFO.get(module, {}).get("authors", msgRep.UNKNOWN)
-            version = MODULE_INFO.get(module, {}).get("version", 0)
-        if not authors:
-            authors = msgRep.UNKNOWN
-        if not version:
-            version = 0
+        authors = getModuleInfo().get(module, {}).get("authors", msgRep.UNKNOWN)
+        version = getModuleInfo().get(module, {}).get("version", 0)
         package_name = module
         module += ".py"
         syspath = join(".", "userbot", "modules")
@@ -261,11 +240,7 @@ def module_usage(name_of_module: str, module: str) -> str:
                     else:
                         usage += f"`.{cmd}` {cmd_args}\n{msgRep.USAGE}: {cmd_usage}\n\n"
         if not cmds_usage_registered:
-            if module in MODULE_DICT.keys():
-                log.info(f"MODULE_DICT is obsolete, please use register_cmd_usage() instead (in module '{module}')")
-                usage += MODULE_DICT.get(module)
-            else:
-                usage += msgRep.MODULE_NO_USAGE
+            usage += msgRep.MODULE_NO_USAGE
         return usage
     else:
         raise IndexError
