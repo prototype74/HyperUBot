@@ -25,17 +25,18 @@ from urllib.request import urlopen, urlretrieve
 from zipfile import BadZipFile, LargeZipFile, ZipFile, ZIP_DEFLATED
 import os
 
-PLATFORM = system().lower()
 VERSION = "1.0.0"
 BACKUP_DIR = os.path.join(".", "backup")
 GITIGNORE = os.path.join(".", ".gitignore")
 RELEASE_DIR = os.path.join(".", "releases")
 UPDATE_PACKAGE = os.path.join(RELEASE_DIR, "update.zip")
 PY_EXEC = executable if not " " in executable else '"' + executable + '"'
+IS_WINDOWS = True if system().lower().startswith("windows") or \
+             os.name == "nt" else False
 WIN_COLOR_ENABLED = False
 
 try:
-    if PLATFORM.startswith("win"):
+    if IS_WINDOWS:
         import colorama
         colorama.init()
         WIN_COLOR_ENABLED = True
@@ -54,7 +55,7 @@ class Colors:
     END = "\033[0m"
 
 def setColorText(text: str, color: Colors) -> str:
-    if PLATFORM.startswith("win") and not WIN_COLOR_ENABLED:
+    if IS_WINDOWS and not WIN_COLOR_ENABLED:
         return text  # don't use ANSI codes
     return color + text + Colors.END
 
@@ -94,7 +95,7 @@ class _Recovery:
         paths = []
         try:
             for path in rules_paths:
-                if PLATFORM.startswith("win"):
+                if IS_WINDOWS:
                     path = path.replace("/", "\\")
                 else:
                     path = path.replace("\\", "/")
@@ -456,7 +457,7 @@ class _Updater(_Recovery):
                     if not line.startswith("#") and not line == "\n" and \
                        not "__pycache__" in line:
                         line = line.split("#")[0].rstrip()
-                        if PLATFORM.startswith("win"):
+                        if IS_WINDOWS:
                             line = line.replace("/", "\\")
                         if "*" in line:
                             for name in glob(line):
