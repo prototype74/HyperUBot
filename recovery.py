@@ -752,7 +752,6 @@ if __name__ == "__main__":
             quit(1)
         _apply_update(commit_id, auto_updater)
         quit()
-    temp = None
     try:
         while True:
             print("\nMain Menu")
@@ -772,6 +771,7 @@ if __name__ == "__main__":
                 break
             elif num == "3":
                 print("\nMain Menu > Apply update")
+                temp = None
                 try:
                     while True:
                         temp = input("Commit ID (or 'X' to cancel): ")
