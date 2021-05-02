@@ -106,10 +106,13 @@ class _RegisterCMD:
     def __init__(self):
         """
         Initialize the dictionary for registered commands. This class avoids any duplicated commands/patterns.
-        Scheme: {"cmd", {"alt_cmd": "alternative way to trigger the cmd" (must be None),
-                         "hasArgs": "whether the command takes arguments" (default to False),
-                         "args": "argument(s) of the cmd" (must be None),
-                         "usage": "how to use the cmd?" (must be None),
+        Scheme: {"cmd", {"alt_cmd": "alternative way to trigger the cmd",
+                         "hasArgs": "whether the command takes arguments",
+                         "prefix": "the prefix used at the beginning of cmd (pattern)",
+                         "no_space_arg": "remove space between command/feature and argument",
+                         "no_cmd": "if cmd is not actually a command",
+                         "args": "argument(s) of the cmd",
+                         "usage": "how to use the cmd?",
                          "module_name": "Where is it defined?" (_pre_register_cmd() auto generates it)
                          "success": True (present if cmd usage has been registered in_register_cmd_usage())}}
         """
@@ -119,13 +122,14 @@ class _RegisterCMD:
     def _pre_register_cmd(self, cmd: str, alt_cmd: str, hasArgs: bool,
                           prefix: str, no_space_arg: bool, no_cmd: bool, func) -> bool:
         """
-        Pre-registers commands and checks if cmd isn't registered already to avoid duplicated cmds
+        Pre-registers commands and checks if cmd/pattern isn't registered already to
+        avoid duplicated cmds/patterns
 
         Args:
             cmd (string): command/pattern to pre-register
             alt_cmd (string): alternative command to 'cmd'
             hasArgs (bool): whether 'cmd' takes arguments
-            prefix (string): the prefix used at the begging of cmd (pattern)
+            prefix (string): the prefix used at the beginning of cmd (pattern)
             no_space_arg (bool): tell modules utils to remove space between cmd and arg
             no_cmd (bool): if cmd is not actually a command
             func (Function): the function where the cmd is being used
@@ -238,10 +242,24 @@ def update_user_modules(name_of_module: str):
     return
 
 def register_module_desc(description: str):
+    """
+    Registers the description of a module
+
+    Args:
+        description (string): (detailed) description of a module
+    """
     _reg_mod._register_module_desc(description)
     return
 
 def register_module_info(name: str = None, authors: str = None, version: str = None):
+    """
+    Registers the information of a module
+
+    Args:
+        name (string): name of module
+        authors (string): name of author(s) (must be None)
+        version (string): version of module (must be None)
+    """
     _reg_mod._register_module_info(name, authors, version)
     return
 

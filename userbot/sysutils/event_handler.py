@@ -75,6 +75,7 @@ class EventHandler:
             command (string): command to listen to (must not be None)
             alt (string): alternative way to 'command' (must be None)
             hasArgs (bool): whether 'command' takes arguments (default to False)
+            ignore_edits (bool): ignore edited messages (default to False)
 
         Note:
             Function accepts any further arguments as supported by MessageEdited and NewMessage events
@@ -146,7 +147,7 @@ class EventHandler:
             from userbot.sysutils.event_handler import EventHandler
             ehandler = EventHandler()
 
-            @ehandler.on(command="example", outgoing=True)
+            @ehandler.on_NewMessage(command="example", outgoing=True)
             async def example_handler(event):
                 await event.edit("hi!")
 
@@ -195,10 +196,10 @@ class EventHandler:
 
         Args:
             pattern (string): pattern to listen to (must not be None)
-            events: Event to add to client. Also supported as list of Events
+            events: Event to add to client. Also supported as list of Events (must not be None)
             name: name of feature. should match pattern but without regex, not
                   required to match patttern if no_cmd is set. (must not be None)
-            prefix (string): the prefix used at the begging of your pattern
+            prefix (string): the prefix used at the beginning of your pattern
                              e.g. .example, /example or !example. Default is dot.
                              This is set automatically to a 'string wise none' if no_cmd is set.
             hasArgs (bool): whether pattern takes arguments, default to False, stays False if no_cmd is set
@@ -211,7 +212,30 @@ class EventHandler:
             2. Alternative commands not supported
 
         Example:
-            # TODO
+            from userbot.sysutils.event_handler import EventHandler
+            from telethon.events import NewMessage, MessageEdited
+            ehandler = EventHandler()
+
+            @ehandler.on_Pattern(pattern=r"^\!example(?: |$)(.*)",
+                                 events=[NewMessage, MessageEdited],
+                                 name="example",
+                                 prefix="!",
+                                 hasArgs=True,
+                                 outgoing=True)
+            async def example(event):
+                await event.edit("example confirmed!")
+                return
+
+            # auto reply to a certain person
+            @ehandler.on_Pattern(pattern=r"^Hi Paul$",
+                                 events=NewMessage,
+                                 name="autoreplytopaul",
+                                 chats=[123456789],
+                                 no_cmd=True,
+                                 incoming=True)
+            async def autoreplytopaul(event):
+                await event.client.send_message(event.chat_id, "Oh, hi Mark")
+                return
 
         Returns:
             the given Event(s) from events
