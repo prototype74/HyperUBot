@@ -43,18 +43,28 @@ async def list_commands(event):
         if command_value:
             cmd_alt = command_value.get("alt_cmd")
             cmd_hasArgs = command_value.get("hasArgs")
+            cmd_prefix = command_value.get("prefix")
+            cmd_no_space_arg = command_value.get("no_space_arg")
+            cmd_no_command = command_value.get("no_cmd")
             cmd_args = command_value.get("args")
             cmd_usage = command_value.get("usage")
-            if not cmd_hasArgs:
+            space = "" if cmd_no_space_arg else " "
+            if cmd_no_command:
+                cmd_args = ""
+            elif not cmd_hasArgs:
                 cmd_args = f"__{msgRep.ARGS_NOT_REQ}__"
             elif cmd_hasArgs and not cmd_args:
                 cmd_args = f"__{msgRep.ARGS_NOT_AVAILABLE}__"
             if not cmd_usage:
                 cmd_usage = f"__{msgRep.MODULE_NO_USAGE.lower()}__"
+
             if cmd_alt:
-                cmd_info = f"`.{command}`/`.{cmd_alt}` {cmd_args}\n{msgRep.USAGE}: {cmd_usage}\n\n"
+                cmd_info = f"`{cmd_prefix}{command}`/`"\
+                           f"{cmd_prefix}{cmd_alt}`{space}{cmd_args}\n"
             else:
-                cmd_info = f"`.{command}` {cmd_args}\n{msgRep.USAGE}: {cmd_usage}\n\n"
+                cmd_info = f"`{cmd_prefix}{command}`{space}{cmd_args}\n"
+
+            cmd_info += f"{msgRep.USAGE}: {cmd_usage}\n\n"
             await event.edit(cmd_info)
             return
         else:
@@ -227,18 +237,28 @@ def module_usage(name_of_module: str, module: str) -> str:
                         cmds_usage_registered = True
                     cmd_alt = value.get("alt_cmd")
                     cmd_hasArgs = value.get("hasArgs")
+                    cmd_prefix = value.get("prefix")
+                    cmd_no_space_arg = value.get("no_space_arg")
+                    cmd_no_command = value.get("no_cmd")
                     cmd_args = value.get("args")
                     cmd_usage = value.get("usage")
-                    if not cmd_hasArgs:
+                    space = "" if cmd_no_space_arg else " "
+                    if cmd_no_command:
+                        cmd_args = ""
+                    elif not cmd_hasArgs:
                         cmd_args = f"__{msgRep.ARGS_NOT_REQ}__"
                     elif cmd_hasArgs and not cmd_args:
                         cmd_args = f"__{msgRep.ARGS_NOT_AVAILABLE}__"
                     if not cmd_usage:
                         cmd_usage = f"__{msgRep.MODULE_NO_USAGE.lower()}__"
+
                     if cmd_alt:
-                        usage += f"`.{cmd}`/`.{cmd_alt}` {cmd_args}\n{msgRep.USAGE}: {cmd_usage}\n\n"
+                        usage += f"`{cmd_prefix}{cmd}`/`"\
+                                 f"{cmd_prefix}{cmd_alt}`{space}{cmd_args}\n"
                     else:
-                        usage += f"`.{cmd}` {cmd_args}\n{msgRep.USAGE}: {cmd_usage}\n\n"
+                        usage += f"`{cmd_prefix}{cmd}`{space}{cmd_args}\n"
+
+                    usage += f"{msgRep.USAGE}: {cmd_usage}\n\n"
         if not cmds_usage_registered:
             usage += msgRep.MODULE_NO_USAGE
         return usage
