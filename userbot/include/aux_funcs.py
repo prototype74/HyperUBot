@@ -260,7 +260,7 @@ def str_to_bool(strbool: str) -> bool:
             print("it's not true")
 
     Returns:
-        a real list from string
+        a real bool from string
     """
     if strbool in ("True", "true"):
         return True
