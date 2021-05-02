@@ -153,40 +153,7 @@ class EventHandler:
         Returns:
             NewMessage.Event
         """
-        def decorator(function):
-            if not function:
-                return None
-            if not callable(function):
-                return None
-            cmd = command
-            curr_alt = alt
-            if curr_alt:
-                curr_alt = self.__removeRegEx(curr_alt)
-            if not pre_register_cmd(cmd, curr_alt, hasArgs, ".", False, False, function):
-                self.log.error(f"Unable to add command '{cmd}' in function '{function.__name__}' "\
-                                "to event handler as previous registration failed")
-                return None
-            async def func_callback(event):
-                try:
-                    await function(event)
-                except Exception as e:
-                    try:
-                        curr_cmd = event.pattern_match.group(0).split(" ")[0][1:]
-                    except:
-                        curr_cmd = cmd
-                    self.log.error(f"Command '{curr_cmd}' stopped due to an unhandled exception "
-                                   f"in function '{function.__name__}'", exc_info=True if self.traceback else False)
-                    try:
-                        await event.edit(f"`{msgResp.CMD_STOPPED.format(f'{curr_cmd}.exe')}`")
-                    except:
-                        pass
-            if curr_alt:
-                cmd_regex = fr"^\.(?:{cmd}|{curr_alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{cmd}|{curr_alt})$"
-            else:
-                cmd_regex = fr"^\.{cmd}(?: |$)(.*)" if hasArgs else fr"^\.{cmd}$"
-            tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, **args))
-            return func_callback
-        return decorator
+        return self.on(command, alt, hasArgs, True, **args)
 
     def on_ChatAction(self, **args):
         """
