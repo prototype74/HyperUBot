@@ -65,7 +65,8 @@ class EventHandler:
     #        return False
     #    return True
 
-    def on(self, command: str, alt: str = None, hasArgs: bool = False, **args):
+    def on(self, command: str, alt: str = None,
+           hasArgs: bool = False, ignore_edits: bool = False, **args):
         """
         Default listen on function which uses MessageEdited and NewMessage events.
         Recommended for outgoing messages/updates.
@@ -123,7 +124,8 @@ class EventHandler:
                 cmd_regex = fr"^\.(?:{cmd}|{curr_alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{cmd}|{curr_alt})$"
             else:
                 cmd_regex = fr"^\.{cmd}(?: |$)(.*)" if hasArgs else fr"^\.{cmd}$"
-            tgclient.add_event_handler(func_callback, MessageEdited(pattern=cmd_regex, **args))
+            if not ignore_edits:
+                tgclient.add_event_handler(func_callback, MessageEdited(pattern=cmd_regex, **args))
             tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, **args))
             return func_callback
         return decorator
