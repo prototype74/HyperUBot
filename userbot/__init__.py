@@ -9,7 +9,6 @@
 from userbot.sysutils.configuration import addConfig, getConfig
 from userbot.sysutils.colors import Color, setColorText
 from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
-from userbot.sysutils.prefuncs import strlist_to_list, str_to_bool
 from userbot.version import VERSION as hubot_version
 from telethon import TelegramClient, version
 from telethon.errors.rpcerrorlist import ApiIdInvalidError, PhoneNumberInvalidError
@@ -82,6 +81,7 @@ else:
     log.info("Loading configurations")
 
 if path.exists(path.join(".", "userbot", "config.env")):
+    from userbot.include.aux_funcs import strlist_to_list, str_to_bool
     len_before = len(environ.items())
     load_dotenv(path.join(".", "userbot", "config.env"))
     loaded_env = {key: value for key, value in list(environ.items())[len_before:]}
