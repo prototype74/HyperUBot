@@ -125,9 +125,15 @@ class EventHandler:
                 cmd_regex = fr"^\.(?:{cmd}|{curr_alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{cmd}|{curr_alt})$"
             else:
                 cmd_regex = fr"^\.{cmd}(?: |$)(.*)" if hasArgs else fr"^\.{cmd}$"
-            if not ignore_edits:
-                tgclient.add_event_handler(func_callback, MessageEdited(pattern=cmd_regex, **args))
-            tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, **args))
+            try:
+                if not ignore_edits:
+                    tgclient.add_event_handler(func_callback, MessageEdited(pattern=cmd_regex, **args))
+                tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, **args))
+            except Exception as e:
+                self.log.error(f"Failed to add command '{cmd}' to client "\
+                               f"(in function '{function.__name__}')",
+                               exc_info=True if self.traceback else False)
+                return None
             return func_callback
         return decorator
 
@@ -182,7 +188,13 @@ class EventHandler:
                 except Exception as e:
                     self.log.error(f"Function '{function.__name__}' stopped due to an unhandled exception",
                                    exc_info=True if self.traceback else False)
-            tgclient.add_event_handler(func_callback, ChatAction(**args))
+            try:
+                tgclient.add_event_handler(func_callback, ChatAction(**args))
+            except Exception as e:
+                self.log.error(f"Failed to add a chat action feature to client "\
+                               f"(in function '{function.__name__}')",
+                               exc_info=True if self.traceback else False)
+                return None
             return func_callback
         return decorator
 
@@ -266,10 +278,16 @@ class EventHandler:
                         self.log.error(f"Feature '{name}' stopped due to an unhandled exception "
                                        f"in function '{function.__name__}'",
                                        exc_info=True if self.traceback else False)
-            if isinstance(events, list):
-                for event in events:
-                    tgclient.add_event_handler(func_callback, event(pattern=pattern, **args))
-            else:
-                tgclient.add_event_handler(func_callback, events(pattern=pattern, **args))
+            try:
+                if isinstance(events, list):
+                    for event in events:
+                        tgclient.add_event_handler(func_callback, event(pattern=pattern, **args))
+                else:
+                    tgclient.add_event_handler(func_callback, events(pattern=pattern, **args))
+            except Exception as e:
+                self.log.error(f"Failed to add command/feature '{name}' to client "\
+                               f"(in function '{function.__name__}')",
+                               exc_info=True if self.traceback else False)
+                return None
             return func_callback
         return decorator
