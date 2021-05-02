@@ -105,7 +105,7 @@ class _RegisterModules:
 class _RegisterCMD:
     def __init__(self):
         """
-        Initialize the dictionary for registered commands. This class avoids any duplicated commands.
+        Initialize the dictionary for registered commands. This class avoids any duplicated commands/patterns.
         Scheme: {"cmd", {"alt_cmd": "alternative way to trigger the cmd" (must be None),
                          "hasArgs": "whether the command takes arguments" (default to False),
                          "args": "argument(s) of the cmd" (must be None),
@@ -116,14 +116,18 @@ class _RegisterCMD:
         self.__registered_cmds = {}
         self.__first_time_register = False
 
-    def _pre_register_cmd(self, cmd: str, alt_cmd: str, hasArgs: bool, func) -> bool:
+    def _pre_register_cmd(self, cmd: str, alt_cmd: str, hasArgs: bool,
+                          prefix: str, no_space_arg: bool, no_cmd: bool, func) -> bool:
         """
         Pre-registers commands and checks if cmd isn't registered already to avoid duplicated cmds
 
         Args:
-            cmd (string): command to pre-register
+            cmd (string): command/pattern to pre-register
             alt_cmd (string): alternative command to 'cmd'
             hasArgs (bool): whether 'cmd' takes arguments
+            prefix (string): the prefix used at the begging of cmd (pattern)
+            no_space_arg (bool): tell modules utils to remove space between cmd and arg
+            no_cmd (bool): if cmd is not actually a command
             func (Function): the function where the cmd is being used
 
         Note:
@@ -163,8 +167,10 @@ class _RegisterCMD:
                                 f"primary command already (in module '{loc}')")
                     alt_cmd = None
                     break
-            self.__registered_cmds[cmd] = {"alt_cmd": alt_cmd, "hasArgs": hasArgs, "args": None,
-                                           "usage": None, "module_name": module_name}
+            self.__registered_cmds[cmd] = {"alt_cmd": alt_cmd, "hasArgs": hasArgs,
+                                           "prefix": prefix, "no_space_arg": no_space_arg,
+                                           "no_cmd": no_cmd, "args": None, "usage": None,
+                                           "module_name": module_name}
             return True
         loc = self.__registered_cmds.get(cmd, {}).get("module_name")
         log.warning(f"Command '{cmd}' in module '{module_name}' registered in "\
@@ -255,7 +261,8 @@ def getModuleInfo() -> dict:
     return _reg_mod._getModuleInfo()
 
 _reg_cmd = _RegisterCMD()
-def pre_register_cmd(cmd: str, alt_cmd: str, hasArgs: bool, func) -> bool:
+def pre_register_cmd(cmd: str, alt_cmd: str, hasArgs: bool,
+                     prefix: str, no_space_arg: bool, no_cmd: bool, func) -> bool:
     """
     Pre-registers commands and checks if cmd isn't registered already to avoid duplicated cmds
 
@@ -269,7 +276,8 @@ def pre_register_cmd(cmd: str, alt_cmd: str, hasArgs: bool, func) -> bool:
         True if pre-registered successfully or False if unauthorized caller calls this function
         or cmd is pre-registered already
     """
-    return _reg_cmd._pre_register_cmd(cmd, alt_cmd, hasArgs, func)
+    return _reg_cmd._pre_register_cmd(cmd, alt_cmd, hasArgs,
+                                      prefix, no_space_arg, no_cmd, func)
 
 def register_cmd_usage(cmd: str, args: str = None, usage: str = None):
     """
