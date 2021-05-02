@@ -66,7 +66,7 @@ class _RegisterModules:
             log.warning(f"Module description for {caller} registered already")
         return
 
-    def _register_module_info(self, name: str = None, authors: str = None, version: str = None):
+    def _register_module_info(self, name: str, authors: str = None, version: str = None):
         caller = basename(getouterframes(currentframe(), 2)[2].filename)[:-3]
         if not isinstance(name, str):
             log.warning("Invalid attribute type for 'name'. Instance should be type of str. "\
@@ -251,7 +251,7 @@ def register_module_desc(description: str):
     _reg_mod._register_module_desc(description)
     return
 
-def register_module_info(name: str = None, authors: str = None, version: str = None):
+def register_module_info(name: str, authors: str = None, version: str = None):
     """
     Registers the information of a module
 
