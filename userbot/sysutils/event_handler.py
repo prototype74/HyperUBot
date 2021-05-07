@@ -66,7 +66,7 @@ class EventHandler:
     #    return True
 
     def on(self, command: str, alt: str = None,
-           hasArgs: bool = False, ignore_edits: bool = False, **args):
+           hasArgs: bool = False, ignore_edits: bool = False, *args, **kwargs):
         """
         Default listen on function which uses MessageEdited and NewMessage events.
         Recommended for outgoing messages/updates.
@@ -127,8 +127,8 @@ class EventHandler:
                 cmd_regex = fr"^\.{cmd}(?: |$)(.*)" if hasArgs else fr"^\.{cmd}$"
             try:
                 if not ignore_edits:
-                    tgclient.add_event_handler(func_callback, MessageEdited(pattern=cmd_regex, **args))
-                tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, **args))
+                    tgclient.add_event_handler(func_callback, MessageEdited(pattern=cmd_regex, *args, **kwargs))
+                tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, *args, **kwargs))
             except Exception as e:
                 self.log.error(f"Failed to add command '{cmd}' to client "\
                                f"(in function '{function.__name__}')",
@@ -137,7 +137,8 @@ class EventHandler:
             return func_callback
         return decorator
 
-    def on_NewMessage(self, command: str, alt: str = None, hasArgs: bool = False, **args):
+    def on_NewMessage(self, command: str, alt: str = None,
+                      hasArgs: bool = False, *args, **kwargs):
         """
         Listen to NewMessage events only.
 
@@ -160,9 +161,9 @@ class EventHandler:
         Returns:
             NewMessage.Event
         """
-        return self.on(command, alt, hasArgs, True, **args)
+        return self.on(command, alt, hasArgs, True, *args, **kwargs)
 
-    def on_ChatAction(self, **args):
+    def on_ChatAction(self, *args, **kwargs):
         """
         Listen to chat activities (join, leave, new pinned message etc.) in any or certain chats.
 
@@ -189,7 +190,7 @@ class EventHandler:
                     self.log.error(f"Function '{function.__name__}' stopped due to an unhandled exception",
                                    exc_info=True if self.traceback else False)
             try:
-                tgclient.add_event_handler(func_callback, ChatAction(**args))
+                tgclient.add_event_handler(func_callback, ChatAction(*args, **kwargs))
             except Exception as e:
                 self.log.error(f"Failed to add a chat action feature to client "\
                                f"(in function '{function.__name__}')",
@@ -200,7 +201,7 @@ class EventHandler:
 
     def on_Pattern(self, pattern: str, events, name: str, prefix: str = ".",
                    hasArgs: bool = False, no_space_arg: bool = False,
-                   no_cmd: bool = False,  **args):
+                   no_cmd: bool = False, *args, **kwargs):
         """
         Listen to given pattern depending on Event(s). This event handler gives the
         most freedom, however you should guarantee that your pattern doesn't
@@ -281,9 +282,9 @@ class EventHandler:
             try:
                 if isinstance(events, list):
                     for event in events:
-                        tgclient.add_event_handler(func_callback, event(pattern=pattern, **args))
+                        tgclient.add_event_handler(func_callback, event(pattern=pattern, *args, **kwargs))
                 else:
-                    tgclient.add_event_handler(func_callback, events(pattern=pattern, **args))
+                    tgclient.add_event_handler(func_callback, events(pattern=pattern, *args, **kwargs))
             except Exception as e:
                 self.log.error(f"Failed to add command/feature '{name}' to client "\
                                f"(in function '{function.__name__}')",
