@@ -7,6 +7,7 @@
 # compliance with the PE License
 
 from userbot.version import VERSION
+from subprocess import check_output
 import platform
 import os
 import sys
@@ -85,3 +86,20 @@ def isMacOS() -> bool:
 def isWindows() -> bool:
     return True if platform.system().lower() == "windows" or \
            os.name == "nt" or sys.platform.startswith("win") else False
+
+def isAndroid() -> bool:
+    if not isLinux():
+        return False
+
+    try:
+        android_sdk = check_output(["getprop", "ro.build.version.sdk"],
+                                   universal_newlines=True).replace("\n", "")
+        android_ver = check_output(["getprop", "ro.build.version.release"],
+                                   universal_newlines=True).replace("\n", "")
+
+        if android_sdk or android_ver:
+            return True
+    except:
+        pass
+
+    return False
