@@ -55,7 +55,7 @@ def requiredVersion(min_ver: str, max_ver: str, empty_func: bool = False):
     """
     def wrapper(function):
         if empty_func:
-            efunc = lambda: None
+            efunc = lambda *args, **kwargs: None
         else:
             efunc = None
         try:
