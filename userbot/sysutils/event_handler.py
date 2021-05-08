@@ -82,22 +82,20 @@ class EventHandler:
                 return None
             if not callable(function):
                 return None
-            cmd = command
-            if not cmd:
+            if not command:
                 self.log.error(f"Command in function '{function.__name__}' must not be empty.")
                 return None
-            curr_alt = alt
-            if not self.__checkCmdValidity(cmd):
-                self.log.error(f"Validity check for '{cmd}' in function '{function.__name__}' "\
+            if not self.__checkCmdValidity(command):
+                self.log.error(f"Validity check for '{command}' in function '{function.__name__}' "\
                                "failed. Special characters are not allowed.")
                 return None
-            if curr_alt and not self.__checkCmdValidity(curr_alt):
-                self.log.error(f"Validity check for '{curr_alt}' (alternative command of '{cmd}') "\
+            if alt and not self.__checkCmdValidity(alt):
+                self.log.error(f"Validity check for '{alt}' (alternative command of '{command}') "\
                                f"in function '{function.__name__}' failed. "\
                                "Special characters are not allowed.")
                 return None
-            if not pre_register_cmd(cmd, curr_alt, hasArgs, ".", False, False, function):
-                self.log.error(f"Unable to add command '{cmd}' in function '{function.__name__}' "\
+            if not pre_register_cmd(command, alt, hasArgs, ".", False, False, function):
+                self.log.error(f"Unable to add command '{command}' in function '{function.__name__}' "\
                                 "to event handler as previous registration failed")
                 return None
             async def func_callback(event):
@@ -110,23 +108,23 @@ class EventHandler:
                         # get current executed command
                         curr_cmd = event.pattern_match.group(0).split(" ")[0][1:]
                     except:
-                        curr_cmd = cmd
+                        curr_cmd = command
                     self.log.error(f"Command '{curr_cmd}' stopped due to an unhandled exception "
                                    f"in function '{function.__name__}'", exc_info=True if self.traceback else False)
                     try:  # in case editing messages isn't allowed (channels)
                         await event.edit(f"`{msgResp.CMD_STOPPED.format(f'{curr_cmd}.exe')}`")
                     except:
                         pass
-            if curr_alt:
-                cmd_regex = fr"^\.(?:{cmd}|{curr_alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{cmd}|{curr_alt})$"
+            if alt:
+                cmd_regex = fr"^\.(?:{command}|{alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{command}|{alt})$"
             else:
-                cmd_regex = fr"^\.{cmd}(?: |$)(.*)" if hasArgs else fr"^\.{cmd}$"
+                cmd_regex = fr"^\.{command}(?: |$)(.*)" if hasArgs else fr"^\.{command}$"
             try:
                 if not ignore_edits:
                     tgclient.add_event_handler(func_callback, MessageEdited(pattern=cmd_regex, *args, **kwargs))
                 tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, *args, **kwargs))
             except Exception as e:
-                self.log.error(f"Failed to add command '{cmd}' to client "\
+                self.log.error(f"Failed to add command '{command}' to client "\
                                f"(in function '{function.__name__}')",
                                exc_info=True if self.traceback else False)
                 return None
