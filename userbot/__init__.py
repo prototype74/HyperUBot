@@ -9,6 +9,7 @@
 from userbot.sysutils.configuration import addConfig, getConfig
 from userbot.sysutils.colors import Color, setColorText
 from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
+from userbot.sysutils.sys_funcs import os_name
 from userbot.version import VERSION as hubot_version
 from telethon import TelegramClient, version
 from telethon.errors.rpcerrorlist import ApiIdInvalidError, PhoneNumberInvalidError
@@ -34,7 +35,7 @@ shandler.setFormatter(LogColorFormatter())
 basicConfig(handlers=[fhandler, shandler], level=INFO)
 
 PROJECT = "HyperUBot"
-OS = system()  # Current Operating System
+OS = os_name()  # Current Operating System [DEPRECATED]
 SAFEMODE = False
 
 # Check safe mode from command line
@@ -48,7 +49,7 @@ try:
         sys_string += "Project: {}\n".format(PROJECT)
         sys_string += "Version: {}\n".format(hubot_version)
         sys_string += "Safe mode: {}\n".format("On" if SAFEMODE else "Off")
-        sys_string += "Operating System: {}\n".format(OS)
+        sys_string += "Operating System: {}\n".format(os_name())
         sys_string += "Platform: {}\n".format(platform())
         sys_string += "Machine: {}\n".format(machine())
         sys_string += "Processor: {}\n".format(processor())
