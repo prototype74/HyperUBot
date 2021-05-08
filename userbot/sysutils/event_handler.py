@@ -11,7 +11,7 @@ from userbot import tgclient
 from userbot.include.language_processor import SystemUtilitiesText as msgResp
 from telethon.events import ChatAction, MessageEdited, NewMessage
 from logging import getLogger, Logger
-#from re import compile, sub
+from re import match
 
 class EventHandler:
     def __init__(self, log: Logger = None, traceback: bool = True):
@@ -33,6 +33,23 @@ class EventHandler:
         """
         self.log = log if isinstance(log, Logger) else getLogger(__name__)
         self.traceback = traceback
+
+    def __checkCmdValidity(self, command: str) -> bool:
+        """
+        Check if command string is valid to alphabetic and/or numeric only.
+        Special characters will cause the validity to fail
+
+        Args:
+            command (string): command to check
+
+        Returns:
+            True if command string is valid else False
+        """
+        try:
+            return True if match("^[A-Za-z0-9]*$", command) else False
+        except:
+            pass
+        return False
 
     def on(self, command: str, alt: str = None,
            hasArgs: bool = False, ignore_edits: bool = False, *args, **kwargs):
@@ -67,8 +84,15 @@ class EventHandler:
                 return None
             cmd = command
             curr_alt = alt
-            #if curr_alt:
-            #    curr_alt = self.__removeRegEx(curr_alt)
+            if not self.__checkCmdValidity(cmd):
+                self.log.error(f"Validity check for '{cmd}' in function '{function.__name__}' "\
+                               "failed. Special characters are not allowed.")
+                return None
+            if curr_alt and not self.__checkCmdValidity(curr_alt):
+                self.log.error(f"Validity check for '{curr_alt}' (alternative command of '{cmd}') "\
+                               f"in function '{function.__name__}' failed. "\
+                               "Special characters are not allowed.")
+                return None
             if not pre_register_cmd(cmd, curr_alt, hasArgs, ".", False, False, function):
                 self.log.error(f"Unable to add command '{cmd}' in function '{function.__name__}' "\
                                 "to event handler as previous registration failed")
