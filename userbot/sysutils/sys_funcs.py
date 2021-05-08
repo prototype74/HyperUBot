@@ -101,5 +101,21 @@ def isAndroid() -> bool:
             return True
     except:
         pass
-
     return False
+
+def isWSL() -> bool:
+    if not isLinux():
+        return False
+    if "microsoft" in platform.release().lower() and \
+       os.path.exists("/mnt/c/Windows"):
+        return True
+    return False
+
+def os_name() -> str:
+    if isAndroid():
+        return "Android"
+    elif isMacOS():
+        return "macOS"
+    elif isWSL():
+        return "Windows Subsystem for Linux"
+    return platform.system()  # default case
