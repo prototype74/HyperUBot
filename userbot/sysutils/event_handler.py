@@ -11,7 +11,7 @@ from userbot import tgclient
 from userbot.include.language_processor import SystemUtilitiesText as msgResp
 from telethon.events import ChatAction, MessageEdited, NewMessage
 from logging import getLogger, Logger
-from re import compile, sub
+#from re import compile, sub
 
 class EventHandler:
     def __init__(self, log: Logger = None, traceback: bool = True):
@@ -33,37 +33,6 @@ class EventHandler:
         """
         self.log = log if isinstance(log, Logger) else getLogger(__name__)
         self.traceback = traceback
-
-    def __removeRegEx(self, pattern: str) -> str:
-        """
-        Removes any word characters from pattern
-
-        Args:
-            pattern (string): pattern to remove word characters
-
-        Returns:
-            string without word characters
-        """
-        return sub(r"\W", "", pattern)
-
-    #def __isRegExCMD(self, pattern: str) -> bool:  # TODO
-    #    """
-    #    Check if pattern has regular expressions
-    #
-    #    Args:
-    #        pattern (string): pattern to check for regex
-    #
-    #    Returns:
-    #        True if valid regex found else False
-    #    """
-    #    pattern_no_regex = self.__removeRegEx(pattern)
-    #    if pattern == pattern_no_regex:
-    #        return False
-    #    try:
-    #        compile(pattern)
-    #    except:
-    #        return False
-    #    return True
 
     def on(self, command: str, alt: str = None,
            hasArgs: bool = False, ignore_edits: bool = False, *args, **kwargs):
@@ -98,8 +67,8 @@ class EventHandler:
                 return None
             cmd = command
             curr_alt = alt
-            if curr_alt:
-                curr_alt = self.__removeRegEx(curr_alt)
+            #if curr_alt:
+            #    curr_alt = self.__removeRegEx(curr_alt)
             if not pre_register_cmd(cmd, curr_alt, hasArgs, ".", False, False, function):
                 self.log.error(f"Unable to add command '{cmd}' in function '{function.__name__}' "\
                                 "to event handler as previous registration failed")
