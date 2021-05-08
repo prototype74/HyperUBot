@@ -254,6 +254,10 @@ class EventHandler:
                 return None
             if not callable(function):
                 return None
+            if not name:
+                self.log.error(f"Name of command/feature in function '{function.__name__}' "\
+                               "must not be empty.")
+                return None
             if not pre_register_cmd(name, None, hasArgs if not no_cmd else False,
                                     prefix if not no_cmd else "", no_space_arg, no_cmd, function):
                 self.log.error(f"Unable to add command/feature '{name}' in function '{function.__name__}' "\
