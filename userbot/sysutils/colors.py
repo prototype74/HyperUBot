@@ -6,12 +6,12 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from platform import system
+from .sys_funcs import isWindows
 
 _WIN_COLOR_ENABLED = False
 
 try:
-    if system().lower().startswith("win"):
+    if isWindows():
         import colorama
         colorama.init()
         _WIN_COLOR_ENABLED = True
@@ -62,7 +62,7 @@ def setColorText(text: str, color: Color) -> str:
     Returns:
         Given string with wrapped color
     """
-    if system().lower().startswith("win") and not _WIN_COLOR_ENABLED:
+    if isWindows() and not _WIN_COLOR_ENABLED:
         return text
     return f"{color}{text}{Color.END}"
 
@@ -80,6 +80,6 @@ def setColorTextBG(text: str, colorbg: ColorBG) -> str:
     Returns:
         Given string with wrapped background color
     """
-    if system().lower().startswith("win") and not _WIN_COLOR_ENABLED:
+    if isWindows() and not _WIN_COLOR_ENABLED:
         return text
     return f"{colorbg}{text}{ColorBG.END}"

@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import OS, SAFEMODE
+from userbot import SAFEMODE
 from userbot.include.aux_funcs import sizeStrMaker
 from userbot.include.language_processor import ModulesUtilsText as msgRep, ModuleUsages as usageRep
 from userbot.sysutils.configuration import getConfig
@@ -14,6 +14,7 @@ from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import (getAllModules, getLoadModules, getUserModules,
                                            getModuleDesc, getModuleInfo, getRegisteredCMDs,
                                            register_cmd_usage)
+from userbot.sysutils.sys_funcs import isMacOS, isWindows
 from logging import getLogger
 from os.path import basename, exists, getctime, getsize, join
 from os import stat
@@ -201,18 +202,18 @@ def module_info(name_of_module: str, module: str) -> str:
         if exists(join(syspath, module)):
             moduletype = msgRep.SYSTEM
             size = sizeStrMaker(getsize(join(syspath, module)))
-            if OS and OS.lower().startswith("win"):
+            if isWindows():
                 installation_date = getctime(join(syspath, module))
-            elif OS and OS.lower().startswith("darwin"):
+            elif isMacOS():
                 installation_date = stat(join(syspath, module)).st_birthtime
             else:
                 installation_date = stat(join(syspath, module)).st_ctime
         elif exists(join(userpath, module)):
             moduletype = msgRep.USER
             size = sizeStrMaker(getsize(join(userpath, module)))
-            if OS and OS.lower().startswith("win"):
+            if isWindows():
                 installation_date = getctime(join(userpath, module))
-            elif OS and OS.lower().startswith("darwin"):
+            elif isMacOS():
                 installation_date = stat(join(userpath, module)).st_birthtime
             else:
                 installation_date = stat(join(userpath, module)).st_ctime
