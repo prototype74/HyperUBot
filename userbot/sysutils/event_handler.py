@@ -83,6 +83,9 @@ class EventHandler:
             if not callable(function):
                 return None
             cmd = command
+            if not cmd:
+                self.log.error(f"Command in function '{function.__name__}' must not be empty.")
+                return None
             curr_alt = alt
             if not self.__checkCmdValidity(cmd):
                 self.log.error(f"Validity check for '{cmd}' in function '{function.__name__}' "\
