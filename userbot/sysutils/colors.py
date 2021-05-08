@@ -64,7 +64,7 @@ def setColorText(text: str, color: Color) -> str:
     """
     if system().lower().startswith("win") and not _WIN_COLOR_ENABLED:
         return text
-    return color + text + Color.END
+    return f"{color}{text}{Color.END}"
 
 def setColorTextBG(text: str, colorbg: ColorBG) -> str:
     """
@@ -82,4 +82,4 @@ def setColorTextBG(text: str, colorbg: ColorBG) -> str:
     """
     if system().lower().startswith("win") and not _WIN_COLOR_ENABLED:
         return text
-    return colorbg + text + ColorBG.END
+    return f"{colorbg}{text}{ColorBG.END}"
