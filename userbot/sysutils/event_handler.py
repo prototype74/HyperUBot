@@ -7,6 +7,8 @@
 # compliance with the PE License
 
 from .registration import pre_register_cmd
+from inspect import currentframe, getouterframes
+from os.path import basename
 from userbot import tgclient
 from userbot.include.language_processor import SystemUtilitiesText as msgResp
 from telethon.events import ChatAction, MessageEdited, NewMessage
@@ -82,21 +84,23 @@ class EventHandler:
                 return None
             if not callable(function):
                 return None
+            caller = getouterframes(currentframe(), 2)[1]  # get caller in case of failed actions
+            caller = f"{basename(caller.filename)[:-3]}:{caller.lineno}"  # link to file and line number
             if not command:
-                self.log.error(f"Command in function '{function.__name__}' must not be empty.")
+                self.log.error(f"Command in function '{function.__name__}' must not be empty ({caller})")
                 return None
             if not self.__checkCmdValidity(command):
                 self.log.error(f"Validity check for '{command}' in function '{function.__name__}' "\
-                               "failed. Special characters are not allowed.")
+                               f"failed. Special characters are not allowed ({caller})")
                 return None
             if alt and not self.__checkCmdValidity(alt):
                 self.log.error(f"Validity check for '{alt}' (alternative command of '{command}') "\
                                f"in function '{function.__name__}' failed. "\
-                               "Special characters are not allowed.")
+                               f"Special characters are not allowed ({caller})")
                 return None
             if not pre_register_cmd(command, alt, hasArgs, ".", False, False, function):
                 self.log.error(f"Unable to add command '{command}' in function '{function.__name__}' "\
-                                "to event handler as previous registration failed")
+                               f"to event handler as previous registration failed ({caller})")
                 return None
             async def func_callback(event):
                 try:
@@ -125,7 +129,7 @@ class EventHandler:
                 tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, *args, **kwargs))
             except Exception as e:
                 self.log.error(f"Failed to add command '{command}' to client "\
-                               f"(in function '{function.__name__}')",
+                               f"(in function '{function.__name__}' ({caller}))",
                                exc_info=True if self.traceback else False)
                 return None
             return func_callback
@@ -252,14 +256,16 @@ class EventHandler:
                 return None
             if not callable(function):
                 return None
+            caller = getouterframes(currentframe(), 2)[1]
+            caller = f"{basename(caller.filename)[:-3]}:{caller.lineno}"
             if not name:
                 self.log.error(f"Name of command/feature in function '{function.__name__}' "\
-                               "must not be empty.")
+                               f"must not be empty ({caller})")
                 return None
             if not pre_register_cmd(name, None, hasArgs if not no_cmd else False,
                                     prefix if not no_cmd else "", no_space_arg, no_cmd, function):
                 self.log.error(f"Unable to add command/feature '{name}' in function '{function.__name__}' "\
-                                "to event handler as previous registration failed")
+                               f"to event handler as previous registration failed ({caller})")
                 return None
             async def func_callback(event):
                 try:
@@ -285,7 +291,7 @@ class EventHandler:
                     tgclient.add_event_handler(func_callback, events(pattern=pattern, *args, **kwargs))
             except Exception as e:
                 self.log.error(f"Failed to add command/feature '{name}' to client "\
-                               f"(in function '{function.__name__}')",
+                               f"(in function '{function.__name__}' ({caller}))",
                                exc_info=True if self.traceback else False)
                 return None
             return func_callback
