@@ -76,18 +76,32 @@ def requiredVersion(min_ver: str, max_ver: str, empty_func: bool = False):
     return wrapper
 
 def isLinux() -> bool:
+    """
+    Returns True if current machine runs with a Linux (based)
+    system else False
+    """
     return True if platform.system().lower() == "linux" or \
            sys.platform.startswith("linux") else False
 
 def isMacOS() -> bool:
+    """
+    Returns True if current machine runs with macOS else False
+    """
     return True if platform.system().lower() == "darwin" or \
            sys.platform == "darwin" else False
 
 def isWindows() -> bool:
+    """
+    Returns True if current machine runs with Windows else False
+    """
     return True if platform.system().lower() == "windows" or \
            os.name == "nt" or sys.platform.startswith("win") else False
 
 def isAndroid() -> bool:
+    """
+    Returns True if current machine runs with an Android system
+    else False
+    """
     if not isLinux():
         return False
 
@@ -104,6 +118,10 @@ def isAndroid() -> bool:
     return False
 
 def isWSL() -> bool:
+    """
+    Returns True if HyperUBot runs on WSL (2) which is a
+    subfeature of Windows 10 else False
+    """
     if not isLinux():
         return False
     if "microsoft" in platform.release().lower() and \
@@ -112,6 +130,10 @@ def isWSL() -> bool:
     return False
 
 def os_name() -> str:
+    """
+    Get and return the name of the current operating system.
+    Might return an empty string if OS is unknown.
+    """
     if isAndroid():
         return "Android"
     elif isMacOS():
