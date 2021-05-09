@@ -141,3 +141,86 @@ def os_name() -> str:
     elif isWSL():
         return "Windows Subsystem for Linux"
     return platform.system()  # default case
+
+def verAsTuple(version: str) -> tuple:
+    """
+    Converts a version string to a version tuple.
+    String should be 'well-formed' e.g. '1.2.3' or
+    '1.2.3-beta'.
+    Useful to compare 2 different (or equal) versions
+    for a possible case (e.g. limit a feature to a
+    minimum required version)
+
+    INPUT -> OUTPUT:
+    verAsTuple("1.2.3") -> (1, 2, 3)
+    verAsTuple("1.2.3-beta") -> (1, 2, 3, 'beta')
+    verAsTuple("1.0") -> (1, 0)
+    verAsTuple("1") -> (1, 0)
+    verAsTuple("v1.0") -> () !!
+
+    Args:
+        version (string): a 'well-formed' version as string
+
+    Examples:
+        from userbot.sysutils.sys_funcs import verAsTuple
+
+        MY_VERSION = "2.5"
+
+        def example():
+            if verAsTuple(MY_VERSION) >= (2, 5):
+                import xyz_module as my_module
+            else:
+                import xyz_module_old as my_module
+            return my_module.example_func()
+
+    Returns:
+        version as tuple if string is well-formed else an empty tuple
+    """
+    if not version:
+        return ()
+    if not isinstance(version, str):
+        return ()
+
+    # dot is the delimiter and it is required
+    # return an empty tuple if version doesn't
+    # include any dots (not well-formed)
+    if len(version) > 1 and not "." in version:
+        return ()
+
+    try:
+        if len(version) == 1 and int(version):
+            # assume it's just a digit
+            return tuple(map(int, f"{version}.0".split(".")))
+    except:
+        pass
+
+    try:
+        # version only includes integers
+        return tuple(map(int, version.split(".")))
+    except:
+        pass
+
+    ver_list = version.split(".")
+    new_list = []
+    first_elem_int = False  # first element should be a digit
+
+    for elem in ver_list:
+        try:  # integer cases
+            elem = int(elem)
+            first_elem_int = True  # first element is a digit
+            new_list.append(elem)
+        except:  # word (with integer) cases
+            if not first_elem_int:
+                # first element was not a digit (not well-formed)
+                break
+            if "-" in elem:
+                temp = elem.split("-")
+                for new_elem in temp:
+                    try:
+                        new_elem = int(new_elem)
+                    except:
+                        pass
+                    new_list.append(new_elem)
+            else:
+                new_list.append(elem)
+    return tuple(new_list)
