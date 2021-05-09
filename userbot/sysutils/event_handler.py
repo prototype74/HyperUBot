@@ -218,7 +218,7 @@ class EventHandler:
             no_cmd (bool): if pattern is no command to handle (default to False)
 
         Note:
-            1. **args should be arguments supported by the events. If a parameter is not
+            1. *args, **kwargs should be arguments supported by the events. If a parameter is not
                supported by an event, this handler may not work then.
             2. Alternative commands not supported
 
@@ -284,7 +284,7 @@ class EventHandler:
                                        f"in function '{function.__name__}'",
                                        exc_info=True if self.traceback else False)
             try:
-                if isinstance(events, list):
+                if isinstance(events, (list, tuple)):
                     for event in events:
                         tgclient.add_event_handler(func_callback, event(pattern=pattern, *args, **kwargs))
                 else:
