@@ -9,7 +9,7 @@
 from userbot.sysutils.configuration import addConfig, getConfig
 from userbot.sysutils.colors import Color, setColorText
 from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
-from userbot.sysutils.sys_funcs import os_name
+from userbot.sysutils.sys_funcs import os_name, verAsTuple
 from userbot.version import VERSION as hubot_version
 from telethon import TelegramClient, version
 from telethon.errors.rpcerrorlist import ApiIdInvalidError, PhoneNumberInvalidError
@@ -69,8 +69,7 @@ if (version_info.major, version_info.minor) < (3, 8):
     quit(1)
 
 # Check Telethon version
-telethon_version = tuple(map(int, version.__version__.split(".")))
-if telethon_version < (1, 21, 1):
+if verAsTuple(version.__version__) < (1, 21, 1):
     log.error("Telethon version 1.21.1+ is required! " +
               f"Please update Telethon to v1.21.1 or newer (current version: {version.__version__}).")
     quit(1)

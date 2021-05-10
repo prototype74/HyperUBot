@@ -12,6 +12,7 @@ from userbot.include.language_processor import UpdaterText as msgRep, ModuleDesc
 from userbot.sysutils.configuration import getConfig, setConfig
 from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.sysutils.sys_funcs import botVerAsTuple, verAsTuple
 from userbot.version import VERSION
 from logging import getLogger
 from urllib.request import urlretrieve
@@ -107,7 +108,7 @@ async def updater(event):
         return
 
     try:
-        current_version = tuple(map(int, VERSION.split(".")))
+        current_version = botVerAsTuple()
     except Exception:
         await event.edit(msgRep.UPDATE_FAILED)
         log.error("Failed to parse bot version", exc_info=True)
@@ -124,7 +125,7 @@ async def updater(event):
 
     try:
         tag_version = release_data["tag_name"][1:]
-        release_version = tuple(map(int, tag_version.split(".")))
+        release_version = verAsTuple(tag_version)
     except ValueError:
         await event.edit(msgRep.UPDATE_FAILED)
         log.error("Invalid tag version from release", exc_info=True)

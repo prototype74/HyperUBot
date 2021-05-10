@@ -216,9 +216,9 @@ def requiredVersion(min_ver: str, max_ver: str, empty_func: bool = False):
         else:
             efunc = None
         try:
-            ver_tuple = tuple(map(int, VERSION.split(".")))
-            min_tuple = tuple(map(int, min_ver.split(".")))
-            max_tuple = tuple(map(int, max_ver.split(".")))
+            ver_tuple = botVerAsTuple()
+            min_tuple = verAsTuple(min_ver)
+            max_tuple = verAsTuple(max_ver)
         except:
             return efunc
         if not min_ver <= max_ver:  # min should be lower or equal to max
