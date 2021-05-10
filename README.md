@@ -20,7 +20,7 @@ Instead of coming cluttered with all kinds of packages, it is fully customizable
 
 ## Compatibility
 
-HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch linux etc.)_ and Android. Cloud plaforms like Heroku are **not** supported, due to the way how these platforms handle bash processes, something needed for some bash based commands.
+HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch linux etc.)_ and Android. Cloud platforms like Heroku are **not** supported, due to the way how these platforms handle bash processes, something needed for some bash based commands.
 
 We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
 
