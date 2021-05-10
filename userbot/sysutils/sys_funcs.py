@@ -224,3 +224,9 @@ def verAsTuple(version: str) -> tuple:
             else:
                 new_list.append(elem)
     return tuple(new_list)
+
+def botVerAsTuple() -> tuple:
+    """
+    Returns the version of HyperUBot as tuple
+    """
+    return verAsTuple(VERSION)
