@@ -93,6 +93,7 @@ def verAsTuple(version: str) -> tuple:
     verAsTuple("1.2.3-beta") -> (1, 2, 3, 'beta')
     verAsTuple("1.0") -> (1, 0)
     verAsTuple("1") -> (1, 0)
+    verAsTuple("15") -> (15, 0)
     verAsTuple("v1.0") -> () !!
 
     Args:
@@ -121,15 +122,14 @@ def verAsTuple(version: str) -> tuple:
     # dot is the delimiter and it is required
     # return an empty tuple if version doesn't
     # include any dots (not well-formed)
-    if len(version) > 1 and not "." in version:
+    if len(version) >= 1 and not "." in version:
+        try:
+            if int(version):
+                # assume it's just a digit
+                return tuple(map(int, f"{version}.0".split(".")))
+        except:
+            pass
         return ()
-
-    try:
-        if len(version) == 1 and int(version):
-            # assume it's just a digit
-            return tuple(map(int, f"{version}.0".split(".")))
-    except:
-        pass
 
     try:
         # version only includes integers
