@@ -46,7 +46,7 @@ Run the following command to start the Setup Assistant:
 
 ![](images/debian/setup.png)
 
-**Jump to Step [3. Running the bot!](#3.-running-the-bot) if Setup Assistant was completed successfully**
+**Jump to Step [3. Running the bot!](#3-running-the-bot) if Setup Assistant was completed successfully**
 
 ### 2.2 Setup HyperUBot manually (for advanced users)
 
