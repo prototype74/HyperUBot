@@ -25,7 +25,7 @@ from urllib.request import urlopen, urlretrieve
 from zipfile import BadZipFile, LargeZipFile, ZipFile, ZIP_DEFLATED
 import os
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 BACKUP_DIR = os.path.join(".", "backup")
 GITIGNORE = os.path.join(".", ".gitignore")
 RELEASE_DIR = os.path.join(".", "releases")
