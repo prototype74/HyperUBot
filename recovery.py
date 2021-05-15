@@ -20,7 +20,7 @@ from json import loads
 from platform import system
 from shutil import copytree, rmtree
 from subprocess import check_call
-from sys import argv, executable
+from sys import argv, executable, platform
 from urllib.request import urlopen, urlretrieve
 from zipfile import BadZipFile, LargeZipFile, ZipFile, ZIP_DEFLATED
 import os
@@ -31,8 +31,8 @@ GITIGNORE = os.path.join(".", ".gitignore")
 RELEASE_DIR = os.path.join(".", "releases")
 UPDATE_PACKAGE = os.path.join(RELEASE_DIR, "update.zip")
 PY_EXEC = executable if not " " in executable else '"' + executable + '"'
-IS_WINDOWS = True if system().lower().startswith("windows") or \
-             os.name == "nt" else False
+IS_WINDOWS = True if system().lower() == "windows" or \
+             os.name == "nt" or platform.startswith("win") else False
 WIN_COLOR_ENABLED = False
 
 try:

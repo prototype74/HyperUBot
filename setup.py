@@ -17,11 +17,11 @@ if (version_info.major, version_info.minor) < (3, 8):
 
 from platform import system
 from subprocess import check_call
-from sys import executable
+from sys import executable, platform
 import os
 
-IS_WINDOWS = True if system().lower().startswith("windows") or \
-             os.name == "nt" else False
+IS_WINDOWS = True if system().lower() == "windows" or \
+             os.name == "nt" or platform.startswith("win") else False
 PY_EXEC = executable if not " " in executable else '"' + executable + '"'
 WIN_COLOR_ENABLED = False
 

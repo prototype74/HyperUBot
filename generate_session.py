@@ -15,16 +15,19 @@ if (version_info.major, version_info.minor) < (3, 8):
              version_info.major, version_info.minor, version_info.micro))
    quit(1)
 
+from os import name
 from platform import system
+from sys import platform
 from telethon import version
 from telethon.sync import TelegramClient
 from telethon.sessions import StringSession
 
-PLATFORM = system().lower()
+IS_WINDOWS = True if system().lower() == "windows" or \
+             name == "nt" or platform.startswith("win") else False
 WIN_COLOR_ENABLED = False
 
 try:
-    if PLATFORM.startswith("win"):
+    if IS_WINDOWS:
         import colorama
         colorama.init()
         WIN_COLOR_ENABLED = True
@@ -38,7 +41,7 @@ class Colors:
     END = "\033[0m"
 
 def setColorText(text: str, color: Colors) -> str:
-    if PLATFORM.startswith("win") and not WIN_COLOR_ENABLED:
+    if IS_WINDOWS and not WIN_COLOR_ENABLED:
         return text  # don't use ANSI codes
     return color + text + Colors.END
 
