@@ -12,7 +12,7 @@ from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
 from userbot.version import VERSION
-from telethon.errors import UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError, AdminRankEmojiNotAllowedError, ChatNotModifiedError
+from telethon.errors import UserAdminInvalidError, ChatAdminRequiredError, AdminsTooMuchError, AdminRankEmojiNotAllowedError
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
 from telethon.tl.types import ChatAdminRights, ChatBannedRights, ChannelParticipantsAdmins, User, Channel, PeerUser, PeerChannel
 from asyncio import sleep

@@ -14,7 +14,6 @@ from userbot.sysutils.registration import register_cmd_usage, register_module_de
 from userbot.version import VERSION
 from logging import getLogger
 from os import path, remove
-from subprocess import check_output, CalledProcessError
 from telethon.errors import ChatSendMediaForbiddenError, MessageTooLongError
 
 log = getLogger(__name__)

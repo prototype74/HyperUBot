@@ -17,7 +17,7 @@ from telethon.sessions import StringSession
 from dotenv import load_dotenv
 from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
 from os import path, execle, environ, mkdir, remove
-from platform import platform, system, machine, processor
+from platform import platform, machine, processor
 from sys import argv, executable, version_info
 
 # Terminal logging

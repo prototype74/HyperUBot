@@ -17,7 +17,7 @@ from userbot.version import VERSION
 import userbot.include.cas_api as cas
 import userbot.include.git_api as git
 from telethon import version
-from platform import python_version, uname
+from platform import python_version
 from datetime import datetime, timedelta
 from uptime import uptime
 from subprocess import check_output
@@ -31,7 +31,6 @@ log = getLogger(__name__)
 ehandler = EventHandler(log)
 
 # Module Global Variables
-USER = uname().node # Maybe add a username in future
 STARTTIME = datetime.now()
 
 

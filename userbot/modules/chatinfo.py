@@ -12,13 +12,12 @@ from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
 from userbot.version import VERSION
 from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError, ChatAdminRequiredError
-from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantsRequest
+from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest, GetExportedChatInvitesRequest
 from telethon.tl.types import (ChannelParticipantCreator, ChatParticipantCreator, MessageActionChannelMigrateFrom,
                                ChannelParticipantsAdmins, Chat, Channel, PeerChannel)
 from datetime import datetime
 from logging import getLogger
-from math import sqrt
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)

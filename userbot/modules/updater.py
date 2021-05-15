@@ -6,10 +6,9 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import PROJECT
 from userbot.include.git_api import getLatestData
 from userbot.include.language_processor import UpdaterText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
-from userbot.sysutils.configuration import getConfig, setConfig
+from userbot.sysutils.configuration import setConfig
 from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
 from userbot.sysutils.sys_funcs import botVerAsTuple, verAsTuple

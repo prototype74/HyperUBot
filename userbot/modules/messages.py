@@ -14,9 +14,8 @@ from userbot.sysutils.registration import register_cmd_usage, register_module_de
 from userbot.version import VERSION
 from telethon.errors import ChatAdminRequiredError, InputUserDeactivatedError, SearchQueryEmptyError
 from telethon.tl.functions.messages import SearchRequest
-from telethon.tl.types import InputMessagesFilterEmpty, ChannelParticipantsAdmins
+from telethon.tl.types import InputMessagesFilterEmpty
 from logging import getLogger
-from os.path import basename
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)

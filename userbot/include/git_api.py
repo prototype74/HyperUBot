@@ -1,6 +1,5 @@
 import urllib.request as url
 import json
-import datetime
 
 VERSION = "1.2.0"
 APIURL = "http://api.github.com/repos/"

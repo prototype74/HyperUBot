@@ -17,7 +17,6 @@ from asyncio.subprocess import PIPE as asyncPIPE
 from json import loads
 from shutil import which
 from icmplib import ping
-import os
 
 log = getLogger(__name__)
 
