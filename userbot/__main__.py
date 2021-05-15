@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, log, fhandler, PROJECT, SAFEMODE
+from userbot import tgclient, log, fhandler, shandler, PROJECT, SAFEMODE
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (update_all_modules, update_load_modules,
                                            update_user_modules, getAllModules)
@@ -54,12 +54,14 @@ class _Modules:
             try:
                 self.__imported_module = import_module(path + module)
                 return True
-            except Exception:
-                log.error(f"Unable to start module '{module}' due to an unhandled exception", exc_info=True)
+            except KeyboardInterrupt:
+                raise KeyboardInterrupt
+            except (BaseException, Exception):
+                log.error(f"Unable to start module '{module}' due to an unhandled exception",
+                          exc_info=True)
             return False
-
-        all_modules, sys_modules, user_modules = self.__load_modules()
         try:
+            all_modules, sys_modules, user_modules = self.__load_modules()
             for module in sorted(all_modules):
                 update_all_modules(module)
             for module in sys_modules:
@@ -77,74 +79,110 @@ class _Modules:
                         else:
                             update_load_modules(module, False)
                 update_user_modules(module)
-        except Exception as e:
-            log.critical(f"Failed to load modules [CORE]: {e}", exc_info=True)
-            quit(1)
+        except:
+            raise
         return
 
     def loaded_modules(self) -> int:
         return self.__load_modules_count
 
-if __name__ == "__main__":
+def start_modules():
+    if SAFEMODE:
+        log.info("Starting system modules only")
+    else:
+        log.info("Starting modules")
+    modules = _Modules()
     try:
-        if SAFEMODE:
-            log.info("Loading resources and system modules")
-        else:
-            log.info("Loading resources and modules")
-        modules = _Modules()
         modules.import_load_modules()
-        load_modules_count = modules.loaded_modules()
-        sum_modules = len(getAllModules())
-        if not load_modules_count:
-            log.warning("No module(s) loaded!")
-        elif load_modules_count > 0:
-            log.info(f"Modules ({load_modules_count}/{sum_modules}) loaded and ready")
+    except KeyboardInterrupt:
+        raise KeyboardInterrupt
+    except (BaseException, Exception) as e:
+        log.critical(f"Failed to start modules: {e}", exc_info=True)
+    load_modules_count = modules.loaded_modules()
+    sum_modules = len(getAllModules())
+    if not load_modules_count:
+        log.warning("No modules started!")
+    elif load_modules_count > 0:
+        log.info(f"Modules ({load_modules_count}/{sum_modules}) "\
+                 "started and ready!")
+    return
+
+def run_client():
+    try:
         log.info("Starting Telegram client")
         with tgclient:
             me = tgclient.loop.run_until_complete(tgclient.get_me())
-            log.info("You're running %s v%s as %s (ID: %s)", PROJECT, VERSION, me.first_name, me.id)
+            log.info(f"You're running {PROJECT} v{VERSION} as "\
+                     f"{me.first_name} (ID: {me.id})")
             tgclient.run_until_disconnected()
     except KeyboardInterrupt:
-        log.info("Keyboard interruption. Exiting...")
-    except Exception as e:
-        log.critical(f"Unable to start HyperUBot: {e}", exc_info=True)
+        raise KeyboardInterrupt
+    except (BaseException, Exception) as e:
+        log.critical(f"Failed to start client properly: {e}",
+                     exc_info=True)
+    return
 
+def shutdown_logging():
     try:
-        # reboot reasons
-        perf_reboot = getConfig("REBOOT", False)
-        start_recovery = getConfig("START_RECOVERY", False)
+        if fhandler:
+            fhandler.close()
+        if shandler:
+            shandler.close()
+        shutdown()
+    except:
+        pass
+    return
+
+def check_reboot():
+    perf_reboot = getConfig("REBOOT", False)
+    start_recovery = getConfig("START_RECOVERY", False)
+    try:
         if perf_reboot or start_recovery:
-            PY_EXEC = executable if not " " in executable else '"' + executable + '"'
+            py_exec = executable if not " " in executable else '"' + executable + '"'
             if perf_reboot:  # preferred if True
                 if getConfig("REBOOT_SAFEMODE"):
                     log.info("Rebooting into safe mode...")
-                    tcmd = [PY_EXEC, "-m", "userbot", "-safemode"]
+                    tcmd = [py_exec, "-m", "userbot", "-safemode"]
                 else:
                     log.info("Performing normal reboot...")
-                    tcmd = [PY_EXEC, "-m", "userbot"]
+                    tcmd = [py_exec, "-m", "userbot"]
             elif start_recovery:
                 commit_id = getConfig("UPDATE_COMMIT_ID")
                 if commit_id:
                     log.info("Starting auto update in recovery...")
-                    tcmd = [PY_EXEC, "recovery.py", "-autoupdate", commit_id]
+                    tcmd = [py_exec, "recovery.py", "-autoupdate", commit_id]
                 else:
                     log.info("Rebooting into recovery...")
-                    tcmd = [PY_EXEC, "recovery.py"]
-            try:
-                if fhandler:
-                    fhandler.close()
-                shutdown()  # shutdown logging
-            except:
-                pass
-            execle(PY_EXEC, *tcmd, environ)
-    except:
-        pass
+                    tcmd = [py_exec, "recovery.py"]
+            shutdown_logging()
+            execle(py_exec, *tcmd, environ)
+    except KeyboardInterrupt:
+        raise KeyboardInterrupt
+    except (BaseException, Exception) as e:
+        if start_recovery:
+            log.critical(f"Failed to reboot HyperUBot into recovery: {e}",
+                         exc_info=True)
+        else:
+            log.critical(f"Failed to reboot HyperUBot: {e}",
+                         exc_info=True)
+    return
 
+def main():
+    start_modules()
+    log.info("HyperUBot is going online")
+    run_client()
+    log.info("HyperUBot is offline")
+    check_reboot()
+    return
+
+if __name__ == "__main__":
     try:
-        if fhandler:
-            fhandler.close()
-        shutdown()
-    except:
-        pass
-
+        main()
+    except KeyboardInterrupt:
+        log.info("Keyboard interruption. Exiting...")
+    except (BaseException, Exception) as e:
+        log.critical(f"HyperUBot has stopped: {e}", exc_info=True)
+        quit(1)
+    finally:
+        shutdown_logging()
     quit()
