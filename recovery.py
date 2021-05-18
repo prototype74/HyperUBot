@@ -369,6 +369,26 @@ class _Restore(_Recovery):
                 f"Failed to list backup directory: {e}", Colors.RED))
         return bk_dict
 
+    def __getListPaths(self, content: bytes) -> list:
+        try:
+            byte_to_str = "".join(map(chr, content))
+        except:
+            return []
+        return byte_to_str.split()
+
+    def __comparePaths(self, zipNamelist: list, list_paths: list) -> bool:
+        zipNamelist_fixed = []
+        for name in zipNamelist:
+            if not name == "list.paths":
+                if name.endswith("/") or name.endswith("\\"):
+                    name = name[:-1]
+                zipNamelist_fixed.append(
+                    os.path.join(".", name.replace("/", "\\") if IS_WINDOWS
+                                 else name))
+        if sorted(zipNamelist_fixed) == sorted(list_paths):
+            return True
+        return False
+
     def restore(self, name: dict):
         if not name:
             print(setColorText("Name empty!", Colors.YELLOW))
@@ -390,12 +410,19 @@ class _Restore(_Recovery):
                        "userbot/__main__.py"]
             bkZIP = ZipFile(bkSource, "r")
             contents = bkZIP.namelist()
+            lpfile = None
+            for name in contents:
+                if name == "list.paths":
+                    lpfile = bkZIP.read(name)
+                    break
+            list_paths = self.__getListPaths(lpfile)
             result = 0
             for name in contents:
                 for uname in userbot:
                     if uname == name:
                         result +=1
-            if not result == len(userbot):
+            if not self.__comparePaths(contents, list_paths) or \
+               not result == len(userbot):
                 print(setColorText(f"{bkSource}: Invalid archive format!",
                                    Colors.RED))
                 return
