@@ -200,10 +200,17 @@ class _Backup(_Recovery):
         try:
             bkName = os.path.join(BACKUP_DIR, bk_name + ".hbotbk")
             print("Generating backup...")
+            paths = open(os.path.join(".", "list.paths"), "w")
+            list_paths = self._list_dirs(".")
+            for name in list_paths:
+                 if not name == os.path.join(".", "list.paths"):
+                     paths.write(f"{name}\n")
+            paths.close()
             with ZipFile(bkName, "w", ZIP_DEFLATED) as bkZIP:
-                for name in self._list_dirs("."):
+                for name in list_paths:
                     bkZIP.write(name)
             bkZIP.close()
+            os.remove(os.path.join(".", "list.paths"))
             print(setColorText("Backup generated successfully.", Colors.GREEN))
         except BadZipFile as bze:
             print(setColorText(
