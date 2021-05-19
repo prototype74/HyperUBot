@@ -460,6 +460,11 @@ class _Updater(_Recovery):
         self.__successful = False
         super().__init__()
 
+    def __find_update_package(self) -> bool:
+        if os.path.exists(UPDATE_PACKAGE):
+            return True
+        return False
+
     def __extract_update_package(self):
         try:
             contents = None
@@ -526,6 +531,10 @@ class _Updater(_Recovery):
         return ignore_paths
 
     def install_update_package(self):
+        if not self.__find_update_package():
+            print(setColorText("Update package not found", Colors.YELLOW))
+            return
+
         self.__extract_update_package()
 
         if self.__id_mismatch:
