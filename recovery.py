@@ -456,23 +456,31 @@ class _Updater(_Recovery):
     def __init__(self, commit_id: str):
         self.__commit_id = commit_id
         self.__package_path = None
-        self.__commit_id_package = None
+        self.__id_mismatch = False
         self.__successful = False
         super().__init__()
 
     def __extract_update_package(self):
         try:
             contents = None
+            root_dir = None
             with ZipFile(UPDATE_PACKAGE, "r") as zipObject:
                 print("Update package found")
                 contents = zipObject.namelist()
+                if contents and len(contents) > 0:
+                    try:
+                        root_dir = contents[0][:-1]
+                        self.__package_path = os.path.join(RELEASE_DIR,
+                                                           root_dir)
+                    except:
+                        pass
+                if not root_dir or \
+                   not root_dir.split("-")[-1] == self.__commit_id:
+                    self.__id_mismatch = True
+                    return
                 print("Extracting update package...")
                 zipObject.extractall(RELEASE_DIR)
             zipObject.close()
-            if contents and len(contents) > 0:
-                root_dir = contents[0][:-1]
-                self.__commit_id_package = root_dir.split("-")[-1]
-                self.__package_path = os.path.join(RELEASE_DIR, root_dir)
         except BadZipFile as bze:
             print(setColorText(
                 f"Bad zip archive: {bze}", Colors.RED))
@@ -520,15 +528,14 @@ class _Updater(_Recovery):
     def install_update_package(self):
         self.__extract_update_package()
 
+        if self.__id_mismatch:
+            print(setColorText("Commit ID mismatch!", Colors.YELLOW))
+            return
+
         if not self.__package_path:
             print(
                 setColorText("Extracted update package not found",
                              Colors.YELLOW))
-            return
-
-        if not self.__commit_id == self.__commit_id_package:
-            print(setColorText("Commit ID mismatch!", Colors.YELLOW))
-            self._remove_extracted_update_package(self.__package_path)
             return
 
         try:
