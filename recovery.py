@@ -767,8 +767,8 @@ def _reinstall_userbot():
     print(f"\nHyperUBot version: {installer.userbot_version()}")
     return
 
-
-if __name__ == "__main__":
+def main():
+    #### INIT
     args = argv
     auto_updater = False
     print("HyperUBot Recovery System")
@@ -785,59 +785,65 @@ if __name__ == "__main__":
             commit_id = args[2]
         except:
             print(setColorText("Commit ID required!", Colors.YELLOW))
-            quit(1)
+            return
         _apply_update(commit_id, auto_updater)
-        quit()
+        return
+
+    #### MAIN
+    while True:
+        print("\nMain Menu")
+        print("[1] Run HyperUBot")
+        print("[2] Run HyperUBot (safe mode)")
+        print("[3] Apply update")
+        print("[4] Backup current version")
+        print("[5] Restore")
+        print("[6] Reinstall HyperUBot")
+        print("[7] Exit\n")
+        num = input("Your input [1-7]: ")
+        if num == "1":
+            recovery.run_userbot()
+            break
+        elif num == "2":
+            recovery.run_userbot(True)
+            break
+        elif num == "3":
+            print("\nMain Menu > Apply update")
+            temp = None
+            try:
+                while True:
+                    temp = input("Commit ID (or 'X' to cancel): ")
+                    if temp:
+                        break
+                    else:
+                        print(
+                            setColorText("Invalid input. Try again",
+                                         Colors.YELLOW))
+            except KeyboardInterrupt:
+                pass
+            if temp and not temp.lower() == "x":
+                _apply_update(temp, auto_updater)
+        elif num == "4":
+            print("\nMain Menu > Backup current version")
+            _create_backup()
+        elif num == "5":
+            print("\nMain Menu > Restore")
+            _restore_backup()
+        elif num == "6":
+            print("\nMain Menu > Reinstall HyperUBot")
+            _reinstall_userbot()
+        elif num == "7":
+            raise KeyboardInterrupt
+        else:
+            print(setColorText("Invalid input!", Colors.YELLOW))
+    return
+
+if __name__ == "__main__":
     try:
-        while True:
-            print("\nMain Menu")
-            print("[1] Run HyperUBot")
-            print("[2] Run HyperUBot (safe mode)")
-            print("[3] Apply update")
-            print("[4] Backup current version")
-            print("[5] Restore")
-            print("[6] Reinstall HyperUBot")
-            print("[7] Exit\n")
-            num = input("Your input [1-7]: ")
-            if num == "1":
-                recovery.run_userbot()
-                break
-            elif num == "2":
-                recovery.run_userbot(True)
-                break
-            elif num == "3":
-                print("\nMain Menu > Apply update")
-                temp = None
-                try:
-                    while True:
-                        temp = input("Commit ID (or 'X' to cancel): ")
-                        if temp:
-                            break
-                        else:
-                            print(
-                                setColorText("Invalid input. Try again",
-                                             Colors.YELLOW))
-                except KeyboardInterrupt:
-                    pass
-                if temp and not temp.lower() == "x":
-                    _apply_update(temp, auto_updater)
-            elif num == "4":
-                print("\nMain Menu > Backup current version")
-                _create_backup()
-            elif num == "5":
-                print("\nMain Menu > Restore")
-                _restore_backup()
-            elif num == "6":
-                print("\nMain Menu > Reinstall HyperUBot")
-                _reinstall_userbot()
-            elif num == "7":
-                raise KeyboardInterrupt
-            else:
-                print(setColorText("Invalid input!", Colors.YELLOW))
+        main()
     except KeyboardInterrupt:
         print("Exiting...")
-    except Exception as e:
+    except (BaseException, Exception) as e:
         print(
-            setColorText(f"Recovery crashed: {e}", Colors.RED_BG))
+            setColorText(f"Recovery has stopped: {e}", Colors.RED_BG))
         quit(1)
     quit()
