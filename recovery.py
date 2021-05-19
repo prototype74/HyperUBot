@@ -374,7 +374,8 @@ class _Restore(_Recovery):
             byte_to_str = "".join(map(chr, content))
         except:
             return []
-        return byte_to_str.split()
+        return [name for name in byte_to_str.split(
+            "\r\n" if IS_WINDOWS else "\n") if name]
 
     def __comparePaths(self, zipNamelist: list, list_paths: list) -> bool:
         zipNamelist_fixed = []
