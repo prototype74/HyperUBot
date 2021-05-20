@@ -654,12 +654,36 @@ class _Updater(_Recovery):
     def getSuccessful(self) -> bool:
         return self.__successful
 
+_option_table = {
+    # status can be 0=ok, 1=warn or 2=error
+    "boot": {"enabled": True, "status": 0},
+    "boot_safe": {"enabled": True, "status": 0},
+    "update": {"enabled": True, "status": 0},
+    "backup": {"enabled": True, "status": 0},
+    "restore": {"enabled": True, "status": 0},
+    "reinstall": {"enabled": True, "status": 0}
+    }
+
+def _get_option(name, val):
+    return _option_table.get(name, {}).get(val)
+
+def _update_option_table(recovery: _Recovery):
+    for key, val in _option_table.items():
+        if not recovery.userbot_installed() and \
+           key in ("boot", "boot_safe", "update", "backup") and \
+           val.get("enabled"):
+            _option_table[key] = {"enabled": False, "status": 2}
+        elif not val.get("enabled") or val.get("status"):  # reset if set
+            _option_table[key] = {"enabled": True, "status": 0}
+    return
+
 def _update_info(recovery: _Recovery, show_version: bool = True):
     print() if show_version or not recovery.userbot_installed() else None
     if show_version:
         print(f"HyperUBot version: {recovery.userbot_version()}")
     if not recovery.userbot_installed():
         print(setColorText("HyperUBot is not installed", Colors.RED))
+    return
 
 def _apply_update(commit_id: str, auto: bool):
     updater = _Updater(commit_id)
@@ -667,6 +691,7 @@ def _apply_update(commit_id: str, auto: bool):
     if auto and updater.getSuccessful():
         updater.run_userbot()
     elif updater.getSuccessful():
+        _update_option_table(updater)
         _update_info(updater)
     return
 
@@ -758,6 +783,7 @@ def _restore_backup():
     except KeyboardInterrupt:
         return
     restore.restore(selected_backup)
+    _update_option_table(restore)
     _update_info(restore)
     return
 
@@ -792,7 +818,56 @@ def _reinstall_userbot():
     if not installer.getInstallationSuccessful():
         print(setColorText("Reinstallation not successful.", Colors.YELLOW))
 
+    _update_option_table(installer)
     _update_info(installer)
+    return
+
+def _print_table():
+    userbot_rb = "[1] Run HyperUBot"
+    userbot_rb_safe = "[2] Run HyperUBot (safe mode)"
+    apply_update = "[3] Apply update"
+    bk_curr_version = "[4] Backup current version"
+    restore = "[5] Restore"
+    userbot_reinstall = "[6] Reinstall HyperUBot"
+
+    if not _get_option("boot", "enabled"):
+        userbot_rb = setColorText(userbot_rb.replace("1", "-"),
+                                  Colors.RED)
+    elif _get_option("boot", "status") == 1:
+        userbot_rb = setColorText(userbot_rb, Colors.YELLOW)
+    if not _get_option("boot_safe", "enabled"):
+        userbot_rb_safe = setColorText(userbot_rb_safe.replace("2", "-"),
+                                       Colors.RED)
+    elif _get_option("boot_safe", "status") == 1:
+        userbot_rb_safe = setColorText(userbot_rb_safe, Colors.YELLOW)
+    if not _get_option("update", "enabled"):
+        apply_update = setColorText(apply_update.replace("3", "-"),
+                                    Colors.RED)
+    elif _get_option("update", "status") == 1:
+        apply_update = setColorText(apply_update, Colors.YELLOW)
+    if not _get_option("backup", "enabled"):
+        bk_curr_version = setColorText(bk_curr_version.replace("4", "-"),
+                                       Colors.RED)
+    elif _get_option("backup", "status") == 1:
+        bk_curr_version = setColorText(bk_curr_version, Colors.YELLOW)
+    if not _get_option("restore", "enabled"):
+        restore = setColorText(restore.replace("5", "-"),
+                               Colors.RED)
+    elif _get_option("restore", "status") == 1:
+        restore = setColorText(restore, Colors.YELLOW)
+    if not _get_option("reinstall", "enabled"):
+        userbot_reinstall = setColorText(userbot_reinstall.replace("6", "-"),
+                                         Colors.RED)
+    elif _get_option("reinstall", "status") == 1:
+        userbot_reinstall = setColorText(userbot_reinstall, Colors.YELLOW)
+
+    print(userbot_rb)
+    print(userbot_rb_safe)
+    print(apply_update)
+    print(bk_curr_version)
+    print(restore)
+    print(userbot_reinstall)
+    print("[7] Exit\n")
     return
 
 def main():
@@ -817,27 +892,22 @@ def main():
         _apply_update(commit_id, auto_updater)
         return
 
+    _update_option_table(recovery)
     _update_info(recovery, False)
 
     #### MAIN
     while True:
         print()
         print("Main Menu")
-        print("[1] Run HyperUBot")
-        print("[2] Run HyperUBot (safe mode)")
-        print("[3] Apply update")
-        print("[4] Backup current version")
-        print("[5] Restore")
-        print("[6] Reinstall HyperUBot")
-        print("[7] Exit\n")
+        _print_table()
         num = input("Your input [1-7]: ")
-        if num == "1":
+        if num == "1" and _get_option("boot", "enabled"):
             recovery.run_userbot()
             break
-        elif num == "2":
+        elif num == "2" and _get_option("boot_safe", "enabled"):
             recovery.run_userbot(True)
             break
-        elif num == "3":
+        elif num == "3" and _get_option("update", "enabled"):
             print()
             print("Main Menu > Apply update")
             temp = None
@@ -854,15 +924,15 @@ def main():
                 pass
             if temp and not temp.lower() == "x":
                 _apply_update(temp, auto_updater)
-        elif num == "4":
+        elif num == "4" and _get_option("backup", "enabled"):
             print()
             print("Main Menu > Backup current version")
             _create_backup()
-        elif num == "5":
+        elif num == "5" and _get_option("restore", "enabled"):
             print()
             print("Main Menu > Restore")
             _restore_backup()
-        elif num == "6":
+        elif num == "6" and _get_option("reinstall", "enabled"):
             print()
             print("Main Menu > Reinstall HyperUBot")
             _reinstall_userbot()
