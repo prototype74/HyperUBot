@@ -75,6 +75,13 @@ class _Recovery:
                 f"Failed to run HyperUBot: {e}", Colors.RED))
         return
 
+    def userbot_installed(self) -> bool:
+        if os.path.exists(os.path.join(".", "userbot")) and \
+           os.path.exists(os.path.join(".", "userbot", "__init__.py")) and \
+           os.path.exists(os.path.join(".", "userbot", "__main__.py")):
+            return True
+        return False
+
     def _list_dirs(self, source: str, ignore: list = []) -> list:
         do_not_list = [BACKUP_DIR, RELEASE_DIR]
         listed_dirs = []
@@ -157,12 +164,12 @@ class _Recovery:
         except Exception as e:
             print(
                 setColorText("Failed to remove extracted update package",
-                             Color.RED))
+                             Colors.RED))
         return
 
     def userbot_version(self) -> str:
         ver_py = os.path.join(".", "userbot", "version.py")
-        version = "Unknown"
+        version = setColorText("Unknown", Colors.YELLOW)
         try:
             with open(ver_py, "r") as script:
                 for line in script.readlines():
@@ -647,19 +654,25 @@ class _Updater(_Recovery):
     def getSuccessful(self) -> bool:
         return self.__successful
 
+def _update_info(recovery: _Recovery, show_version: bool = True):
+    print() if show_version or not recovery.userbot_installed() else None
+    if show_version:
+        print(f"HyperUBot version: {recovery.userbot_version()}")
+    if not recovery.userbot_installed():
+        print(setColorText("HyperUBot is not installed", Colors.RED))
+
 def _apply_update(commit_id: str, auto: bool):
     updater = _Updater(commit_id)
     updater.install_update_package()
     if auto and updater.getSuccessful():
         updater.run_userbot()
     elif updater.getSuccessful():
-        print(f"\nHyperUBot version: {updater.userbot_version()}")
+        _update_info(updater)
     return
 
 def _create_backup():
-    if not os.path.exists(os.path.join(".", "userbot")) or \
-       not os.path.exists(os.path.join(".", "userbot", "__init__.py")) or \
-       not os.path.exists(os.path.join(".", "userbot", "__main__.py")):
+    backup = _Backup()
+    if not backup.userbot_installed():
        print(setColorText("Failed to backup current version: "\
                           "HyperUBot not installed",
                           Colors.RED))
@@ -679,7 +692,6 @@ def _create_backup():
                                  Colors.YELLOW))
     except KeyboardInterrupt:
         return
-    backup = _Backup()
     bkName = "HyperUBot-" + backup.userbot_version()
     if backup.backup_exists(bkName):
         try:
@@ -746,7 +758,7 @@ def _restore_backup():
     except KeyboardInterrupt:
         return
     restore.restore(selected_backup)
-    print(f"\nHyperUBot version: {restore.userbot_version()}")
+    _update_info(restore)
     return
 
 def _reinstall_userbot():
@@ -780,7 +792,7 @@ def _reinstall_userbot():
     if not installer.getInstallationSuccessful():
         print(setColorText("Reinstallation not successful.", Colors.YELLOW))
 
-    print(f"\nHyperUBot version: {installer.userbot_version()}")
+    _update_info(installer)
     return
 
 def main():
@@ -805,9 +817,12 @@ def main():
         _apply_update(commit_id, auto_updater)
         return
 
+    _update_info(recovery, False)
+
     #### MAIN
     while True:
-        print("\nMain Menu")
+        print()
+        print("Main Menu")
         print("[1] Run HyperUBot")
         print("[2] Run HyperUBot (safe mode)")
         print("[3] Apply update")
@@ -823,7 +838,8 @@ def main():
             recovery.run_userbot(True)
             break
         elif num == "3":
-            print("\nMain Menu > Apply update")
+            print()
+            print("Main Menu > Apply update")
             temp = None
             try:
                 while True:
@@ -839,13 +855,16 @@ def main():
             if temp and not temp.lower() == "x":
                 _apply_update(temp, auto_updater)
         elif num == "4":
-            print("\nMain Menu > Backup current version")
+            print()
+            print("Main Menu > Backup current version")
             _create_backup()
         elif num == "5":
-            print("\nMain Menu > Restore")
+            print()
+            print("Main Menu > Restore")
             _restore_backup()
         elif num == "6":
-            print("\nMain Menu > Reinstall HyperUBot")
+            print()
+            print("Main Menu > Reinstall HyperUBot")
             _reinstall_userbot()
         elif num == "7":
             raise KeyboardInterrupt
