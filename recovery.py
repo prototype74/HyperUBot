@@ -58,7 +58,7 @@ class Colors:
 def setColorText(text: str, color: Colors) -> str:
     if IS_WINDOWS and not WIN_COLOR_ENABLED:
         return text  # don't use ANSI codes
-    return color + text + Colors.END
+    return f"{color}{text}{Colors.END}"
 
 class _Recovery:
     def __init__(self):
