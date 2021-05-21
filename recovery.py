@@ -698,8 +698,23 @@ def _update_info(recovery: _Recovery, show_version: bool = True):
         print(setColorText("HyperUBot is not installed", Colors.RED))
     return
 
-def _apply_update(commit_id: str, auto: bool):
-    updater = _Updater(commit_id)
+def _apply_update(auto: bool, commit_id = None):
+    cid = commit_id
+    if not auto:
+        try:
+            while True:
+                cid = input("Commit ID (or 'X' to cancel): ")
+                if cid:
+                    break
+                else:
+                    print(
+                        setColorText("Invalid input. Try again",
+                                     Colors.YELLOW))
+        except KeyboardInterrupt:
+            pass
+        if cid.lower() == "x":
+            return
+    updater = _Updater(cid)
     updater.install_update_package()
     if auto and updater.getSuccessful():
         updater.run_userbot()
@@ -866,7 +881,7 @@ def main():
         except:
             print(setColorText("Commit ID required!", Colors.YELLOW))
             return
-        _apply_update(commit_id, auto_updater)
+        _apply_update(True, commit_id)
         return
 
     _update_option_table(recovery)
@@ -877,6 +892,7 @@ def main():
         print()
         print("Main Menu")
         _print_table()
+        print()
         num = input("Your input [1-7]: ")
         if num == "1" and _get_option("boot", "enabled"):
             recovery.run_userbot()
@@ -887,20 +903,7 @@ def main():
         elif num == "3" and _get_option("update", "enabled"):
             print()
             print("Main Menu > Apply update")
-            temp = None
-            try:
-                while True:
-                    temp = input("Commit ID (or 'X' to cancel): ")
-                    if temp:
-                        break
-                    else:
-                        print(
-                            setColorText("Invalid input. Try again",
-                                         Colors.YELLOW))
-            except KeyboardInterrupt:
-                pass
-            if temp and not temp.lower() == "x":
-                _apply_update(temp, auto_updater)
+            _apply_update(False)
         elif num == "4" and _get_option("backup", "enabled"):
             print()
             print("Main Menu > Backup current version")
