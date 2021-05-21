@@ -681,13 +681,11 @@ def _update_option_table(recovery: _Recovery):
         if not recovery.userbot_installed() and \
            key in ("boot", "boot_safe", "update", "backup") and \
            val.get("enabled"):
-            _option_table[key] = {"enabled": False, "status": 2,
-                                  "num": val.get("num"),
-                                  "name": val.get("name")}
+            _option_table[key]["enabled"] = False
+            _option_table[key]["status"] = 2
         elif not val.get("enabled") or val.get("status"):  # reset if set
-            _option_table[key] = {"enabled": True, "status": 0,
-                                  "num": val.get("num"),
-                                  "name": val.get("name")}
+            _option_table[key]["enabled"] = True
+            _option_table[key]["status"] = 0
     return
 
 def _update_info(recovery: _Recovery, show_version: bool = True):
