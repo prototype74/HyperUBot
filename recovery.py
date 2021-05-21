@@ -48,6 +48,7 @@ class Colors:
     GREEN = "\033[92m"
     RED = "\033[91m"
     YELLOW = "\033[93m"
+    GRAY = "\033[90m"
     CYAN_BG = "\033[46m"
     GREEN_BG = "\033[102m"
     RED_BG = "\033[101m"
