@@ -855,7 +855,7 @@ def _print_table():
         num = _get_option(key, "num")
         name = _get_option(key, "name")
         if not _get_option(key, "enabled"):
-            print(setColorText(f"[-] {name}", Colors.RED))
+            print(setColorText(f"[-] {name}", Colors.GRAY))
         elif _get_option(key, "status") == 1:
             print(setColorText(f"[{num}] {name}", Colors.YELLOW))
         else:
