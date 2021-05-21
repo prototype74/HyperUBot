@@ -657,12 +657,20 @@ class _Updater(_Recovery):
 
 _option_table = {
     # status can be 0=ok, 1=warn or 2=error
-    "boot": {"enabled": True, "status": 0},
-    "boot_safe": {"enabled": True, "status": 0},
-    "update": {"enabled": True, "status": 0},
-    "backup": {"enabled": True, "status": 0},
-    "restore": {"enabled": True, "status": 0},
-    "reinstall": {"enabled": True, "status": 0}
+    "boot":      {"enabled": True, "status": 0, "num": "1",
+                  "name": "Run HyperUBot"},
+    "boot_safe": {"enabled": True, "status": 0, "num": "2",
+                  "name": "Run HyperUBot (safe mode)"},
+    "update":    {"enabled": True, "status": 0, "num": "3",
+                  "name": "Apply update"},
+    "backup":    {"enabled": True, "status": 0, "num": "4",
+                  "name": "Backup current version"},
+    "restore":   {"enabled": True, "status": 0, "num": "5",
+                  "name": "Restore"},
+    "reinstall": {"enabled": True, "status": 0, "num": "6",
+                  "name": "Reinstall HyperUBot"},
+    "terminate": {"enabled": True, "status": 0, "num": "7",
+                  "name": "Exit"}
     }
 
 def _get_option(name, val):
@@ -673,9 +681,13 @@ def _update_option_table(recovery: _Recovery):
         if not recovery.userbot_installed() and \
            key in ("boot", "boot_safe", "update", "backup") and \
            val.get("enabled"):
-            _option_table[key] = {"enabled": False, "status": 2}
+            _option_table[key] = {"enabled": False, "status": 2,
+                                  "num": val.get("num"),
+                                  "name": val.get("name")}
         elif not val.get("enabled") or val.get("status"):  # reset if set
-            _option_table[key] = {"enabled": True, "status": 0}
+            _option_table[key] = {"enabled": True, "status": 0,
+                                  "num": val.get("num"),
+                                  "name": val.get("name")}
     return
 
 def _update_info(recovery: _Recovery, show_version: bool = True):
@@ -824,51 +836,15 @@ def _reinstall_userbot():
     return
 
 def _print_table():
-    userbot_rb = "[1] Run HyperUBot"
-    userbot_rb_safe = "[2] Run HyperUBot (safe mode)"
-    apply_update = "[3] Apply update"
-    bk_curr_version = "[4] Backup current version"
-    restore = "[5] Restore"
-    userbot_reinstall = "[6] Reinstall HyperUBot"
-
-    if not _get_option("boot", "enabled"):
-        userbot_rb = setColorText(userbot_rb.replace("1", "-"),
-                                  Colors.RED)
-    elif _get_option("boot", "status") == 1:
-        userbot_rb = setColorText(userbot_rb, Colors.YELLOW)
-    if not _get_option("boot_safe", "enabled"):
-        userbot_rb_safe = setColorText(userbot_rb_safe.replace("2", "-"),
-                                       Colors.RED)
-    elif _get_option("boot_safe", "status") == 1:
-        userbot_rb_safe = setColorText(userbot_rb_safe, Colors.YELLOW)
-    if not _get_option("update", "enabled"):
-        apply_update = setColorText(apply_update.replace("3", "-"),
-                                    Colors.RED)
-    elif _get_option("update", "status") == 1:
-        apply_update = setColorText(apply_update, Colors.YELLOW)
-    if not _get_option("backup", "enabled"):
-        bk_curr_version = setColorText(bk_curr_version.replace("4", "-"),
-                                       Colors.RED)
-    elif _get_option("backup", "status") == 1:
-        bk_curr_version = setColorText(bk_curr_version, Colors.YELLOW)
-    if not _get_option("restore", "enabled"):
-        restore = setColorText(restore.replace("5", "-"),
-                               Colors.RED)
-    elif _get_option("restore", "status") == 1:
-        restore = setColorText(restore, Colors.YELLOW)
-    if not _get_option("reinstall", "enabled"):
-        userbot_reinstall = setColorText(userbot_reinstall.replace("6", "-"),
-                                         Colors.RED)
-    elif _get_option("reinstall", "status") == 1:
-        userbot_reinstall = setColorText(userbot_reinstall, Colors.YELLOW)
-
-    print(userbot_rb)
-    print(userbot_rb_safe)
-    print(apply_update)
-    print(bk_curr_version)
-    print(restore)
-    print(userbot_reinstall)
-    print("[7] Exit\n")
+    for key in _option_table.keys():
+        num = _get_option(key, "num")
+        name = _get_option(key, "name")
+        if not _get_option(key, "enabled"):
+            print(setColorText(f"[-] {name}", Colors.RED))
+        elif _get_option(key, "status") == 1:
+            print(setColorText(f"[{num}] {name}", Colors.YELLOW))
+        else:
+            print(f"[{num}] {name}")
     return
 
 def main():
