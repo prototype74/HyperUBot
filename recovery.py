@@ -25,6 +25,7 @@ from urllib.request import urlopen, urlretrieve
 from zipfile import BadZipFile, LargeZipFile, ZipFile, ZIP_DEFLATED
 import os
 
+RECOVERY_NAME = os.path.basename(__file__)
 VERSION = "1.1.0"
 BACKUP_DIR = os.path.join(".", "backup")
 GITIGNORE = os.path.join(".", ".gitignore")
@@ -572,7 +573,7 @@ class _Updater(_Recovery):
                          os.path.join(".", "userbot", "modules_user"),
                          os.path.join(".", "userbot", "config.env"),
                          os.path.join(".", "userbot", "config.py"),
-                         os.path.join(".", "recovery.py")]
+                         os.path.join(".", RECOVERY_NAME)]
         for name in self._fix_paths(["__pycache__/*"]):
             always_ignore.append(name)
         parse_gitignore = rules.PARSE_GITIGNORE \
@@ -946,7 +947,6 @@ def main():
 
     #### MAIN
     _menues(recovery)
-
     return
 
 if __name__ == "__main__":
