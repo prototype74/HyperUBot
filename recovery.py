@@ -731,10 +731,17 @@ def _apply_update(auto: bool, commit_id = None):
     updater = _Updater(cid)
     updater.install_update_package()
     if auto and updater.getSuccessful():
+        print("Booting HyperUBot...")
         updater.run_userbot()
     elif updater.getSuccessful():
         _update_option_table(updater)
         _update_info(updater)
+    else:
+        print(setColorText("Update failed", Colors.RED_BG))
+        print(setColorText("Important data might be lost. "\
+                           "Please restore a backup if available or "\
+                           "reinstall HyperUBot!",
+                           Colors.RED))
     return
 
 def _create_backup():
