@@ -657,20 +657,41 @@ class _Updater(_Recovery):
 
 _option_table = {
     # status can be 0=ok, 1=warn or 2=error
-    "boot":      {"enabled": True, "status": 0, "num": "1",
-                  "name": "Run HyperUBot"},
-    "boot_safe": {"enabled": True, "status": 0, "num": "2",
-                  "name": "Run HyperUBot (safe mode)"},
-    "update":    {"enabled": True, "status": 0, "num": "3",
-                  "name": "Apply update"},
-    "backup":    {"enabled": True, "status": 0, "num": "4",
-                  "name": "Backup current version"},
-    "restore":   {"enabled": True, "status": 0, "num": "5",
-                  "name": "Restore"},
-    "reinstall": {"enabled": True, "status": 0, "num": "6",
-                  "name": "Reinstall HyperUBot"},
-    "terminate": {"enabled": True, "status": 0, "num": "7",
-                  "name": "Exit"}
+    "boot":      {"enabled": True,
+                  "status": 0,
+                  "num": "1",
+                  "name": "Run HyperUBot",
+                  "func": (lambda r: r.run_userbot())},
+    "boot_safe": {"enabled": True,
+                  "status": 0,
+                  "num": "2",
+                  "name": "Run HyperUBot (safe mode)",
+                  "func": (lambda r: r.run_userbot(True))},
+    "update":    {"enabled": True,
+                  "status": 0,
+                  "num": "3",
+                  "name": "Apply update",
+                  "func": (lambda: _apply_update(False))},
+    "backup":    {"enabled": True,
+                  "status": 0,
+                  "num": "4",
+                  "name": "Backup current version",
+                  "func": (lambda: _create_backup())},
+    "restore":   {"enabled": True,
+                  "status": 0,
+                  "num": "5",
+                  "name": "Restore",
+                  "func": (lambda: _restore_backup())},
+    "reinstall": {"enabled": True,
+                  "status": 0,
+                  "num": "6",
+                  "name": "Reinstall HyperUBot",
+                  "func": (lambda: _reinstall_userbot())},
+    "terminate": {"enabled": True,
+                  "status": 0,
+                  "num": "7",
+                  "name": "Exit",
+                  "func": "X"}
     }
 
 def _get_option(name, val):
@@ -860,6 +881,32 @@ def _print_table():
             print(f"[{num}] {name}")
     return
 
+def _menues(recovery: _Recovery):
+    while True:
+        print()
+        print("Main Menu")
+        _print_table()
+        print()
+        num = input("Your input [1-7]: ")
+        for key in _option_table.keys():
+            if num == _get_option(key, "num") and \
+               _get_option(key, "enabled"):
+                if key in ("reboot", "reboot_safe"):
+                    _get_option(key, "func")(recovery)
+                    return  # leave menu
+                else:
+                    func = _get_option(key, "func")
+                    if callable(func):
+                        opt_name = _get_option(key, "name")
+                        print(f"\nMain Menu > {opt_name}")
+                        func()
+                    elif func.lower() == "x":
+                        raise KeyboardInterrupt
+                break
+        else:
+            print(setColorText("Invalid input!", Colors.YELLOW))
+    return
+
 def main():
     #### INIT
     args = argv
@@ -886,38 +933,8 @@ def main():
     _update_info(recovery, False)
 
     #### MAIN
-    while True:
-        print()
-        print("Main Menu")
-        _print_table()
-        print()
-        num = input("Your input [1-7]: ")
-        if num == "1" and _get_option("boot", "enabled"):
-            recovery.run_userbot()
-            break
-        elif num == "2" and _get_option("boot_safe", "enabled"):
-            recovery.run_userbot(True)
-            break
-        elif num == "3" and _get_option("update", "enabled"):
-            print()
-            print("Main Menu > Apply update")
-            _apply_update(False)
-        elif num == "4" and _get_option("backup", "enabled"):
-            print()
-            print("Main Menu > Backup current version")
-            _create_backup()
-        elif num == "5" and _get_option("restore", "enabled"):
-            print()
-            print("Main Menu > Restore")
-            _restore_backup()
-        elif num == "6" and _get_option("reinstall", "enabled"):
-            print()
-            print("Main Menu > Reinstall HyperUBot")
-            _reinstall_userbot()
-        elif num == "7":
-            raise KeyboardInterrupt
-        else:
-            print(setColorText("Invalid input!", Colors.YELLOW))
+    _menues(recovery)
+
     return
 
 if __name__ == "__main__":
