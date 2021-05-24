@@ -659,37 +659,30 @@ _option_table = {
     # status can be 0=ok, 1=warn or 2=error
     "boot":      {"enabled": True,
                   "status": 0,
-                  "num": "1",
                   "name": "Run HyperUBot",
                   "func": (lambda r: r.run_userbot())},
     "boot_safe": {"enabled": True,
                   "status": 0,
-                  "num": "2",
                   "name": "Run HyperUBot (safe mode)",
                   "func": (lambda r: r.run_userbot(True))},
     "update":    {"enabled": True,
                   "status": 0,
-                  "num": "3",
                   "name": "Apply update",
                   "func": (lambda: _apply_update(False))},
     "backup":    {"enabled": True,
                   "status": 0,
-                  "num": "4",
                   "name": "Backup current version",
                   "func": (lambda: _create_backup())},
     "restore":   {"enabled": True,
                   "status": 0,
-                  "num": "5",
                   "name": "Restore",
                   "func": (lambda: _restore_backup())},
     "reinstall": {"enabled": True,
                   "status": 0,
-                  "num": "6",
                   "name": "Reinstall HyperUBot",
                   "func": (lambda: _reinstall_userbot())},
     "terminate": {"enabled": True,
                   "status": 0,
-                  "num": "7",
                   "name": "Exit",
                   "func": "X"}
     }
@@ -698,7 +691,7 @@ def _get_option(name, val):
     return _option_table.get(name, {}).get(val)
 
 def _update_option_table(recovery: _Recovery):
-    for key, val in _option_table.items():
+    for i, (key, val) in enumerate(_option_table.items(), start=1):
         if not recovery.userbot_installed() and \
            key in ("boot", "boot_safe", "update", "backup") and \
            val.get("enabled"):
@@ -707,6 +700,8 @@ def _update_option_table(recovery: _Recovery):
         elif not val.get("enabled") or val.get("status"):  # reset if set
             _option_table[key]["enabled"] = True
             _option_table[key]["status"] = 0
+        if not val.get("num"):
+            _option_table[key]["num"] = str(i)
     return
 
 def _update_info(recovery: _Recovery, show_version: bool = True):
