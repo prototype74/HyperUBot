@@ -319,7 +319,8 @@ class _Installer(_Recovery):
 
         try:
             print("Removing current environment...")
-            self._remove(self._list_dirs("."))
+            self._remove(self._list_dirs("."),
+                         [os.path.join(".", RECOVERY_NAME)])
         except Exception as e:
             print(
                 setColorText(f"Failed to remove old environment: {e}",
@@ -439,7 +440,8 @@ class _Restore(_Recovery):
 
             try:
                 print("Removing current environment...")
-                self._remove(self._list_dirs("."))
+                self._remove(self._list_dirs("."),
+                             [os.path.join(".", RECOVERY_NAME)])
             except Exception as e:
                 print(
                     setColorText(f"Failed to remove current environment: {e}",
