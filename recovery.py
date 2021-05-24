@@ -882,7 +882,17 @@ def _menues(recovery: _Recovery):
         print("Main Menu")
         _print_table()
         print()
-        num = input("Your input [1-7]: ")
+        opt_length = len(_option_table)
+        if opt_length >= 1:
+            opt_min = list(_option_table.items())[0][-1].get("num")
+            if opt_length == 1:
+                num = input(f"Your input [{opt_min}]: ")
+            else:
+                opt_max = list(_option_table.items())[-1][-1].get("num")
+                num = input(f"Your input [{opt_min}-{opt_max}]: ")
+        else:
+            print(setColorText("No options available!", Colors.RED))
+            return
         for key in _option_table.keys():
             if num == _get_option(key, "num") and \
                _get_option(key, "enabled"):
