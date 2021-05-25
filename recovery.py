@@ -19,7 +19,7 @@ from glob import glob
 from json import loads
 from platform import system
 from shutil import copytree, rmtree
-from subprocess import check_call
+from subprocess import check_call, DEVNULL
 from sys import argv, executable, platform
 from urllib.request import urlopen, urlretrieve
 from zipfile import BadZipFile, LargeZipFile, ZipFile, ZIP_DEFLATED
@@ -28,6 +28,7 @@ import os
 RECOVERY_NAME = os.path.basename(__file__)
 VERSION = "1.1.0"
 BACKUP_DIR = os.path.join(".", "backup")
+GIT = os.path.join(".", ".git")
 GITIGNORE = os.path.join(".", ".gitignore")
 RELEASE_DIR = os.path.join(".", "releases")
 UPDATE_PACKAGE = os.path.join(RELEASE_DIR, "update.zip")
@@ -187,6 +188,16 @@ class _Recovery:
         except:
             pass
         return version
+
+    def detect_git(self) -> int:
+        try:
+            check_call(["git", "branch"], stderr=DEVNULL, stdout=DEVNULL)
+            return 2
+        except:
+            pass
+        if os.path.exists(GIT) and os.path.isdir(GIT):
+            return 1
+        return 0
 
 class _Backup(_Recovery):
     def __init__(self):
@@ -694,25 +705,42 @@ def _get_option(name, val):
     return _option_table.get(name, {}).get(val)
 
 def _update_option_table(recovery: _Recovery):
+    bot_installed = recovery.userbot_installed()
+    is_git_repo = recovery.detect_git()
     for i, (key, val) in enumerate(_option_table.items(), start=1):
-        if not recovery.userbot_installed() and \
-           key in ("boot", "boot_safe", "update", "backup"):
-            if val.get("enabled"):
-                _option_table[key]["enabled"] = False
-                _option_table[key]["status"] = 2
-        elif not val.get("enabled") or val.get("status"):  # reset if set
-            _option_table[key]["enabled"] = True
-            _option_table[key]["status"] = 0
+        if key in ("boot", "boot_safe", "update", "backup"):
+            if not bot_installed:
+                if val.get("enabled"):
+                    _option_table[key]["enabled"] = False
+                    _option_table[key]["status"] = 2
+            elif not val.get("enabled"):  # reset error
+                _option_table[key]["enabled"] = True
+                _option_table[key]["status"] = 0
+        if key in ("update", "backup", "restore", "reinstall"):
+            # status 2 is preferred
+            if is_git_repo and not val.get("status") == 2:
+                _option_table[key]["status"] = 1
+            elif val.get("status") and \
+                 not val.get("status") == 2:  # reset warning
+                _option_table[key]["status"] = 0
         if not val.get("num"):
             _option_table[key]["num"] = str(i)
     return
 
 def _update_info(recovery: _Recovery, show_version: bool = True):
-    print() if show_version or not recovery.userbot_installed() else None
+    bot_installed = recovery.userbot_installed()
+    git_type = recovery.detect_git()
+    print() if show_version or not bot_installed or git_type else None
     if show_version:
         print(f"HyperUBot version: {recovery.userbot_version()}")
-    if not recovery.userbot_installed():
+    if not bot_installed:
         print(setColorText("HyperUBot is not installed", Colors.RED))
+    if git_type == 2:
+        print(setColorText("Directory is a local git repository",
+                           Colors.YELLOW))
+    elif git_type == 1:
+        print(setColorText("Directory might be git initialized",
+                           Colors.YELLOW))
     return
 
 _modified = False  # in case of modifications
