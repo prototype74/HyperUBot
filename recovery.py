@@ -191,7 +191,8 @@ class _Recovery:
 
     def detect_git(self) -> int:
         try:
-            check_call(["git", "branch"], stderr=DEVNULL, stdout=DEVNULL)
+            check_call(["git", "rev-parse", "--git-dir"],
+                       stderr=DEVNULL, stdout=DEVNULL)
             return 2
         except:
             pass
