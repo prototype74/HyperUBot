@@ -716,7 +716,7 @@ def _update_option_table(recovery: _Recovery):
             elif not val.get("enabled"):  # reset error
                 _option_table[key]["enabled"] = True
                 _option_table[key]["status"] = 0
-        if key in ("update", "backup", "restore", "reinstall"):
+        if key in ("update", "restore", "reinstall"):
             # status 2 is preferred
             if is_git_repo and not val.get("status") == 2:
                 _option_table[key]["status"] = 1
