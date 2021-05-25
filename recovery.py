@@ -86,7 +86,7 @@ class _Recovery:
         return False
 
     def _list_dirs(self, source: str, ignore: list = []) -> list:
-        do_not_list = [BACKUP_DIR, RELEASE_DIR]
+        do_not_list = [BACKUP_DIR, RELEASE_DIR, GIT]
         listed_dirs = []
         if ignore:
             for element in ignore:
