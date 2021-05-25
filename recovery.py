@@ -696,10 +696,10 @@ def _get_option(name, val):
 def _update_option_table(recovery: _Recovery):
     for i, (key, val) in enumerate(_option_table.items(), start=1):
         if not recovery.userbot_installed() and \
-           key in ("boot", "boot_safe", "update", "backup") and \
-           val.get("enabled"):
-            _option_table[key]["enabled"] = False
-            _option_table[key]["status"] = 2
+           key in ("boot", "boot_safe", "update", "backup"):
+            if val.get("enabled"):
+                _option_table[key]["enabled"] = False
+                _option_table[key]["status"] = 2
         elif not val.get("enabled") or val.get("status"):  # reset if set
             _option_table[key]["enabled"] = True
             _option_table[key]["status"] = 0
@@ -715,6 +715,7 @@ def _update_info(recovery: _Recovery, show_version: bool = True):
         print(setColorText("HyperUBot is not installed", Colors.RED))
     return
 
+_modified = False  # in case of modifications
 def _apply_update(auto: bool, commit_id = None):
     cid = commit_id
     if not auto:
@@ -737,8 +738,8 @@ def _apply_update(auto: bool, commit_id = None):
         print("Booting HyperUBot...")
         updater.run_userbot()
     elif updater.getSuccessful():
-        _update_option_table(updater)
-        _update_info(updater)
+        global _modified
+        _modified = True
     else:
         print(setColorText("Update failed", Colors.RED_BG))
         print(setColorText("Important data might be lost. "\
@@ -835,8 +836,8 @@ def _restore_backup():
     except KeyboardInterrupt:
         return
     restore.restore(selected_backup)
-    _update_option_table(restore)
-    _update_info(restore)
+    global _modified
+    _modified = True
     return
 
 def _reinstall_userbot():
@@ -870,8 +871,8 @@ def _reinstall_userbot():
     if not installer.getInstallationSuccessful():
         print(setColorText("Reinstallation not successful.", Colors.YELLOW))
 
-    _update_option_table(installer)
-    _update_info(installer)
+    global _modified
+    _modified = True
     return
 
 def _print_table():
@@ -888,6 +889,12 @@ def _print_table():
 
 def _menues(recovery: _Recovery):
     while True:
+        #### update table
+        global _modified
+        _update_option_table(recovery)
+        _update_info(recovery, _modified)
+        _modified = False
+        #################
         print()
         print("Main Menu")
         _print_table()
@@ -943,9 +950,6 @@ def main():
             return
         _apply_update(True, commit_id)
         return
-
-    _update_option_table(recovery)
-    _update_info(recovery, False)
 
     #### MAIN
     _menues(recovery)
