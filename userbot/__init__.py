@@ -28,11 +28,11 @@ try:
 except:
     pass
 log = getLogger(__name__)
-fhandler = FileHandler(LOGFILE)
-fhandler.setFormatter(LogFileFormatter())
-shandler = StreamHandler()
-shandler.setFormatter(LogColorFormatter())
-basicConfig(handlers=[fhandler, shandler], level=INFO)
+_fhandler = FileHandler(LOGFILE)
+_fhandler.setFormatter(LogFileFormatter())
+_shandler = StreamHandler()
+_shandler.setFormatter(LogColorFormatter())
+basicConfig(handlers=[_fhandler, _shandler], level=INFO)
 
 PROJECT = "HyperUBot"
 OS = os_name()  # Current Operating System [DEPRECATED]
@@ -45,20 +45,20 @@ if len(argv) >= 2:
 
 try:
     if path.exists(LOGFILE):
-        sys_string = "======= SYS INFO\n\n"
-        sys_string += "Project: {}\n".format(PROJECT)
-        sys_string += "Version: {}\n".format(hubot_version)
-        sys_string += "Safe mode: {}\n".format("On" if SAFEMODE else "Off")
-        sys_string += "Operating System: {}\n".format(os_name())
-        sys_string += "Platform: {}\n".format(platform())
-        sys_string += "Machine: {}\n".format(machine())
-        sys_string += "Processor: {}\n".format(processor())
-        sys_string += "Python: v{}.{}.{}\n".format(version_info.major, version_info.minor, version_info.micro)
-        sys_string += "Telethon: v{}\n\n".format(version.__version__)
-        sys_string += "======= TERMINAL LOGGING\n\n"
-        file = open(LOGFILE, "w")
-        file.write(sys_string)
-        file.close()
+        _sys_string = "======= SYS INFO\n\n"
+        _sys_string += "Project: {}\n".format(PROJECT)
+        _sys_string += "Version: {}\n".format(hubot_version)
+        _sys_string += "Safe mode: {}\n".format("On" if SAFEMODE else "Off")
+        _sys_string += "Operating System: {}\n".format(os_name())
+        _sys_string += "Platform: {}\n".format(platform())
+        _sys_string += "Machine: {}\n".format(machine())
+        _sys_string += "Processor: {}\n".format(processor())
+        _sys_string += "Python: v{}.{}.{}\n".format(version_info.major, version_info.minor, version_info.micro)
+        _sys_string += "Telethon: v{}\n\n".format(version.__version__)
+        _sys_string += "======= TERMINAL LOGGING\n\n"
+        _file = open(LOGFILE, "w")
+        _file.write(_sys_string)
+        _file.close()
 except Exception as e:
     log.warning("Unable to write system information into log: {}".format(e))
 
@@ -82,9 +82,9 @@ else:
 
 if path.exists(path.join(".", "userbot", "config.env")):
     from userbot.include.aux_funcs import strlist_to_list, str_to_bool
-    len_before = len(environ.items())
+    _len_before = len(environ.items())
     load_dotenv(path.join(".", "userbot", "config.env"))
-    loaded_env = {key: value for key, value in list(environ.items())[len_before:]}
+    loaded_env = {key: value for key, value in list(environ.items())[_len_before:]}
     if not SAFEMODE:
         for key, value in loaded_env.items():
             if not key in ("API_KEY", "API_HASH", "STRING_SESSION"):
@@ -132,9 +132,9 @@ else:
     try:
         log.warning("Couldn't find a config file in \"userbot\" directory. "\
                     "Starting Setup Assistant...")
-        PY_EXEC = executable if not " " in executable else '"' + executable + '"'
-        tcmd = [PY_EXEC, "setup.py"]
-        execle(PY_EXEC, *tcmd, environ)
+        _PY_EXEC = executable if not " " in executable else '"' + executable + '"'
+        _tcmd = [_PY_EXEC, "setup.py"]
+        execle(_PY_EXEC, *_tcmd, environ)
     except Exception as e:
         log.warning(f"Failed to start Setup Assistant: {e}", exc_info=True)
         log.error("Couldn't find a config file in \"userbot\" directory. "\
