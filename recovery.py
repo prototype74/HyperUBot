@@ -461,7 +461,8 @@ class _Restore(_Recovery):
                 return
 
             print("Restoring backup archive...")
-            bkZIP.extractall(".")
+            bkZIP.extractall(path=".", members=[name for name in contents
+                                                if not name == "list.paths"])
             bkZIP.close()
             print(setColorText("Restore completed.", Colors.GREEN))
         except BadZipFile as bze:
