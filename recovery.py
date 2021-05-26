@@ -985,6 +985,9 @@ def main():
         except:
             print(setColorText("Commit ID required!", Colors.YELLOW))
             return
+        if not recovery.userbot_installed():
+            print(setColorText("HyperUBot is not installed", Colors.RED))
+            return
         _apply_update(True, commit_id)
         return
 
