@@ -481,6 +481,7 @@ class _Updater(_Recovery):
         self.__commit_id = commit_id
         self.__package_path = None
         self.__id_mismatch = False
+        self.__modify_started = False
         self.__successful = False
         super().__init__()
 
@@ -621,6 +622,9 @@ class _Updater(_Recovery):
                    setColorText(f"Failed to parse gitgignore: {e}",
                                 Colors.YELLOW))
 
+        # Everything afterwards will modify bot files/directories
+        self.__modify_started = True
+
         try:
             print("Removing old environment...")
             self._remove(
@@ -667,6 +671,9 @@ class _Updater(_Recovery):
         self.__successful = True
         print(setColorText("Update completed.", Colors.GREEN))
         return
+
+    def getModifyStarted(self) -> bool:
+        return self.__modify_started
 
     def getSuccessful(self) -> bool:
         return self.__successful
@@ -770,7 +777,7 @@ def _apply_update(auto: bool, commit_id = None):
     elif updater.getSuccessful():
         global _modified
         _modified = True
-    else:
+    elif updater.getModifyStarted():
         print(setColorText("Update failed", Colors.RED_BG))
         print(setColorText("Important data might be lost. "\
                            "Please restore a backup if available or "\
