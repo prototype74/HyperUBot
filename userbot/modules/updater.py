@@ -102,9 +102,9 @@ async def updater(event):
         if not _get_latest_release(_LATEST_VER.get("rules"), _LATEST_VER.get("zip")):
             await event.edit("Update failed")
             log.error("Failed to download latest release. Aborting process", exc_info=True)
-            _LATEST_VER = {}
+            _LATEST_VER.clear()
             return
-        _LATEST_VER = {}
+        _LATEST_VER.clear()
         commit_id = _get_commit_id()
         if not commit_id:
             await event.edit(msgRep.UPDATE_FAILED)
@@ -148,7 +148,7 @@ async def updater(event):
         log.warning(f"Current version newer than on release server ({VERSION} > {tag_version})")
         await event.edit(f"{msgRep.UPDATE_FAILED}: {msgRep.UPDATE_INTERNAL_FAILED}")
         if _LATEST_VER:
-            _LATEST_VER = {}
+            _LATEST_VER.clear()
         return
 
     if current_version == release_version:
@@ -159,7 +159,7 @@ async def updater(event):
         reply += f"{msgRep.LATEST}: {tag_version}\n"
         reply += f"{msgRep.CURRENT}: {VERSION}\n"
         if _LATEST_VER:
-            _LATEST_VER = {}
+            _LATEST_VER.clear()
         await event.edit(reply)
         return
 
@@ -190,9 +190,9 @@ async def updater(event):
             if not _get_latest_release(_LATEST_VER.get("rules"), _LATEST_VER.get("zip")):
                 await event.edit(reply.replace(msgRep.DOWNLOADING_RELEASE, msgRep.UPDATE_FAILED))
                 log.error("Failed to download latest release. Aborting process", exc_info=True)
-                _LATEST_VER = {}
+                _LATEST_VER.clear()
                 return
-            _LATEST_VER = {}
+            _LATEST_VER.clear()
             commit_id = _get_commit_id()
             if not commit_id:
                  await event.edit(reply.replace(msgRep.DOWNLOADING_RELEASE, msgRep.UPDATE_FAILED))
