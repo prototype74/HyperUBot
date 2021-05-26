@@ -619,6 +619,7 @@ class PackageManagerText(object):
 
 class UpdaterText(object):
     CHECKING_UPDATES = getLangString(lang, _getframe().f_code.co_name, "CHECKING_UPDATES")
+    GIT_REPO = getLangString(lang, _getframe().f_code.co_name, "GIT_REPO")
     DOWNLOADING_RELEASE = getLangString(lang, _getframe().f_code.co_name, "DOWNLOADING_RELEASE")
     UPDATE_FAILED = getLangString(lang, _getframe().f_code.co_name, "UPDATE_FAILED")
     UPDATE_INTERNAL_FAILED = getLangString(lang, _getframe().f_code.co_name, "UPDATE_INTERNAL_FAILED")

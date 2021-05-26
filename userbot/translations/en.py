@@ -506,6 +506,7 @@ class PackageManagerText(object):
 
 class UpdaterText(object):
     CHECKING_UPDATES = "Checking for updates..."
+    GIT_REPO = "HyperUBot's directory is a local git repository"
     DOWNLOADING_RELEASE = "Downloading latest release..."
     UPDATE_FAILED = "Update failed"
     UPDATE_INTERNAL_FAILED = "Internal error occurred"

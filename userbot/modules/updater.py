@@ -6,6 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot.include.aux_funcs import getGitReview
 from userbot.include.git_api import getLatestData
 from userbot.include.language_processor import UpdaterText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
 from userbot.sysutils.configuration import setConfig
@@ -78,9 +79,18 @@ def _set_autoupdate(commit_id: str) -> bool:
         log.error(f"Unable to set reboot reason: {e}")
     return False
 
+async def _is_git_repo() -> bool:
+    try:
+        return True if await getGitReview() else False
+    except:
+        pass
+    return False
+
 @ehandler.on(command="update", hasArgs=True, outgoing=True)
 async def updater(event):
     arg = event.pattern_match.group(1)
+    git_repo = await _is_git_repo()
+    warn_emoji = u"\u26A0"
     update_now = True if arg.lower() == "upgrade" else False
     global _LATEST_VER
 
@@ -144,6 +154,8 @@ async def updater(event):
     if current_version == release_version:
         log.info(f"Already up-to-date ({VERSION} == {tag_version})")
         reply = f"**{msgRep.ALREADY_UP_TO_DATE}**\n\n"
+        if git_repo:
+            reply += f"{warn_emoji} __{msgRep.GIT_REPO}__\n\n"
         reply += f"{msgRep.LATEST}: {tag_version}\n"
         reply += f"{msgRep.CURRENT}: {VERSION}\n"
         if _LATEST_VER:
@@ -167,6 +179,8 @@ async def updater(event):
         release_url = release_data.get("html_url")
         log.info(f"Update available ({VERSION} < {tag_version})")
         reply = f"**{msgRep.UPDATE_AVAILABLE}**\n\n"
+        if git_repo:
+            reply += f"{warn_emoji} __{msgRep.GIT_REPO}__\n\n"
         reply += f"**{msgRep.LATEST}: {tag_version}**\n"
         reply += f"{msgRep.CURRENT}: {VERSION}\n\n"
         reply += msgRep.CHANGELOG_AT.format(f"[GitHub]({release_url})\n\n")
