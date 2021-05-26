@@ -26,7 +26,7 @@ from zipfile import BadZipFile, LargeZipFile, ZipFile, ZIP_DEFLATED
 import os
 
 RECOVERY_NAME = os.path.basename(__file__)
-VERSION = "1.1.0"
+VERSION = "2.0.0"
 BACKUP_DIR = os.path.join(".", "backup")
 GIT = os.path.join(".", ".git")
 GITIGNORE = os.path.join(".", ".gitignore")
