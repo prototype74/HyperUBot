@@ -31,6 +31,7 @@ ehandler = EventHandler(log)
 CAS_CSV = path.join(getConfig("TEMP_DL_DIR"), "export.csv")
 CAS_USER_IDS = []
 
+
 def _updateCASList() -> bool:
     global CAS_USER_IDS
     try:
@@ -49,6 +50,7 @@ def _updateCASList() -> bool:
         log.error(e)
     return False
 
+
 def _createCASFile(title: str, cas_list: dict, filename: str) -> tuple:
     try:
         input_text = f"{title}\n\n"
@@ -63,6 +65,7 @@ def _createCASFile(title: str, cas_list: dict, filename: str) -> tuple:
     except Exception as e:
         log.warning(e)
     return (filename, False)
+
 
 async def _casSendAsFile(event, title: str, cas_list: dict):
     await event.edit(msgRep.TOO_MANY_CAS)
@@ -82,6 +85,7 @@ async def _casSendAsFile(event, title: str, cas_list: dict):
     if success:
         remove(filename)
     return
+
 
 async def _getCASUser(event, entity, entity_id):
     user_id = entity.id if entity else entity_id
@@ -113,9 +117,9 @@ async def _getCASUser(event, entity, entity_id):
         log.warning(e)
         time_banned = None
 
-    is_banned = f"[{msgRep.BANNED}]"\
-                f"(https://api.cas.chat/check?user_id={user_id})"\
-                if cas_api.isbanned(cas_data) else msgRep.NOT_BANNED
+    is_banned = (f"[{msgRep.BANNED}]"
+                 f"(https://api.cas.chat/check?user_id={user_id})"
+                 if cas_api.isbanned(cas_data) else msgRep.NOT_BANNED)
 
     text = f"**{msgRep.USER_HEADER}**\n\n"
     text += f"{msgRep.USER_ID}: `{user_id}`\n"
@@ -135,6 +139,7 @@ async def _getCASUser(event, entity, entity_id):
                 f"{time_banned.time()} {time_banned.tzname()}`"
     await event.edit(text)
     return
+
 
 async def _getCASChat(event, entity):
     global CAS_USER_IDS
@@ -184,6 +189,7 @@ async def _getCASChat(event, entity):
         await _casSendAsFile(event, text)
     return
 
+
 @ehandler.on(command="casupdate", outgoing=True)
 async def casupdate(event):
     log.info("Start to update CAS CSV data")
@@ -209,6 +215,7 @@ async def casupdate(event):
         log.error(e)
         await event.edit(msgRep.UPDATE_FAILED)
     return
+
 
 @ehandler.on(command="cascheck", hasArgs=True, outgoing=True)
 async def cascheck(event):
@@ -254,11 +261,15 @@ async def cascheck(event):
 
 
 register_cmd_usage("casupdate",
-                   usageRep.CAS_INTERFACE_USAGE.get("casupdate", {}).get("args"),
-                   usageRep.CAS_INTERFACE_USAGE.get("casupdate", {}).get("usage"))
+                   usageRep.CAS_INTERFACE_USAGE.get(
+                       "casupdate", {}).get("args"),
+                   usageRep.CAS_INTERFACE_USAGE.get(
+                       "casupdate", {}).get("usage"))
 register_cmd_usage("cascheck",
-                   usageRep.CAS_INTERFACE_USAGE.get("cascheck", {}).get("args"),
-                   usageRep.CAS_INTERFACE_USAGE.get("cascheck", {}).get("usage"))
+                   usageRep.CAS_INTERFACE_USAGE.get(
+                       "cascheck", {}).get("args"),
+                   usageRep.CAS_INTERFACE_USAGE.get(
+                       "cascheck", {}).get("usage"))
 
 register_module_desc(descRep.CAS_INTERFACE_DESC)
 register_module_info(

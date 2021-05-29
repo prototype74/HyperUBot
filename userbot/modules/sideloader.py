@@ -7,10 +7,14 @@
 # compliance with the PE License
 
 from userbot.include.aux_funcs import event_log
-from userbot.include.language_processor import SideloaderText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.include.language_processor import (SideloaderText as msgRep,
+                                                ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 from userbot.sysutils.configuration import getConfig, setConfig
 from userbot.sysutils.event_handler import EventHandler
-from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
 from userbot.version import VERSION
 import os
 from logging import getLogger
@@ -18,8 +22,8 @@ import time
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
-
 USER_MODULES_DIR = os.path.join(".", "userbot", "modules_user")
+
 
 @ehandler.on(command="sideload", hasArgs=True, outgoing=True)
 async def sideload(event):
@@ -43,7 +47,8 @@ async def sideload(event):
         log.info(f"Module '{file.name[:-3]}' has been installed to userpace")
         await event.edit(msgRep.SUCCESS.format(file.name))
         if getConfig("LOGGING"):
-            await event_log(event, "SIDELOAD", custom_text=msgRep.LOG.format(file.name))
+            await event_log(event, "SIDELOAD",
+                            custom_text=msgRep.LOG.format(file.name))
         log.info("Rebooting userbot...")
         time.sleep(1)
         await event.edit(msgRep.RBT_CPLT)
@@ -53,7 +58,11 @@ async def sideload(event):
         await event.edit(msgRep.INVALID_FILE)
     return
 
-register_cmd_usage("sideload", usageRep.SIDELOADER_USAGE.get("sideload", {}).get("args"), usageRep.SIDELOADER_USAGE.get("sideload", {}).get("usage"))
+
+register_cmd_usage("sideload",
+                   usageRep.SIDELOADER_USAGE.get("sideload", {}).get("args"),
+                   usageRep.SIDELOADER_USAGE.get("sideload", {}).get("usage"))
+
 register_module_desc(descRep.SIDELOADER_DESC)
 register_module_info(
     name="Sideloader",

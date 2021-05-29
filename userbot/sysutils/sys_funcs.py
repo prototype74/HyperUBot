@@ -12,27 +12,31 @@ import platform
 import os
 import sys
 
+
 def isLinux() -> bool:
     """
     Returns True if current machine runs with a Linux (based)
     system else False
     """
-    return True if platform.system().lower() == "linux" or \
-           sys.platform.startswith("linux") else False
+    return (True if platform.system().lower() == "linux" or
+            sys.platform.startswith("linux") else False)
+
 
 def isMacOS() -> bool:
     """
     Returns True if current machine runs with macOS else False
     """
-    return True if platform.system().lower() == "darwin" or \
-           sys.platform == "darwin" else False
+    return (True if platform.system().lower() == "darwin" or
+            sys.platform == "darwin" else False)
+
 
 def isWindows() -> bool:
     """
     Returns True if current machine runs with Windows else False
     """
-    return True if platform.system().lower() == "windows" or \
-           os.name == "nt" or sys.platform.startswith("win") else False
+    return (True if platform.system().lower() == "windows" or
+            os.name == "nt" or sys.platform.startswith("win") else False)
+
 
 def isAndroid() -> bool:
     """
@@ -54,6 +58,7 @@ def isAndroid() -> bool:
         pass
     return False
 
+
 def isWSL() -> bool:
     """
     Returns True if HyperUBot runs on WSL (2) which is a
@@ -65,6 +70,7 @@ def isWSL() -> bool:
        os.path.exists("/mnt/c/Windows"):
         return True
     return False
+
 
 def os_name() -> str:
     """
@@ -78,6 +84,7 @@ def os_name() -> str:
     elif isWSL():
         return "Windows Subsystem for Linux"
     return platform.system()  # default case
+
 
 def verAsTuple(version: str) -> tuple:
     """
@@ -122,7 +129,7 @@ def verAsTuple(version: str) -> tuple:
     # dot is the delimiter and it is required
     # return an empty tuple if version doesn't
     # include any dots (not well-formed)
-    if len(version) >= 1 and not "." in version:
+    if len(version) >= 1 and "." not in version:
         try:
             if int(version):
                 # assume it's just a digit
@@ -162,11 +169,13 @@ def verAsTuple(version: str) -> tuple:
                 new_list.append(elem)
     return tuple(new_list)
 
+
 def botVerAsTuple() -> tuple:
     """
     Returns the version of HyperUBot as tuple
     """
     return verAsTuple(VERSION)
+
 
 def requiredVersion(min_ver: str, max_ver: str, empty_func: bool = False):
     """
@@ -212,7 +221,8 @@ def requiredVersion(min_ver: str, max_ver: str, empty_func: bool = False):
     """
     def wrapper(function):
         if empty_func:
-            efunc = lambda *args, **kwargs: None
+            def efunc(*args, **kwargs):
+                return
         else:
             efunc = None
         try:

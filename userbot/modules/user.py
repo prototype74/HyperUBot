@@ -8,20 +8,24 @@
 
 from userbot import tgclient
 from userbot.include.aux_funcs import event_log, fetch_user
-from userbot.include.language_processor import UserText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.include.language_processor import (UserText as msgRep,
+                                                ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
-from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
 from userbot.version import VERSION
 from telethon.tl.types import User, Chat, Channel
 from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
 from logging import getLogger
 
-MAXINT = 2147483647 # I sure do love hammering down shit
-
+MAXINT = 2147483647  # I sure do love hammering down shit
 log = getLogger(__name__)
 ehandler = EventHandler(log)
+
 
 @ehandler.on(command="userid", hasArgs=True, outgoing=True)
 async def userid(event):
@@ -37,12 +41,16 @@ async def userid(event):
             sender_link = f"[{sender.first_name}](tg://user?id={sender.id})"
 
         if org_author:
-            org_author_link = f"[{org_author.first_name}](tg://user?id={org_author.id})"
+            org_author_link = (f"[{org_author.first_name}]"
+                               f"(tg://user?id={org_author.id})")
 
         if sender and org_author:
             if not sender == org_author:
-                text = f"**{msgRep.ORIGINAL_AUTHOR}**:\n" + msgRep.DUAL_HAS_ID_OF.format(org_author_link, org_author.id) + "\n\n"
-                text += f"**{msgRep.FORWARDER}**:\n" + msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id)
+                text = (f"**{msgRep.ORIGINAL_AUTHOR}**:\n" +
+                        msgRep.DUAL_HAS_ID_OF.format(org_author_link,
+                                                     org_author.id) + "\n\n")
+                text += (f"**{msgRep.FORWARDER}**:\n" +
+                         msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id))
             else:
                 if sender.deleted:
                     text = msgRep.DEL_HAS_ID_OF.format(sender.id)
@@ -52,8 +60,11 @@ async def userid(event):
                     text = msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id)
         elif sender and not org_author:
             if msg.fwd_from and msg.fwd_from.from_name:
-                text = f"**{msgRep.ORIGINAL_AUTHOR}**:\n" + msgRep.ID_NOT_ACCESSIBLE.format(msg.fwd_from.from_name) + "\n\n"
-                text += f"**{msgRep.FORWARDER}**:\n" + msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id)
+                text = (f"**{msgRep.ORIGINAL_AUTHOR}**:\n" +
+                        msgRep.ID_NOT_ACCESSIBLE.format(
+                            msg.fwd_from.from_name) + "\n\n")
+                text += (f"**{msgRep.FORWARDER}**:\n" +
+                         msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id))
             else:
                 if sender.deleted:
                     text = msgRep.DEL_HAS_ID_OF.format(sender.id)
@@ -76,17 +87,19 @@ async def userid(event):
         else:
             user_link = f"[{user_obj.first_name}](tg://user?id={user_obj.id})"
             text = msgRep.DUAL_HAS_ID_OF.format(user_link, user_obj.id)
-
     await event.edit(text)
     return
+
 
 @ehandler.on(command="kickme", alt="leave", outgoing=True)
 async def kickme(leave):
     await leave.edit(msgRep.LEAVING)
     await leave.client.kick_participant(leave.chat_id, 'me')
     if getConfig("LOGGING"):
-        await event_log(leave, "KICKME", chat_title=leave.chat.title, chat_id=leave.chat.id)
+        await event_log(leave, "KICKME", chat_title=leave.chat.title,
+                        chat_id=leave.chat.id)
     return
+
 
 @ehandler.on(command="stats", outgoing=True)
 async def stats(event):
@@ -99,7 +112,8 @@ async def stats(event):
     await event.edit(msgRep.STATS_PROCESSING)
 
     try:
-        block_obj = await event.client(GetBlockedRequest(offset=0, limit=MAXINT))
+        block_obj = await event.client(GetBlockedRequest(offset=0,
+                                                         limit=MAXINT))
         if block_obj.blocked:
             for user in block_obj.blocked:
                 blocked_ids.append(user.peer_id.user_id)
@@ -157,19 +171,21 @@ async def stats(event):
     result += msgRep.STATS_CHANNELS.format(channels) + "\n"
     result += "> " + msgRep.STATS_SGC_OWNER.format(channel_owner) + "\n"
     result += "> " + msgRep.STATS_CHAN_ADMIN.format(channel_admin) + "\n"
-    result += "\n" + msgRep.STATS_UNKNOWN.format(unknown) + "\n\n" if unknown else "\n"
+    result += "\n" + (msgRep.STATS_UNKNOWN.format(unknown) + "\n\n"
+                      if unknown else "\n")
     result += f"{msgRep.STATS_TOTAL}: **{total}**\n"
-
     await event.edit(result)
-
     return
+
 
 @ehandler.on(command="info", hasArgs=True, outgoing=True)
 async def info(event):  # .info command
     await event.edit(msgRep.FETCH_INFO)
 
-    full_user_obj = await fetch_user(event=event, full_user=True, org_author=True)
-    if not full_user_obj:  # fetch_user() will return an error msg if something failed
+    full_user_obj = await fetch_user(event=event, full_user=True,
+                                     org_author=True)
+    # fetch_user() will return an error msg if something failed
+    if not full_user_obj:
         return
 
     try:
@@ -181,16 +197,23 @@ async def info(event):  # .info command
 
     return
 
+
 async def fetch_info(user_obj, event):
     try:
-        user_pfps = await event.client(GetUserPhotosRequest(user_id=user_obj.user.id, offset=42, max_id=0, limit=80))
-        user_pfps_count = user_pfps.count if hasattr(user_pfps, "count") else 0
+        user_pfps = await event.client(
+            GetUserPhotosRequest(user_id=user_obj.user.id,
+                                 offset=42,
+                                 max_id=0,
+                                 limit=80))
+        user_pfps_count = (user_pfps.count
+                           if hasattr(user_pfps, "count") else 0)
     except:
         user_pfps_count = 0
     user_id = user_obj.user.id
     user_deleted = user_obj.user.deleted
     user_self = user_obj.user.is_self
-    first_name = user_obj.user.first_name if not user_deleted else msgRep.DELETED_ACCOUNT
+    first_name = (user_obj.user.first_name
+                  if not user_deleted else msgRep.DELETED_ACCOUNT)
     last_name = user_obj.user.last_name if user_obj.user.last_name else None
     dc_id = msgRep.UNKNOWN
     if user_obj.profile_photo:
@@ -201,8 +224,10 @@ async def fetch_info(user_obj, event):
     user_bio = user_obj.about
     is_bot = f"<b>{msgRep.YES}</b>" if user_obj.user.bot else msgRep.NO
     scam = f"<b>{msgRep.YES}</b>" if user_obj.user.scam else msgRep.NO
-    restricted = f"<b>{msgRep.YES}</b>" if user_obj.user.restricted else msgRep.NO
-    verified = f"<b>{msgRep.YES}</b>" if user_obj.user.verified else msgRep.NO
+    restricted = (f"<b>{msgRep.YES}</b>"
+                  if user_obj.user.restricted else msgRep.NO)
+    verified = (f"<b>{msgRep.YES}</b>"
+                if user_obj.user.verified else msgRep.NO)
     username = "@{}".format(username) if username else None
     user_bio = msgRep.USR_NO_BIO if not user_bio else user_bio
     profile_link = f"<a href=\"tg://user?id={user_id}\">link</a>"
@@ -228,11 +253,13 @@ async def fetch_info(user_obj, event):
         caption += f"{msgRep.COMMON_SELF}"
     else:
         caption += f"{msgRep.COMMON}: {common_chat}"
-
     return caption
 
+
 for cmd in ("info", "kickme", "stats", "userid"):
-    register_cmd_usage(cmd, usageRep.USER_USAGE.get(cmd, {}).get("args"), usageRep.USER_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(cmd,
+                       usageRep.USER_USAGE.get(cmd, {}).get("args"),
+                       usageRep.USER_USAGE.get(cmd, {}).get("usage"))
 
 register_module_desc(descRep.USER_DESC)
 register_module_info(

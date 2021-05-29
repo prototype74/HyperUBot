@@ -16,6 +16,7 @@ from sys import executable
 
 log = getLogger(__name__)
 
+
 def checkPkgByDist(dist_name: str) -> bool:
     """
     Check if given distribution name is installed
@@ -39,6 +40,7 @@ def checkPkgByDist(dist_name: str) -> bool:
         pass
     return False
 
+
 def checkPkgByImport(import_name: str) -> bool:
     """
     Checks if the importable name of the distribution exists
@@ -58,6 +60,7 @@ def checkPkgByImport(import_name: str) -> bool:
     if find_spec(import_name):
         return True
     return False
+
 
 def getVersionFromDist(dist_name):
     """
@@ -84,6 +87,7 @@ def getVersionFromDist(dist_name):
         pass
     return
 
+
 def installPkg(dist_name, upgrade: bool = False) -> bool:
     """
     Installs the given name of the distribution
@@ -106,12 +110,13 @@ def installPkg(dist_name, upgrade: bool = False) -> bool:
     caller = getouterframes(currentframe(), 2)[1]
     caller = f"{basename(caller.filename)}:{caller.lineno}"
     try:
-        py_exec = executable if not " " in executable \
-                  else '"' + executable + '"'
+        py_exec = (executable if " " not in executable else
+                   '"' + executable + '"')
         if not checkPkgByDist(dist_name):
             check_call([py_exec, "-m", "pip", "install", dist_name],
                        stdout=PIPE)
-            log.info(f"Package '{dist_name}' installed successfully ({caller})")
+            log.info(f"Package '{dist_name}' installed successfully"
+                     f"({caller})")
         elif upgrade:
             check_call([py_exec, "-m", "pip", "install", "--upgrade",
                         dist_name], stdout=PIPE)
@@ -123,4 +128,3 @@ def installPkg(dist_name, upgrade: bool = False) -> bool:
         log.error(f"Failed to install package '{dist_name}' ({caller})",
                   exc_info=True)
     return False
-

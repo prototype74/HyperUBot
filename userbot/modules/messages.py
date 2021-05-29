@@ -7,12 +7,17 @@
 # compliance with the PE License
 
 from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD
-from userbot.include.language_processor import MessagesText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.include.language_processor import (MessagesText as msgRep,
+                                                ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
-from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
 from userbot.version import VERSION
-from telethon.errors import ChatAdminRequiredError, InputUserDeactivatedError, SearchQueryEmptyError
+from telethon.errors import (ChatAdminRequiredError, InputUserDeactivatedError,
+                             SearchQueryEmptyError)
 from telethon.tl.functions.messages import SearchRequest
 from telethon.tl.types import InputMessagesFilterEmpty
 from logging import getLogger
@@ -20,6 +25,7 @@ from logging import getLogger
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 LOGGING = getConfig("LOGGING")
+
 
 @ehandler.on(command="msgs", hasArgs=True, outgoing=True)
 async def countmessages(event):
@@ -35,12 +41,13 @@ async def countmessages(event):
     remote = isRemoteCMD(event, chat.id)
 
     try:
-        msg_info = await event.client(SearchRequest(peer=chat.id, q="",  # search for any message
-                                                    filter=InputMessagesFilterEmpty(),
-                                                    min_date=None, max_date=None,
-                                                    add_offset=0, offset_id=0,
-                                                    limit=0, max_id=0, min_id=0,
-                                                    hash=0, from_id=user.id))
+        msg_info = await event.client(
+            SearchRequest(peer=chat.id, q="",  # search for any message
+                          filter=InputMessagesFilterEmpty(),
+                          min_date=None, max_date=None,
+                          add_offset=0, offset_id=0,
+                          limit=0, max_id=0, min_id=0,
+                          hash=0, from_id=user.id))
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
         return
@@ -56,19 +63,25 @@ async def countmessages(event):
         await event.edit(msgRep.FAIL_COUNT_MSG)
         return
 
-    user_link = "@" + user.username if user.username else f"[{user.first_name}](tg://user?id={user.id})"
+    user_link = ("@" + user.username
+                 if user.username else
+                 f"[{user.first_name}](tg://user?id={user.id})")
 
     if hasattr(msg_info, "count"):
         if remote:
-            await event.edit(msgRep.USER_HAS_SENT_REMOTE.format(user_link, msg_info.count, chat.title))
+            await event.edit(msgRep.USER_HAS_SENT_REMOTE.format(user_link,
+                                                                msg_info.count,
+                                                                chat.title))
         else:
-            await event.edit(msgRep.USER_HAS_SENT.format(user_link, msg_info.count))
+            await event.edit(msgRep.USER_HAS_SENT.format(user_link,
+                                                         msg_info.count))
     else:
         if remote:
             await event.edit(msgRep.CANNOT_COUNT_MSG_REMOTE.format(chat.title))
         else:
             await event.edit(msgRep.CANNOT_COUNT_MSG)
     return
+
 
 @ehandler.on(command="pin", hasArgs=True, outgoing=True)
 async def pin(event):
@@ -89,9 +102,13 @@ async def pin(event):
         await event.client.pin_message(chat.id, msg_id, notify=notify)
         await event.edit(msgRep.PIN_SUCCESS)
         if LOGGING:
-            await event_log(event, "PINNED MESSAGE", chat_title=chat.title if hasattr(chat, "title") else None,
-                            chat_link=chat.username if hasattr(chat, "username") else None,
-                            chat_id=chat.id, custom_text=f"{msgRep.LOG_PIN_MSG_ID}: {event.reply_to_msg_id}")
+            await event_log(event, "PINNED MESSAGE", chat_title=chat.title
+                            if hasattr(chat, "title") else None,
+                            chat_link=chat.username
+                            if hasattr(chat, "username") else None,
+                            chat_id=chat.id,
+                            custom_text=(f"{msgRep.LOG_PIN_MSG_ID}: "
+                                         f"{event.reply_to_msg_id}"))
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
@@ -99,6 +116,7 @@ async def pin(event):
         await event.edit(msgRep.PIN_FAILED)
 
     return
+
 
 @ehandler.on(command="unpin", hasArgs=True, outgoing=True)
 async def pin(event):
@@ -127,9 +145,12 @@ async def pin(event):
             await event.edit(msgRep.UNPIN_SUCCESS)
             log_text = f"{msgRep.LOG_PIN_MSG_ID}: {event.reply_to_msg_id}"
         if LOGGING:
-            await event_log(event, "UNPINNED MESSAGES" if all_msgs else "UNPINNED MESSAGE",
-                            chat_title=chat.title if hasattr(chat, "title") else None,
-                            chat_link=chat.username if hasattr(chat, "username") else None,
+            await event_log(event, "UNPINNED MESSAGES"
+                            if all_msgs else "UNPINNED MESSAGE",
+                            chat_title=chat.title
+                            if hasattr(chat, "title") else None,
+                            chat_link=chat.username
+                            if hasattr(chat, "username") else None,
                             chat_id=chat.id, custom_text=log_text)
     except ChatAdminRequiredError:
         await event.edit(msgRep.NO_ADMIN)
@@ -140,7 +161,9 @@ async def pin(event):
     return
 
 for cmd in ("msgs", "pin", "unpin"):
-    register_cmd_usage(cmd, usageRep.MESSAGES_USAGE.get(cmd, {}).get("args"), usageRep.MESSAGES_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(cmd,
+                       usageRep.MESSAGES_USAGE.get(cmd, {}).get("args"),
+                       usageRep.MESSAGES_USAGE.get(cmd, {}).get("usage"))
 
 register_module_desc(descRep.MESSAGES_DESC)
 register_module_info(

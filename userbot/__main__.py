@@ -8,8 +8,10 @@
 
 from userbot import tgclient, log, _fhandler, _shandler, PROJECT, SAFEMODE
 from userbot.sysutils.configuration import getConfig
-from userbot.sysutils.registration import (update_all_modules, update_load_modules,
-                                           update_user_modules, getAllModules)
+from userbot.sysutils.registration import (update_all_modules,
+                                           update_load_modules,
+                                           update_user_modules,
+                                           getAllModules)
 from userbot.version import VERSION
 from logging import shutdown
 from importlib import import_module
@@ -17,6 +19,7 @@ from glob import glob
 from os import execle, environ
 from os.path import dirname, basename, isfile, join
 from sys import executable
+
 
 class _Modules:
     def __init__(self):
@@ -28,14 +31,16 @@ class _Modules:
         all_modules = []
         sys_modules = []
         user_modules = []
-        sys_module_paths = sorted(glob(join(dirname(__file__), "modules", "*.py")))
-        user_module_paths = sorted(glob(join(dirname(__file__), "modules_user", "*.py")))
+        sys_module_paths = sorted(
+            glob(join(dirname(__file__), "modules", "*.py")))
+        user_module_paths = sorted(
+            glob(join(dirname(__file__), "modules_user", "*.py")))
         for module in sys_module_paths:
             if isfile(module) and module.endswith(".py"):
                 filename = basename(module)[:-3]
                 all_modules.append(filename)
                 try:
-                    if not filename in self.__not_load_modules:
+                    if filename not in self.__not_load_modules:
                         sys_modules.append(filename)
                 except:
                     sys_modules.append(filename)
@@ -43,10 +48,11 @@ class _Modules:
             if isfile(module) and module.endswith(".py"):
                 filename = basename(module)[:-3]
                 all_modules.append(filename)
-                if not filename in sys_modules:
+                if filename not in sys_modules:
                     user_modules.append(filename)
                 elif not SAFEMODE:
-                    log.warning(f"Module '{filename}' not loaded as present in sys already")
+                    log.warning(f"Module '{filename}' not loaded as "
+                                "present in sys already")
         return (all_modules, sys_modules, user_modules)
 
     def import_load_modules(self):
@@ -57,7 +63,8 @@ class _Modules:
             except KeyboardInterrupt:
                 raise KeyboardInterrupt
             except (BaseException, Exception):
-                log.error(f"Unable to start module '{module}' due to an unhandled exception",
+                log.error(f"Unable to start module '{module}' due "
+                          "to an unhandled exception",
                           exc_info=True)
             return False
         try:
@@ -72,7 +79,7 @@ class _Modules:
                     update_load_modules(module, False)
             for module in user_modules:
                 if not SAFEMODE:
-                    if not module in self.__not_load_modules:
+                    if module not in self.__not_load_modules:
                         if tryImportModule("userbot.modules_user.", module):
                             update_load_modules(module, True)
                             self.__load_modules_count += 1
@@ -85,6 +92,7 @@ class _Modules:
 
     def loaded_modules(self) -> int:
         return self.__load_modules_count
+
 
 def start_modules():
     if SAFEMODE:
@@ -103,16 +111,17 @@ def start_modules():
     if not load_modules_count:
         log.warning("No modules started!")
     elif load_modules_count > 0:
-        log.info(f"Modules ({load_modules_count}/{sum_modules}) "\
+        log.info(f"Modules ({load_modules_count}/{sum_modules}) "
                  "started and ready!")
     return
+
 
 def run_client():
     try:
         log.info("Starting Telegram client")
         with tgclient:
             me = tgclient.loop.run_until_complete(tgclient.get_me())
-            log.info(f"You're running {PROJECT} v{VERSION} as "\
+            log.info(f"You're running {PROJECT} v{VERSION} as "
                      f"{me.first_name} (ID: {me.id})")
             tgclient.run_until_disconnected()
     except KeyboardInterrupt:
@@ -121,6 +130,7 @@ def run_client():
         log.critical(f"Failed to start client properly: {e}",
                      exc_info=True)
     return
+
 
 def shutdown_logging():
     try:
@@ -133,12 +143,14 @@ def shutdown_logging():
         pass
     return
 
+
 def check_reboot():
     perf_reboot = getConfig("REBOOT", False)
     start_recovery = getConfig("START_RECOVERY", False)
     try:
         if perf_reboot or start_recovery:
-            py_exec = executable if not " " in executable else '"' + executable + '"'
+            py_exec = (executable
+                       if " " not in executable else '"' + executable + '"')
             if perf_reboot:  # preferred if True
                 if getConfig("REBOOT_SAFEMODE"):
                     log.info("Rebooting into safe mode...")
@@ -167,6 +179,7 @@ def check_reboot():
                          exc_info=True)
     return
 
+
 def main():
     start_modules()
     log.info("HyperUBot is going online")
@@ -174,6 +187,7 @@ def main():
     log.info("HyperUBot is offline")
     check_reboot()
     return
+
 
 if __name__ == "__main__":
     try:

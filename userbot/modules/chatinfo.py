@@ -7,29 +7,42 @@
 # compliance with the PE License
 
 from userbot.include.aux_funcs import format_chat_id
-from userbot.include.language_processor import ChatInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.include.language_processor import (ChatInfoText as msgRep,
+                                                ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 from userbot.sysutils.event_handler import EventHandler
-from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
 from userbot.version import VERSION
-from telethon.errors import ChannelInvalidError, ChannelPrivateError, ChannelPublicGroupNaError, ChatAdminRequiredError
+from telethon.errors import (ChannelInvalidError, ChannelPrivateError,
+                             ChannelPublicGroupNaError, ChatAdminRequiredError)
 from telethon.tl.functions.channels import GetFullChannelRequest
-from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest, GetExportedChatInvitesRequest
-from telethon.tl.types import (ChannelParticipantCreator, ChatParticipantCreator, MessageActionChannelMigrateFrom,
-                               ChannelParticipantsAdmins, Chat, Channel, PeerChannel)
+from telethon.tl.functions.messages import (GetHistoryRequest,
+                                            GetFullChatRequest,
+                                            GetExportedChatInvitesRequest)
+from telethon.tl.types import (ChannelParticipantCreator,
+                               ChatParticipantCreator,
+                               MessageActionChannelMigrateFrom,
+                               ChannelParticipantsAdmins, Chat, Channel,
+                               PeerChannel)
 from datetime import datetime
 from logging import getLogger
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 
+
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
     if event.reply_to_msg_id and not chat:
         replied_msg = await event.get_reply_message()
-        if replied_msg.from_id and isinstance(replied_msg.from_id, PeerChannel):
+        if replied_msg.from_id and isinstance(replied_msg.from_id,
+                                              PeerChannel):
             chat = replied_msg.from_id.channel_id
-        elif replied_msg.fwd_from and replied_msg.fwd_from.from_id and \
-             isinstance(replied_msg.fwd_from.from_id, PeerChannel):
+        elif (replied_msg.fwd_from and
+              replied_msg.fwd_from.from_id and
+              isinstance(replied_msg.fwd_from.from_id, PeerChannel)):
             chat = replied_msg.fwd_from.from_id.channel_id
         else:
             await event.edit(msgRep.REPLY_NOT_CHANNEL)
@@ -62,53 +75,90 @@ async def get_chatinfo(event):
 
     return None
 
+
 async def fetch_info(chat, event):
     chat_obj_info = await event.client.get_entity(chat.full_chat.id)
-    broadcast = chat_obj_info.broadcast if hasattr(chat_obj_info, "broadcast") else False
+    broadcast = (chat_obj_info.broadcast
+                 if hasattr(chat_obj_info, "broadcast") else False)
     chat_type = msgRep.CHANNEL if broadcast else msgRep.GROUP
     chat_title = chat_obj_info.title
     warn_emoji = u"\u26A0"
     try:
-        msg_info = await event.client(GetHistoryRequest(peer=chat_obj_info.id, offset_id=0,
-                                                        offset_date=datetime(2010, 1, 1), add_offset=-1,
-                                                        limit=1, max_id=0, min_id=0, hash=0))
+        msg_info = await event.client(
+            GetHistoryRequest(peer=chat_obj_info.id,
+                              offset_id=0,
+                              offset_date=datetime(2010, 1, 1),
+                              add_offset=-1,
+                              limit=1,
+                              max_id=0,
+                              min_id=0,
+                              hash=0))
     except:
         msg_info = None
-    first_msg_valid = True if msg_info and msg_info.messages and msg_info.messages[0].id == 1 else False
+    first_msg_valid = (True if msg_info and msg_info.messages and
+                       msg_info.messages[0].id == 1 else False)
     owner_id, owner_firstname, owner_username = (None,)*3
     admins = 0
     created = msg_info.messages[0].date if first_msg_valid else None
-    former_title = msg_info.messages[0].action.title if first_msg_valid and \
-                                                        type(msg_info.messages[0].action) is MessageActionChannelMigrateFrom and \
-                                                        msg_info.messages[0].action.title != chat_title else None
-    dc_id = chat.full_chat.chat_photo.dc_id if hasattr(chat.full_chat.chat_photo, "dc_id") else msgRep.UNKNOWN
+    former_title = (msg_info.messages[0].action.title
+                    if first_msg_valid and type(msg_info.messages[0].action) is
+                    MessageActionChannelMigrateFrom and
+                    msg_info.messages[0].action.title != chat_title else None)
+    dc_id = (chat.full_chat.chat_photo.dc_id
+             if hasattr(chat.full_chat.chat_photo, "dc_id") else
+             msgRep.UNKNOWN)
     # Prototype's spaghetti, although already salted by me
     description = chat.full_chat.about
-    members = chat.full_chat.participants_count if hasattr(chat.full_chat, "participants_count") else chat_obj_info.participants_count
-    banned_users = chat.full_chat.kicked_count if hasattr(chat.full_chat, "kicked_count") else None
-    restricted_users = chat.full_chat.banned_count if hasattr(chat.full_chat, "banned_count") else None
-    members_online = chat.full_chat.online_count if hasattr(chat.full_chat, "online_count") else 0
-    group_stickers = chat.full_chat.stickerset.title if hasattr(chat.full_chat, "stickerset") and chat.full_chat.stickerset else None
-    messages_viewable = msg_info.count if msg_info and hasattr(msg_info, "count") else None
-    messages_sent = chat.full_chat.read_inbox_max_id if hasattr(chat.full_chat, "read_inbox_max_id") else None
-    messages_sent_alt = chat.full_chat.read_outbox_max_id if hasattr(chat.full_chat, "read_outbox_max_id") else None
+    members = (chat.full_chat.participants_count
+               if hasattr(chat.full_chat, "participants_count") else
+               chat_obj_info.participants_count)
+    banned_users = (chat.full_chat.kicked_count
+                    if hasattr(chat.full_chat, "kicked_count") else None)
+    restricted_users = (chat.full_chat.banned_count
+                        if hasattr(chat.full_chat, "banned_count") else None)
+    members_online = (chat.full_chat.online_count
+                      if hasattr(chat.full_chat, "online_count") else 0)
+    group_stickers = (chat.full_chat.stickerset.title
+                      if hasattr(chat.full_chat, "stickerset") and
+                      chat.full_chat.stickerset else None)
+    messages_viewable = (msg_info.count if msg_info and
+                         hasattr(msg_info, "count") else None)
+    messages_sent = (chat.full_chat.read_inbox_max_id
+                     if hasattr(chat.full_chat, "read_inbox_max_id") else None)
+    messages_sent_alt = (chat.full_chat.read_outbox_max_id
+                         if hasattr(chat.full_chat,
+                                    "read_outbox_max_id") else None)
     if messages_sent and messages_viewable:
-        deleted_messages = (messages_sent - messages_viewable) if messages_sent >= messages_viewable else 0
+        deleted_messages = ((messages_sent - messages_viewable)
+                            if messages_sent >= messages_viewable else 0)
     elif messages_sent_alt and messages_viewable:
-        deleted_messages = (messages_sent_alt - messages_viewable) if messages_sent_alt >= messages_viewable else 0
+        deleted_messages = ((messages_sent_alt - messages_viewable)
+                            if messages_sent_alt >= messages_viewable else 0)
     else:
         deleted_messages = 0
-    username = "@" + chat_obj_info.username if hasattr(chat_obj_info, "username") and chat_obj_info.username else None
-    chat_type_priv_or_public = msgRep.CHAT_PUBLIC if username else msgRep.CHAT_PRIVATE
+    username = ("@" + chat_obj_info.username
+                if hasattr(chat_obj_info, "username") and
+                chat_obj_info.username else None)
+    chat_type_priv_or_public = (msgRep.CHAT_PUBLIC
+                                if username else msgRep.CHAT_PRIVATE)
     bots_list = chat.full_chat.bot_info  # this is a list
     bots = len(bots_list) if bots_list else 0
-    supergroup = True if hasattr(chat_obj_info, "megagroup") and chat_obj_info.megagroup else False
-    gigagroup = True if hasattr(chat_obj_info, "gigagroup") and chat_obj_info.gigagroup else False
-    slowmode = msgRep.YES_BOLD if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else msgRep.NO
-    slowmode_time = chat.full_chat.slowmode_seconds if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled else None
-    restricted = msgRep.YES_BOLD if hasattr(chat_obj_info, "restricted") and chat_obj_info.restricted else msgRep.NO
-    verified = msgRep.YES_BOLD if hasattr(chat_obj_info, "verified") and chat_obj_info.verified else msgRep.NO
-    linked_chat_id = chat.full_chat.linked_chat_id if hasattr(chat.full_chat, "linked_chat_id") else None
+    supergroup = (True if hasattr(chat_obj_info, "megagroup") and
+                  chat_obj_info.megagroup else False)
+    gigagroup = (True if hasattr(chat_obj_info, "gigagroup") and
+                 chat_obj_info.gigagroup else False)
+    slowmode = (msgRep.YES_BOLD if hasattr(chat_obj_info,
+                                           "slowmode_enabled") and
+                chat_obj_info.slowmode_enabled else msgRep.NO)
+    slowmode_time = (chat.full_chat.slowmode_seconds
+                     if hasattr(chat_obj_info, "slowmode_enabled") and
+                     chat_obj_info.slowmode_enabled else None)
+    restricted = (msgRep.YES_BOLD if hasattr(chat_obj_info, "restricted") and
+                  chat_obj_info.restricted else msgRep.NO)
+    verified = (msgRep.YES_BOLD if hasattr(chat_obj_info, "verified") and
+                chat_obj_info.verified else msgRep.NO)
+    linked_chat_id = (chat.full_chat.linked_chat_id
+                      if hasattr(chat.full_chat, "linked_chat_id") else None)
     linked_chat = msgRep.YES_BOLD if linked_chat_id is not None else msgRep.NO
     linked_chat_title = None
     linked_chat_username = None
@@ -123,11 +173,16 @@ async def fetch_info(chat, event):
 
     try:
         is_channel_obj = True if isinstance(chat_obj_info, Channel) else False
-        async for admin in event.client.iter_participants(entity=chat.full_chat.id,
-                                                          filter=ChannelParticipantsAdmins() if is_channel_obj else None):
-            if isinstance(admin.participant, (ChannelParticipantCreator, ChatParticipantCreator)):
+        async for admin in (
+            event.client.iter_participants(entity=chat.full_chat.id,
+                                           filter=(ChannelParticipantsAdmins()
+                                                   if is_channel_obj else
+                                                   None))):
+            if isinstance(admin.participant, (ChannelParticipantCreator,
+                                              ChatParticipantCreator)):
                 owner_id = admin.id
-                owner_username = "@" + admin.username if admin.username else None
+                owner_username = ("@" + admin.username
+                                  if admin.username else None)
                 if not is_channel_obj:
                     break
             if is_channel_obj:
@@ -157,9 +212,16 @@ async def fetch_info(chat, event):
     elif owner_id and owner_firstname:
         caption += msgRep.OWNER_WITH_URL.format(owner_id, owner_firstname)
     if created:
-        caption += msgRep.CREATED_NOT_NULL.format(created.date().strftime('%b %d, %Y'), created.time(), created.tzinfo)
+        caption += msgRep.CREATED_NOT_NULL.format(
+            created.date().strftime('%b %d, %Y'),
+            created.time(),
+            created.tzinfo)
     else:
-        caption += msgRep.CREATED_NULL.format(chat_obj_info.date.date().strftime('%b %d, %Y'), chat_obj_info.date.time(), chat_obj_info.date.tzinfo, warn_emoji)
+        caption += msgRep.CREATED_NULL.format(
+            chat_obj_info.date.date().strftime('%b %d, %Y'),
+            chat_obj_info.date.time(),
+            chat_obj_info.date.tzinfo,
+            warn_emoji)
     caption += msgRep.DCID.format(dc_id)
     if messages_viewable is not None:
         caption += msgRep.VIEWABLE_MSG.format(messages_viewable)
@@ -182,7 +244,9 @@ async def fetch_info(chat, event):
     if banned_users:
         caption += msgRep.BANNEDCOUNT.format(banned_users)
     if group_stickers:
-        caption += msgRep.GRUP_STICKERS.format(chat.full_chat.stickerset.short_name, group_stickers)
+        caption += msgRep.GRUP_STICKERS.format(
+            chat.full_chat.stickerset.short_name,
+            group_stickers)
     caption += "\n"
     if broadcast or supergroup:
         caption += msgRep.LINKED_CHAT.format(linked_chat)
@@ -193,16 +257,20 @@ async def fetch_info(chat, event):
         caption += "\n"
     if not broadcast:
         caption += msgRep.SLW_MODE.format(slowmode)
-        if hasattr(chat_obj_info, "slowmode_enabled") and chat_obj_info.slowmode_enabled:
+        if hasattr(chat_obj_info, "slowmode_enabled") and \
+           chat_obj_info.slowmode_enabled:
             caption += msgRep.SLW_MODE_TIME.format(slowmode_time)
         else:
             caption += "\n\n"
     if hasattr(chat_obj_info, "restricted"):
         caption += msgRep.RESTR.format(restricted)
         if chat_obj_info.restricted:
-            caption += msgRep.PFORM.format(chat_obj_info.restriction_reason[0].platform)
-            caption += msgRep.REASON.format(chat_obj_info.restriction_reason[0].reason)
-            caption += msgRep.TEXT.format(chat_obj_info.restriction_reason[0].text)
+            caption += msgRep.PFORM.format(
+                chat_obj_info.restriction_reason[0].platform)
+            caption += msgRep.REASON.format(
+                chat_obj_info.restriction_reason[0].reason)
+            caption += msgRep.TEXT.format(
+                chat_obj_info.restriction_reason[0].text)
         else:
             caption += "\n"
     if hasattr(chat_obj_info, "scam") and chat_obj_info.scam:
@@ -213,6 +281,7 @@ async def fetch_info(chat, event):
         caption += msgRep.DESCRIPTION.format(description)
 
     return caption
+
 
 @ehandler.on(command="chatinfo", hasArgs=True, outgoing=True)
 async def chatinfo(event):
@@ -232,6 +301,7 @@ async def chatinfo(event):
 
     return
 
+
 @ehandler.on(command="chatid", outgoing=True)
 async def chatid(event):
     chat = await event.get_chat()
@@ -240,6 +310,7 @@ async def chatid(event):
     else:
         await event.edit(msgRep.CID_NO_GROUP)
     return
+
 
 @ehandler.on(command="getlink", hasArgs=True, outgoing=True)
 async def chatid(event):
@@ -263,7 +334,8 @@ async def chatid(event):
         return
 
     try:
-        result = await event.client(GetExportedChatInvitesRequest(chat.id, "me", 0))
+        result = await event.client(GetExportedChatInvitesRequest(chat.id,
+                                                                  "me", 0))
         text = msgRep.LINK_TEXT.format(chat.title) + ":\n"
         if result.invites:
             for link in result.invites:
@@ -284,8 +356,10 @@ async def chatid(event):
 
     return
 
+
 for cmd in ("chatinfo", "chatid", "getlink"):
-    register_cmd_usage(cmd, usageRep.CHATINFO_USAGE.get(cmd, {}).get("args"), usageRep.CHATINFO_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(cmd, usageRep.CHATINFO_USAGE.get(cmd, {}).get("args"),
+                       usageRep.CHATINFO_USAGE.get(cmd, {}).get("usage"))
 
 register_module_desc(descRep.CHATINFO_DESC)
 register_module_info(

@@ -12,20 +12,24 @@ from os.path import basename, join
 
 log = getLogger(__name__)
 
+
 class AccessError(Exception):
     __module__ = Exception.__module__
-    def __init__(self, message = "Access denied", *args, **kwargs):
+
+    def __init__(self, message="Access denied", *args, **kwargs):
         """
         Custom Exception to inform about inaccessibility
         """
         self.message = message
         super().__init__(self.message, *args, **kwargs)
 
+
 class _SysConfigurations:
     def __init__(self):
         """
-        Initialize HyperUBot's global configurations. SysConfigurations allows to store
-        configs into a dictionary to access them later with getConfig (see below).
+        Initialize HyperUBot's global configurations.
+        SysConfigurations allows to store configs into a dictionary
+        to access them later with getConfig (see below).
 
         Certain configs may be inaccessible due to security reasons
         """
@@ -47,10 +51,11 @@ class _SysConfigurations:
             addConfiguration("EXAMPLE_STR", "Test")
             addConfiguration("EXAMPLE_LIST", [25, "test"])
         """
-        module_caller = getouterframes(currentframe(), 2)[2].filename \
-                        if getouterframes(currentframe(), 2)[2].filename.endswith(
-                            join("userbot", "__init__.py")) \
-                        else getouterframes(currentframe(), 2)[1].filename
+        module_caller = (getouterframes(currentframe(), 2)[2].filename
+                         if getouterframes(
+                             currentframe(), 2)[2].filename.endswith(
+                                 join("userbot", "__init__.py")) else
+                         getouterframes(currentframe(), 2)[1].filename)
         if not module_caller.endswith(join("userbot", "__init__.py")):
             raise AccessError("Access to configurations denied")
         if config in self.__protect_configs:
@@ -81,8 +86,9 @@ class _SysConfigurations:
             if getouterframes(currentframe(), 2)[2].filename.endswith(caller):
                 valid_caller = True
                 break
-        module_caller = getouterframes(currentframe(), 2)[2].filename \
-                        if valid_caller else getouterframes(currentframe(), 2)[1].filename
+        module_caller = (getouterframes(currentframe(), 2)[2].filename
+                         if valid_caller else
+                         getouterframes(currentframe(), 2)[1].filename)
         valid_caller = False
         for caller in special_caller:
             if module_caller.endswith(caller):
@@ -91,7 +97,8 @@ class _SysConfigurations:
         if not valid_caller:
             raise AccessError("Access to configurations denied")
         if config == "UPDATE_COMMIT_ID" and \
-           not module_caller.endswith(join("userbot", "modules", "updater.py")):
+           not module_caller.endswith(
+               join("userbot", "modules", "updater.py")):
             raise AccessError("Access to {config} denied")
         if config in self.__botconfigs.keys():
             self.__botconfigs[config] = value
@@ -113,13 +120,16 @@ class _SysConfigurations:
         Returns:
             the value from config, default if config doesn't exist
         """
-        module_caller = getouterframes(currentframe(), 2)[2].filename \
-                        if not getouterframes(currentframe(), 2)[2].filename.endswith(__name__) \
-                        else getouterframes(currentframe(), 2)[1].filename
+        module_caller = (getouterframes(currentframe(), 2)[2].filename
+                         if not getouterframes(
+                             currentframe(), 2)[2].filename.endswith(
+                                 __name__) else
+                         getouterframes(currentframe(), 2)[1].filename)
         if not config:
             return default
         if config in self.__protect_configs:
-            raise AccessError(f"Access to '{config}' denied (requested by {basename(module_caller)})")
+            raise AccessError(f"Access to '{config}' denied "
+                              f"(requested by {basename(module_caller)})")
         if config in self.__botconfigs.keys():
             for key, value in self.__botconfigs.items():
                 if config == key:
@@ -127,6 +137,8 @@ class _SysConfigurations:
         return default
 
 _sysconfigs = _SysConfigurations()
+
+
 def addConfig(config: str, value):
     """
     Add new config to global configurations. Nothing will be added
@@ -139,6 +151,7 @@ def addConfig(config: str, value):
         log.warning(ae)
     return
 
+
 def setConfig(config: str, value):
     """
     Update an existing config. Only special caller can use this function
@@ -149,7 +162,8 @@ def setConfig(config: str, value):
         log.warning(ae)
     return
 
-def getConfig(config: str, default = None):
+
+def getConfig(config: str, default=None):
     """
     Get a config from global configurations.
 
@@ -172,4 +186,3 @@ def getConfig(config: str, default = None):
     except AccessError as ae:
         log.warning(ae)
     return default
-

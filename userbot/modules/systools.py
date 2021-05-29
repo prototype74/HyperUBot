@@ -7,12 +7,17 @@
 # compliance with the PE License
 
 from userbot import PROJECT, SAFEMODE
-from userbot.include.aux_funcs import event_log, sizeStrMaker, pinger, getGitReview
-from userbot.include.language_processor import (SystemToolsText as msgRep, ModuleDescriptions as descRep,
-                                                ModuleUsages as usageRep, getBotLangCode, getBotLang)
+from userbot.include.aux_funcs import (event_log, sizeStrMaker, pinger,
+                                       getGitReview)
+from userbot.include.language_processor import (SystemToolsText as msgRep,
+                                                ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep,
+                                                getBotLangCode, getBotLang)
 from userbot.sysutils.configuration import getConfig, setConfig
 from userbot.sysutils.event_handler import EventHandler
-from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
 from userbot.version import VERSION
 import userbot.include.cas_api as cas
 import userbot.include.git_api as git
@@ -29,8 +34,6 @@ from os import listdir
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
-
-# Module Global Variables
 STARTTIME = datetime.now()
 
 
@@ -47,6 +50,7 @@ def textProgressBar(barLength: int, totalVal, usedVal) -> str:
     bar_free = "-" * int(barLength - bar_used_length)
     return f"[{(bar_used + bar_free)}] {used_percentage}%"
 
+
 @ehandler.on(command="status", outgoing=True)
 async def statuschecker(stat):
     global STARTTIME
@@ -54,11 +58,14 @@ async def statuschecker(stat):
     uptime_hours = uptimebot.seconds // 3600  # (60 * 60)
     uptime_mins = uptimebot.seconds // 60 % 60
     uptime_secs = uptimebot.seconds % 60
-    uptimeSTR = f"{uptimebot.days} " + msgRep.DAYS + f", {uptime_hours:02}:{uptime_mins:02}:{uptime_secs:02}"
+    uptimeSTR = (f"{uptimebot.days} " + msgRep.DAYS +
+                 f", {uptime_hours:02}:{uptime_mins:02}:{uptime_secs:02}")
     uptimemachine = uptime()
     uptime_machine_converted = timedelta(seconds=uptimemachine)
     uptime_machine_array = str(uptime_machine_converted).split(" days, ")
-    if len(uptime_machine_array) == 1: # The package uses "days" when days up is equal or above 2, which fucks up math.
+    # The package uses "days" when days up is equal or above 2,
+    # which fucks up math.
+    if len(uptime_machine_array) == 1:
         uptime_machine_array = str(uptime_machine_converted).split(" day, ")
     if len(uptime_machine_array) < 2:
         uptime_machine_days = 0
@@ -71,13 +78,15 @@ async def statuschecker(stat):
         uptime_machine_hours = "0" + uptime_machine_hours
     uptime_machine_minutes = uptime_machine_time[1]
     uptime_machine_seconds = uptime_machine_time[2].split(".")[0]
-    uptimeMacSTR = f"{uptime_machine_days} " + msgRep.DAYS + f", {uptime_machine_hours}:{uptime_machine_minutes}:{uptime_machine_seconds}"
+    uptimeMacSTR = (f"{uptime_machine_days} " + msgRep.DAYS +
+                    f", {uptime_machine_hours}:{uptime_machine_minutes}:"
+                    f"{uptime_machine_seconds}")
     commit = None
     try:
         commit = await getGitReview()
     except:
         pass
-    rtt = pinger("1.1.1.1") #cloudfare's
+    rtt = pinger("1.1.1.1")  # cloudfare's
     reply = f"**{msgRep.SYSTEM_STATUS}**\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"
     reply += msgRep.VER_TEXT + "`" + VERSION + "`" + "\n"
@@ -98,6 +107,7 @@ async def statuschecker(stat):
     reply += msgRep.CASAPI_VER + "`" + cas.vercheck() + "`" + "\n"
     await stat.edit(reply)
     return
+
 
 @ehandler.on(command="storage", outgoing=True)
 async def storage(event):
@@ -126,9 +136,10 @@ async def storage(event):
     result += f"`{msgRep.STORAGE_FREE}: {sizeStrMaker(hdd.free)}`\n"
     result += f"`{msgRep.STORAGE_SYSTEM}: {sizeStrMaker(sys_size)}`\n"
     result += f"`{msgRep.STORAGE_USER}: {sizeStrMaker(user_size)}`\n"
-    result += f"`{msgRep.STORAGE_HDD} {textProgressBar(22, hdd.total, hdd.used)}`"
-
+    result += (f"`{msgRep.STORAGE_HDD} "
+               f"{textProgressBar(22, hdd.total, hdd.used)}`")
     await event.edit(result)
+
 
 @ehandler.on(command="shutdown", outgoing=True)
 async def shutdown(power_off):
@@ -137,18 +148,20 @@ async def shutdown(power_off):
         await event_log(power_off, "SHUTDOWN", custom_text=msgRep.SHUTDOWN_LOG)
     await power_off.client.disconnect()
 
+
 @ehandler.on(command="reboot", hasArgs=True, outgoing=True)
-async def restart(power_off): # Totally not a shutdown kang *sips whiskey*
+async def restart(power_off):  # Totally not a shutdown kang *sips whiskey*
     cmd_args = power_off.pattern_match.group(1).split(" ", 1)
     if cmd_args[0] == "safemode":
         setConfig("REBOOT_SAFEMODE", True)
     setConfig("REBOOT", True)
     await power_off.edit(msgRep.RESTART)
-    time.sleep(1) # just so we can actually see a message
+    time.sleep(1)  # just so we can actually see a message
     if getConfig("LOGGING"):
         await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
     await power_off.edit(msgRep.RESTARTED)
     await power_off.client.disconnect()
+
 
 @ehandler.on(command="sysd", outgoing=True)
 async def sysd(event):
@@ -160,6 +173,7 @@ async def sysd(event):
         log.warning(e)
         await event.edit(msgRep.SYSD_NEOFETCH_REQ)
     return
+
 
 @ehandler.on(command="sendlog", outgoing=True)
 async def send_log(event):
@@ -174,8 +188,11 @@ async def send_log(event):
         await event.edit(msgRep.FAILED_UPLD_LOG)
     return
 
+
 for cmd in ("status", "storage", "shutdown", "reboot", "sysd", "sendlog"):
-    register_cmd_usage(cmd, usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("args"), usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(cmd,
+                       usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("args"),
+                       usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("usage"))
 
 register_module_desc(descRep.SYSTOOLS_DESC)
 register_module_info(

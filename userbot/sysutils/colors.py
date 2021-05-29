@@ -18,12 +18,13 @@ try:
 except:
     pass
 
+
 class Color:
     RED = "\033[91m"
     GREEN = "\033[92m"
     YELLOW = "\033[93m"
     BLUE = "\033[94m"
-    MAGENTA ="\033[95m"
+    MAGENTA = "\033[95m"
     CYAN = "\033[96m"
     RED_DARK = "\033[31m"
     GREEN_DARK = "\033[32m"
@@ -33,12 +34,13 @@ class Color:
     CYAN_DARK = "\033[36m"
     END = "\033[0m"
 
+
 class ColorBG:
     RED = "\033[101m"
     GREEN = "\033[102m"
     YELLOW = "\033[103m"
     BLUE = "\033[104m"
-    MAGENTA ="\033[105m"
+    MAGENTA = "\033[105m"
     CYAN = "\033[106m"
     RED_DARK = "\033[41m"
     GREEN_DARK = "\033[42m"
@@ -47,6 +49,7 @@ class ColorBG:
     MAGENTA_DARK = "\033[45m"
     CYAN_DARK = "\033[46m"
     END = "\033[0m"
+
 
 def setColorText(text: str, color: Color) -> str:
     """
@@ -65,6 +68,7 @@ def setColorText(text: str, color: Color) -> str:
     if isWindows() and not _WIN_COLOR_ENABLED:
         return text
     return f"{color}{text}{Color.END}"
+
 
 def setColorTextBG(text: str, colorbg: ColorBG) -> str:
     """

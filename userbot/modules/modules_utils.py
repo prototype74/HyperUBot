@@ -8,11 +8,13 @@
 
 from userbot import SAFEMODE
 from userbot.include.aux_funcs import sizeStrMaker
-from userbot.include.language_processor import ModulesUtilsText as msgRep, ModuleUsages as usageRep
+from userbot.include.language_processor import (ModulesUtilsText as msgRep,
+                                                ModuleUsages as usageRep)
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
-from userbot.sysutils.registration import (getAllModules, getLoadModules, getUserModules,
-                                           getModuleDesc, getModuleInfo, getRegisteredCMDs,
+from userbot.sysutils.registration import (getAllModules, getLoadModules,
+                                           getUserModules, getModuleDesc,
+                                           getModuleInfo, getRegisteredCMDs,
                                            register_cmd_usage)
 from userbot.sysutils.sys_funcs import isMacOS, isWindows
 from logging import getLogger
@@ -23,6 +25,7 @@ from time import ctime
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 MODULES_LISTED = {}
+
 
 @ehandler.on(command="listcmds", alt="help", hasArgs=True, outgoing=True)
 async def list_commands(event):
@@ -84,13 +87,17 @@ async def list_commands(event):
             all_cmds += f"`{cmd}`\t\t\t\t"
     await event.edit(all_cmds)
 
+
 def update_list() -> list:
     modules_list = []
     for module, isRunning in getLoadModules().items():
         if not module == basename(__file__)[:-3]:  # exclude this module
             if module in getModuleInfo().keys():
                 # Append [Name of module, filename of module, running] -> []
-                modules_list.append([getModuleInfo().get(module, {}).get("name", msgRep.UNKNOWN), module, isRunning])
+                modules_list.append(
+                    [getModuleInfo().get(module, {}).get("name",
+                                                         msgRep.UNKNOWN),
+                     module, isRunning])
             else:
                 modules_list.append([module, module, isRunning])
 
@@ -106,6 +113,7 @@ def update_list() -> list:
         MODULES_LISTED[str(num)] = module
     return sorted(modules_list)
 
+
 def installed_modules() -> tuple:
     syspath = join(".", "userbot", "modules")
     userpath = join(".", "userbot", "modules_user")
@@ -119,25 +127,30 @@ def installed_modules() -> tuple:
             user_count += 1
     return (sys_count, user_count)
 
+
 def modules_listing(error_text: str = None) -> str:
     modules_listed = f"**Modules**\n\n"
 
     if error_text:
         modules_listed += f"{error_text}\n\n"
 
-    modules_listed += f"{msgRep.USAGE}:\n`.modules -d, --desc [{msgRep.NUMBER_OF_MODULE}]`\n"\
-                                       f"`.modules -i, --info [{msgRep.NUMBER_OF_MODULE}]`\n"\
-                                       f"`.modules -u, --usage [{msgRep.NUMBER_OF_MODULE}]`\n\n"
+    modules_listed += (f"{msgRep.USAGE}:\n`.modules -d, --desc "
+                       f"[{msgRep.NUMBER_OF_MODULE}]`\n"
+                       f"`.modules -i, --info [{msgRep.NUMBER_OF_MODULE}]`\n"
+                       f"`.modules -u, --usage "
+                       f"[{msgRep.NUMBER_OF_MODULE}]`\n\n")
 
     sys_count, user_count = installed_modules()
 
     modules_listed += f"`{msgRep.SYSTEM_MODULES}: {sys_count}`\n"
-    modules_listed += f"`{msgRep.USER_MODULES}: {user_count}`\n\n" if not SAFEMODE else "\n"
+    modules_listed += (f"`{msgRep.USER_MODULES}: {user_count}`\n\n"
+                       if not SAFEMODE else "\n")
 
     modules_listed += f"{msgRep.AVAILABLE_MODULES}:\n"
 
     modules_list = update_list()
-    all_running = all(ir == True for ir in [modules[-1] for modules in modules_list])
+    all_running = all(True for ir in [modules[-1] for modules in modules_list]
+                      if ir)
     num = 0
     warning = u"\u26A0"  # warn emoji
     user_modules = getUserModules()
@@ -146,14 +159,18 @@ def modules_listing(error_text: str = None) -> str:
         num += 1
         if module in user_modules:
             if isRunning:
-                modules_listed += f"`({str(num)}) {module_name}* ({module})`\n"
+                modules_listed += (f"`({str(num)}) {module_name}* "
+                                   f"({module})`\n")
             else:
-                modules_listed += f"`({str(num)}) {module_name}* ({module}) {warning}`\n"
+                modules_listed += (f"`({str(num)}) {module_name}* "
+                                   f"({module}) {warning}`\n")
         else:
             if isRunning:
-                modules_listed += f"`({str(num)}) {module_name} ({module})`\n"
+                modules_listed += (f"`({str(num)}) {module_name} "
+                                   f"({module})`\n")
             else:
-                modules_listed += f"`({str(num)}) {module_name} ({module}) {warning}`\n"
+                modules_listed += (f"`({str(num)}) {module_name} "
+                                   f"({module}) {warning}`\n")
 
     not_load_modules = getConfig("NOT_LOAD_MODULES")
 
@@ -180,20 +197,25 @@ def modules_listing(error_text: str = None) -> str:
             modules_listed += f"__{warning} = {msgRep.NOT_RUNNING_INFO}__\n"
     return modules_listed
 
+
 def module_desc(name_of_module: str, module: str) -> str:
     if module in getLoadModules().keys():
         if module in getModuleDesc().keys():
-            return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + getModuleDesc().get(module)
+            return (msgRep.NAME_MODULE.format(name_of_module) +
+                    "\n\n" + getModuleDesc().get(module))
         else:
-            return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + msgRep.MODULE_NO_DESC
+            return (msgRep.NAME_MODULE.format(name_of_module) +
+                    "\n\n" + msgRep.MODULE_NO_DESC)
     else:
         raise IndexError
+
 
 def module_info(name_of_module: str, module: str) -> str:
     if module in getLoadModules().keys():
         package_name, moduletype, installation_date = (msgRep.UNKNOWN,)*3
         size = 0
-        authors = getModuleInfo().get(module, {}).get("authors", msgRep.UNKNOWN)
+        authors = getModuleInfo().get(module, {}).get("authors",
+                                                      msgRep.UNKNOWN)
         version = getModuleInfo().get(module, {}).get("version", 0)
         package_name = module
         module += ".py"
@@ -226,6 +248,7 @@ def module_info(name_of_module: str, module: str) -> str:
         return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + result
     else:
         raise IndexError
+
 
 def module_usage(name_of_module: str, module: str) -> str:
     if module in getLoadModules().keys():
@@ -265,6 +288,7 @@ def module_usage(name_of_module: str, module: str) -> str:
         return usage
     else:
         raise IndexError
+
 
 @ehandler.on(command="modules", alt="module", hasArgs=True, outgoing=True)
 async def modules(event):
@@ -311,8 +335,18 @@ async def modules(event):
             elif usage:
                 await event.edit(module_usage(name_of_module, module_to_load))
         except IndexError:
-            await event.edit(modules_listing(msgRep.MODULE_NOT_AVAILABLE.format(sec_arg)))
+            await event.edit(modules_listing(
+                msgRep.MODULE_NOT_AVAILABLE.format(sec_arg)))
     return
 
-register_cmd_usage("listcmds", usageRep.MODULES_UTILS_USAGE.get("listcmds", {}).get("args"), usageRep.MODULES_UTILS_USAGE.get("listcmds", {}).get("usage"))
-register_cmd_usage("modules", usageRep.MODULES_UTILS_USAGE.get("modules", {}).get("args"), usageRep.MODULES_UTILS_USAGE.get("modules", {}).get("usage"))
+
+register_cmd_usage("listcmds",
+                   usageRep.MODULES_UTILS_USAGE.get(
+                       "listcmds", {}).get("args"),
+                   usageRep.MODULES_UTILS_USAGE.get(
+                       "listcmds", {}).get("usage"))
+register_cmd_usage("modules",
+                   usageRep.MODULES_UTILS_USAGE.get(
+                       "modules", {}).get("args"),
+                   usageRep.MODULES_UTILS_USAGE.get(
+                       "modules", {}).get("usage"))

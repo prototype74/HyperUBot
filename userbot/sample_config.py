@@ -7,31 +7,35 @@
 # compliance with the PE License
 
 from userbot import log
-from os.path import basename 
+from os.path import basename
 
-if basename(__file__).startswith("config") or basename(__file__).startswith("sample_config"):
-    log.error("Please do not just use this sample config as your main config. Create a new config.py in the same directory with a proper ConfigClass.")
+if basename(__file__).startswith("config") or \
+   basename(__file__).startswith("sample_config"):
+    log.error("Please do not just use this sample config as "
+              "your main config. Create a new config.py in the same "
+              "directory with a proper ConfigClass.")
     quit(1)
 
+
 class ConfigClass(object):
-    ### Required configurations
+    # Required configurations
     #
-    # API KEY and HASH are 2 identification numbers to log in into your Telegram API appliaction-
-    # If you don't have any yet, create a new application at https://my.telegram.org
+    # API KEY and HASH are 2 identification numbers to log in
+    # into your Telegram API appliaction. If you don't have any yet,
+    # create a new application at https://my.telegram.org
     # and put your API IDs to the corresponding configs below
     #
     # Note: Do NOT share your API KEY and HASH with anyone else!
     #
-    API_KEY = ""  #  Your API KEY
-    API_HASH = ""  #  Your API HASH
+    API_KEY = ""  # Your API KEY
+    API_HASH = ""  # Your API HASH
 
     #
     # Needed to log in into your user account
     #
     STRING_SESSION = ""  # Your string session
 
-
-    ### Optional configurations
+    # Optional configurations
     #
     # Userbot display language. Default is english ('en')
     #
@@ -56,7 +60,7 @@ class ConfigClass(object):
     #
     # Community extra repos, leave as list of strings (or not)
     # The format of the repo should be "<github_username>/<github_repo>"
-    # Example: "nunopenim/modules-universe", although this is not a community repo :)
+    # Example: "nunopenim/modules-universe", although this is not a
+    #          community repo :)
     #
     COMMUNITY_REPOS = []
-

@@ -9,21 +9,22 @@
 from sys import version_info
 
 if (version_info.major, version_info.minor) < (3, 8):
-    print("Python v3.8+ is required! Please update "\
-          "Python to v3.8 or newer "\
+    print("Python v3.8+ is required! Please update "
+          "Python to v3.8 or newer "
           "(current version: {}.{}.{}).".format(
               version_info.major, version_info.minor, version_info.micro))
     quit(1)
 
-from glob import glob
-from json import loads
-from platform import system
-from shutil import copytree, rmtree
-from subprocess import check_call, DEVNULL
-from sys import argv, executable, platform
-from urllib.request import urlopen, urlretrieve
-from zipfile import BadZipFile, LargeZipFile, ZipFile, ZIP_DEFLATED
-import os
+from glob import glob  # noqa: E402
+from json import loads  # noqa: E402
+from platform import system  # noqa: E402
+from shutil import copytree, rmtree  # noqa: E402
+from subprocess import check_call, DEVNULL  # noqa: E402
+from sys import argv, executable, platform  # noqa: E402
+from urllib.request import urlopen, urlretrieve  # noqa: E402
+from zipfile import (BadZipFile, LargeZipFile,
+                     ZipFile, ZIP_DEFLATED)  # noqa: E402
+import os  # noqa: E402
 
 RECOVERY_NAME = os.path.basename(__file__)
 VERSION = "2.0.0"
@@ -32,9 +33,9 @@ GIT = os.path.join(".", ".git")
 GITIGNORE = os.path.join(".", ".gitignore")
 RELEASE_DIR = os.path.join(".", "releases")
 UPDATE_PACKAGE = os.path.join(RELEASE_DIR, "update.zip")
-PY_EXEC = executable if not " " in executable else '"' + executable + '"'
-IS_WINDOWS = True if system().lower() == "windows" or \
-             os.name == "nt" or platform.startswith("win") else False
+PY_EXEC = executable if " " not in executable else '"' + executable + '"'
+IS_WINDOWS = (True if system().lower() == "windows" or
+              os.name == "nt" or platform.startswith("win") else False)
 WIN_COLOR_ENABLED = False
 
 try:
@@ -44,6 +45,7 @@ try:
         WIN_COLOR_ENABLED = True
 except:
     pass
+
 
 class Colors:
     CYAN = "\033[96m"
@@ -57,10 +59,12 @@ class Colors:
     YELLOW_BG = "\033[103m"
     END = "\033[0m"
 
+
 def setColorText(text: str, color: Colors) -> str:
     if IS_WINDOWS and not WIN_COLOR_ENABLED:
         return text  # don't use ANSI codes
     return f"{color}{text}{Colors.END}"
+
 
 class _Recovery:
     def __init__(self):
@@ -94,7 +98,7 @@ class _Recovery:
                     do_not_list.append(element)
         for name in os.listdir(source):
             srcname = os.path.join(source, name)
-            if not srcname in do_not_list:
+            if srcname not in do_not_list:
                 listed_dirs.append(srcname)
                 if os.path.isdir(srcname):
                     for elem in self._list_dirs(srcname, ignore):
@@ -113,7 +117,7 @@ class _Recovery:
                     for name in glob(path):
                         dir_name = os.path.dirname(name)
                         dir_name = os.path.join(".", dir_name)
-                        if not dir_name in paths:
+                        if dir_name not in paths:
                             paths.append(dir_name)
                         paths.append(os.path.join(".", name))
                         if os.path.isdir(name):
@@ -122,7 +126,7 @@ class _Recovery:
                 elif os.path.isdir(path):
                     paths.append(os.path.join(".", path))
                     for elem in self._list_dirs(path):
-                       paths.append(os.path.join(".", elem))
+                        paths.append(os.path.join(".", elem))
                 else:
                     paths.append(os.path.join(".", path))
         except Exception as e:
@@ -177,9 +181,9 @@ class _Recovery:
             with open(ver_py, "r") as script:
                 for line in script.readlines():
                     if not line.startswith("#") and not line == "\n" and \
-                       line.startswith("VERSION="):
-                        if line.split("=")[1]:
-                            version = line.split("=")[1]
+                       line.startswith("VERSION = "):
+                        if line.split(" = ")[1]:
+                            version = line.split(" = ")[1]
                             version = version.replace("\n", "")
                         break
             if '"' in version:
@@ -199,6 +203,7 @@ class _Recovery:
         if os.path.exists(GIT) and os.path.isdir(GIT):
             return 1
         return 0
+
 
 class _Backup(_Recovery):
     def __init__(self):
@@ -224,8 +229,8 @@ class _Backup(_Recovery):
             paths = open(os.path.join(".", "list.paths"), "w")
             list_paths = self._list_dirs(".")
             for name in list_paths:
-                 if not name == os.path.join(".", "list.paths"):
-                     paths.write(f"{name}\n")
+                if not name == os.path.join(".", "list.paths"):
+                    paths.write(f"{name}\n")
             paths.close()
             with ZipFile(bkName, "w", ZIP_DEFLATED) as bkZIP:
                 for name in list_paths:
@@ -243,6 +248,7 @@ class _Backup(_Recovery):
             print(setColorText(
                 f"Failed to generate backup archive: {e}", Colors.RED))
         return
+
 
 class _Installer(_Recovery):
     def __init__(self):
@@ -282,7 +288,7 @@ class _Installer(_Recovery):
 
         try:
             print("Parsing latest release data...")
-            repo_url = urlopen("https://api.github.com/repos/nunopenim/"\
+            repo_url = urlopen("https://api.github.com/repos/nunopenim/"
                                "HyperUBot/releases/latest")
             repo_data = loads(repo_url.read().decode())
             dw_url = repo_data.get("zipball_url")
@@ -317,8 +323,8 @@ class _Installer(_Recovery):
         self.__get_latest_release()
 
         if not self.__download_successful:
-           print(setColorText("Installation aborted.", Colors.YELLOW))
-           return
+            print(setColorText("Installation aborted.", Colors.YELLOW))
+            return
 
         print("Extracting update package...")
         self.__extract_update_package()
@@ -369,6 +375,7 @@ class _Installer(_Recovery):
     def getInstallationSuccessful(self):
         return self.__installation_successful
 
+
 class _Restore(_Recovery):
     def __init__(self):
         super().__init__()
@@ -385,7 +392,7 @@ class _Restore(_Recovery):
                     srcname = os.path.join(BACKUP_DIR, name)
                     bk_dict[str(num)] = {"bkname": name.split(".hbotbk")[0],
                                          "source": srcname}
-                    num +=1
+                    num += 1
         except Exception as e:
             print(setColorText(
                 f"Failed to list backup directory: {e}", Colors.RED))
@@ -443,7 +450,7 @@ class _Restore(_Recovery):
             for name in contents:
                 for uname in userbot:
                     if uname == name:
-                        result +=1
+                        result += 1
             if not self.__comparePaths(contents, list_paths) or \
                not result == len(userbot):
                 print(setColorText(f"{bkSource}: Invalid archive format!",
@@ -475,6 +482,7 @@ class _Restore(_Recovery):
             print(setColorText(
                 f"Failed to restore backup archive: {e}", Colors.RED))
         return
+
 
 class _Updater(_Recovery):
     def __init__(self, commit_id: str):
@@ -528,7 +536,7 @@ class _Updater(_Recovery):
             with open(GITIGNORE, "r") as git:
                 for line in git.readlines():
                     if not line.startswith("#") and not line == "\n" and \
-                       not "__pycache__" in line:
+                       "__pycache__" not in line:
                         line = line.split("#")[0].rstrip()
                         if IS_WINDOWS:
                             line = line.replace("/", "\\")
@@ -536,7 +544,7 @@ class _Updater(_Recovery):
                             for name in glob(line):
                                 dir_name = os.path.dirname(name)
                                 dir_name = os.path.join(".", dir_name)
-                                if not dir_name in ignore_paths:
+                                if dir_name not in ignore_paths:
                                     ignore_paths.append(dir_name)
                                 ignore_paths.append(os.path.join(".", name))
                                 if os.path.isdir(name):
@@ -592,35 +600,35 @@ class _Updater(_Recovery):
                          os.path.join(".", RECOVERY_NAME)]
         for name in self._fix_paths(["__pycache__/*"]):
             always_ignore.append(name)
-        parse_gitignore = rules.PARSE_GITIGNORE \
-                          if hasattr(rules, "PARSE_GITIGNORE") and \
-                          isinstance(rules.PARSE_GITIGNORE, bool) else False
-        force_delete = rules.DEL if hasattr(rules, "DEL") and \
-                       isinstance(rules.DEL, list) else []
-        rules_ignore = rules.IGNORE if hasattr(rules, "IGNORE") and \
-                       isinstance(rules.IGNORE, list) else []
+        parse_gitignore = (rules.PARSE_GITIGNORE
+                           if hasattr(rules, "PARSE_GITIGNORE") and
+                           isinstance(rules.PARSE_GITIGNORE, bool) else False)
+        force_delete = (rules.DEL if hasattr(rules, "DEL") and
+                        isinstance(rules.DEL, list) else [])
+        rules_ignore = (rules.IGNORE if hasattr(rules, "IGNORE") and
+                        isinstance(rules.IGNORE, list) else [])
 
         if force_delete:
-           force_delete = self._fix_paths(force_delete)
+            force_delete = self._fix_paths(force_delete)
 
         if rules_ignore:
-           rules_ignore = self._fix_paths(rules_ignore)
-           for name in rules_ignore:
-              always_ignore.append(name)
+            rules_ignore = self._fix_paths(rules_ignore)
+            for name in rules_ignore:
+                always_ignore.append(name)
 
         ignore = []
         if parse_gitignore:
             try:
-              print("Parsing gitignore...")
-              if os.path.exists(GITIGNORE):
-                 git_ignore = self.__parse_gitignore()
-                 for elem in git_ignore:
-                    if not elem == os.path.join(".", "userbot"):
-                        ignore.append(elem)
+                print("Parsing gitignore...")
+                if os.path.exists(GITIGNORE):
+                    git_ignore = self.__parse_gitignore()
+                    for elem in git_ignore:
+                        if not elem == os.path.join(".", "userbot"):
+                            ignore.append(elem)
             except Exception as e:
-               print(
-                   setColorText(f"Failed to parse gitgignore: {e}",
-                                Colors.YELLOW))
+                print(
+                    setColorText(f"Failed to parse gitgignore: {e}",
+                                 Colors.YELLOW))
 
         # Everything afterwards will modify bot files/directories
         self.__modify_started = True
@@ -710,8 +718,10 @@ _option_table = {
                   "func": "X"}
     }
 
+
 def _get_option(name, val):
     return _option_table.get(name, {}).get(val)
+
 
 def _update_option_table(recovery: _Recovery):
     bot_installed = recovery.userbot_installed()
@@ -729,12 +739,13 @@ def _update_option_table(recovery: _Recovery):
             # status 2 is preferred
             if is_git_repo and not val.get("status") == 2:
                 _option_table[key]["status"] = 1
-            elif val.get("status") and \
-                 not val.get("status") == 2:  # reset warning
+            elif (val.get("status") and
+                  not val.get("status") == 2):  # reset warning
                 _option_table[key]["status"] = 0
         if not val.get("num"):
             _option_table[key]["num"] = str(i)
     return
+
 
 def _update_info(recovery: _Recovery, show_version: bool = True):
     bot_installed = recovery.userbot_installed()
@@ -752,8 +763,11 @@ def _update_info(recovery: _Recovery, show_version: bool = True):
                            Colors.YELLOW))
     return
 
+
 _modified = False  # in case of modifications
-def _apply_update(auto: bool, commit_id = None):
+
+
+def _apply_update(auto: bool, commit_id=None):
     cid = commit_id
     if not auto:
         try:
@@ -779,19 +793,19 @@ def _apply_update(auto: bool, commit_id = None):
         _modified = True
     elif updater.getModifyStarted():
         print(setColorText("Update failed", Colors.RED_BG))
-        print(setColorText("Important data might be lost. "\
-                           "Please restore a backup if available or "\
+        print(setColorText("Important data might be lost. "
+                           "Please restore a backup if available or "
                            "reinstall HyperUBot!",
                            Colors.RED))
     return
 
+
 def _create_backup():
     backup = _Backup()
     if not backup.userbot_installed():
-       print(setColorText("Failed to backup current version: "\
-                          "HyperUBot not installed",
-                          Colors.RED))
-       return
+        print(setColorText("Failed to backup current version: "
+                           "HyperUBot not installed", Colors.RED))
+        return
 
     temp = None
     try:
@@ -811,7 +825,7 @@ def _create_backup():
     if backup.backup_exists(bkName):
         try:
             while True:
-                temp = input(f"A backup of '{bkName}' exists already.\n"\
+                temp = input(f"A backup of '{bkName}' exists already.\n"
                              "Overwrite? (y/n): ")
                 if temp.lower() in ("yes", "y"):
                     break
@@ -825,6 +839,7 @@ def _create_backup():
             return
     backup.generate_backup(bkName)
     return
+
 
 def _restore_backup():
     restore = _Restore()
@@ -857,7 +872,7 @@ def _restore_backup():
             selected_backup = value
             break
     bkName = selected_backup.get("bkname")
-    print(f"Are you sure you want to restore '{bkName}'?\n" +\
+    print(f"Are you sure you want to restore '{bkName}'?\n" +
           setColorText("THIS PROCESS CANNOT BE UNDONE!", Colors.RED))
     try:
         while True:
@@ -877,13 +892,14 @@ def _restore_backup():
     _modified = True
     return
 
+
 def _reinstall_userbot():
     print(
-        setColorText("This process will delete all downloaded user modules, "\
-                     "your configurations including your string "\
-                     "session and any other data in HyperUBot's root "\
-                     "directory. Please backup your data before you continue. "\
-                     "At last, the latest release will be "\
+        setColorText("This process will delete all downloaded user modules, "
+                     "your configurations including your string "
+                     "session and any other data in HyperUBot's root "
+                     "directory. Please backup your data before you continue. "
+                     "At last, the latest release will be "
                      "installed automatically.",
                      Colors.YELLOW))
     print(
@@ -912,6 +928,7 @@ def _reinstall_userbot():
     _modified = True
     return
 
+
 def _print_table():
     for key in _option_table.keys():
         num = _get_option(key, "num")
@@ -924,9 +941,10 @@ def _print_table():
             print(f"[{num}] {name}")
     return
 
+
 def _menues(recovery: _Recovery):
     while True:
-        #### update table
+        # update table
         global _modified
         _update_option_table(recovery)
         _update_info(recovery, _modified)
@@ -966,8 +984,9 @@ def _menues(recovery: _Recovery):
             print(setColorText("Invalid input!", Colors.YELLOW))
     return
 
+
 def main():
-    #### INIT
+    # INIT
     args = argv
     auto_updater = False
     print("HyperUBot Recovery System")
@@ -991,9 +1010,10 @@ def main():
         _apply_update(True, commit_id)
         return
 
-    #### MAIN
+    # MAIN
     _menues(recovery)
     return
+
 
 if __name__ == "__main__":
     try:

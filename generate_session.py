@@ -9,21 +9,21 @@
 from sys import version_info
 
 if (version_info.major, version_info.minor) < (3, 8):
-   print("Python v3.8+ is required! Please update "\
-         "Python to v3.8 or newer "\
-         "(current version: {}.{}.{}).".format(
+    print("Python v3.8+ is required! Please update "
+          "Python to v3.8 or newer "
+          "(current version: {}.{}.{}).".format(
              version_info.major, version_info.minor, version_info.micro))
-   quit(1)
+    quit(1)
 
-from os import name
-from platform import system
-from sys import platform
-from telethon import version
-from telethon.sync import TelegramClient
-from telethon.sessions import StringSession
+from os import name  # noqa: E402
+from platform import system  # noqa: E402
+from sys import platform  # noqa: E402
+from telethon import version  # noqa: E402
+from telethon.sync import TelegramClient  # noqa: E402
+from telethon.sessions import StringSession  # noqa: E402
 
-IS_WINDOWS = True if system().lower() == "windows" or \
-             name == "nt" or platform.startswith("win") else False
+IS_WINDOWS = (True if system().lower() == "windows" or
+              name == "nt" or platform.startswith("win") else False)
 WIN_COLOR_ENABLED = False
 
 try:
@@ -34,11 +34,13 @@ try:
 except:
     pass
 
+
 class Colors:
     GREEN = "\033[92m"
     RED = "\033[91m"
     YELLOW = "\033[93m"
     END = "\033[0m"
+
 
 def setColorText(text: str, color: Colors) -> str:
     if IS_WINDOWS and not WIN_COLOR_ENABLED:
@@ -48,20 +50,25 @@ def setColorText(text: str, color: Colors) -> str:
 telethon_version = tuple(map(int, version.__version__.split(".")))
 if telethon_version < (1, 21, 1):
     print(setColorText(
-        "Telethon version 1.21.1+ is required! Please update Telethon to v1.21.1 "\
-        f"or newer (current version: {version.__version__}).", Colors.RED))
+        "Telethon version 1.21.1+ is required! Please update "
+        "Telethon to v1.21.1 or newer "
+        f"(current version: {version.__version__}).", Colors.RED))
     quit(1)
 
-print("Welcome to HyperUBot's String Session generator!\n"\
-"Get a new String Session from your Telegram account with the help of this script.\n\n"\
-"Important: If not done yet, please go to https://my.telegram.org and\n"\
-"1. log in into your account\n"\
-"2. create a new application\n"\
-"3. get your API Key and Hash (do NOT share these IDs with anyone else!)\n\n"\
-"Please keep the following requirements ready to obtain a new String Session:\n"\
-"- Your Telegram application's API Key and Hash (to access your application)\n"\
-"- Your Phone Number (required to log in into your account)\n"\
-"- Your Account's password (Two-Step Verification; if enabled)\n")
+print("Welcome to HyperUBot's String Session generator!\n"
+      "Get a new String Session from your Telegram account with the help of "
+      "this script.\n\n"
+      "Important: If not done yet, please go to https://my.telegram.org and\n"
+      "1. log in into your account\n"
+      "2. create a new application\n"
+      "3. get your API Key and Hash (do NOT share these IDs with "
+      "anyone else!)\n\n"
+      "Please keep the following requirements ready to obtain a new "
+      "String Session:\n"
+      "- Your Telegram application's API Key and Hash (to access your "
+      "application)\n"
+      "- Your Phone Number (required to log in into your account)\n"
+      "- Your Account's password (Two-Step Verification; if enabled)\n")
 
 try:
     while True:
@@ -86,8 +93,8 @@ try:
         if len(API_HASH) == 32:
             break
         elif len(API_HASH) > 0:
-            print(setColorText("Invalid input. API Hash has a length of 32 characters",
-                               Colors.YELLOW))
+            print(setColorText("Invalid input. API Hash has a length of "
+                               "32 characters", Colors.YELLOW))
         else:
             print(setColorText("Invalid input. Try again...", Colors.YELLOW))
 except KeyboardInterrupt:
@@ -99,11 +106,13 @@ try:
     with client:
         print("This long string below is your new String Session:\n\n")
         print(client.session.save())
-        print("\n\nPlease keep this string to a safe place and copy it "\
-              "to your bot's config.* file (STRING_SESSION=\"YOUR_NEW_STRING\")")
+        print("\n\nPlease keep this string to a safe place and copy it "
+              "to your bot's config.* file "
+              "(STRING_SESSION=\"YOUR_NEW_STRING\")")
 except KeyboardInterrupt:
     print("Exiting...")
 except Exception as e:
-    print(setColorText(f"Unable to obtain new string session: {e}", Colors.RED))
+    print(setColorText(f"Unable to obtain new string session: {e}",
+                       Colors.RED))
     quit(1)
 quit()

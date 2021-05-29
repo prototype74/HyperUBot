@@ -20,14 +20,16 @@ from icmplib import ping
 
 log = getLogger(__name__)
 
-async def fetch_user(event=None, full_user=False, get_chat=False, org_author=False):
+async def fetch_user(event=None, full_user=False,
+                     get_chat=False, org_author=False):
     """
     Fetch the user (and chat) information from event
 
     Args:
         event (Event): any event e.g. NewMessage
         full_user (bool): fetch FullUser object instead
-        get_chat (bool): fetches Chat/Channel object to. This changes the return to a tuple
+        get_chat (bool): fetches Chat/Channel object to.
+                         This changes the return to a tuple
         org_author (bool): focus to original author of a replied message
 
     Example:
@@ -39,13 +41,15 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
     Returns:
         - User object (default) or
         - FullUser object if full_user is set to True or
-        - A tuple ((User, Chat/Channel) or (FullUser, Chat/Channel)) if get_chat is set to True
+        - A tuple ((User, Chat/Channel) or (FullUser, Chat/Channel))
+          if get_chat is set to True
     """
     if not event:
         return (None, None) if get_chat else None
     if event.reply_to_msg_id:
         message = await event.get_reply_message()
-        if message.fwd_from and isinstance(message.fwd_from.from_id, PeerChannel):
+        if message.fwd_from and isinstance(message.fwd_from.from_id,
+                                           PeerChannel):
             # focus to forwarder if forwarded message is from a channel
             if message.from_id and isinstance(message.from_id, PeerUser):
                 user = message.from_id.user_id
@@ -56,7 +60,8 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
         elif message.fwd_from and message.fwd_from.from_id and org_author:
             user = message.fwd_from.from_id.user_id
         else:
-            user = message.from_id.user_id if message.from_id else message.sender_id
+            user = (message.from_id.user_id
+                    if message.from_id else message.sender_id)
         chat_obj = await event.get_chat() if get_chat else None  # current chat
         if not user:
             await event.edit(msgsLang.PERSON_ANONYMOUS)
@@ -75,8 +80,10 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
                     pass
 
                 try:
-                    chat_obj = await event.client.get_entity(chat) if get_chat else None
-                    if type(chat_obj) is User:  # entity is not a chat or channel object
+                    chat_obj = (await event.client.get_entity(chat)
+                                if get_chat else None)
+                    # entity is not a chat or channel object
+                    if type(chat_obj) is User:
                         chat_obj = None
                 except Exception as e:
                     log.warning(e)
@@ -104,16 +111,18 @@ async def fetch_user(event=None, full_user=False, get_chat=False, org_author=Fal
         else:
             user_obj = await event.client.get_entity(user)
             if not type(user_obj) is User:
-               await event.edit(msgsLang.ENTITY_NOT_USER)
-               user_obj = None
+                await event.edit(msgsLang.ENTITY_NOT_USER)
+                user_obj = None
         return (user_obj, chat_obj) if get_chat else user_obj
     except Exception as e:
         log.warning(e)
         await event.edit(msgsLang.CANT_FETCH_REQ_AS_USER.format(user))
     return (None, chat_obj) if get_chat else None
 
-async def event_log(event, event_name: str, user_name=None, user_id=None, username=None,
-                    chat_title=None, chat_link=None, chat_id=None, custom_text=None):
+
+async def event_log(event, event_name: str, user_name=None,
+                    user_id=None, username=None, chat_title=None,
+                    chat_link=None, chat_id=None, custom_text=None):
     """
     Log any event by sending a message to the targeted chat
 
@@ -132,12 +141,14 @@ async def event_log(event, event_name: str, user_name=None, user_id=None, userna
         @ehandler.on(command="example", outgoing=True)
         async def example_handler(event):
             user = fetch_user(event)
-            await event_log(event, "BAN", user_name=user.first_name, chat_id=event.chat_id)
+            await event_log(event, "BAN", user_name=user.first_name,
+                            chat_id=event.chat_id)
     """
     log_chat_id = getConfig("LOGGING_CHATID")
 
     if not log_chat_id:
-        log.warning(f"EVENT_LOG logging event '{event_name}' failed: LOGGING_CHATID is not set")
+        log.warning(f"EVENT_LOG logging event '{event_name}' failed: "
+                    "LOGGING_CHATID is not set")
         return
 
     text = f"**{event_name}**\n"
@@ -164,6 +175,7 @@ async def event_log(event, event_name: str, user_name=None, user_id=None, userna
         log.warning(f"EVENT_LOG ({event_name}): {e}")
     return
 
+
 def isRemoteCMD(event, chat_id: int) -> bool:
     """
     Check if chat id from event matches chat_id. By this we can ensure if
@@ -187,11 +199,14 @@ def isRemoteCMD(event, chat_id: int) -> bool:
         A boolean
     """
     try:
-        chat_from_event = int(str(event.chat_id)[3:]) if str(event.chat_id).startswith("-100") else event.chat_id
+        chat_from_event = (int(str(event.chat_id)[3:])
+                           if str(event.chat_id).startswith("-100") else
+                           event.chat_id)
         return True if not chat_id == chat_from_event else False
     except Exception as e:
         log.error(e)
     return False
+
 
 def format_chat_id(chat) -> int:
     """
@@ -221,6 +236,7 @@ def format_chat_id(chat) -> int:
         log.error(f"Failed to format chat id")
     return chat_id
 
+
 def strlist_to_list(strlist: str) -> list:
     """
     Casting string formatted list to a real list
@@ -242,6 +258,7 @@ def strlist_to_list(strlist: str) -> list:
     except:
         list_obj = []
     return list_obj
+
 
 def str_to_bool(strbool: str) -> bool:
     """
@@ -267,6 +284,7 @@ def str_to_bool(strbool: str) -> bool:
         return False
     raise ValueError(f"{strbool} is not a bool")
 
+
 def shell_runner(commands: list):
     """
     Execute shell commands from given list with strings
@@ -289,6 +307,7 @@ def shell_runner(commands: list):
     except CalledProcessError:
         return None
 
+
 # Systools/Webtools
 def pinger(address) -> str:
     """
@@ -304,11 +323,13 @@ def pinger(address) -> str:
         Ping result as a string
     """
     try:
-        result = ping(address, count=1, interval=0.1, timeout=2, privileged=False)
+        result = ping(address, count=1, interval=0.1,
+                      timeout=2, privileged=False)
         return f"{result.avg_rtt} ms"
     except:
         try:
-            out = check_output(f"ping -c 1 {address} | grep time=", shell=True).decode()
+            out = check_output(
+                f"ping -c 1 {address} | grep time=", shell=True).decode()
             splitOut = out.split(" ")
             stringtocut = ""
             for line in splitOut:
@@ -323,6 +344,7 @@ def pinger(address) -> str:
             log.warning(f"pinger: {e}")
     return "-- ms"
 
+
 async def getGitReview():
     """
     Get the last commit ID from .git inside root directory
@@ -335,12 +357,14 @@ async def getGitReview():
     """
     commit = msgsLang.ERROR
     if which("git") is not None:
-        ver = await asyncr("git", "describe", "--all", "--long", stdout=asyncPIPE, stderr=asyncPIPE)
+        ver = await asyncr("git", "describe", "--all", "--long",
+                           stdout=asyncPIPE, stderr=asyncPIPE)
         stdout, stderr = await ver.communicate()
         verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
         verdiv = verout.split("-")
         commit = verdiv[2]
     return commit
+
 
 # Package Manager
 def sizeStrMaker(size: float, value: int = 0):

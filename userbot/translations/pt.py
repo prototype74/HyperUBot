@@ -10,27 +10,32 @@
 
 NAME = "Português"
 
-class AdminText(object): # Admin module
+
+class AdminText(object):
     ADMINS_IN_CHAT = "Administradores em **{}**"
-    UNABLE_GET_ADMINS = "`Não foi possível obter os administratores neste chat`"
+    UNABLE_GET_ADMINS = ("`Não foi possível obter os administratores "
+                         "neste chat`")
     FAIL_CHAT = "`Não foi possível identificar o chat!`"
     NO_GROUP_CHAN = "`Este chat não é um grupo ou canal!`"
-    NO_GROUP_CHAN_ARGS = "`Este chat, ou o chat dado, não é um grupo ou canal!`"
-    NO_ADMIN = "`São necessários privilégios de Admin para executar esta ação!`"
-    NO_BAN_PRIV = "`É necessária permissão para Banir utilizadores para executar esta ação!`"
+    NO_GROUP_CHAN_ARGS = ("`Este chat, ou o chat dado, não é um grupo ou "
+                          "canal!`")
+    NO_ADMIN = ("`São necessários privilégios de Admin para executar "
+                "esta ação!`")
+    NO_BAN_PRIV = ("`É necessária permissão para Banir utilizadores para "
+                   "executar esta ação!`")
     DELETED_ACCOUNT = "Conta excluída"
     CANNOT_BAN_SELF = "`Não posso banir-me a mim próprio!`"
     CANNOT_BAN_ADMIN = "`Não posso banir este admin`"
-    BAN_SUCCESS_REMOTE = "{} foi banido de **{}**"  # user name, chat tile
-    BAN_SUCCESS = "{} foi banido!"  # user name
+    BAN_SUCCESS_REMOTE = "{} foi banido de **{}**"
+    BAN_SUCCESS = "{} foi banido!"
     BAN_FAILED = "`Falha ao banir esta pessoa!`"
     CANNOT_UNBAN_SELF = "`Não posso desbanir-me a mim próprio`"
-    UNBAN_SUCCESS_REMOTE = "{} foi desbanido de **{}**"  # user name, chat tile
-    UNBAN_SUCCESS = "{} foi desbanido!"  # user name
+    UNBAN_SUCCESS_REMOTE = "{} foi desbanido de **{}**"
+    UNBAN_SUCCESS = "{} foi desbanido!"
     UNBAN_FAILED = "`Falha ao desbanir esta pessoa!`"
     CANNOT_KICK_SELF = "`Não me posso kickar a mim mesmo`"
-    KICK_SUCCESS_REMOTE = "{} foi kickado de **{}**"  # user name, chat tile
-    KICK_SUCCESS = "{} foi kickado!"  # user name
+    KICK_SUCCESS_REMOTE = "{} foi kickado de **{}**"
+    KICK_SUCCESS = "{} foi kickado!"
     KICK_FAILED = "`Falha ao kickar esta pessoa!`"
     PERSON_ANONYMOUS = "Este utilizador é anónimo"
     CANNOT_PROMOTE_CHANNEL = "Não consigo promover um canal!"
@@ -39,36 +44,41 @@ class AdminText(object): # Admin module
     CANNOT_PROMOTE_SELF = "`Não me posso promover a mim próprio!`"
     ADMIN_ALREADY_SELF = "`Já sou imortal!`"
     ADMIN_ALREADY = "`Esta pessoa já é imortal!`"
-    ADMIN_NOT_ENOUGH_PERMS = "`Não tenho direitos de administração suficientes para promover esta pessoa!`"
-    ADD_ADMINS_REQUIRED = "`Permissão para adicionar administradores é requerida.`"
-    PROMOTE_SUCCESS = "{} foi promovido com poderes imortais!"  # user name
+    ADMIN_NOT_ENOUGH_PERMS = ("`Não tenho direitos de administração "
+                              "suficientes para promover esta pessoa!`")
+    ADD_ADMINS_REQUIRED = ("`Permissão para adicionar administradores é "
+                           "requerida.`")
+    PROMOTE_SUCCESS = "{} foi promovido com poderes imortais!"
     TOO_MANY_ADMINS = "`Este chat já tem muitos administradores`"
-    EMOJI_NOT_ALLOWED = "`Não são permitidos emojis nos títulos de administradores`"
+    EMOJI_NOT_ALLOWED = ("`Não são permitidos emojis nos títulos de "
+                         "administradores`")
     GET_ENTITY_FAILED = "Falha ao obter identidade."
     PROMOTE_FAILED = "`Falha ao promover esta pessoa.`"
     CANNOT_DEMOTE_CHANNEL = "Não consigo despromover um canal!"
     NO_ONE_TO_DEMOTE = "`Não há ninguém para despromover`"
     CANNOT_DEMOTE_SELF = "`Não posso despromover-me a mim próprio!`"
     DEMOTED_ALREADY = "`Esta pessoa já é um mortal.`"
-    DEMOTE_SUCCESS = "{} foi despromovido!"  # user name
+    DEMOTE_SUCCESS = "{} foi despromovido!"
     CANNOT_DEMOTE_ADMIN = "`Este chat já tem muitos administradores`"
     DEMOTE_FAILED = "`Falha ao despromover esta pessoa.`"
     NO_GROUP_ARGS = "`Este chat, ou o chat fornecido, não é um grupo!`"
     NOT_MUTE_SUB_CHAN = "`Impossível silenciar subscritores de um canal!`"
     CANNOT_MUTE_SELF = "`Não consigo silenciar-me a mim próprio`"
-    MUTE_SUCCESS_REMOTE = "{} foi silenciado em **{}**"  # user name, chat tile
-    MUTE_SUCCESS = "{} foi silenciado"  # user name
+    MUTE_SUCCESS_REMOTE = "{} foi silenciado em **{}**"
+    MUTE_SUCCESS = "{} foi silenciado"
     MUTE_FAILED = "`Falha ao silenciar esta pessoa`"
     NOT_UNMUTE_SUB_CHAN = "`Falha na remoção do silenciamento desta pessoa.`"
     CANNOT_UNMUTE_SELF = "`Não posso remover o meu próprio silenciamento`"
-    UNMUTE_SUCCESS_REMOTE = "Foi removido o silenciamento de {} em **{}**"  # user name, chat tile
-    UNMUTE_SUCCESS = "Removido o silenciamento de {}"  # user name
+    UNMUTE_SUCCESS_REMOTE = "Foi removido o silenciamento de {} em **{}**"
+    UNMUTE_SUCCESS = "Removido o silenciamento de {}"
     UNMUTE_FAILED = "`Falha ao remover o silenciamento desta pessoa.`"
     TRY_DEL_ACCOUNTS = "`Tentando remover contas excluídas...`"
     DEL_ACCS_COUNT = "`Foram encontradas {} contas excluídas`"
     REM_DEL_ACCS_COUNT = "`Removidas {} contas excluídas`"
-    REM_DEL_ACCS_COUNT_EXCP = "`Não foi possivel remover {} contas (de admin) excluídas`"
+    REM_DEL_ACCS_COUNT_EXCP = ("`Não foi possivel remover {} contas "
+                               "(de admin) excluídas`")
     NO_DEL_ACCOUNTS = "`Não existem contas excluídas neste chat.`"
+
 
 class SystemToolsText(object):
     UBOT = "Projeto Userbot: "
@@ -92,7 +102,8 @@ class SystemToolsText(object):
     SHUTDOWN = "`A desligar...`"
     SHUTDOWN_LOG = "O bot está a desligar por pedido do utilizador"
     SYSD_GATHER_INFO = "`A obter informação de sistema...`"
-    SYSD_NEOFETCH_REQ = "`O pacote neofetch é necessário para apresentar informações do sistema!`"
+    SYSD_NEOFETCH_REQ = ("`O pacote neofetch é necessário para apresentar "
+                         "informações do sistema!`")
     RESTART = "`A reiniciar...`"
     RESTART_LOG = "O Userbot está a reiniciar!"
     RESTARTED = "Reinicio completo!"
@@ -107,16 +118,21 @@ class SystemToolsText(object):
     SUCCESS_UPLD_LOG = "`O Log do HyperUBot foi enviado com sucesso!`"
     FAILED_UPLD_LOG = "`Falha ao realizar upload do log`"
 
+
 class DeletionsText(object):
     CANNOT_DEL_MSG = "`Não posso apagar esta mensagem`"
     DEL_MSG_FAILED = "`Falha ao apahar esta mensagem`"
     REPLY_DEL_MSG = "`Responde à mensagem de alguém para a apagar`"
-    NO_ADMIN_PURGE = "`São necessários privilégios de administração para apagar mensagens`"
-    NO_DEL_PRIV = "`Permissão para apagar mensagens é necessária para apagar mensagens`"
+    NO_ADMIN_PURGE = ("`São necessários privilégios de administração "
+                      "para apagar mensagens`")
+    NO_DEL_PRIV = ("`Permissão para apagar mensagens é necessária para "
+                   "apagar mensagens`")
     PURGE_MSG_FAILED = "`Falha ao apagar mensagem(s)`"
     PURGE_COMPLETE = "Apagar em massa completo! Foram apagadas `{}` mensagens!"
     LOG_PURGE = "Apagadas `{}` mensagens"
-    REPLY_PURGE_MSG = "`Responde a uma mensagem para começar a apagar em massa.`"
+    REPLY_PURGE_MSG = ("`Responde a uma mensagem para começar a apagar "
+                       "em massa.`")
+
 
 class ChatInfoText(object):
     CHAT_ANALYSIS = "`Analisando o chat...`"
@@ -132,7 +148,7 @@ class ChatInfoText(object):
     CHAT_ID = "ID: <code>{}</code>\n"
     CHANNEL = "Canal"
     GROUP = "Grupo"
-    CHAT_TYPE = "Tipo de chat: {} ({})\n"  # group/channel, private/public
+    CHAT_TYPE = "Tipo de chat: {} ({})\n"
     CHAT_NAME = "Nome do chat: {}\n"
     FORMER_NAME = "Nome anterior: {}\n"
     CHAT_PUBLIC = "Publico"
@@ -156,7 +172,8 @@ class ChatInfoText(object):
     ONLINE_MEM = "Online: <code>{}</code>\n"
     RESTRICTED_COUNT = "Utilizadores restritos: <code>{}</code>\n"
     BANNEDCOUNT = "Utilizadores banidos: <code>{}</code>\n"
-    GRUP_STICKERS = "Stickers do chat: <a href=\"t.me/addstickers/{}\">{}</a>\n"
+    GRUP_STICKERS = ("Stickers do chat: "
+                     "<a href=\"t.me/addstickers/{}\">{}</a>\n")
     LINKED_CHAT = "Chat ligado: {}\n"
     LINKED_CHAT_TITLE = "> Nome: {}\n"
     SLW_MODE = "Modo lento: {}"
@@ -178,13 +195,16 @@ class ChatInfoText(object):
     LINK_INVALID_ID_GROUP = "`O ID ou Link fornecido não é de um grupo`"
     LINK_TEXT = "Aqui está o Link para convidar, do chat **{}**"
     NO_LINK = "`Este chat não tem Link para convite`"
-    NO_ADMIN_PERM = "`Privilégios de Administração são necessários para executar esta ação`"
+    NO_ADMIN_PERM = ("`Privilégios de Administração são necessários para "
+                     "executar esta ação`")
     NO_INVITE_PERM = "`É necessária permissão para adicionar utilizadores!`"
     UNABLE_GET_LINK = "`Falha ao obter o Link de convite deste chat!`"
 
+
 class MemberInfoText(object):
     SCAN = "`A examinar a informação deste membro...`"
-    FAIL_GET_MEMBER_CHAT = "`Falha ao obter informação sobre o membro: impossível encontrar o chat!`"
+    FAIL_GET_MEMBER_CHAT = ("`Falha ao obter informação sobre o membro: "
+                            "impossível encontrar o chat!`")
     FAIL_GET_MEMBER = "`Falha ao obter informação sobre o membro!`"
     NOT_SUPERGROUP = "`Este chat, ou o ID fornecido, não é um Supergrupo!`"
     INVALID_CHAT_ID = "`ID de Chat inválido!`"
@@ -233,35 +253,44 @@ class MemberInfoText(object):
     SEND_GIFS_STICKERS = "Enviar stickers e GIFs"
     SEND_POLLS = "Criar votações"
     EMBED_LINKS = "Links Embebidos"
-    WARN_ADMIN_PRIV = "Privilégios de admin são necessários para aceder a permissões não convêncionais"
+    WARN_ADMIN_PRIV = ("Privilégios de admin são necessários para aceder a "
+                       "permissões não convêncionais")
     PROMOTED_BY = "Promovido por"
     ADDED_BY = "Adicionado por"
     JOIN_DATE = "Data de entrada"
 
+
 class MessagesText(object):
-    NO_ADMIN = "`Privilégios de administrador são necessários para executar esta ação`"
+    NO_ADMIN = ("`Privilégios de administrador são necessários para "
+                "executar esta ação`")
     FAIL_CHAT = "`Falha ao obter o chat.`"
     CANNOT_COUNT_DEL = "`Não posso contar mensagens de uma conta excluída`"
-    CANNOT_QUERY_FWD = "`Não posso fazer query de mensagens encaminhadas por um canal!`"
-    FAIL_COUNT_MSG = "`Não posso fazer query de mensagens encaminhadas por um canal!`"
-    USER_HAS_SENT = "{} enviou `{}` mensagens neste chat!"  # userlink, msg count
-    USER_HAS_SENT_REMOTE = "{} enviou `{}` messagens em **{}**"  # userlink, msg count, chat title
+    CANNOT_QUERY_FWD = ("`Não posso fazer query de mensagens encaminhadas "
+                        "por um canal!`")
+    FAIL_COUNT_MSG = ("`Não posso fazer query de mensagens encaminhadas "
+                      "por um canal!`")
+    USER_HAS_SENT = "{} enviou `{}` mensagens neste chat!"
+    USER_HAS_SENT_REMOTE = "{} enviou `{}` messagens em **{}**"
     CANNOT_COUNT_MSG = "`Não consigo contar mensagens neste chat`"
     CANNOT_COUNT_MSG_REMOTE = "`Não consigo contar mensagens em {}!`"
     PIN_REPLY_TO_MSG = "`Responde a uma mensagem para a fixar.`"
     PIN_SUCCESS = "`Mensagem fixada com sucesso.`"
     PIN_FAILED = "`Falha ao fixar a mensagem!`"
     LOG_PIN_MSG_ID = "ID da Mensagem"
-    UNPIN_REPLY_TO_MSG = "`Responde a uma mensagem para desafixar ou usa \".unpin all\" para desafixar todas as mensagens`"
+    UNPIN_REPLY_TO_MSG = ("`Responde a uma mensagem para desafixar ou "
+                          "usa \".unpin all\" para desafixar todas "
+                          "as mensagens`")
     UNPIN_ALL_SUCCESS = "`Todas as mensagens desafixadas com sucesso`"
     UNPIN_SUCCESS = "`Mensagem desafixada com sucesso`"
     UNPIN_FAILED = "`Falha ao desafixar a mensagem`"
     LOG_UNPIN_ALL_TEXT = "Todas as mensagens desafixadas"
 
+
 class ScrappersText(object):
     NO_TEXT_OR_MSG = "`Sem texto ou mensagem para traduzir!`"
     TRANSLATING = "`A traduzir...`"
-    SAME_SRC_TARGET_LANG = "`Linguagem de destino é igual à linguagem de fonte.`"
+    SAME_SRC_TARGET_LANG = ("`Linguagem de destino é igual à linguagem "
+                            "de fonte.`")
     DETECTED_LANG = "Linguagem detetada"
     TARGET_LANG = "Linguagem de destino"
     ORG_TEXT = "Texto original"
@@ -269,16 +298,18 @@ class ScrappersText(object):
     MSG_TOO_LONG = "`Texto traduzido é demasiado grande!`"
     FAIL_TRANS_MSG = "`Falha ao traduzir esta mensagem!`"
     FAIL_TRANS_TEXT = "`Falha ao traduzir o texto fornecido!`"
-    MEDIA_FORBIDDEN = "`Impossível executar TTS: O upload de média neste chat é proíbido!`"
+    MEDIA_FORBIDDEN = ("`Impossível executar TTS: O upload de média "
+                       "neste chat é proíbido!`")
     NO_TEXT_TTS = "`Sem texto ou mensagem para executar TTS`"
     FAIL_TTS = "`Falha ao realizar TTS`"
     FAIL_API_REQ = "`Requerimento à API falhou!`"
-    INVALID_LANG_CODE = "`Código de linguagem inválido, ou a linguagem não é suportada!`"
+    INVALID_LANG_CODE = ("`Código de linguagem inválido, ou a linguagem "
+                         "não é suportada!`")
     NOT_EGH_ARGS = "`Não foram fornecidos argumentos suficientes!`"
     INVALID_AMOUNT_FORMAT = "`Formato de quantidade inválido!`"
     CC_ISO_UNSUPPORTED = "`'{}' não é um código de Moeda ISO suportado!`"
     CC_HEADER = "Conversor de Moeda"
-    CFROM_CTO = "**{}** para **{}**"  # from cc iso, target cc iso
+    CFROM_CTO = "**{}** para **{}**"
     INVALID_INPUT = "Input inválido"
     UNABLE_TO_CC = "`Falha ao converter Moeda`"
     CC_LAST_UPDATE = "Última atualização"
@@ -288,14 +319,18 @@ class ScrappersText(object):
     FAILED_LOAD_AUDIO = "`Falha ao carregar aúdio`"
     STT = "Speech-to-text"
     STT_TEXT = "Texto"
-    STT_NOT_RECOGNIZED = "`Não foi possível reconhecer texto da mensagem por voz enviada`"
+    STT_NOT_RECOGNIZED = ("`Não foi possível reconhecer texto da "
+                          "mensagem por voz enviada`")
     STT_REQ_FAILED = "Resultado do pedido inválido!"
     STT_OUTPUT_TOO_LONG = "`O output do Speech-to-text é demasiado longo!`"
     UNABLE_TO_STT = "`Impossível realizar speech-to-text`"
-    SCRLANG = "A linguagem do módulo de Scrappers do HyperUBot está definida para: `{}`"
+    SCRLANG = ("A linguagem do módulo de Scrappers do HyperUBot está "
+               "definida para: `{}`")
     MULT_ARGS = "`Por favor, use apenas um argumento!`"
-    INV_CT_CODE = "Valor inválido! Use um dos seguintes códigos de duas letras diponíveis!\n\nCódigos disponíveis:\n{}"
+    INV_CT_CODE = ("Valor inválido! Use um dos seguintes códigos de duas "
+                   "letras diponíveis!\n\nCódigos disponíveis:\n{}")
     SUCCESS_LANG_CHANGE = "Linguagem definida com sucesso para: `{}`"
+
 
 class UserText(object):
     LEAVING = "`A abandonar chat...`"
@@ -339,14 +374,16 @@ class UserText(object):
     UNABLE_GET_IDS = "`Impossível obter o ID de utilizador desta mensagem`"
     ORIGINAL_AUTHOR = "Autor original"
     FORWARDER = "Encaminhador"
-    DUAL_HAS_ID_OF = "{} tem um ID de `{}`"  # name of person, ID
+    DUAL_HAS_ID_OF = "{} tem um ID de `{}`"
     MY_ID = "O meu ID é `{}`"
     DEL_HAS_ID_OF = "A Conta Excluída tem um ID de `{}`"
     ID_NOT_ACCESSIBLE = "o ID de {} não é acessível"
-    ORG_HAS_ID_OF = "O autor original {} tem um ID de `{}`"  # name of person, ID
+    ORG_HAS_ID_OF = "O autor original {} tem um ID de `{}`"
+
 
 class SystemUtilitiesText(object):
     CMD_STOPPED = "{} parou!"
+
 
 class GeneralMessages(object):
     ERROR = "ERRO!"
@@ -354,7 +391,9 @@ class GeneralMessages(object):
     FAIL_FETCH_USER = "`Falha ao adquirir informação do utilizador`"
     ENTITY_NOT_USER = "`A entidade não é um objeto User`"
     PERSON_ANONYMOUS = "A pessoa é anónima"
-    CANT_FETCH_REQ_AS_USER = "`Não foi possivel adquirir informação sobre '{}', considerando que seja um utilizador`"
+    CANT_FETCH_REQ_AS_USER = ("`Não foi possivel adquirir informação "
+                              "sobre '{}', considerando que seja "
+                              "um utilizador`")
     LOG_USER = "Utilizador"
     LOG_USERNAME = "Nome de utilizador"
     LOG_USER_ID = "ID de utilizador"
@@ -362,6 +401,7 @@ class GeneralMessages(object):
     LOG_CHAT_LINK = "Link"
     LOG_CHAT_ID = "ID do Chat"
     UNKNOWN = "Desconhecido"
+
 
 class ModulesUtilsText(object):
     INVALID_ARG = "`Argumento \"{}\" inválido!`"
@@ -388,14 +428,18 @@ class ModulesUtilsText(object):
     SIZE = "Tamanho"
     INSTALL_DATE = "Data de instalação"
     LISTCMDS_TITLE = "Comandos disponíveis"
-    LISTCMDS_USAGE = "Usa '{} <nome do comando>' para obter mais informação sobre o comando"
-    ARGS_NOT_REQ = "sem argumentos obrigatórios"  # lower if possible
-    ARGS_NOT_AVAILABLE = "sem argumentos"  # lower if possible
+    LISTCMDS_USAGE = ("Usa '{} <nome do comando>' para obter mais "
+                      "informação sobre o comando")
+    ARGS_NOT_REQ = "sem argumentos obrigatórios"
+    ARGS_NOT_AVAILABLE = "sem argumentos"
     CMD_NOT_FOUND = "O comando '{}' não foi encontrado!"
+
 
 class WebToolsText(object):
     PING_SPEED = "Round-Trip Time: "
-    DCMESSAGE = "País : `{}`\nEste Datacenter : `{}`\nDatacenter mais próximo : `{}`"
+    DCMESSAGE = ("País : `{}`\n"
+                 "Este Datacenter : `{}`\n"
+                 "Datacenter mais próximo : `{}`")
     BAD_ARGS = "`Maus argumentos`"
     INVALID_HOST = "`Ocorreu um problema a interpretar o IP/Hostname`"
     PINGER_VAL = "DNS: `{}`\nVelocidade de ping: `{}`"
@@ -416,8 +460,10 @@ class WebToolsText(object):
     SPD_ISP = "A minha ISP"
     SPD_HOSTED_BY = "Hospedado por"
 
+
 class CasIntText(object):
-    TOO_MANY_CAS = "`Muitos utilizadores banidos no CAS. A fazer upload da lista como ficheiro...`"
+    TOO_MANY_CAS = ("`Muitos utilizadores banidos no CAS. A fazer upload "
+                    "da lista como ficheiro...`")
     FAIL_UPLOAD_LIST = "`Falha ao efetuar upload da lista`"
     SEND_MEDIA_FORBIDDEN = "`O envio de média neste chat não é permitido`"
     UPDATER_CONNECTING = "`Conectando ao servidor CAS...`"
@@ -425,11 +471,14 @@ class CasIntText(object):
     FAIL_APPEND_CAS = "`Falha ao adicionar dados do CAS`"
     UPDATE_SUCCESS = "`Atualizado o CSV dos dados do CAS`"
     NO_CONNECTION = "`Falha na conecção com o servidor do CAS`"
-    TIMEOUT = "`Impossivel atualizar o CSV dado que o tempo de ligação excedeu o limite`"
+    TIMEOUT = ("`Impossivel atualizar o CSV dado que o tempo de ligação "
+               "excedeu o limite`")
     UPDATE_FAILED = "`Falha ao atualizar os dados do CSV do CAS`"
     GIVEN_ENT_INVALID = "`O ID, nome ou link dado é inváldio`"
-    CAS_CHECK_FAIL_ND = "`Verificação CAS falhou, visto que o CSV tem um formato inválido`"
-    CAS_CHECK_ND = "`Dados CAS não encontrados. Por favor usa o comando .casupdate para obter os últimos dados CAS`"
+    CAS_CHECK_FAIL_ND = ("`Verificação CAS falhou, visto que o CSV tem um "
+                         "formato inválido`")
+    CAS_CHECK_ND = ("`Dados CAS não encontrados. Por favor usa o comando "
+                    ".casupdate para obter os últimos dados CAS`")
     CHECK_USER = "Verificando o estado CAS de {}..."
     CHECK_CHAT = "À procura de utilizadores banidos por CAS..."
     CHECK_USER_ID = "A verificar o estado CAS do ID `{}`..."
@@ -445,11 +494,13 @@ class CasIntText(object):
     BANNED = "Banido"
     BANNED_SINCE = "Banido desde"
     NOT_BANNED = "Não banido"
-    USER_DETECTED = "Aviso! `{}` membro está banido no CAS em **{}**"  # count, chat title
-    USERS_DETECTED = "Aviso! `{}` membros estão banidos no CAS em **{}**"  # count, chat title
+    USER_DETECTED = "Aviso! `{}` membro está banido no CAS em **{}**"
+    USERS_DETECTED = "Aviso! `{}` membros estão banidos no CAS em **{}**"
     NO_USERS = "Nenhum utilizador banido no CAS encontrado em **{}**"
-    NO_ADMIN = "`São necessários privilégios de administração para realizar esta ação`"
+    NO_ADMIN = ("`São necessários privilégios de administração para "
+                "realizar esta ação`")
     CAS_CHECK_FAIL = "`Verificação CAS falhou`"
+
 
 class GitHubText(object):
     INVALID_URL = "Combinação user/repo inválida"
@@ -459,38 +510,58 @@ class GitHubText(object):
     ASSET = "<b>Recurso:</b> \n"
     SIZE = "Tamanho: "
     DL_COUNT = "\nNúmero de Downloads: "
-    INVALID_ARGS = "Argumentos inválidos! Certifica-te de que estás a introduzir uma combinação user/repo válida!"
+    INVALID_ARGS = ("Argumentos inválidos! Certifica-te de que estás a "
+                    "introduzir uma combinação user/repo válida!")
+
 
 class TerminalText(object):
-    BASH_ERROR = "Ocorreu um erro generalizado. Geralmente acontece por teres utilizado argumentos inválidos ou um comando não existente."
-    BASH_CRT_FILE_FAILED_RO = "Falha ao criar um ficheiro de output shell. Será um sistema read-only?"
+    BASH_ERROR = ("Ocorreu um erro generalizado. Geralmente acontece por "
+                  "teres utilizado argumentos inválidos ou um comando "
+                  "não existente.")
+    BASH_CRT_FILE_FAILED_RO = ("Falha ao criar um ficheiro de output "
+                               "shell. Será um sistema read-only?")
     BASH_CRT_FILE_FAILED = "Falha ao criar um ficheiro de output shell."
-    BASH_SEND_FILE_MTLO = "Não posso enviar o ficheiro de output shell, porque o envio de média está restrito neste chat"
+    BASH_SEND_FILE_MTLO = ("Não posso enviar o ficheiro de output shell, "
+                           "porque o envio de média está restrito neste chat")
     BASH_SEND_FILE_FAILED = "Impossível enviar ficheiro de output shell."
+
 
 class MiscText(object):
     COIN_LANDED_VAL = "A moeda caiu em: "
     THRWING_COIN = "`A lançar a moeda...`"
     HEADS = "Caras"
     TAILS = "Coroas"
-    RAND_INVLD_ARGS = "`Argumentos inválidos, certifica-te que tens exatamente 2 números`"
+    RAND_INVLD_ARGS = ("`Argumentos inválidos, certifica-te que tens "
+                       "exatamente 2 números`")
     FRST_LIMIT_INVALID = "`O primeiro valor não é um número válido`"
     SCND_LIMIT_INVALID = "`O segundo valor não é um número válido`"
     RAND_NUM_GEN = "O número gerado entre `{}` e `{}`: **`{}`**"
 
+
 class PackageManagerText(object):
-    INVALID_ARG = "Argumento inválido! Certifica-te que é **update**, **list**, **install** ou **uninstall**!"
-    UPDATE_COMPLETE = "Foi atualizada a lista de módulos do(s) universo(s): **{}**"
-    EMPTY_LIST = "\n\nA lista de módulos está vazia! Por favor executa primeiro `.pkg update`"
+    INVALID_ARG = ("Argumento inválido! Certifica-te que é **update**, "
+                   "**list**, **install** ou **uninstall**!")
+    UPDATE_COMPLETE = ("Foi atualizada a lista de módulos do(s) "
+                       "universo(s): **{}**")
+    EMPTY_LIST = ("\n\nA lista de módulos está vazia! Por favor executa "
+                  "primeiro `.pkg update`")
     FILES_IN = "\n**Ficheiros em {}:**\n"
     FILE_DSC = "{}. [{}]({}) - {}\n"
-    NO_PKG = "`Nenhum pacote especificado para instalar! Processo interrompido!`"
-    MOD_NOT_FOUND_INSTALL = "Nenhum módulo chamado `{}` foi encontrado nos repositórios! Processo interrompido!"
+    NO_PKG = ("`Nenhum pacote especificado para instalar! Processo "
+              "interrompido!`")
+    MOD_NOT_FOUND_INSTALL = ("Nenhum módulo chamado `{}` foi "
+                             "encontrado nos repositórios! Processo "
+                             "interrompido!")
     DONE_RBT = "`Reiniciando o userbot...`"
-    NO_UNINSTALL_MODULES = "Nenhum módulo desinstalável presente! Processo interrompido!"
-    NO_UN_NAME = "Por favor especifica um nome de um módulo. Não posso desinstalar __nada__!"
-    MULTIPLE_NAMES = "Por questões de segurança, apenas podes desinstalar um módulo de cada vez. Por favor fornece apenas um nome."
-    NOT_IN_USERSPACE = "`{}` não é um módulo de utilizador válido! Processo interrompido!"
+    NO_UNINSTALL_MODULES = ("Nenhum módulo desinstalável presente! "
+                            "Processo interrompido!")
+    NO_UN_NAME = ("Por favor especifica um nome de um módulo. Não posso "
+                  "desinstalar __nada__!")
+    MULTIPLE_NAMES = ("Por questões de segurança, apenas podes "
+                      "desinstalar um módulo de cada vez. Por favor "
+                      "fornece apenas um nome.")
+    NOT_IN_USERSPACE = ("`{}` não é um módulo de utilizador válido! "
+                        "Processo interrompido!")
     UNINSTALLING = "`Desinstalando {}...`"
     REBOOT_DONE_INS = "Feito! Módulo(s) instalado(s): `{}`"
     REBOOT_DONE_UNINS = "Feito! Desinstalado `{}`!"
@@ -500,11 +571,14 @@ class PackageManagerText(object):
     ALREADY_PRESENT = "\n__* Módulo presente, será atualizado__"
     NO_MOD_IN_USERSPACE = "__Nenhum módulo no espaço de utilizador__\n"
     BOT_IN_SAFEMODE = "\n\n**Informação:** O Userbot está em safemode!"
-    INSTALL_DSBLD_SAFEMODE = "A instalação de módulos está desativada enquanto o bot está em modo de segurança"
+    INSTALL_DSBLD_SAFEMODE = ("A instalação de módulos está desativada "
+                              "enquanto o bot está em modo de segurança")
+
 
 class UpdaterText(object):
     CHECKING_UPDATES = "Verificando updates..."
-    GIT_REPO = "HyperUBot's directory is a local git repository"  # translation needed
+    # translation needed
+    GIT_REPO = "HyperUBot's directory is a local git repository"
     DOWNLOADING_RELEASE = "A fazer download da última release..."
     UPDATE_FAILED = "Atualização falhou"
     UPDATE_INTERNAL_FAILED = "Erro interno!"
@@ -514,136 +588,401 @@ class UpdaterText(object):
     CURRENT = "Versão Atual"
     UPDATE_AVAILABLE = "Atualização disponível"
     CHANGELOG_AT = "Changelog em {}"
-    DOWNLOAD_SUCCESS = "Download completo. A desligar o bot para instalar o pacote de atualizações..."
-    UPDATE_QUEUED = "Usa `.update upgrade` para fazer download e instalar o pacote de atualizações agora."
+    DOWNLOAD_SUCCESS = ("Download completo. A desligar o bot para instalar "
+                        "o pacote de atualizações...")
+    UPDATE_QUEUED = ("Usa `.update upgrade` para fazer download e "
+                     "instalar o pacote de atualizações agora.")
+
 
 class SideloaderText(object):
-    NOT_PY_FILE = "Este não é um ficheiro .py válido. Não é possível fazer sideload"
+    NOT_PY_FILE = ("Este não é um ficheiro .py válido. Não é possível "
+                   "fazer sideload")
     DLOADING = "`A fazer download...`"
-    MODULE_EXISTS = "Já existe um módulo de utilizador chamado `{}`. Se desejares prosseguir assim mesmo, por favor executa o comando com o argumento `force` !"
+    MODULE_EXISTS = ("Já existe um módulo de utilizador chamado `{}`. "
+                     "Se desejares prosseguir assim mesmo, por favor "
+                     "executa o comando com o argumento `force` !")
     SUCCESS = "Instalado `{}` com sucesso! A reiniciar..."
     LOG = "O módulo `{}` foi carregado sideload com sucesso!"
     RBT_CPLT = "Reinicio completo!"
     INVALID_FILE = "Por favor responde a um ficheiro válido!"
 
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
-    ADMIN_DESC = "Um módulo para te ajudar a gerir um grupo teu ou de um amigo mais facilmente. Inclui comandos comuns como: ban, unban, promote etc.\
-                 \n\nNota: muitos comandos deste módulo necessitam de permissões de administrador para funcionarem correctamente."
-    CHATINFO_DESC = "Obtém a maior parte das informações de um canal, grupo ou supergrupo como data de criação, número de mensagens, mensagens apagadas, nome antigo, etc"
-    DELETIONS_DESC = "Este módulo permite apagar as tuas mensagens ou mensagens de grupo rápido. Alguém fez spam no teu grupo? Usa o comando .purge para apagar tudo!\
-                     \nTodos os comandos deste módulo requerem permissões de admin para apagar as mensagens de outras pessoas\
-                     \n\n**Importante: não abuses deste módulo para apagares o histórico de mensagens do grupo de outra pessoa**, a sério, não o faças..."
-    MEMBERINFO_DESC = "Fornece informação sobre um participante no chat como permissões, data de limitação, data de entrada, etc.\
-                     \n\nNota: necessita de permissões de administrador para ver permissões de outros utilizadores."
-    MESSAGES_DESC = "Este módulo inclui comandos que apenas funcionam com mensagens, como msgs ou pin."
-    SCRAPPERS_DESC = "Este módulo inclui ferramentas úteis, como o tradutor ou o text-to-speech"
-    SYSTOOLS_DESC = "Este módulo contém um conjunto de ferramentas úteis para o bot. Permite ver o uptime do bot, o uptime do servidor, as versões de todos os componentes \
-                    do bot, as especificações do servidor do bot, e contém alguns controlos de energia do bot."
-    USER_DESC = "Contém ferramentas que fornecem informações sobre utilizadores, e a ferramenta kickme."
-    WEBTOOLS_DESC = "Este módulo contém quase, se não mesmo todas, as ferramentas web do bot como ping, speedtest, calculadora RTT, e um método para mostrar o Datacenter atual."
-    CAS_INTERFACE_DESC = "O interface para a API Combot Anti-Spam System. Permite verificar apenas um utilizador, ou procurar um grupo inteiro, por CAS bans, através dos comandos."
-    GITHUB_DESC = "Um módulo que usa a API do GitHub. Este módulo permite ver releases de um repositório, de um utilizador do GitHub."
-    TERMINAL_DESC = "Este módulo permite executar diretamente comandos shell, na máquina hospedeira.\
-                    \n\n**Atenção:** Executar comandos shell no bot pode e vai modificar permanentemente o servidor! **Más coisas podem acontecer se executares o bot como root/sudo!**"
-    MISC_DESC = "O módulo Misc contém diversos comandos e ferramentas que não serviam para incluir noutros módulos, mas ao mesmo tempo eram demasiado simples para ter o seu próprio módulo. Vê o help para mais detalhes."
-    PACKAGE_MANAGER_DESC = "O módulo gestor de pacotes permite um utilizador gerir aplicações extra, de repositórios externos, tanto oficiais, como o repositório modules-universe, ou de fontes externas. Assim, permite aos utilizadores personalizar o seu bot mais do que o stock."
-    UPDATER_DESC = "O módulo Updater permite ao utilizador verificar a existencia de atualizações e, se existirem, atualizar o bot."
-    SIDELOADER_DESC = "O módulo sideloader permite carregar ficheiros extra facilmente. Para o fazer, apenas tens de enviar o comando .sideload como resposta a um ficheiro .py\n\n" \
-                      "**INFORMAÇÃO**: Estes ficheiros têm de ser escritos de maneira a funcionar com o bot. Ao realizar um sideload de um ficheiro desconhecido, o utilizador pode obter um 'soft-brick', tendo que remover um módulo defeituoso do espaço de utilizador.\n\n" \
-                      "**AVISO CRITICO**: Alguns ficheiros maliciosos podem enviar a tua informação (geralmente a API KEY e String Session, mas não está limitado a estes itens) para hackers com propósitos maliciosos! Faz apenas sideload de módulos que confies na fonte!"
+    ADMIN_DESC = ("Um módulo para te ajudar a gerir um grupo teu ou de um "
+                  "amigo mais facilmente. Inclui comandos comuns como: ban, "
+                  "unban, promote etc.\n\n"
+                  "Nota: muitos comandos deste módulo necessitam de "
+                  "permissões de administrador para funcionarem "
+                  "correctamente.")
+    CHATINFO_DESC = ("Obtém a maior parte das informações de um canal, "
+                     "grupo ou supergrupo como data de criação, número "
+                     "de mensagens, mensagens apagadas, nome antigo, etc")
+    DELETIONS_DESC = ("Este módulo permite apagar as tuas mensagens ou "
+                      "mensagens de grupo rápido. Alguém fez spam no teu "
+                      "grupo? Usa o comando .purge para apagar tudo!\n"
+                      "Todos os comandos deste módulo requerem permissões de "
+                      "admin para apagar as mensagens de outras pessoas\n\n"
+                      "**Importante: não abuses deste módulo para apagares "
+                      "o histórico de mensagens do grupo de outra pessoa**, "
+                      "a sério, não o faças...")
+    MEMBERINFO_DESC = ("Fornece informação sobre um participante no chat "
+                       "como permissões, data de limitação, data de "
+                       "entrada, etc.\n\n"
+                       "Nota: necessita de permissões de administrador "
+                       "para ver permissões de outros utilizadores.")
+    MESSAGES_DESC = ("Este módulo inclui comandos que apenas funcionam "
+                     "com mensagens, como msgs ou pin.")
+    SCRAPPERS_DESC = ("Este módulo inclui ferramentas úteis, como o "
+                      "tradutor ou o text-to-speech")
+    SYSTOOLS_DESC = ("Este módulo contém um conjunto de ferramentas úteis "
+                     "para o bot. Permite ver o uptime do bot, o uptime "
+                     "do servidor, as versões de todos os componentes do "
+                     "bot, as especificações do servidor do bot, e "
+                     "contém alguns controlos de energia do bot.")
+    USER_DESC = ("Contém ferramentas que fornecem informações sobre "
+                 "utilizadores, e a ferramenta kickme.")
+    WEBTOOLS_DESC = ("Este módulo contém quase, se não mesmo todas, as "
+                     "ferramentas web do bot como ping, speedtest, "
+                     "calculadora RTT, e um método para mostrar o "
+                     "Datacenter atual.")
+    CAS_INTERFACE_DESC = ("O interface para a API Combot Anti-Spam "
+                          "System. Permite verificar apenas um utilizador, "
+                          "ou procurar um grupo inteiro, por CAS bans, "
+                          "através dos comandos.")
+    GITHUB_DESC = ("Um módulo que usa a API do GitHub. Este módulo permite "
+                   "ver releases de um repositório, de um utilizador do "
+                   "GitHub.")
+    TERMINAL_DESC = ("Este módulo permite executar diretamente comandos "
+                     "shell, na máquina hospedeira.\n\n"
+                     "**Atenção:** Executar comandos shell no bot pode e "
+                     "vai modificar permanentemente o servidor! "
+                     "**Más coisas podem acontecer se executares o bot "
+                     "como root/sudo!**")
+    MISC_DESC = ("O módulo Misc contém diversos comandos e ferramentas "
+                 "que não serviam para incluir noutros módulos, mas "
+                 "ao mesmo tempo eram demasiado simples para ter o seu "
+                 "próprio módulo. Vê o help para mais detalhes.")
+    PACKAGE_MANAGER_DESC = ("O módulo gestor de pacotes permite um "
+                            "utilizador gerir aplicações extra, de "
+                            "repositórios externos, tanto oficiais, "
+                            "como o repositório modules-universe, "
+                            "ou de fontes externas. Assim, permite aos "
+                            "utilizadores personalizar o seu bot mais "
+                            "do que o stock.")
+    UPDATER_DESC = ("O módulo Updater permite ao utilizador verificar a "
+                    "existencia de atualizações e, se existirem, "
+                    "atualizar o bot.")
+    SIDELOADER_DESC = ("O módulo sideloader permite carregar ficheiros "
+                       "extra facilmente. Para o fazer, apenas tens de "
+                       "enviar o comando .sideload como resposta a um "
+                       "ficheiro .py\n\n"
+                       "**INFORMAÇÃO**: Estes ficheiros têm de ser "
+                       "escritos de maneira a funcionar com o bot. Ao "
+                       "realizar um sideload de um ficheiro desconhecido, "
+                       "o utilizador pode obter um 'soft-brick', tendo "
+                       "que remover um módulo defeituoso do espaço de "
+                       "utilizador.\n\n"
+                       "**AVISO CRITICO**: Alguns ficheiros maliciosos "
+                       "podem enviar a tua informação (geralmente a API "
+                       "KEY e String Session, mas não está limitado a "
+                       "estes itens) para hackers com propósitos "
+                       "maliciosos! Faz apenas sideload de módulos que "
+                       "confies na fonte!")
+
 
 class ModuleUsages(object):
     # KEEP CORRECT DICT FORMAT!!
-    # {"cmd": {"args": ARGUMENTS, "usage": USAGE}} edit ARGUMENTS and USAGE only!
-    ADMIN_USAGE = {"adminlist": {"args": "[opcional: <link/id>]", "usage": "lista todos os admins de um canal ou grupo (remotamente). Necessita de permissões de administração"},
-                   "ban": {"args": "[opcional: <username/id> <chat (id ou link)>] ou resposta",
-                           "usage": "Bane um utilizador de um chat (remotamente). Requer permissões de admin para banir"},
-                   "unban": {"args": "[opcional: <username/id> <chat (id ou link)>] ou resposta",
-                             "usage": "Des-bane um utilizador de um chat (remotamente). Requer permissões de admin para banir."},
-                   "kick": {"args": "[opcional: <username/id> <chat (id ou link)>] ou resposta",
-                            "usage": "Dá kick um utilizador de um chat (remotamente). Requer permissões de admin para banir"},
-                   "promote": {"args": "[opcional: <username/id> e/ou <title>] ou resposta",
-                               "usage": "Promove um utilizador com direitos imortais! Requer privilegios de administraçao com direitos de admin e uma segunda"\
-                                        "permissão de admin porque um promote nunca adiciona por defeito permissões de add admin. Comprimento do titulo tem de ser <= 16 caractéres."},
+    # {"cmd": {"args": ARGUMENTS, "usage": USAGE}} edit ARGUMENTS and
+    # USAGE only!
+    ADMIN_USAGE = {"adminlist": {"args": "[opcional: <link/id>]",
+                                 "usage": ("lista todos os admins de um "
+                                           "canal ou grupo (remotamente). "
+                                           "Necessita de permissões de "
+                                           "administração")},
+                   "ban": {"args": ("[opcional: <username/id> <chat "
+                                    "(id ou link)>] ou resposta"),
+                           "usage": ("Bane um utilizador de um chat "
+                                     "(remotamente). Requer permissões de "
+                                     "admin para banir")},
+                   "unban": {"args": ("[opcional: <username/id> <chat "
+                                      "(id ou link)>] ou resposta"),
+                             "usage": ("Des-bane um utilizador de um "
+                                       "chat (remotamente). Requer "
+                                       "permissões de admin para banir.")},
+                   "kick": {"args": ("[opcional: <username/id> <chat "
+                                     "(id ou link)>] ou resposta"),
+                            "usage": ("Dá kick um utilizador de um chat "
+                                      "(remotamente). Requer permissões "
+                                      "de admin para banir")},
+                   "promote": {"args": ("[opcional: <username/id> e/ou "
+                                        "<title>] ou resposta"),
+                               "usage": ("Promove um utilizador com "
+                                         "direitos imortais! Requer "
+                                         "privilegios de administraçao com "
+                                         "direitos de admin e uma segunda "
+                                         "permissão de admin porque um "
+                                         "promote nunca adiciona por "
+                                         "defeito permissões de add admin. "
+                                         "Comprimento do titulo tem "
+                                         "de ser <= 16 caractéres.")},
                    "demote": {"args": "[opcional: <username/id>] ou resposta",
-                              "usage": "Despromove um utilizador. É necessária permissão de add admin. Apenas funciona com admins promovidos por ti."},
-                   "mute": {"args": "[opcional: <username/id> <chat (id ou link)>] ou resposta",
-                            "usage": "Silencia um utilizador de um chat (remotamente). Precisa de permissão de administrador com direito de banir."},
-                   "unmute": {"args": "[opcional: <username/id> <chat (id ou link)>] ou resposta",
-                              "usage": "Des-silencia um utilizador de um chat (remotamente). Precisa de permissão de administrador com direito de banir."},
-                   "delaccs": {"args": None, "usage": "Tenta remover contas excluídas de um chat. Precisa de permissão de administrador com direito de banir. "\
-                                                      "Caso contrário, apenas reporta o número de contas excluídas."}}
+                              "usage": ("Despromove um utilizador. É "
+                                        "necessária permissão de add "
+                                        "admin. Apenas funciona com "
+                                        "admins promovidos por ti.")},
+                   "mute": {"args": ("[opcional: <username/id> <chat (id "
+                                     "ou link)>] ou resposta"),
+                            "usage": ("Silencia um utilizador de um chat "
+                                      "(remotamente). Precisa de permissão "
+                                      "de administrador com direito "
+                                      "de banir.")},
+                   "unmute": {"args": ("[opcional: <username/id> <chat "
+                                       "(id ou link)>] ou resposta"),
+                              "usage": ("Des-silencia um utilizador de "
+                                        "um chat (remotamente). Precisa "
+                                        "de permissão de administrador "
+                                        "com direito de banir.")},
+                   "delaccs": {"args": None,
+                               "usage": ("Tenta remover contas excluídas "
+                                         "de um chat. Precisa de "
+                                         "permissão de administrador "
+                                         "com direito de banir. Caso "
+                                         "contrário, apenas reporta o "
+                                         "número de contas excluídas.")}}
 
-    CHATINFO_USAGE = {"chatinfo": {"args": "[opcional: <chat_id/link>] ou resposta (se canal)",
-                                   "usage": "Obtém informação de um chat. Alguma informação pode estar omissa por falta de permissões."},
-                      "chatid": {"args": None, "usage": "Obtém o ID do chat."},
+    CHATINFO_USAGE = {"chatinfo": {"args": ("[opcional: <chat_id/link>] ou "
+                                            "resposta (se canal)"),
+                                   "usage": ("Obtém informação de um chat. "
+                                             "Alguma informação pode estar "
+                                             "omissa por falta de "
+                                             "permissões.")},
+                      "chatid": {"args": None,
+                                 "usage": "Obtém o ID do chat."},
                       "getlink": {"args": "[opcional: <chat_id/link>]",
-                                  "usage": "Obtém o link de convite partilhável do chat. Precisa de permissão de administrador com direito de convidar/adicionar utilizadores."}}
+                                  "usage": ("Obtém o link de convite "
+                                            "partilhável do chat. "
+                                            "Precisa de permissão de "
+                                            "administrador com direito de "
+                                            "convidar/adicionar "
+                                            "utilizadores.")}}
 
-    DELETIONS_USAGE = {"del": {"args": None, "usage": "Apaga a mensagem respondida."},
-                       "purge": {"args": None, "usage": "Apaga todas as mensagens entre a última e a mensagem respondida. Precisa de permissão de administrador com direito de apagar mensagens são necessárias se estiveres em grupos ou canais."\
-                                                        "\n**Nota: por favor não abuses deste comando para apagares o histórico de mensagens de grupos inteiros de outras pessoas**"}}
+    DELETIONS_USAGE = {"del": {"args": None,
+                               "usage": "Apaga a mensagem respondida."},
+                       "purge": {"args": None,
+                                 "usage": ("Apaga todas as mensagens entre "
+                                           "a última e a mensagem "
+                                           "respondida. Precisa de "
+                                           "permissão de administrador "
+                                           "com direito de apagar "
+                                           "mensagens são necessárias se "
+                                           "estiveres em grupos ou canais.\n"
+                                           "**Nota: por favor não abuses "
+                                           "deste comando para apagares o "
+                                           "histórico de mensagens de "
+                                           "grupos inteiros de "
+                                           "outras pessoas**")}}
 
-    MEMBERINFO_USAGE = {"minfo": {"args": "[opcional: <tag/id> <group>] ou resposta", "usage": "Obtém (remotamente) informações sobre um membro de um grupo."}}
+    MEMBERINFO_USAGE = {"minfo": {"args": ("[opcional: <tag/id> <group>] "
+                                           "ou resposta"),
+                                  "usage": ("Obtém (remotamente) "
+                                            "informações sobre um membro de "
+                                            "um grupo.")}}
 
-    MESSAGES_USAGE = {"msgs": {"args": "[opcional: <username/id> <group>] ou resposta",
-                               "usage": "Obtém o total de mensagens d eum utilizador (inclui qualquer mensagem, como texto, voz, imagens, videos, etc...).\nFunciona remotamente também"},
-                      "pin": {"args": "[argumento opcional \"loud\" para notificar todos os membros] ou resposta", "usage": "Responde ao uma mensagem para fixares esta."},
-                      "unpin": {"args": "[argumento opcional \"all\"] ou resposta", "usage": "Responde a uma mensagem para desafixares ou usa \".unpin all\" para desafixar todas as mensagens no grupo"}}
+    MESSAGES_USAGE = {"msgs": {"args": ("[opcional: <username/id> <group>] "
+                                        "ou resposta"),
+                               "usage": ("Obtém o total de mensagens d "
+                                         "eum utilizador (inclui "
+                                         "qualquer mensagem, como texto, "
+                                         "voz, imagens, videos, etc...).\n"
+                                         "Funciona remotamente também")},
+                      "pin": {"args": ("[argumento opcional \"loud\" para "
+                                       "notificar todos os membros] ou "
+                                       "resposta"),
+                              "usage": ("Responde ao uma mensagem para "
+                                        "fixares esta.")},
+                      "unpin": {"args": ("[argumento opcional \"all\"] "
+                                         "ou resposta"),
+                                "usage": ("Responde a uma mensagem para "
+                                          "desafixares ou "
+                                          "usa \".unpin all\" para "
+                                          "desafixar todas as mensagens "
+                                          "no grupo")}}
 
-    SCRAPPERS_USAGE = {"trt": {"args": "[opcional: <text>] ou resposta", "usage": "Traduz o texto ou mensagens fornecidos, para a linguagem de defeito do bot."},
-                       "tts": {"args": "[opcional: <text>] ou resposta", "usage": "Converte a mensagem de voz em texto. (speech-to-text)."},
-                       "stt": {"args": "resposta só", "usage": "Converte a mensagem respondida em mensagem de voz (speech-to-text)."},
-                       "scrlang": {"args": None, "usage": "Apresenta a linguagem para a qual o bot vai traduzir ou realizar TTS para."},
-                       "setlang": {"args": "[ISO value]", "usage": "Define uma nova linguagem para o tradutor."},
-                       "currency": {"args": "<amount> <From ISO> [opcional: <To ISO>]",
-                                    "usage": "Converte a Moeda dada para uma Moeda de destino (defeito: USD). Precisa código ISO da Moeda (EUR, USD, JPY etc.)."}}
+    SCRAPPERS_USAGE = {"trt": {"args": "[opcional: <text>] ou resposta",
+                               "usage": ("Traduz o texto ou mensagens "
+                                         "fornecidos, para a linguagem "
+                                         "de defeito do bot.")},
+                       "tts": {"args": "[opcional: <text>] ou resposta",
+                               "usage": ("Converte a mensagem de voz em "
+                                         "texto. (speech-to-text).")},
+                       "stt": {"args": "resposta só",
+                               "usage": ("Converte a mensagem respondida "
+                                         "em mensagem de voz "
+                                         "(speech-to-text).")},
+                       "scrlang": {"args": None,
+                                   "usage": ("Apresenta a linguagem para "
+                                             "a qual o bot vai traduzir "
+                                             "ou realizar TTS para.")},
+                       "setlang": {"args": "[ISO value]",
+                                   "usage": ("Define uma nova linguagem "
+                                             "para o tradutor.")},
+                       "currency": {"args": ("<amount> <From ISO> "
+                                             "[opcional: <To ISO>]"),
+                                    "usage": ("Converte a Moeda dada para "
+                                              "uma Moeda de destino "
+                                              "(defeito: USD). Precisa "
+                                              "código ISO da Moeda (EUR, "
+                                              "USD, JPY etc.).")}}
 
-    SYSTOOLS_USAGE = {"status": {"args": None, "usage": "Apresenta vários parâmetros de execução do bot."},
-                      "shutdown": {"args": None, "usage": "Desliga o bot."},
-                      "reboot": {"args": None, "usage": "Reinicia o bot."},
-                      "storage": {"args": None, "usage": "Apresenta informação sobre o armazenamento do servidor"},
-                      "sysd": {"args": None, "usage": "Apresenta detalhes de sistema (Requer neofetch)"},
-                      "sendlog": {"args": None, "usage": "Faz upload do log do bot para o chat atual"}}
+    SYSTOOLS_USAGE = {"status": {"args": None,
+                                 "usage": ("Apresenta vários parâmetros "
+                                           "de execução do bot.")},
+                      "shutdown": {"args": None,
+                                   "usage": "Desliga o bot."},
+                      "reboot": {"args": None,
+                                 "usage": "Reinicia o bot."},
+                      "storage": {"args": None,
+                                  "usage": ("Apresenta informação sobre "
+                                            "o armazenamento do servidor")},
+                      "sysd": {"args": None,
+                               "usage": ("Apresenta detalhes de sistema "
+                                         "(Requer neofetch)")},
+                      "sendlog": {"args": None,
+                                  "usage": ("Faz upload do log do bot "
+                                            "para o chat atual")}}
 
-    USER_USAGE = {"info": {"args": "[opcional: <username/id>] ou resposta", "usage": "Obtém informação de um utilizador."},
-                  "stats": {"args": None, "usage": "Obtém as tuas estatísticas."},
-                  "kickme": {"args": None, "usage": "Sais do grupo."},
+    USER_USAGE = {"info": {"args": "[opcional: <username/id>] ou resposta",
+                           "usage": "Obtém informação de um utilizador."},
+                  "stats": {"args": None,
+                            "usage": "Obtém as tuas estatísticas."},
+                  "kickme": {"args": None,
+                             "usage": "Sais do grupo."},
                   "userid": {"args": "[opcional: <username>] ou resposta",
-                             "usage": "Obtém o ID de um utilizador. Se a mensagem é encaminhada, obtém os IDs dos dois (autor original e quem encaminhou)."}}
+                             "usage": ("Obtém o ID de um utilizador. Se "
+                                       "a mensagem é encaminhada, obtém os "
+                                       "IDs dos dois (autor original e "
+                                       "quem encaminhou).")}}
 
-    WEBTOOLS_USAGE = {"dc": {"args": None, "usage": "Procura o Datacenter do Telegram mais próximo."},
-                      "ping": {"args": "<DNS/IP>", "usage": "Faz ping do DNS/IP fornecido."},
-                      "rtt": {"args": None, "usage": "Obtém o Round-Trip Time atual"},
-                      "speedtest": {"args": "[argumento opcional \"pic\"]", "usage": "Executa um teste de velocidade da ligação. Usando \"pic\" como argumento irá apresentar o resultado como uma imagem."}}
+    WEBTOOLS_USAGE = {"dc": {"args": None,
+                             "usage": ("Procura o Datacenter do Telegram "
+                                       "mais próximo.")},
+                      "ping": {"args": "<DNS/IP>",
+                               "usage": "Faz ping do DNS/IP fornecido."},
+                      "rtt": {"args": None,
+                              "usage": "Obtém o Round-Trip Time atual"},
+                      "speedtest": {"args": "[argumento opcional \"pic\"]",
+                                    "usage": ("Executa um teste de "
+                                              "velocidade da ligação. "
+                                              "Usando \"pic\" como "
+                                              "argumento irá apresentar "
+                                              "o resultado como uma imagem.")}}
 
-    CAS_INTERFACE_USAGE = {"casupdate": {"args": None, "usage": "Atualiza os dados do CSV do CAS."},
-                           "cascheck": {"args": "[opcional: <username/id/link>] ou resposta",
-                                        "usage": "Verifica se um utilizador está banido no CAS, ou se um grupo inteiro tem utilizadores banidos."\
-                                                 "\nNota: o comando cascheck apenas consegue ver grupos no máximo de 10.000 membros, devido a uma limitação nos servidores do Telegram."}}
+    CAS_INTERFACE_USAGE = {"casupdate": {"args": None,
+                                         "usage": ("Atualiza os dados do "
+                                                   "CSV do CAS.")},
+                           "cascheck": {"args": ("[opcional: <username/id/"
+                                                 "link>] ou resposta"),
+                                        "usage": ("Verifica se um "
+                                                  "utilizador está banido "
+                                                  "no CAS, ou se um grupo "
+                                                  "inteiro tem utilizadores "
+                                                  "banidos.\n"
+                                                  "Nota: o comando cascheck "
+                                                  "apenas consegue ver "
+                                                  "grupos no máximo de "
+                                                  "10.000 membros, devido "
+                                                  "a uma limitação nos "
+                                                  "servidores do Telegram.")}}
 
-    GITHUB_USAGE = {"git": {"args": "<user>/<repo>", "usage": "Obtém a release mais recente de determinado repositório de um utilizador."}}
+    GITHUB_USAGE = {"git": {"args": "<user>/<repo>",
+                            "usage": ("Obtém a release mais recente de "
+                                      "determinado repositório de um "
+                                      "utilizador.")}}
 
-    MODULES_UTILS_USAGE = {"listcmds": {"args": "[opcional: <nome do comando>]", "usage": "Apresenta todos os comandos disponíveis e registados"},
-                           "modules": {"args": "[opcional: <-d (--desc) ou -i (--info) ou -u (--usage) [número do módulo]>]",
-                                       "usage": "Apresenta todos os comandos disponíveis, não carregados ou defeituosos"}}
+    MODULES_UTILS_USAGE = {"listcmds": {"args": ("[opcional: <nome do "
+                                                 "comando>]"),
+                                        "usage": ("Apresenta todos os "
+                                                  "comandos disponíveis e "
+                                                  "registados")},
+                           "modules": {"args": ("[opcional: <-d (--desc) ou "
+                                                "-i (--info) ou -u (--usage) "
+                                                "[número do módulo]>]"),
+                                       "usage": ("Apresenta todos os "
+                                                 "comandos disponíveis, não "
+                                                 "carregados ou defeituosos")}}
 
-    TERMINAL_USAGE = {"shell": {"args": "<command>", "usage": "Executa na máquina hospedeira o comando shell fornecido (bash, powershell or zsh)."\
-                                                              "\n\n**AVISO: se o Userbot está a ser executado com permissões root, isto pode causar dados irreversíveis. Procede com cuidado!**"}}
+    TERMINAL_USAGE = {"shell": {"args": "<command>",
+                                "usage": ("Executa na máquina hospedeira o "
+                                          "comando shell fornecido (bash, "
+                                          "powershell or zsh).\n\n"
+                                          "**AVISO: se o Userbot está a ser "
+                                          "executado com permissões root, "
+                                          "isto pode causar dados "
+                                          "irreversíveis. Procede com "
+                                          "cuidado!**")}}
 
-    MISC_USAGE = {"coinflip": {"args": None, "usage": "Lança uma moeda e indica se o resultado foi cara ou coroa."},
-                  "dice": {"args": None, "usage": "Lança o emoji do dado. Os números são calculados pelo Telegram."},
-                  "rand": {"args": " <lower limit> <upper limit>", "usage": "Dados dois limites inteiros, gera um número aleatório, inteiro também."}}
-   
-    PACKAGE_MANAGER_USAGE = {"pkg": {"args": "update/list/install <module name 1> <module name 2 (opcional)> <...>/uninstall <module name>", 
-                                     "usage": "Atualiza a lista de pacotes./Apresenta a lista de pacotes (pode estar desatualizada!)/"\
-                                     "Instala a lista de módulos dados como argumento./Desinstala o módulo de utilizador. Por motivos de segurança, é possivel apenas desinstalar um módulo de cada vez."}}
+    MISC_USAGE = {"coinflip": {"args": None,
+                               "usage": ("Lança uma moeda e indica se o "
+                                         "resultado foi cara ou coroa.")},
+                  "dice": {"args": None,
+                           "usage": ("Lança o emoji do dado. Os números "
+                                     "são calculados pelo Telegram.")},
+                  "rand": {"args": "<lower limit> <upper limit>",
+                           "usage": ("Dados dois limites inteiros, "
+                                     "gera um número aleatório, inteiro "
+                                     "também.")}}
 
-    UPDATER_USAGE = {"update": {"args": "upgrade", "usage": "Verifica por updates, e se existirem, apresenta a lista de mudanças."\
-                                                            "\nSe o utilizador verificou por updates, e se existirem updates, isto instala-as."}}
+    PACKAGE_MANAGER_USAGE = {"pkg": {"args": ("update/list/install <module "
+                                              "name 1> <module name 2 "
+                                              "(opcional)> <...>/uninstall "
+                                              "<module name>"),
+                                     "usage": ("Atualiza a lista de pacotes."
+                                               "/Apresenta a lista de "
+                                               "pacotes (pode estar "
+                                               "desatualizada!)/Instala "
+                                               "a lista de módulos dados "
+                                               "como argumento./Desinstala "
+                                               "o módulo de utilizador. "
+                                               "Por motivos de segurança, "
+                                               "é possivel apenas "
+                                               "desinstalar um módulo de "
+                                               "cada vez.")}}
 
-    SIDELOADER_USAGE = {"sideload": {"args": "<argument>", 
-                                     "usage": "Carrega um script python no espaço de utilizador. Funciona apenas como resposta. Podes usar o argumento `force`, caso tenhas um módulo de utilizador com o mesmo nome já."\
-                                              "\n\n**INFORMAÇÃO**: Estes ficheiros têm de ser escritos de maneira a funcionar com o bot. Ao realizar um sideload de um ficheiro desconhecido, o utilizador pode obter um 'soft-brick', tendo que remover um módulo defeituoso do espaço de utilizador."\
-                                              "\n\n**AVISO CRITICO**: Alguns ficheiros maliciosos podem enviar a tua informação (geralmente a API KEY e String Session, mas não está limitado a estes itens) para hackers com propósitos maliciosos! Faz apenas sideload de módulos que confies na fonte!"}}
+    UPDATER_USAGE = {"update": {"args": "upgrade",
+                                "usage": ("Verifica por updates, e se "
+                                          "existirem, apresenta a lista "
+                                          "de mudanças.\n"
+                                          "Se o utilizador verificou por "
+                                          "updates, e se existirem "
+                                          "updates, isto instala-as.")}}
+
+    SIDELOADER_USAGE = {"sideload": {"args": "<argument>",
+                                     "usage": ("Carrega um script python no "
+                                               "espaço de utilizador. "
+                                               "Funciona apenas como "
+                                               "resposta. Podes usar o "
+                                               "argumento `force`, caso "
+                                               "tenhas um módulo de "
+                                               "utilizador com o mesmo nome "
+                                               "já.\n\n"
+                                               "**INFORMAÇÃO**: Estes "
+                                               "ficheiros têm de ser "
+                                               "escritos de maneira a "
+                                               "funcionar com o bot. Ao "
+                                               "realizar um sideload de "
+                                               "um ficheiro desconhecido, "
+                                               "o utilizador pode obter um "
+                                               "'soft-brick', tendo que "
+                                               "remover um módulo defeituoso "
+                                               "do espaço de utilizador.\n\n"
+                                               "**AVISO CRITICO**: Alguns "
+                                               "ficheiros maliciosos podem "
+                                               "enviar a tua informação "
+                                               "(geralmente a API KEY e "
+                                               "String Session, mas não "
+                                               "está limitado a estes itens) "
+                                               "para hackers com propósitos "
+                                               "maliciosos! Faz apenas "
+                                               "sideload de módulos que "
+                                               "confies na fonte!")}}

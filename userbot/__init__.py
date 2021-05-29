@@ -12,7 +12,8 @@ from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
 from userbot.sysutils.sys_funcs import os_name, verAsTuple
 from userbot.version import VERSION as hubot_version
 from telethon import TelegramClient, version
-from telethon.errors.rpcerrorlist import ApiIdInvalidError, PhoneNumberInvalidError
+from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
+                                          PhoneNumberInvalidError)
 from telethon.sessions import StringSession
 from dotenv import load_dotenv
 from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
@@ -53,7 +54,9 @@ try:
         _sys_string += "Platform: {}\n".format(platform())
         _sys_string += "Machine: {}\n".format(machine())
         _sys_string += "Processor: {}\n".format(processor())
-        _sys_string += "Python: v{}.{}.{}\n".format(version_info.major, version_info.minor, version_info.micro)
+        _sys_string += "Python: v{}.{}.{}\n".format(version_info.major,
+                                                    version_info.minor,
+                                                    version_info.micro)
         _sys_string += "Telethon: v{}\n\n".format(version.__version__)
         _sys_string += "======= TERMINAL LOGGING\n\n"
         _file = open(LOGFILE, "w")
@@ -64,14 +67,18 @@ except Exception as e:
 
 # Check Python version
 if (version_info.major, version_info.minor) < (3, 8):
-    log.error("Python v3.8+ is required! Please update Python to v3.8 or newer " +
-              "(current version: {}.{}.{}).".format(version_info.major, version_info.minor, version_info.micro))
+    log.error("Python v3.8+ is required! "
+              "Please update Python to v3.8 or newer "
+              "(current version: {}.{}.{}).".format(version_info.major,
+                                                    version_info.minor,
+                                                    version_info.micro))
     quit(1)
 
 # Check Telethon version
 if verAsTuple(version.__version__) < (1, 21, 1):
-    log.error("Telethon version 1.21.1+ is required! " +
-              f"Please update Telethon to v1.21.1 or newer (current version: {version.__version__}).")
+    log.error("Telethon version 1.21.1+ is required! "
+              "Please update Telethon to v1.21.1 or newer "
+              f"(current version: {version.__version__}).")
     quit(1)
 
 if SAFEMODE:
@@ -84,10 +91,11 @@ if path.exists(path.join(".", "userbot", "config.env")):
     from userbot.include.aux_funcs import strlist_to_list, str_to_bool
     _len_before = len(environ.items())
     load_dotenv(path.join(".", "userbot", "config.env"))
-    loaded_env = {key: value for key, value in list(environ.items())[_len_before:]}
+    loaded_env = {key: value
+                  for key, value in list(environ.items())[_len_before:]}
     if not SAFEMODE:
         for key, value in loaded_env.items():
-            if not key in ("API_KEY", "API_HASH", "STRING_SESSION"):
+            if key not in ("API_KEY", "API_HASH", "STRING_SESSION"):
                 if value.startswith("[") and value.endswith("]"):
                     addConfig(key, strlist_to_list(value))
                 elif value in ("True", "true", "False", "false"):
@@ -120,26 +128,35 @@ elif path.exists(path.join(".", "userbot", "config.py")):
                 attr_val = getattr(cfgclass, attr_name)
                 if not attr_name.startswith("__") and \
                    not isfunction(attr_val):
-                    if not attr_name in ("API_KEY", "API_HASH", "STRING_SESSION"):
+                    if attr_name not in ("API_KEY", "API_HASH",
+                                         "STRING_SESSION"):
                         addConfig(attr_name, attr_val)
-    API_KEY = userbot.config.ConfigClass.API_KEY if hasattr(userbot.config.ConfigClass, "API_KEY") else None
-    API_HASH = userbot.config.ConfigClass.API_HASH if hasattr(userbot.config.ConfigClass, "API_HASH") else None
-    STRING_SESSION = userbot.config.ConfigClass.STRING_SESSION if hasattr(userbot.config.ConfigClass, "STRING_SESSION") else None
+    API_KEY = (userbot.config.ConfigClass.API_KEY
+               if hasattr(userbot.config.ConfigClass, "API_KEY") else None)
+    API_HASH = (userbot.config.ConfigClass.API_HASH
+                if hasattr(userbot.config.ConfigClass, "API_HASH") else None)
+    STRING_SESSION = (userbot.config.ConfigClass.STRING_SESSION
+                      if hasattr(userbot.config.ConfigClass,
+                                 "STRING_SESSION") else None)
     if SAFEMODE:
-        addConfig("UBOT_LANG", userbot.config.ConfigClass.UBOT_LANG if hasattr(userbot.config.ConfigClass, "UBOT_LANG") else None)
+        addConfig("UBOT_LANG",
+                  (userbot.config.ConfigClass.UBOT_LANG
+                   if hasattr(
+                       userbot.config.ConfigClass, "UBOT_LANG") else None))
     del userbot.config
 else:
     try:
-        log.warning("Couldn't find a config file in \"userbot\" directory. "\
+        log.warning("Couldn't find a config file in \"userbot\" directory. "
                     "Starting Setup Assistant...")
-        _PY_EXEC = executable if not " " in executable else '"' + executable + '"'
+        _PY_EXEC = (executable
+                    if " " not in executable else '"' + executable + '"')
         _tcmd = [_PY_EXEC, "setup.py"]
         execle(_PY_EXEC, *_tcmd, environ)
     except Exception as e:
         log.warning(f"Failed to start Setup Assistant: {e}", exc_info=True)
-        log.error("Couldn't find a config file in \"userbot\" directory. "\
-                  "Please run the Setup Assistant to setup your config file "\
-                  "or generate a config file manually: "\
+        log.error("Couldn't find a config file in \"userbot\" directory. "
+                  "Please run the Setup Assistant to setup your config file "
+                  "or generate a config file manually: "
                   "Environment and Python scripts are supported")
     quit()
 
@@ -155,33 +172,40 @@ except Exception:
     log.error("Failed to initialize download directory")
 
 if not API_KEY:
-    log.error("Configuration 'API_KEY' is empty or doesn't exist in your config file")
+    log.error("Configuration 'API_KEY' is empty or doesn't exist in "
+              "your config file")
     log.error("API_KEY is required in order to use HyperUBot properly")
     log.error("Please obtain your API Key from 'https://my.telegram.org'")
     quit(1)
 
 if not API_HASH:
-    log.error("Configuration 'API_HASH' is empty or doesn't exist in your config file")
+    log.error("Configuration 'API_HASH' is empty or doesn't exist in your "
+              "config file")
     log.error("API_HASH is required in order to use HyperUBot properly")
     log.error("Please obtain your API Hash from 'https://my.telegram.org'")
     quit(1)
 
 try:
     if STRING_SESSION:
-        tgclient = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
+        tgclient = TelegramClient(StringSession(STRING_SESSION),
+                                  API_KEY, API_HASH)
         # delete vars after tgclient
         del API_KEY
         del API_HASH
         del STRING_SESSION
     else:
-        log.error("Configuration 'STRING_SESSION' is empty or doesn't exist in your config file")
-        log.error("STRING_SESSION is required in order to use HyperUBot properly")
-        log.error("Please run 'generate_session.py' to get a new string session or if present, set "\
-                  "your string session to STRING_SESSION=\"YOUR STRING\" in your config.* file")
+        log.error("Configuration 'STRING_SESSION' is empty or doesn't "
+                  "exist in your config file")
+        log.error("STRING_SESSION is required in order to use HyperUBot "
+                  "properly")
+        log.error("Please run 'generate_session.py' to get a new string "
+                  "session or if present, set your string session to "
+                  "STRING_SESSION=\"YOUR STRING\" in your config.* file")
         log.error("Exiting...")
         quit(1)
 except ApiIdInvalidError as ae:
-    log.critical(f"API Key and/or API Hash is/are invalid: {ae}", exc_info=True)
+    log.critical(f"API Key and/or API Hash is/are invalid: {ae}",
+                 exc_info=True)
     quit(1)
 except PhoneNumberInvalidError as pe:
     log.critical(f"Phone number is not valid: {pe}", exc_info=True)

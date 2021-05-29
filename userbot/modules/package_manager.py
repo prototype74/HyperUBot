@@ -9,10 +9,14 @@
 from userbot import SAFEMODE
 import userbot.include.git_api as git
 from userbot.include.aux_funcs import event_log, sizeStrMaker
-from userbot.include.language_processor import PackageManagerText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.include.language_processor import (PackageManagerText as msgRep,
+                                                ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 from userbot.sysutils.configuration import getConfig, setConfig
 from userbot.sysutils.event_handler import EventHandler
-from userbot.sysutils.registration import getUserModules, register_cmd_usage, register_module_desc, register_module_info
+from userbot.sysutils.registration import (getUserModules, register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
 from userbot.version import VERSION
 import requests
 import os
@@ -28,15 +32,18 @@ PACKAGELIST = "./userbot/package_lists.hbot"
 UNIVERSE_URL = "nunopenim/module-universe"
 UNIVERSE_NAME = "modules-universe"
 
+
 def write_list():
     global MODULE_LIST
     if os.path.exists(PACKAGELIST):
         os.remove(PACKAGELIST)
     file = open(PACKAGELIST, "w+")
     for mod in MODULE_LIST:
-        str_to_write = mod["repo"] + "|" + mod["name"] + "|" + mod["url"] + "|" + str(mod["size"]) + "\n"
+        str_to_write = (mod["repo"] + "|" + mod["name"] +
+                        "|" + mod["url"] + "|" + str(mod["size"]) + "\n")
         file.write(str_to_write)
     file.close()
+
 
 def read_list():
     global MODULE_LIST
@@ -46,11 +53,14 @@ def read_list():
         lines = file.readlines()
         for line in lines:
             params = line.split("|")
-            MODULE_LIST.append({"repo": params[0], "name": params[1], "url": params[2], "size": int(params[3])})
+            MODULE_LIST.append({"repo": params[0], "name": params[1],
+                                "url": params[2], "size": int(params[3])})
     return MODULE_LIST
+
 
 MODULE_LIST = read_list()
 REPOS_NAMES = []
+
 
 def list_updater():
     global MODULE_LIST
@@ -60,9 +70,11 @@ def list_updater():
         assetName = git.getReleaseFileName(asset)
         assetURL = git.getReleaseFileURL(asset)
         assetSize = git.getSize(asset)
-        MODULE_LIST.append({"repo": UNIVERSE_NAME, "name": assetName, "url": assetURL, "size": assetSize})
+        MODULE_LIST.append({"repo": UNIVERSE_NAME, "name": assetName,
+                            "url": assetURL, "size": assetSize})
     for repoURL in getConfig("COMMUNITY_REPOS", []):
-        repoName = git.getReleaseTag(git.getReleaseData(git.getData(repoURL), 0))
+        repoName = git.getReleaseTag(
+            git.getReleaseData(git.getData(repoURL), 0))
         if repoName not in REPOS_NAMES:
             REPOS_NAMES.append(repoName)
         assets = git.getAssets(git.getReleaseData(git.getData(repoURL), 0))
@@ -72,8 +84,10 @@ def list_updater():
             assetSize = git.getSize(asset)
             if assetName in MODULE_LIST:
                 MODULE_LIST.remove(MODULE_LIST["name"] == assetName)
-            MODULE_LIST.append({"repo": repoName, "name": assetName, "url": assetURL, "size": assetSize})
+            MODULE_LIST.append({"repo": repoName, "name": assetName,
+                                "url": assetURL, "size": assetSize})
     return MODULE_LIST
+
 
 @ehandler.on(command="pkg", hasArgs=True, outgoing=True)
 async def universe_checker(msg):
@@ -145,11 +159,14 @@ async def universe_checker(msg):
                 return
         for i in fileURLs:
             request = requests.get(i['link'], allow_redirects=True)
-            if os.path.exists(os.path.join(USER_MODULES_DIR, i['filename'])): # We remove first, in case exists for updates
+            # We remove first, in case exists for updates
+            if os.path.exists(os.path.join(USER_MODULES_DIR, i['filename'])):
                 os.remove(os.path.join(USER_MODULES_DIR, i['filename']))
-            open(os.path.join(USER_MODULES_DIR, i['filename']), 'wb').write(request.content)
+            open(os.path.join(USER_MODULES_DIR,
+                              i['filename']), 'wb').write(request.content)
             modules_installed.append(i['filename'])
-            log.info(f"Module '{i['filename'][:-3]}' has been installed to userspace")
+            log.info(f"Module '{i['filename'][:-3]}' "
+                     f"has been installed to userspace")
         md_installed_string = ""
         for md in modules_installed:
             if md_installed_string == "":
@@ -160,7 +177,9 @@ async def universe_checker(msg):
         await msg.edit(msgRep.DONE_RBT)
         time.sleep(1)  # just so we can actually see a message
         if LOGGING:
-            await event_log(msg, "MODULE INSTALL", custom_text=msgRep.INSTALL_LOG.format(md_installed_string))
+            await event_log(msg, "MODULE INSTALL",
+                            custom_text=msgRep.INSTALL_LOG.format(
+                                md_installed_string))
         await msg.edit(msgRep.REBOOT_DONE_INS.format(md_installed_string))
         setConfig("REBOOT", True)
         await msg.client.disconnect()
@@ -190,7 +209,8 @@ async def universe_checker(msg):
         await msg.edit(msgRep.DONE_RBT)
         time.sleep(1)  # just so we can actually see a message
         if LOGGING:
-            await event_log(msg, "MODULE UNINSTALL", custom_text=msgRep.UNINSTALL_LOG.format(modNames))
+            await event_log(msg, "MODULE UNINSTALL",
+                            custom_text=msgRep.UNINSTALL_LOG.format(modNames))
         await msg.edit(msgRep.REBOOT_DONE_UNINS.format(modNames))
         if SAFEMODE:
             setConfig("REBOOT_SAFEMODE", True)
@@ -200,7 +220,11 @@ async def universe_checker(msg):
         await msg.edit(msgRep.INVALID_ARG)
     return
 
-register_cmd_usage("pkg", usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("args"), usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("usage"))
+
+register_cmd_usage("pkg",
+                   usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("args"),
+                   usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("usage"))
+
 register_module_desc(descRep.PACKAGE_MANAGER_DESC)
 register_module_info(
     name="Package Manager",

@@ -9,20 +9,20 @@
 from sys import version_info
 
 if (version_info.major, version_info.minor) < (3, 8):
-    print("Python v3.8+ is required! Please update "\
-          "Python to v3.8 or newer "\
+    print("Python v3.8+ is required! Please update "
+          "Python to v3.8 or newer "
           "(current version: {}.{}.{}).".format(
               version_info.major, version_info.minor, version_info.micro))
     quit(1)
 
-from platform import system
-from subprocess import check_call
-from sys import executable, platform
-import os
+from platform import system  # noqa: E402
+from subprocess import check_call  # noqa: E402
+from sys import executable, platform  # noqa: E402
+import os  # noqa: E402
 
-IS_WINDOWS = True if system().lower() == "windows" or \
-             os.name == "nt" or platform.startswith("win") else False
-PY_EXEC = executable if not " " in executable else '"' + executable + '"'
+IS_WINDOWS = (True if system().lower() == "windows" or
+              os.name == "nt" or platform.startswith("win") else False)
+PY_EXEC = executable if " " not in executable else '"' + executable + '"'
 WIN_COLOR_ENABLED = False
 
 try:
@@ -33,6 +33,7 @@ try:
 except:
     pass
 
+
 class Colors:
     RED = "\033[91m"
     GREEN = "\033[92m"
@@ -40,10 +41,12 @@ class Colors:
     RED_BG = "\033[101m"
     END = "\033[0m"
 
+
 def setColorText(text: str, color: Colors) -> str:
     if IS_WINDOWS and not WIN_COLOR_ENABLED:
         return text  # don't use ANSI codes
     return color + text + Colors.END
+
 
 def _userbot_installed() -> bool:
     if not os.path.exists(os.path.join(".", "userbot")) or \
@@ -51,6 +54,7 @@ def _userbot_installed() -> bool:
        not os.path.exists(os.path.join(".", "userbot", "__main__.py")):
         return False
     return True
+
 
 def _installTelethon(upgrade: bool = False) -> bool:
     try:
@@ -70,6 +74,7 @@ def _installTelethon(upgrade: bool = False) -> bool:
                 f"Failed to install Telethon package: {e}", Colors.RED))
     return False
 
+
 def _install_requirements():
     try:
         check_call(
@@ -78,6 +83,7 @@ def _install_requirements():
         print(setColorText(
             f"Failed to install pip requirements: {e}", Colors.RED))
     return
+
 
 def _getAPIs() -> tuple:
     api_key, api_hash = (None,)*2
@@ -96,7 +102,7 @@ def _getAPIs() -> tuple:
             if len(api_hash) == 32:
                 break
             elif len(api_hash) > 0:
-                print(setColorText("Invalid input. API Hash has a length of "\
+                print(setColorText("Invalid input. API Hash has a length of "
                                    "32 characters",
                                    Colors.YELLOW))
             else:
@@ -106,6 +112,7 @@ def _getAPIs() -> tuple:
     except:
         pass
     return (None, None)
+
 
 def _generateStringSession() -> tuple:
     from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
@@ -134,6 +141,7 @@ def _generateStringSession() -> tuple:
             break
     return (None, None, None)
 
+
 def _run_userbot():
     try:
         tcmd = [PY_EXEC, "-m", "userbot"]
@@ -146,7 +154,7 @@ def _run_userbot():
 if __name__ == "__main__":
     try:
         print("Welcome to HyperUBot's Setup Assistant!")
-        print("This setup will guide you through required processes to run "\
+        print("This setup will guide you through required processes to run "
               "HyperUBot on your Machine")
 
         while True:
@@ -167,7 +175,7 @@ if __name__ == "__main__":
 
         if os.path.exists(os.path.join(".", "userbot", "config.env")) or \
            os.path.exists(os.path.join(".", "userbot", "config.py")):
-            print(setColorText("Seems like the setup is completed already "\
+            print(setColorText("Seems like the setup is completed already "
                                "or done manually", Colors.GREEN))
             quit()
 
@@ -185,8 +193,8 @@ if __name__ == "__main__":
                     install_telethon_started = True
                     _installTelethon()
                 else:
-                    print(setColorText("Unable to import Telethon. "\
-                                       "Setup Assistant was not able to "\
+                    print(setColorText("Unable to import Telethon. "
+                                       "Setup Assistant was not able to "
                                        "install the Telethon package",
                                        Colors.RED))
                     quit(1)
@@ -197,21 +205,22 @@ if __name__ == "__main__":
             if not _installTelethon(True):
                 quit(1)
 
-        print("\nHyperUBot requires, like all other Telegram userbots, "\
-              "an API Key, an API Hash and a String Session in order "\
-              "to run HyperUBot as an user client.\n"\
-              "If not done yet, please go to https://my.telegram.org and\n"\
-              "1. log in into your Telegram account\n"\
-              "2. create a new application (or use an existing one)\n"\
-              "3. get your API Key and Hash (do NOT share these values with "\
-              "anyone else!)\n\n"\
-              "Please keep the following requirements ready to obtain a "\
-              "new String Session:\n"\
-              "- Your Telegram application's API Key and Hash (from your "\
-              "(existing) application (you created before))\n"\
-              "- Your Phone Number which you use for your Telegram account "\
-              "(required to log in into your account)\n"\
-              "- Your Account's password (Two-Step Verification; if enabled)\n")
+        print("\nHyperUBot requires, like all other Telegram userbots, "
+              "an API Key, an API Hash and a String Session in order "
+              "to run HyperUBot as an user client.\n"
+              "If not done yet, please go to https://my.telegram.org and\n"
+              "1. log in into your Telegram account\n"
+              "2. create a new application (or use an existing one)\n"
+              "3. get your API Key and Hash (do NOT share these values with "
+              "anyone else!)\n\n"
+              "Please keep the following requirements ready to obtain a "
+              "new String Session:\n"
+              "- Your Telegram application's API Key and Hash (from your "
+              "(existing) application (you created before))\n"
+              "- Your Phone Number which you use for your Telegram account "
+              "(required to log in into your account)\n"
+              "- Your Account's password (Two-Step Verification; "
+              "if enabled)\n")
 
         while True:
             inp = input("Ready? (y/n): ")
@@ -228,18 +237,18 @@ if __name__ == "__main__":
 
         if not api_key or not api_hash or not string_session:
             print(
-                setColorText("Setup Assistant failed to get a new "\
+                setColorText("Setup Assistant failed to get a new "
                              "string session from your API Key/Hash",
                              Colors.RED))
             quit(1)
 
-        print("\nAs the API Key, API Hash and String Session are vaild, it's "\
-              "important to store them into a configuration file to avoid "\
-              "being asked for these values everytime you run HyperUBot. "\
-              "HyperUBot supports 2 types: Environment (config.env) and "\
-              "Python script (config.py).\n"\
+        print("\nAs the API Key, API Hash and String Session are vaild, it's "
+              "important to store them into a configuration file to avoid "
+              "being asked for these values everytime you run HyperUBot. "
+              "HyperUBot supports 2 types: Environment (config.env) and "
+              "Python script (config.py).\n"
               "Which type of configuration file you wish to have?\n")
-        print("[1] Environment (config.env)\n"\
+        print("[1] Environment (config.env)\n"
               "[2] Python script (config.py)\n")
 
         config_file = None
@@ -262,9 +271,9 @@ if __name__ == "__main__":
                  "2": {"text": "German/Deutsch", "code": "de"},
                  "3": {"text": "Portuguese/Português", "code": "pt"}}
 
-        lang_text = "\nHyperUBot knows some different languages, not much "\
-                    "but still it does.\n"\
-                    "Please select your preferred language:\n\n"
+        lang_text = ("\nHyperUBot knows some different languages, not much "
+                     "but still it does.\n"
+                     "Please select your preferred language:\n\n")
 
         first_key_from_langs, last_key_from_langs = (0,)*2
 
@@ -280,14 +289,14 @@ if __name__ == "__main__":
         lang_code = "en"  # default language
 
         while True:
-            inp = input("Your input "\
-                        f"[{first_key_from_langs}-{last_key_from_langs}] "\
+            inp = input("Your input "
+                        f"[{first_key_from_langs}-{last_key_from_langs}] "
                         "(or 'X' to cancel setup): ")
             if inp in langs.keys():
                 for key, value in langs.items():
                     if inp == key:
-                       lang_code = value.get("code")
-                       break
+                        lang_code = value.get("code")
+                        break
                 break
             elif inp.lower() == "x":
                 raise KeyboardInterrupt
@@ -298,26 +307,26 @@ if __name__ == "__main__":
         try:
             dl_path = os.path.join(".", "downloads")  # default path
             if config_file.endswith(".env"):
-                configs = f'API_KEY = "{api_key}"\n'\
-                          f'API_HASH = "{api_hash}"\n'\
-                          f'STRING_SESSION = "{string_session}"\n'\
-                          f'UBOT_LANG = "{lang_code}"\n'\
-                          'LOGGING = False\n'\
-                          'LOGGING_CHATID = 0\n'\
-                          f'TEMP_DL_DIR = "{dl_path}"\n'\
-                          'NOT_LOAD_MODULES = []\n'\
-                          'COMMUNITY_REPOS = []\n'
+                configs = (f'API_KEY = "{api_key}"\n'
+                           f'API_HASH = "{api_hash}"\n'
+                           f'STRING_SESSION = "{string_session}"\n'
+                           f'UBOT_LANG = "{lang_code}"\n'
+                           'LOGGING = False\n'
+                           'LOGGING_CHATID = 0\n'
+                           f'TEMP_DL_DIR = "{dl_path}"\n'
+                           'NOT_LOAD_MODULES = []\n'
+                           'COMMUNITY_REPOS = []\n')
             else:  # py script
-                configs = 'class ConfigClass(object):\n'\
-                          f'{"":4}API_KEY = "{api_key}"\n'\
-                          f'{"":4}API_HASH = "{api_hash}"\n'\
-                          f'{"":4}STRING_SESSION = "{string_session}"\n'\
-                          f'{"":4}UBOT_LANG = "{lang_code}"\n'\
-                          f'{"":4}LOGGING = False\n'\
-                          f'{"":4}LOGGING_CHATID = 0\n'\
-                          f'{"":4}TEMP_DL_DIR = "{dl_path}"\n'\
-                          f'{"":4}NOT_LOAD_MODULES = []\n'\
-                          f'{"":4}COMMUNITY_REPOS = []\n'
+                configs = ('class ConfigClass(object):\n'
+                           f'{"":4}API_KEY = "{api_key}"\n'
+                           f'{"":4}API_HASH = "{api_hash}"\n'
+                           f'{"":4}STRING_SESSION = "{string_session}"\n'
+                           f'{"":4}UBOT_LANG = "{lang_code}"\n'
+                           f'{"":4}LOGGING = False\n'
+                           f'{"":4}LOGGING_CHATID = 0\n'
+                           f'{"":4}TEMP_DL_DIR = "{dl_path}"\n'
+                           f'{"":4}NOT_LOAD_MODULES = []\n'
+                           f'{"":4}COMMUNITY_REPOS = []\n')
             with open(config_file, "w") as cfg_file:
                 print(f"Writing configuration file in {config_file}")
                 cfg_file.write(configs)
@@ -332,9 +341,9 @@ if __name__ == "__main__":
         _install_requirements()
 
         print(setColorText("\nYaaaay! Setup completed! :P\n", Colors.GREEN))
-        start_bot_text = "Do you wish to run HyperUBot now? You can always "\
-                         "run it by executing 'python3 -m userbot' in "\
-                         "HyperUBot's directory later."
+        start_bot_text = ("Do you wish to run HyperUBot now? You can always "
+                          "run it by executing 'python3 -m userbot' in "
+                          "HyperUBot's directory later.")
 
         if IS_WINDOWS:
             start_bot_text = start_bot_text.replace("python3", "python")

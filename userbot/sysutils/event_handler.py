@@ -15,23 +15,30 @@ from telethon.events import ChatAction, MessageEdited, NewMessage
 from logging import getLogger, Logger
 from re import match
 
+
 class EventHandler:
     def __init__(self, log: Logger = None, traceback: bool = True):
         """
-        Initialize EventHandler to catch Telethon Events such as NewMessage or ChatAction
+        Initialize EventHandler to catch Telethon Events such as
+        NewMessage or ChatAction
 
         Args:
             log (Logger): passing an already existing logger. Default None
-            logging (boolean): Create a traceback in case of unhandled exceptions. Default True
+            logging (boolean): Create a traceback in case of unhandled
+                               exceptions. Default True
 
         Example:
             from userbot.sysutils.event_handler import EventHandler
             from logging import getLogger
 
             log = getLogger(__name__)
-            ehandler = EventHandler()  # initialize with default logger
-            ehandler = EventHandler(log)  # initialize with an already existing logger
-            ehandler = EventHandler(log, False)  # initialize with an already existing logger without Tracebacks
+
+            # initialize with default logger
+            ehandler = EventHandler()
+            # initialize with an already existing logger
+            ehandler = EventHandler(log)
+            # initialize with an already existing logger without Tracebacks
+            ehandler = EventHandler(log, False)
         """
         self.log = log if isinstance(log, Logger) else getLogger(__name__)
         self.traceback = traceback
@@ -56,17 +63,18 @@ class EventHandler:
     def on(self, command: str, alt: str = None,
            hasArgs: bool = False, ignore_edits: bool = False, *args, **kwargs):
         """
-        Default listen on function which uses MessageEdited and NewMessage events.
-        Recommended for outgoing messages/updates.
+        Default listen on function which uses MessageEdited and NewMessage
+        events. Recommended for outgoing messages/updates.
 
         Args:
             command (string): command to listen to (must not be None)
             alt (string): alternative way to 'command' (must be None)
-            hasArgs (bool): whether 'command' takes arguments (default to False)
+            hasArgs (bool): if 'command' takes arguments (default to False)
             ignore_edits (bool): ignore edited messages (default to False)
 
         Note:
-            Function accepts any further arguments as supported by MessageEdited and NewMessage events
+            Function accepts any further arguments as supported by
+            MessageEdited and NewMessage events
 
         Example:
             from userbot.sysutils.event_handler import EventHandler
@@ -84,52 +92,77 @@ class EventHandler:
                 return None
             if not callable(function):
                 return None
-            caller = getouterframes(currentframe(), 2)[1]  # get caller in case of failed actions
-            caller = f"{basename(caller.filename)[:-3]}:{caller.lineno}"  # link to file and line number
+            # get caller in case of failed actions
+            caller = getouterframes(currentframe(), 2)[1]
+            # link to file and line number
+            caller = f"{basename(caller.filename)[:-3]}:{caller.lineno}"
             if not command:
-                self.log.error(f"Command in function '{function.__name__}' must not be empty ({caller})")
+                self.log.error(f"Command in function '{function.__name__}' "
+                               "must not be empty ({caller})")
                 return None
             if not self.__checkCmdValidity(command):
-                self.log.error(f"Validity check for '{command}' in function '{function.__name__}' "\
-                               f"failed. Special characters are not allowed ({caller})")
+                self.log.error(f"Validity check for '{command}' in function "
+                               f"'{function.__name__}' "
+                               f"failed. Special characters are "
+                               f"not allowed ({caller})")
                 return None
             if alt and not self.__checkCmdValidity(alt):
-                self.log.error(f"Validity check for '{alt}' (alternative command of '{command}') "\
-                               f"in function '{function.__name__}' failed. "\
-                               f"Special characters are not allowed ({caller})")
+                self.log.error(f"Validity check for '{alt}' (alternative "
+                               f"command of '{command}') "
+                               f"in function '{function.__name__}' failed. "
+                               "Special characters are not allowed "
+                               f"({caller})")
                 return None
-            if not pre_register_cmd(command, alt, hasArgs, ".", False, False, function):
-                self.log.error(f"Unable to add command '{command}' in function '{function.__name__}' "\
-                               f"to event handler as previous registration failed ({caller})")
+            if not pre_register_cmd(command, alt, hasArgs, ".", False, False,
+                                    function):
+                self.log.error(f"Unable to add command '{command}' in "
+                               f"function '{function.__name__}' "
+                               f"to event handler as previous registration "
+                               f"failed ({caller})")
                 return None
             async def func_callback(event):
                 try:
                     await function(event)
                 except Exception as e:
-                    # This block will be executed if the function, where the events are
-                    # being used, has no own exception handler(s)
+                    # This block will be executed if the function, where
+                    # the events are being used, has no own
+                    # exception handler(s)
                     try:
                         # get current executed command
-                        curr_cmd = event.pattern_match.group(0).split(" ")[0][1:]
+                        curr_cmd = (
+                            event.pattern_match.group(0).split(" ")[0][1:])
                     except:
                         curr_cmd = command
-                    self.log.error(f"Command '{curr_cmd}' stopped due to an unhandled exception "
-                                   f"in function '{function.__name__}'", exc_info=True if self.traceback else False)
+                    self.log.error(f"Command '{curr_cmd}' stopped due to an "
+                                   "unhandled exceptionin function "
+                                   f"'{function.__name__}'",
+                                   exc_info=True if self.traceback else False)
                     try:  # in case editing messages isn't allowed (channels)
-                        await event.edit(f"`{msgResp.CMD_STOPPED.format(f'{curr_cmd}.exe')}`")
+                        cmd_stopped = (
+                            msgResp.CMD_STOPPED.format(f"{curr_cmd}.exe"))
+                        await event.edit(f"`{cmd_stopped}`")
                     except:
                         pass
             if alt:
-                cmd_regex = fr"^\.(?:{command}|{alt})(?: |$)(.*)" if hasArgs else fr"^\.(?:{command}|{alt})$"
+                cmd_regex = (fr"^\.(?:{command}|{alt})(?: |$)(.*)"
+                             if hasArgs else fr"^\.(?:{command}|{alt})$")
             else:
-                cmd_regex = fr"^\.{command}(?: |$)(.*)" if hasArgs else fr"^\.{command}$"
+                cmd_regex = (fr"^\.{command}(?: |$)(.*)"
+                             if hasArgs else fr"^\.{command}$")
             try:
                 if not ignore_edits:
-                    tgclient.add_event_handler(func_callback, MessageEdited(pattern=cmd_regex, *args, **kwargs))
-                tgclient.add_event_handler(func_callback, NewMessage(pattern=cmd_regex, *args, **kwargs))
+                    tgclient.add_event_handler(func_callback,
+                                               MessageEdited(pattern=cmd_regex,
+                                                             *args,
+                                                             **kwargs))
+                tgclient.add_event_handler(func_callback,
+                                           NewMessage(pattern=cmd_regex,
+                                                      *args,
+                                                      **kwargs))
             except Exception as e:
-                self.log.error(f"Failed to add command '{command}' to client "\
-                               f"(in function '{function.__name__}' ({caller}))",
+                self.log.error(f"Failed to add command '{command}' to client "
+                               f"(in function '{function.__name__}' "
+                               f"({caller}))",
                                exc_info=True if self.traceback else False)
                 return None
             return func_callback
@@ -143,10 +176,11 @@ class EventHandler:
         Args:
             command (string): command to listen to (must not be None)
             alt (string): alternative way to 'command' (must be None)
-            hasArgs (bool): whether 'command' takes arguments (default to False)
+            hasArgs (bool): if 'command' takes arguments (default to False)
 
         Note:
-            Function accepts any further arguments as supported by NewMessage events
+            Function accepts any further arguments as supported by
+            NewMessage events
 
         Example:
             from userbot.sysutils.event_handler import EventHandler
@@ -163,10 +197,12 @@ class EventHandler:
 
     def on_ChatAction(self, *args, **kwargs):
         """
-        Listen to chat activities (join, leave, new pinned message etc.) in any or certain chats.
+        Listen to chat activities (join, leave, new pinned message etc.) in
+        any or certain chats.
 
         Note:
-            Function accepts any further arguments as supported by ChatAction events
+            Function accepts any further arguments as supported by
+            ChatAction events
 
         Example:
             from userbot.sysutils.event_handler import EventHandler
@@ -185,13 +221,15 @@ class EventHandler:
                 try:
                     await function(event)
                 except Exception as e:
-                    self.log.error(f"Function '{function.__name__}' stopped due to an unhandled exception",
+                    self.log.error(f"Function '{function.__name__}' stopped "
+                                   "due to an unhandled exception",
                                    exc_info=True if self.traceback else False)
             try:
-                tgclient.add_event_handler(func_callback, ChatAction(*args, **kwargs))
+                tgclient.add_event_handler(func_callback,
+                                           ChatAction(*args, **kwargs))
             except Exception as e:
-                self.log.error(f"Failed to add a chat action feature to client "\
-                               f"(in function '{function.__name__}')",
+                self.log.error(f"Failed to add a chat action feature to "
+                               f"client (in function '{function.__name__}')",
                                exc_info=True if self.traceback else False)
                 return None
             return func_callback
@@ -201,25 +239,33 @@ class EventHandler:
                    hasArgs: bool = False, no_space_arg: bool = False,
                    no_cmd: bool = False, *args, **kwargs):
         """
-        Listen to given pattern depending on Event(s). This event handler gives the
-        most freedom, however you should guarantee that your pattern doesn't
-        cause conflicts with other registered commands/patterns!
+        Listen to given pattern depending on Event(s). This event handler
+        gives the most freedom, however you should guarantee that your
+        pattern doesn't cause conflicts with other registered
+        commands/patterns!
 
         Args:
             pattern (string): pattern to listen to (must not be None)
-            events: Event to add to client. Also supported as list of Events (must not be None)
+            events: Event to add to client. Also supported as list
+                    of Events (must not be None)
             name: name of feature. should match pattern but without regex, not
-                  required to match patttern if no_cmd is set. (must not be None)
+                  required to match patttern if no_cmd is set.
+                  (must not be None)
             prefix (string): the prefix used at the beginning of your pattern
-                             e.g. .example, /example or !example. Default is dot.
-                             This is set automatically to a 'string wise none' if no_cmd is set.
-            hasArgs (bool): whether pattern takes arguments, default to False, stays False if no_cmd is set
-            no_space_arg (bool): removes the space between command and argument in usage info
-            no_cmd (bool): if pattern is no command to handle (default to False)
+                             e.g. .example, /example or !example.
+                             Default is dot. This is set automatically
+                             to a 'string wise none' if no_cmd is set.
+            hasArgs (bool): whether pattern takes arguments, default to
+                            False, stays False if no_cmd is set
+            no_space_arg (bool): removes the space between command and
+                                 argument in usage info
+            no_cmd (bool): if pattern is no command to handle
+                           (default to False)
 
         Note:
-            1. *args, **kwargs should be arguments supported by the events. If a parameter is not
-               supported by an event, this handler may not work then.
+            1. *args, **kwargs should be arguments supported by the events.
+               If a parameter is not supported by an event,
+               this handler may not work then.
             2. Alternative commands not supported
 
         Example:
@@ -259,39 +305,57 @@ class EventHandler:
             caller = getouterframes(currentframe(), 2)[1]
             caller = f"{basename(caller.filename)[:-3]}:{caller.lineno}"
             if not name:
-                self.log.error(f"Name of command/feature in function '{function.__name__}' "\
+                self.log.error(f"Name of command/feature in function "
+                               f"'{function.__name__}' "
                                f"must not be empty ({caller})")
                 return None
-            if not pre_register_cmd(name, None, hasArgs if not no_cmd else False,
-                                    prefix if not no_cmd else "", no_space_arg, no_cmd, function):
-                self.log.error(f"Unable to add command/feature '{name}' in function '{function.__name__}' "\
-                               f"to event handler as previous registration failed ({caller})")
+            if not pre_register_cmd(name, None, hasArgs
+                                    if not no_cmd else False,
+                                    prefix if not no_cmd else "",
+                                    no_space_arg, no_cmd, function):
+                self.log.error(f"Unable to add command/feature "
+                               f"'{name}' in function '{function.__name__}' "
+                               "to event handler as previous "
+                               f"registration failed ({caller})")
                 return None
             async def func_callback(event):
                 try:
                     await function(event)
                 except Exception as e:
                     if not no_cmd:
-                        self.log.error(f"Command '{name}' stopped due to an unhandled exception "
+                        self.log.error(f"Command '{name}' stopped due to "
+                                       "an unhandled exception "
                                        f"in function '{function.__name__}'",
-                                       exc_info=True if self.traceback else False)
+                                       exc_info=(True
+                                                 if self.traceback else False))
                         try:
-                            await event.edit(f"`{msgResp.CMD_STOPPED.format(f'{name}.exe')}`")
+                            cmd_stopped = (
+                                msgResp.CMD_STOPPED.format(f'{name}.exe'))
+                            await event.edit(f"`{cmd_stopped}`")
                         except:
                             pass
                     else:
-                        self.log.error(f"Feature '{name}' stopped due to an unhandled exception "
+                        self.log.error(f"Feature '{name}' stopped due to "
+                                       "an unhandled exception "
                                        f"in function '{function.__name__}'",
-                                       exc_info=True if self.traceback else False)
+                                       exc_info=(True
+                                                 if self.traceback else False))
             try:
                 if isinstance(events, (list, tuple)):
                     for event in events:
-                        tgclient.add_event_handler(func_callback, event(pattern=pattern, *args, **kwargs))
+                        tgclient.add_event_handler(func_callback,
+                                                   event(pattern=pattern,
+                                                         *args,
+                                                         **kwargs))
                 else:
-                    tgclient.add_event_handler(func_callback, events(pattern=pattern, *args, **kwargs))
+                    tgclient.add_event_handler(func_callback,
+                                               events(pattern=pattern,
+                                                      *args,
+                                                      **kwargs))
             except Exception as e:
-                self.log.error(f"Failed to add command/feature '{name}' to client "\
-                               f"(in function '{function.__name__}' ({caller}))",
+                self.log.error(f"Failed to add command/feature '{name}' "
+                               f"to client (in function "
+                               f"'{function.__name__}' ({caller}))",
                                exc_info=True if self.traceback else False)
                 return None
             return func_callback

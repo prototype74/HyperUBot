@@ -7,12 +7,19 @@
 # compliance with the PE License
 
 from userbot.include.aux_funcs import fetch_user
-from userbot.include.language_processor import MemberInfoText as msgRep, ModuleDescriptions as descRep, ModuleUsages as usageRep
+from userbot.include.language_processor import (MemberInfoText as msgRep,
+                                                ModuleDescriptions as descRep,
+                                                ModuleUsages as usageRep)
 from userbot.sysutils.event_handler import EventHandler
-from userbot.sysutils.registration import register_cmd_usage, register_module_desc, register_module_info
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
 from userbot.version import VERSION
 from telethon.tl.functions.channels import GetParticipantRequest
-from telethon.tl.types import ChannelParticipantCreator, ChannelParticipantAdmin, ChannelParticipantBanned, ChannelParticipantSelf, ChannelParticipant
+from telethon.tl.types import (ChannelParticipantCreator,
+                               ChannelParticipantAdmin,
+                               ChannelParticipantBanned,
+                               ChannelParticipantSelf, ChannelParticipant)
 from telethon.errors import ChannelInvalidError, UserNotParticipantError
 from datetime import datetime
 from logging import getLogger
@@ -20,11 +27,14 @@ from logging import getLogger
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 
+
 @ehandler.on(command="minfo", hasArgs=True, outgoing=True)
 async def memberinfo(event):
     await event.edit(msgRep.SCAN)
 
-    member_info, chat_info = await fetch_user(event=event, full_user=True, get_chat=True)
+    member_info, chat_info = await fetch_user(event=event,
+                                              full_user=True,
+                                              get_chat=True)
 
     if not member_info:
         return
@@ -37,22 +47,28 @@ async def memberinfo(event):
         member_id = member_info.user.id
         member_is_self = member_info.user.is_self
         member_deleted = member_info.user.deleted
-        member_name = member_info.user.first_name if not member_deleted else msgRep.DELETED_ACCOUNT
-        member_username = member_info.user.username if member_info.user.username else None
-        member_name_link = f"<a href=\"tg://user?id={member_id}\">{member_name}</a>"
+        member_name = (member_info.user.first_name
+                       if not member_deleted else msgRep.DELETED_ACCOUNT)
+        member_username = (member_info.user.username
+                           if member_info.user.username else None)
+        member_name_link = (f"<a href=\"tg://user?id={member_id}\""
+                            f">{member_name}</a>")
     except Exception as e:
         log.error(e)
         await event.edit(msgRep.FAIL_GET_MEMBER)
         return
 
     try:
-        if hasattr(chat_info, "megagroup") and chat_info.megagroup:  # works with supergroups only
-            participant_info = await event.client(GetParticipantRequest(chat_info.id, member_id))
+        # works with supergroups only
+        if hasattr(chat_info, "megagroup") and chat_info.megagroup:
+            participant_info = await event.client(
+                GetParticipantRequest(chat_info.id, member_id))
         else:
             await event.edit(msgRep.NOT_SUPERGROUP)
             return
         # member_info becomes a participant object now
-        member_info = participant_info.participant if participant_info else None
+        member_info = (participant_info.participant
+                       if participant_info else None)
     except ChannelInvalidError:
         await event.edit(msgRep.INVALID_CHAT_ID)
         return
@@ -67,10 +83,11 @@ async def memberinfo(event):
         await event.edit(msgRep.FAIL_GET_PART)
         return
 
-    # we can't access non-default permissions from other members if we aren't an admin
-    # in the specific group
-    am_i_admeme = True if chat_info.creator or (hasattr(chat_info, "admin_rights") and \
-                       chat_info.admin_rights is not None) else False
+    # we can't access non-default permissions from other members
+    # if we aren't an admin in the specific group
+    am_i_admeme = (True if chat_info.creator or
+                   (hasattr(chat_info, "admin_rights") and
+                    chat_info.admin_rights is not None) else False)
 
     x_marks_the_spot = u"\u274C"  # red cross mark emoji
     check_mark = u"\u2705"  # white check mark emoji
@@ -129,7 +146,8 @@ async def memberinfo(event):
                 if str(right) in admin_permissions.keys():
                     admin_permissions[str(right)] = check_mark
                 # these attributes are for channels, so we don't need them
-                if not str(right) in ["post_messages", "edit_messages", "anonymous"]:
+                if not str(right) in ["post_messages", "edit_messages",
+                                      "anonymous"]:
                     enabled_rights_count += 1
         change_info = admin_permissions.get("change_info")
         delete_messages = admin_permissions.get("delete_messages")
@@ -140,16 +158,19 @@ async def memberinfo(event):
         anonymous = admin_permissions.get("anonymous")
         manage_call = admin_permissions.get("manage_call")
         if enabled_rights_count == 6:  # max admin rights in groups
-            member_status = f"{msgRep.STATUS_ADMIN} " + u"\u2605"  # full rights; star emoji
+            member_status = (f"{msgRep.STATUS_ADMIN} " +
+                             u"\u2605")  # full rights; star emoji
         elif enabled_rights_count < 5:
-            member_status = f"{msgRep.STATUS_ADMIN} " + u"\u32cf"  # limited rights; LTD emoji
+            member_status = (f"{msgRep.STATUS_ADMIN} " +
+                             u"\u32cf")  # limited rights; LTD emoji
         else:
-            member_status =  msgRep.STATUS_ADMIN  # default
+            member_status = msgRep.STATUS_ADMIN  # default
 
         promoter = None
         if hasattr(participant_info, "users") and participant_info.users:
             for user in participant_info.users:
-                if user.id == member_info.promoted_by:  # promoted_by flag is always set
+                # promoted_by flag is always set
+                if user.id == member_info.promoted_by:
                     promoter = user
                     break
         if promoter is None:
@@ -157,16 +178,20 @@ async def memberinfo(event):
         if promoter.deleted:
             promoted_by = msgRep.DELETED_ACCOUNT
         else:
-            promoted_by = "@" + promoter.username if promoter.username is not None else \
-                          f"<a href=\"tg://user?id={promoter.id}\">{promoter.first_name}</a>"
-    elif isinstance(member_info, ChannelParticipant) or \
-         isinstance(member_info, ChannelParticipantSelf):  # Member
+            promoted_by = ("@" + promoter.username
+                           if promoter.username is not None else
+                           (f"<a href=\"tg://user?id={promoter.id}\">"
+                            f"{promoter.first_name}</a>"))
+    elif (isinstance(member_info, ChannelParticipant) or
+          isinstance(member_info, ChannelParticipantSelf)):  # Member
         member_status = msgRep.STATUS_MEMBER
         for right in vars(default_chat_permissions):
-            if getattr(default_chat_permissions, right) is False:  # False means perm not restricted
+            # False means perm not restricted
+            if getattr(default_chat_permissions, right) is False:
                 if str(right) in member_permissions.keys():
                     if not am_i_admeme and not member_is_self:
-                        member_permissions[str(right)] = warning  # Can't access member's non-default permission
+                        # Can't access member's non-default permission
+                        member_permissions[str(right)] = warning
                     else:
                         member_permissions[str(right)] = check_mark
             else:
@@ -174,10 +199,10 @@ async def memberinfo(event):
                     member_permissions[str(right)] = negative_cross
         send_messages = member_permissions.get("send_messages")
         send_media = member_permissions.get("send_media")
-        if (member_permissions.get("send_stickers") is check_mark and \
-            member_permissions.get("send_gifs") is check_mark):
+        if (member_permissions.get("send_stickers") is check_mark and
+                member_permissions.get("send_gifs") is check_mark):
             send_stickers_gifs = check_mark
-        elif (member_permissions.get("send_stickers") is warning and \
+        elif (member_permissions.get("send_stickers") is warning and
               member_permissions.get("send_gifs") is warning):
             send_stickers_gifs = warning
         else:
@@ -187,9 +212,13 @@ async def memberinfo(event):
         invite_users = member_permissions.get("invite_users")
         pin_messages = member_permissions.get("pin_messages")
         change_info = member_permissions.get("change_info")
-    elif isinstance(member_info, ChannelParticipantBanned):  # Banned/Muted/Restricted member
-        if member_info.left:  # member is not a participant but added to exceptions or removed list
-            if member_info.banned_rights.view_messages:  # only banned users have this flag set to True
+    elif isinstance(member_info, ChannelParticipantBanned):
+        # Banned/Muted/Restricted member
+        if member_info.left:
+            # member is not a participant but added to exceptions
+            # or removed list
+            if member_info.banned_rights.view_messages:
+                # only banned users have this flag set to True
                 member_status = msgRep.STATUS_BANNED
                 until_text = msgRep.STATUS_BANNED_UNTIL
                 by_text = msgRep.STATUS_BANNED_BY
@@ -204,7 +233,8 @@ async def memberinfo(event):
                 until_text = msgRep.STATUS_RESTRICTED_UNTIL
                 by_text = msgRep.STATUS_RESTRICTED_BY
                 not_member = True
-        elif member_info.banned_rights.send_messages:  # member is participant but silenced
+        elif member_info.banned_rights.send_messages:
+            # member is participant but silenced
             member_status = msgRep.STATUS_MUTED
             until_text = msgRep.STATUS_MUTED_UNTIL
             by_text = msgRep.STATUS_MUTED_BY
@@ -217,21 +247,22 @@ async def memberinfo(event):
         default_perms_dict = vars(default_chat_permissions)
         member_perms_dict = vars(member_info.banned_rights)
         for key, key2 in zip(default_perms_dict, member_perms_dict):
-            if default_perms_dict.get(str(key)) is False and \
-               member_perms_dict.get(str(key2)) is False:
+            if (default_perms_dict.get(str(key)) is False and
+                    member_perms_dict.get(str(key2)) is False):
                 if str(key2) in member_permissions.keys():
                     member_permissions[str(key2)] = check_mark
-            elif default_perms_dict.get(str(key)) is True and \
-                 member_perms_dict.get(str(key2)) is True:  # default chat restriction
+            elif (default_perms_dict.get(str(key)) is True and
+                  member_perms_dict.get(str(key2)) is True):
+                # default chat restriction
                 if str(key2) in member_permissions.keys():
                     member_permissions[str(key2)] = negative_cross
 
         send_messages = member_permissions.get("send_messages")
         send_media = member_permissions.get("send_media")
-        if (member_permissions.get("send_stickers") is check_mark and \
-            member_permissions.get("send_gifs") is check_mark):
+        if (member_permissions.get("send_stickers") is check_mark and
+                member_permissions.get("send_gifs") is check_mark):
             send_stickers_gifs = check_mark
-        elif (member_permissions.get("send_stickers") is negative_cross and \
+        elif (member_permissions.get("send_stickers") is negative_cross and
               member_permissions.get("send_gifs") is negative_cross):
             send_stickers_gifs = negative_cross  # restricted by default
         else:
@@ -253,16 +284,24 @@ async def memberinfo(event):
         if restricter.deleted:
             restricted_by = msgRep.DELETED_ACCOUNT
         else:
-            restricted_by = "@" + restricter.username if restricter.username is not None else \
-                            f"<a href=\"tg://user?id={restricter.id}\">{restricter.first_name}</a>"
-        year_diff = member_info.banned_rights.until_date.year - datetime.now().year
-        # Custom restriction dates in Telegram clients are limited up to a year.
-        # Restriction date is set to 'forever' if restriction date is for longer than a year
+            restricted_by = ("@" + restricter.username
+                             if restricter.username is not None else
+                             (f"<a href=\"tg://user?id={restricter.id}\">"
+                              f"{restricter.first_name}</a>"))
+        year_diff = (member_info.banned_rights.until_date.year -
+                     datetime.now().year)
+        # Custom restriction dates in Telegram clients are limited
+        # up to a year. Restriction date is set to 'forever' if
+        # restriction date is for longer than a year
         if year_diff > 1:
             restricted_date = msgRep.TIME_FOREVER
         else:
-            restricted_date = member_info.banned_rights.until_date  # temp stored
-            restricted_date = f"<code>{restricted_date.strftime('%b %d, %Y')} - {restricted_date.time()} {restricted_date.tzinfo}</code>"
+            # temp stored
+            restricted_date = member_info.banned_rights.until_date
+            restricted_date = (f"<code>"
+                               f"{restricted_date.strftime('%b %d, %Y')} - "
+                               f"{restricted_date.time()} "
+                               f"{restricted_date.tzinfo}</code>")
     else:
         # if user isn't a member then skip
         if member_is_self:
@@ -271,11 +310,13 @@ async def memberinfo(event):
             await event.edit(msgRep.USER_NOT_MEMBER.format(chat_info.title))
         return
 
-    # hasattr() is being often used here as not all ChannelParticipant* objects share the same attributes
+    # hasattr() is being often used here as not all ChannelParticipant*
+    # objects share the same attributes
     admin_title = member_info.rank if hasattr(member_info, "rank") else None
     join_date = member_info.date if hasattr(member_info, "date") else None
     adder = None
-    if hasattr(member_info, "inviter_id") and member_info.inviter_id is not None:
+    if (hasattr(member_info, "inviter_id") and
+            member_info.inviter_id is not None):
         if hasattr(participant_info, "users") and participant_info.users:
             for user in participant_info.users:
                 if user.id == member_info.inviter_id:
@@ -287,8 +328,10 @@ async def memberinfo(event):
         if adder.deleted:
             added_by = msgRep.DELETED_ACCOUNT
         else:
-            added_by = "@" + adder.username if adder.username is not None else \
-                       f"<a href=\"tg://user?id={adder.id}\">{adder.first_name}</a>"
+            added_by = ("@" + adder.username
+                        if adder.username is not None else
+                        (f"<a href=\"tg://user?id={adder.id}\">"
+                         "{adder.first_name}</a>"))
     else:
         added_by = None
 
@@ -341,13 +384,17 @@ async def memberinfo(event):
     if added_by is not None:
         caption += f"{msgRep.ADDED_BY}: {added_by}\n"
     if (not banned and not not_member) and join_date is not None:
-        caption += f"{msgRep.JOIN_DATE}: <code>{join_date.strftime('%b %d, %Y')} - {join_date.time()} {join_date.tzinfo}</code>\n"
-
+        caption += (f"{msgRep.JOIN_DATE}: "
+                    f"<code>{join_date.strftime('%b %d, %Y')} - "
+                    f"{join_date.time()} {join_date.tzinfo}</code>\n")
     await event.edit(caption, parse_mode="html")
-
     return
 
-register_cmd_usage("minfo", usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("args"), usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("usage"))
+
+register_cmd_usage("minfo",
+                   usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("args"),
+                   usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("usage"))
+
 register_module_desc(descRep.MEMBERINFO_DESC)
 register_module_info(
     name="Member Info",
