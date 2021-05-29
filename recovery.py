@@ -968,7 +968,7 @@ def _menues(recovery: _Recovery):
         for key in _option_table.keys():
             if num == _get_option(key, "num") and \
                _get_option(key, "enabled"):
-                if key in ("reboot", "reboot_safe"):
+                if key in ("boot", "boot_safe"):
                     _get_option(key, "func")(recovery)
                     return  # leave menu
                 else:
