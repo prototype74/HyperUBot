@@ -72,6 +72,36 @@ def isWSL() -> bool:
     return False
 
 
+def getDistro() -> str:
+    """
+    Tries to get the distro/debian name of a Linux based
+    system. Returns an empty string if os-release doesn't
+    exist or include the name
+    """
+    name = ""
+    if not isLinux():
+        return name
+
+    if os.path.exists(os.path.abspath(
+            os.path.join(os.sep, "etc", "os-release"))):
+        rel_path = os.path.abspath(os.path.join(os.sep, "etc", "os-release"))
+        try:
+            with open(rel_path, "r") as release:
+                for line in release.readlines():
+                    if not line.startswith("#") and not line == "\n" and \
+                       line.startswith("PRETTY_NAME="):
+                        if line.split("=")[1]:
+                            name = line.split("=")[1]
+                            name = name.replace("\n", "")
+                        break
+            if '"' in name:
+                name = name.replace('"', "")
+            release.close()
+        except:
+            return ""  # in case 'name' got modified but unfinished
+    return name
+
+
 def os_name() -> str:
     """
     Get and return the name of the current operating system.
@@ -82,7 +112,14 @@ def os_name() -> str:
     elif isMacOS():
         return "macOS"
     elif isWSL():
+        dist_name = getDistro()
+        if dist_name:
+            return f"{dist_name} (WSL)"
         return "Windows Subsystem for Linux"
+    elif isLinux():
+        dist_name = getDistro()
+        if dist_name:
+            return f"{dist_name}"
     return platform.system()  # default case
 
 
