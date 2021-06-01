@@ -119,7 +119,7 @@ def os_name() -> str:
     elif isLinux():
         dist_name = getDistro()
         if dist_name:
-            return f"{dist_name}"
+            return dist_name
     return platform.system()  # default case
 
 
