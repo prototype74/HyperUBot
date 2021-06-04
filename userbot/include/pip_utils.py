@@ -11,8 +11,9 @@ from inspect import currentframe, getouterframes
 from logging import getLogger
 from os.path import basename
 from pkg_resources import get_distribution
-from subprocess import check_call, DEVNULL
+from subprocess import check_call, check_output, DEVNULL
 from sys import executable
+import json
 
 log = getLogger(__name__)
 
@@ -80,9 +81,13 @@ def getVersionFromDist(dist_name):
         the version as string if distribution is installed else None
     """
     try:
-        ver = get_distribution(dist_name)
-        ver = str(ver).split()[1]
-        return ver
+        py_exec = (executable if " " not in executable else
+                   '"' + executable + '"')
+        out = check_output([py_exec, "-m", "pip", "list", "--format", "json"])
+        out_json = json.loads(out)
+        for elem in out_json:
+            if elem.get("name").lower() == dist_name.lower():
+                return elem.get("version")
     except:
         pass
     return
