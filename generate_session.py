@@ -45,7 +45,7 @@ class Colors:
 def setColorText(text: str, color: Colors) -> str:
     if IS_WINDOWS and not WIN_COLOR_ENABLED:
         return text  # don't use ANSI codes
-    return color + text + Colors.END
+    return f"{color}{text}{Colors.END}"
 
 telethon_version = tuple(map(int, version.__version__.split(".")))
 if telethon_version < (1, 21, 1):
