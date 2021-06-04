@@ -6,6 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot.sysutils.sys_funcs import verAsTuple
 from importlib.util import find_spec
 from inspect import currentframe, getouterframes
 from logging import getLogger
@@ -123,9 +124,17 @@ def installPkg(dist_name, upgrade: bool = False) -> bool:
             log.info(f"Package '{dist_name}' installed successfully "
                      f"({caller})")
         elif upgrade:
+            curr_ver = verAsTuple(getVersionFromDist(dist_name))
             check_call([py_exec, "-m", "pip", "install", "--upgrade",
                         dist_name], stdout=DEVNULL, stderr=DEVNULL)
-            log.info(f"Package '{dist_name}' upgraded successfully ({caller})")
+            new_ver = verAsTuple(getVersionFromDist(dist_name))
+            if(curr_ver and new_ver and curr_ver == new_ver):
+                log.info(f"Package '{dist_name}' is up-to-date already "
+                         f"({caller})")
+            else:
+                # default case
+                log.info(f"Package '{dist_name}' upgraded successfully "
+                         f"({caller})")
         else:
             log.info(f"Package '{dist_name}' installed already ({caller})")
         return True
