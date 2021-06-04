@@ -11,7 +11,7 @@ from inspect import currentframe, getouterframes
 from logging import getLogger
 from os.path import basename
 from pkg_resources import get_distribution
-from subprocess import check_call, PIPE
+from subprocess import check_call, DEVNULL
 from sys import executable
 
 log = getLogger(__name__)
@@ -114,12 +114,12 @@ def installPkg(dist_name, upgrade: bool = False) -> bool:
                    '"' + executable + '"')
         if not checkPkgByDist(dist_name):
             check_call([py_exec, "-m", "pip", "install", dist_name],
-                       stdout=PIPE)
-            log.info(f"Package '{dist_name}' installed successfully"
+                       stdout=DEVNULL, stderr=DEVNULL)
+            log.info(f"Package '{dist_name}' installed successfully "
                      f"({caller})")
         elif upgrade:
             check_call([py_exec, "-m", "pip", "install", "--upgrade",
-                        dist_name], stdout=PIPE)
+                        dist_name], stdout=DEVNULL, stderr=DEVNULL)
             log.info(f"Package '{dist_name}' upgraded successfully ({caller})")
         else:
             log.info(f"Package '{dist_name}' installed already ({caller})")
