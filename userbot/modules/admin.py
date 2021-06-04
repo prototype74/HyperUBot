@@ -599,7 +599,8 @@ async def delaccs(event):
 
 for cmd in ("adminlist", "ban", "unban", "kick",
             "promote", "demote", "mute", "unmute", "delaccs"):
-    register_cmd_usage(cmd, usageRep.ADMIN_USAGE.get(cmd, {}).get("args"),
+    register_cmd_usage(cmd,
+                       usageRep.ADMIN_USAGE.get(cmd, {}).get("args"),
                        usageRep.ADMIN_USAGE.get(cmd, {}).get("usage"))
 
 register_module_desc(descRep.ADMIN_DESC)
