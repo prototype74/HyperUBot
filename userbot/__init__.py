@@ -118,7 +118,7 @@ elif path.exists(path.join(".", "userbot", "config.py")):
     try:
         import userbot.config as cfg
     except (IndentationError, NameError,
-            TypeError, ValueError, SyntaxError) as f:  # totally F
+            TypeError, ValueError, SyntaxError):  # totally F
         log.error("config.py file isn't well-formed. Please make sure "
                   "your config file matches expected python script "
                   "formation", exc_info=True)
