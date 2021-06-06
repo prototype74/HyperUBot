@@ -105,7 +105,7 @@ if path.exists(path.join(".", "userbot", "config.env")):
     if getConfig("SAMPLE_CONFIG", None):
         log.error("Please remove SAMPLE_CONFIG from config.env!")
         quit(1)
-    API_KEY = environ.get("API_KEY", None)
+    API_KEY = environ.get("API_KEY", 0)
     API_HASH = environ.get("API_HASH", None)
     STRING_SESSION = environ.get("STRING_SESSION", None)
     if SAFEMODE:
@@ -116,14 +116,24 @@ if path.exists(path.join(".", "userbot", "config.env")):
     del loaded_env
 elif path.exists(path.join(".", "userbot", "config.py")):
     try:
-        import userbot.config
+        import userbot.config as cfg
+    except (IndentationError, NameError,
+            TypeError, ValueError, SyntaxError) as f:  # totally F
+        log.error("config.py file isn't well-formed. Please make sure "
+                  "your config file matches expected python script "
+                  "formation", exc_info=True)
+        quit(1)
+    except Exception as e:
+        log.error(f"Unable to load configs: {e}", exc_info=True)
+        quit(1)
+    try:
         if not SAFEMODE:
             from inspect import getmembers, isclass, isfunction
-    except ImportError as ie:
-        log.error(f"Couldn't import configurations: {ie}", exc_info=True)
+    except Exception as e:
+        log.error(f"Couldn't import config components: {e}", exc_info=True)
         quit(1)
     if not SAFEMODE:
-        for name, cfgclass in getmembers(userbot.config, isclass):
+        for name, cfgclass in getmembers(cfg, isclass):
             for attr_name in vars(cfgclass):
                 attr_val = getattr(cfgclass, attr_name)
                 if not attr_name.startswith("__") and \
@@ -131,19 +141,17 @@ elif path.exists(path.join(".", "userbot", "config.py")):
                     if attr_name not in ("API_KEY", "API_HASH",
                                          "STRING_SESSION"):
                         addConfig(attr_name, attr_val)
-    API_KEY = (userbot.config.ConfigClass.API_KEY
-               if hasattr(userbot.config.ConfigClass, "API_KEY") else None)
-    API_HASH = (userbot.config.ConfigClass.API_HASH
-                if hasattr(userbot.config.ConfigClass, "API_HASH") else None)
-    STRING_SESSION = (userbot.config.ConfigClass.STRING_SESSION
-                      if hasattr(userbot.config.ConfigClass,
-                                 "STRING_SESSION") else None)
+    API_KEY = (cfg.ConfigClass.API_KEY
+               if hasattr(cfg.ConfigClass, "API_KEY") else 0)
+    API_HASH = (cfg.ConfigClass.API_HASH
+                if hasattr(cfg.ConfigClass, "API_HASH") else None)
+    STRING_SESSION = (cfg.ConfigClass.STRING_SESSION
+                      if hasattr(cfg.ConfigClass, "STRING_SESSION") else None)
     if SAFEMODE:
         addConfig("UBOT_LANG",
-                  (userbot.config.ConfigClass.UBOT_LANG
-                   if hasattr(
-                       userbot.config.ConfigClass, "UBOT_LANG") else None))
-    del userbot.config
+                  (cfg.ConfigClass.UBOT_LANG
+                   if hasattr(cfg.ConfigClass, "UBOT_LANG") else "en"))
+    del cfg
 else:
     try:
         log.warning("Couldn't find a config file in \"userbot\" directory. "
