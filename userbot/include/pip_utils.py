@@ -28,9 +28,9 @@ def checkPkgByDist(dist_name: str) -> bool:
 
     Example:
         if checkPkgByDist("requests"):
-            print("package request installed")
+            print("package requests installed")
         else:
-            print("package request not installed")
+            print("package requests not installed")
 
     Returns:
         True if distribution is installed else False
@@ -52,9 +52,9 @@ def checkPkgByImport(import_name: str) -> bool:
 
     Example:
         if checkPkgByImport("requests"):
-            print("package request installed")
+            print("package requests installed")
         else:
-            print("package request not installed")
+            print("package requests not installed")
 
     Returns:
         True if name is importable else False
@@ -107,7 +107,7 @@ def installPkg(dist_name, upgrade: bool = False) -> bool:
         if not checkPkgByDist("requests"):
             installPkg("requests")
         else:
-            print("package request installed already")
+            print("package requests installed already")
 
     Returns:
         True if installation was successful or not required
