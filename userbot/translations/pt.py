@@ -587,6 +587,7 @@ class UpdaterText(object):
     LATEST = "Versão mais recente"
     CURRENT = "Versão Atual"
     UPDATE_AVAILABLE = "Atualização disponível"
+    RELEASE_DATE = "Release date"  # translation needed
     CHANGELOG_AT = "Changelog em {}"
     DOWNLOAD_SUCCESS = ("Download completo. A desligar o bot para instalar "
                         "o pacote de atualizações...")

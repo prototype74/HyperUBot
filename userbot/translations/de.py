@@ -600,6 +600,7 @@ class UpdaterText(object):
     LATEST = "Neuste"
     CURRENT = "Aktuell"
     UPDATE_AVAILABLE = "Update verfügbar"
+    RELEASE_DATE = "Veröffentlichungsdatum"
     CHANGELOG_AT = "Changelog auf {}"
     DOWNLOAD_SUCCESS = ("Download abgeschlossen. Der Bot wird "
                         "heruntergefahren, um das Update-Paket zu "

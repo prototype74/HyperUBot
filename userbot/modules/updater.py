@@ -21,6 +21,7 @@ from userbot.version import VERSION
 from logging import getLogger
 from urllib.request import urlretrieve
 from zipfile import BadZipFile, LargeZipFile, ZipFile
+from dateutil.parser import parse
 import os
 
 log = getLogger(__name__)
@@ -94,6 +95,16 @@ async def _is_git_repo() -> bool:
     except:
         pass
     return False
+
+
+def _parse_datetime(date) -> str:
+    try:
+        dt = parse(date)
+        date_format = f"`{dt.strftime('%b %d, %Y')}`"
+        return date_format
+    except:
+        log.warning("Failed to parse publish date")
+    return date
 
 
 @ehandler.on(command="update", hasArgs=True, outgoing=True)
@@ -192,12 +203,15 @@ async def updater(event):
             return
         _LATEST_VER["zip"] = release_data.get("zipball_url")
         release_url = release_data.get("html_url")
+        publish_date = _parse_datetime(release_data["published_at"])
         log.info(f"Update available ({VERSION} < {tag_version})")
         reply = f"**{msgRep.UPDATE_AVAILABLE}**\n\n"
         if git_repo:
             reply += f"{warn_emoji} __{msgRep.GIT_REPO}__\n\n"
         reply += f"**{msgRep.LATEST}: {tag_version}**\n"
-        reply += f"{msgRep.CURRENT}: {VERSION}\n\n"
+        reply += f"{msgRep.CURRENT}: {VERSION}\n"
+        reply += (f"{msgRep.RELEASE_DATE}: {publish_date}\n\n"
+                  if publish_date else "\n")
         reply += msgRep.CHANGELOG_AT.format(f"[GitHub]({release_url})\n\n")
         if update_now:
             reply += msgRep.DOWNLOADING_RELEASE

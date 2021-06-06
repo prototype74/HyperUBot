@@ -568,6 +568,7 @@ class UpdaterText(object):
     LATEST = "Latest"
     CURRENT = "Current"
     UPDATE_AVAILABLE = "Update available"
+    RELEASE_DATE = "Release date"
     CHANGELOG_AT = "Changelog at {}"
     DOWNLOAD_SUCCESS = ("Download successful. Shutting down bot to "
                         "install the update package...")

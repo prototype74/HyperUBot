@@ -1141,6 +1141,8 @@ class UpdaterText(object):
         lang, _getframe().f_code.co_name, "CURRENT")
     UPDATE_AVAILABLE = getLangString(
         lang, _getframe().f_code.co_name, "UPDATE_AVAILABLE")
+    RELEASE_DATE = getLangString(
+        lang, _getframe().f_code.co_name, "RELEASE_DATE")
     CHANGELOG_AT = getLangString(
         lang, _getframe().f_code.co_name, "CHANGELOG_AT")
     DOWNLOAD_SUCCESS = getLangString(
