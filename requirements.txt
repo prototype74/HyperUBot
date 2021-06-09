@@ -3,6 +3,7 @@ CurrencyConverter>=0.16.1
 googletrans>=3.0.0,==4.0.0rc1
 gTTS>=2.2.2
 icmplib>=3.0
+pyAesCrypt>=6.0.0
 pydub>=0.25.1
 python-dateutil>=2.8.1
 python-dotenv>=0.17.1

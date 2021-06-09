@@ -1,5 +1,5 @@
-# Copyright 2020 nunopenim @github
-# Copyright 2020 prototype74 @github
+# Copyright 2020-2021 nunopenim @github
+# Copyright 2020-2021 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
@@ -18,23 +18,6 @@ if basename(__file__).startswith("config") or \
 
 
 class ConfigClass(object):
-    # Required configurations
-    #
-    # API KEY and HASH are 2 identification numbers to log in
-    # into your Telegram API appliaction. If you don't have any yet,
-    # create a new application at https://my.telegram.org
-    # and put your API IDs to the corresponding configs below
-    #
-    # Note: Do NOT share your API KEY and HASH with anyone else!
-    #
-    API_KEY = ""  # Your API KEY
-    API_HASH = ""  # Your API HASH
-
-    #
-    # Needed to log in into your user account
-    #
-    STRING_SESSION = ""  # Your string session
-
     # Optional configurations
     #
     # Userbot display language. Default is english ('en')

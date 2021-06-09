@@ -5,6 +5,7 @@ backup/*
 releases/*
 userbot/config.env
 userbot/config.py
+userbot/secure_config
 userbot/modules_user/*.py
 userbot/*.hbot
 
