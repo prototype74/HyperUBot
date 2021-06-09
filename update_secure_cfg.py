@@ -112,17 +112,6 @@ def main():
         print(setColorText("Input values not valid", Colors.RED))
         return
 
-    secure_configs = (f'API_KEY = "{api_key}"\n'
-                      f'API_HASH = "{api_hash}"\n'
-                      f'STRING_SESSION = "{string_session}"')
-    try:
-        with open("_temp.py", "w") as cfg_file:
-            cfg_file.write(secure_configs)
-        cfg_file.close()
-    except Exception as e:
-        print(setColorText(f"Failed to generate temp: {e}", Colors.RED))
-        return
-
     print()
     print("You have the option to setup a password to your secure config "
           "to increase the security of your sensitive data. This is "
@@ -175,6 +164,12 @@ def main():
             os.remove(SECURE_CONFIG)
         if os.path.exists("_temp.py"):
             os.remove("_temp.py")
+        secure_configs = (f'API_KEY = "{api_key}"\n'
+                          f'API_HASH = "{api_hash}"\n'
+                          f'STRING_SESSION = "{string_session}"')
+        with open("_temp.py", "w") as cfg_file:
+            cfg_file.write(secure_configs)
+        cfg_file.close()
         pyAesCrypt.encryptFile(infile="_temp.py",
                                outfile=SECURE_CONFIG,
                                passw=password,
