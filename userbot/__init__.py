@@ -245,7 +245,7 @@ if "API_HASH" not in globals():
     quit(1)
 
 try:
-    if "STRING_SESSION" not in globals():
+    if "STRING_SESSION" in globals():
         tgclient = TelegramClient(StringSession(STRING_SESSION),
                                   API_KEY, API_HASH)
         del API_KEY
