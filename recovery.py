@@ -27,7 +27,7 @@ from zipfile import (BadZipFile, LargeZipFile,
 import os  # noqa: E402
 
 RECOVERY_NAME = os.path.basename(__file__)
-VERSION = "2.0.1"
+VERSION = "2.0.2"
 BACKUP_DIR = os.path.join(".", "backup")
 GIT = os.path.join(".", ".git")
 GITIGNORE = os.path.join(".", ".gitignore")
