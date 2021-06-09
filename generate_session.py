@@ -106,9 +106,15 @@ try:
     with client:
         print("This long string below is your new String Session:\n\n")
         print(client.session.save())
-        print("\n\nPlease keep this string to a safe place and copy it "
-              "to your bot's config.* file "
-              "(STRING_SESSION=\"YOUR_NEW_STRING\")")
+        print("\n\nPlease keep this string to a safe place!\n"
+              "Next step is to run Secure-Config-Updater to store your new "
+              "string session safe in a secured config file")
+        if IS_WINDOWS:
+            print("To start Secure-Config-Updater: "
+                  "python update_secure_cfg.py")
+        else:
+            print("To start Secure-Config-Updater: "
+                  "python3 update_secure_cfg.py")
 except KeyboardInterrupt:
     print("Exiting...")
 except Exception as e:
