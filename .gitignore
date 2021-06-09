@@ -1,6 +1,5 @@
 # HyperUBot stuff
 hyper.log
-tguserbot.session
 backup/*
 releases/*
 userbot/config.env
