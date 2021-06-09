@@ -16,8 +16,9 @@ if (version_info.major, version_info.minor) < (3, 8):
     quit(1)
 
 from platform import system  # noqa: E402
-from subprocess import check_call  # noqa: E402
+from subprocess import check_call, check_output, DEVNULL  # noqa: E402
 from sys import executable, platform  # noqa: E402
+import json  # noqa: E402
 import os  # noqa: E402
 
 IS_WINDOWS = (True if system().lower() == "windows" or
@@ -56,23 +57,83 @@ def _userbot_installed() -> bool:
     return True
 
 
-def _installTelethon(upgrade: bool = False) -> bool:
+def _check_setup_req() -> bool:
+    setup_req = {}
     try:
-        if upgrade:
-            check_call(
-                [PY_EXEC, "-m", "pip", "install", "--upgrade", "Telethon"])
+        out = check_output([PY_EXEC, "-m", "pip", "list", "--format", "json"])
+        out_json = json.loads(out)
+        for elem in out_json:
+            name = elem.get("name")
+            ver = elem.get("version")
+            if elem.get("name") == "Telethon" or \
+               elem.get("name") == "pyAesCrypt":
+                setup_req[name] = ver
+    except:
+        return False
+
+    try:
+        print()
+        print("Checking for required packages...")
+        print()
+        if not setup_req.get("Telethon"):
+            try:
+                check_call(
+                    [PY_EXEC, "-m", "pip", "install", "Telethon"],
+                    stdout=DEVNULL,
+                    stderr=DEVNULL)
+            except Exception as e:
+                print(
+                    setColorText(
+                        f"Failed to install Telethon package: {e}",
+                        Colors.RED))
+                return False
         else:
-            check_call(
-                [PY_EXEC, "-m", "pip", "install", "Telethon"])
-        return True
-    except Exception as e:
-        if upgrade:
-            print(setColorText(
-                f"Failed to upgrade Telethon package: {e}", Colors.RED))
+            telethon_version = tuple(
+                map(int, setup_req.get("Telethon").split(".")))
+            if telethon_version < (1, 21, 1):
+                try:
+                    check_call(
+                        [PY_EXEC, "-m", "pip", "install", "--upgrade",
+                         "Telethon"],
+                        stdout=DEVNULL,
+                        stderr=DEVNULL)
+                except Exception as e:
+                    print(
+                        setColorText(
+                            f"Failed to upgrade Telethon package: {e}",
+                            Colors.RED))
+                    return False
+        if not setup_req.get("pyAesCrypt"):
+            try:
+                check_call(
+                    [PY_EXEC, "-m", "pip", "install", "pyAesCrypt"],
+                    stdout=DEVNULL,
+                    stderr=DEVNULL)
+            except Exception as e:
+                print(
+                    setColorText(
+                        f"Failed to install pyAesCrypt package: {e}",
+                        Colors.RED))
+                return False
         else:
-            print(setColorText(
-                f"Failed to install Telethon package: {e}", Colors.RED))
-    return False
+            pyAesCrypt_vesion = tuple(
+                map(int, setup_req.get("pyAesCrypt").split(".")))
+            if pyAesCrypt_vesion < (6, 0, 0):
+                try:
+                    check_call(
+                        [PY_EXEC, "-m", "pip", "install", "--upgrade",
+                         "pyAesCrypt"],
+                        stdout=DEVNULL,
+                        stderr=DEVNULL)
+                except Exception as e:
+                    print(
+                        setColorText(
+                            f"Failed to upgrade pyAesCrypt package: {e}",
+                            Colors.RED))
+                    return False
+    except:
+        return False
+    return True
 
 
 def _install_requirements():
@@ -109,6 +170,8 @@ def _getAPIs() -> tuple:
                 print(setColorText("Invalid input. Try again...",
                                    Colors.YELLOW))
         return (api_key, api_hash)
+    except KeyboardInterrupt:
+        raise KeyboardInterrupt
     except:
         pass
     return (None, None)
@@ -135,6 +198,8 @@ def _generateStringSession() -> tuple:
         except PhoneNumberInvalidError:
             print(setColorText(
                 "Phone number is not valid. Try again...", Colors.YELLOW))
+        except KeyboardInterrupt:
+            raise KeyboardInterrupt
         except Exception as e:
             print(setColorText(
                 f"Unable to obtain new string session: {e}", Colors.RED))
@@ -172,39 +237,21 @@ def main():
         print(setColorText("HyperUBot not installed", Colors.RED_BG))
         return
 
-    if os.path.exists(os.path.join(".", "userbot", "config.env")) or \
-       os.path.exists(os.path.join(".", "userbot", "config.py")):
+    if os.path.exists(os.path.join(".", "userbot", "secure_config")):
         print(setColorText("Seems like the setup is completed already "
                            "or done manually", Colors.GREEN))
         return
 
-    install_telethon_started = False
+    if not _check_setup_req():
+        print(setColorText("All or some packages required for Setup Assistant "
+                           "are not present. Exiting...", Colors.RED))
+        return
 
-    while True:
-        try:
-            from telethon import version
-            from telethon.sync import TelegramClient
-            from telethon.sessions import StringSession
-            break
-        except:
-            if not install_telethon_started:
-                print("Telethon package not installed. Installing...")
-                install_telethon_started = True
-                _installTelethon()
-            else:
-                print(setColorText("Unable to import Telethon. "
-                                   "Setup Assistant was not able to "
-                                   "install the Telethon package",
-                                   Colors.RED))
-                return
+    from telethon.sync import TelegramClient
+    from telethon.sessions import StringSession
+    from pyAesCrypt import encryptFile
 
-    telethon_version = tuple(map(int, version.__version__.split(".")))
-    if telethon_version < (1, 21, 1):
-        print("Upgrading Telethon first...\n", Colors.YELLOW)
-        if not _installTelethon(True):
-            return
-
-    print("\nHyperUBot requires, like all other Telegram userbots, "
+    print("HyperUBot requires, like all other Telegram userbots, "
           "an API Key, an API Hash and a String Session in order "
           "to run HyperUBot as an user client.\n"
           "If not done yet, please go to https://my.telegram.org and\n"
@@ -241,10 +288,56 @@ def main():
                          Colors.RED))
         return
 
-    print("\nAs the API Key, API Hash and String Session are vaild, it's "
-          "important to store them into a configuration file to avoid "
-          "being asked for these values everytime you run HyperUBot. "
-          "HyperUBot supports 2 types: Environment (config.env) and "
+    print()
+    print("As the API Key, API Hash and String Session are vaild, it's "
+          "important to store them into a secured configuration file "
+          "to avoid unauthorized access to these values. You have the "
+          "option to setup a password to your secured configuration "
+          "to increase the security of your sensitive data. This is "
+          "optional and not needed. This cannot be setup later.")
+    print(setColorText("If you forgot your password, you have to create "
+                       "a new secure configuration!",
+                       Colors.YELLOW))
+
+    while True:
+        inp = input("Set password? (y/n): ")
+        if inp.lower() in ("y", "yes"):
+            set_pwd = True
+            break
+        elif inp.lower() in ("n", "no"):
+            break
+        else:
+            print(setColorText("Invalid input. Try again...", Colors.YELLOW))
+
+    password = ""
+    if set_pwd:
+        print()
+        from getpass import getpass
+        print("Your password must have at least a length of 4 characters. "
+              "Maximum length is 1024 characters")
+        while True:
+            password = getpass("Your password: ")
+            if len(password) >= 4 and len(password) <= 1024:
+                break
+            elif len(password) < 4:
+                print(setColorText("Password too short.", Colors.YELLOW))
+            elif len(password) > 1024:
+                print(setColorText("Password too long.", Colors.YELLOW))
+            else:
+                print(setColorText("Invalid input. Try again...",
+                                   Colors.YELLOW))
+        while True:
+            retype_pwd = getpass("Retype your password: ")
+            if password == retype_pwd:
+                break
+            else:
+                print(setColorText("Invalid input. Try again...",
+                                   Colors.YELLOW))
+
+    print()
+    print("HyperUBot supports additional configurations such as logging, "
+          "download path for temporary downloads etc.\n"
+          "There are 2 types: Environment (config.env) and "
           "Python script (config.py).\n"
           "Which type of configuration file you wish to have?\n")
     print("[1] Environment (config.env)\n"
@@ -303,13 +396,36 @@ def main():
             print(setColorText("Invalid input. Try again...",
                                Colors.YELLOW))
 
+    print(f"Writing configuration files...")
+    try:
+        if os.path.exists("_temp.py"):
+            os.remove("_temp.py")
+        secure_configs = (f'API_KEY = "{api_key}"\n'
+                          f'API_HASH = "{api_hash}"\n'
+                          f'STRING_SESSION = "{string_session}"')
+        with open("_temp.py", "w") as temp_file:
+            temp_file.write(secure_configs)
+        temp_file.close()
+        print(f"Securing API configurations...")
+        encryptFile(infile="_temp.py",
+                    outfile=os.path.join(
+                        ".", "userbot", "secure_config"),
+                    passw=password,
+                    bufferSize=(64 * 1024))
+        os.remove("_temp.py")
+        if not os.path.exists(os.path.join(".", "userbot", "secure_config")):
+            print(setColorText("Failed to secure configurations", Colors.RED))
+            return
+    except Exception as e:
+        print(
+            setColorText(f"Failed to secure configurations: {e}",
+                         Colors.RED))
+        return
+
     try:
         dl_path = os.path.join(".", "downloads")  # default path
         if config_file.endswith(".env"):
-            configs = (f'API_KEY = "{api_key}"\n'
-                       f'API_HASH = "{api_hash}"\n'
-                       f'STRING_SESSION = "{string_session}"\n'
-                       f'UBOT_LANG = "{lang_code}"\n'
+            configs = (f'UBOT_LANG = "{lang_code}"\n'
                        'LOGGING = False\n'
                        'LOGGING_CHATID = 0\n'
                        f'TEMP_DL_DIR = "{dl_path}"\n'
@@ -317,9 +433,6 @@ def main():
                        'COMMUNITY_REPOS = []\n')
         else:  # py script
             configs = ('class ConfigClass(object):\n'
-                       f'{"":4}API_KEY = "{api_key}"\n'
-                       f'{"":4}API_HASH = "{api_hash}"\n'
-                       f'{"":4}STRING_SESSION = "{string_session}"\n'
                        f'{"":4}UBOT_LANG = "{lang_code}"\n'
                        f'{"":4}LOGGING = False\n'
                        f'{"":4}LOGGING_CHATID = 0\n'
@@ -327,19 +440,21 @@ def main():
                        f'{"":4}NOT_LOAD_MODULES = []\n'
                        f'{"":4}COMMUNITY_REPOS = []\n')
         with open(config_file, "w") as cfg_file:
-            print(f"Writing configuration file in {config_file}")
+            print(f"Writing optional configuration file in {config_file}")
             cfg_file.write(configs)
         cfg_file.close()
     except Exception as e:
         print(
-            setColorText(f"Failed to write configuration file: {e}",
+            setColorText(f"Failed to write optional configuration file: {e}",
                          Colors.RED))
         return
 
     print("Installing required pip packages...")
     _install_requirements()
 
-    print(setColorText("\nYaaaay! Setup completed! :P\n", Colors.GREEN))
+    print()
+    print(setColorText("Yaaaay! Setup completed! :P", Colors.GREEN))
+    print()
     start_bot_text = ("Do you wish to run HyperUBot now? You can always "
                       "run it by executing 'python3 -m userbot' in "
                       "HyperUBot's directory later.")
