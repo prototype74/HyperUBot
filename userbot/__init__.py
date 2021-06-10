@@ -215,6 +215,7 @@ if path.exists(path.join(".", "userbot", "secure_config")):
         del _pwd_confm
         del _attempts
     del _s_cfg
+
 if SAFEMODE and not getConfig("UBOT_LANG"):
     addConfig("UBOT_LANG", "en")
 
