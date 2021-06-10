@@ -215,7 +215,6 @@ if path.exists(path.join(".", "userbot", "secure_config")):
         del _pwd_confm
         del _attempts
     del _s_cfg
-
 if SAFEMODE and not getConfig("UBOT_LANG"):
     addConfig("UBOT_LANG", "en")
 
@@ -230,37 +229,36 @@ try:
 except Exception:
     log.error("Failed to initialize download directory")
 
-if "API_KEY" not in globals():
+if "API_KEY" not in globals() or ("API_KEY" in globals() and not API_KEY):
     log.error("API Key is empty or doesn't exist")
     log.error("API Key is required in order to use HyperUBot properly")
     log.error("Please obtain your API Key from 'https://my.telegram.org' "
               "or if not present create/update your secure config")
     quit(1)
 
-if "API_HASH" not in globals():
+if "API_HASH" not in globals() or ("API_HASH" in globals() and not API_HASH):
     log.error("API Hash is empty or doesn't exist")
     log.error("API Hash is required in order to use HyperUBot properly")
     log.error("Please obtain your API Hash from 'https://my.telegram.org' "
               "or if not present create/update your secure config")
     quit(1)
 
+if "STRING_SESSION" not in globals() or \
+   ("STRING_SESSION" in globals() and not STRING_SESSION):
+    log.error("String session is empty or doesn't exist")
+    log.error("string session is required in order to use HyperUBot "
+              "properly")
+    log.error("Please run 'generate_session.py' to get a new string "
+              "session, or if present already, then update your secure "
+              "config using 'update_secure_cfg.py' in HyperUBot's "
+              "root directory")
+    quit(1)
+
 try:
-    if "STRING_SESSION" in globals():
-        tgclient = TelegramClient(StringSession(STRING_SESSION),
-                                  API_KEY, API_HASH)
-        del API_KEY
-        del API_HASH
-        del STRING_SESSION
-    else:
-        log.error("String session is empty or doesn't exist")
-        log.error("string session is required in order to use HyperUBot "
-                  "properly")
-        log.error("Please run 'generate_session.py' to get a new string "
-                  "session, or if present already, then update your secure "
-                  "config using 'update_secure_cfg.py' in HyperUBot's "
-                  "root directory")
-        log.error("Exiting...")
-        quit(1)
+    tgclient = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
+    del API_KEY
+    del API_HASH
+    del STRING_SESSION
 except ApiIdInvalidError as ae:
     log.critical(f"API Key and/or API Hash is/are invalid: {ae}",
                  exc_info=True)
