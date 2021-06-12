@@ -49,26 +49,27 @@ e.g. `cd C:\Users\YourPCname\Desktop\HyperUBot`
 
 ## 2. Setup HyperUBot
 
-You can set up HyperUBot using it's own Setup Assistant (recommended) or doing it manually by creating the required configuration file using Nano editor and installing the pip requirements.
+You can set up HyperUBot using it's own Setup Assistant (recommended) or doing it manually by creating the required configuration file and an optional configuration file using Notepad++ or Atom and installing the pip requirements.
 
 ### 2.1 HyperUBot's Setup Assistant (recommended for beginners)
 
-The Setup Assistant guides you through all required processes to run HyperUBot properly on Windows such as creating the configuration file or installing the pip requirements automatically.
+The Setup Assistant guides you through all required processes to run HyperUBot properly on Windows such as creating the configuration file and installing the pip requirements automatically.
 Run the following command to start the Setup Assistant:
 
 `python setup.py`
 
 ![](images/powershell/setup.jpg)
 
-**Jump to Step [3. Running the Bot!](#3-running-the-bot) if Setup Assistant was completed successfully**
+**Jump to Step [3. Running the bot!](#3-running-the-bot) if Setup Assistant was completed successfully**
 
 ### 2.2 Setup HyperUBot manually (for advanced users)
 
 To set up HyperUBot manually you need to follow the following steps:
 
 - Installing the required pip packages
-- Creating a configuration file (config.env or config.py)
 - Generating a String Session using generate_session.py script
+- Create your secured configuration file
+- Creating an optional configuration file (config.env or config.py)
 
 ### 2.2.1 Installing the pip packages
 
@@ -80,26 +81,58 @@ In HyperUBot's main directory, run the following command:
 
 This should install all the bot's requirements. After this command is done, and if it ran well, you are ready to advance to #2.2.2.
 
-### 2.2.2 Configuring the bot
+### 2.2.2 Get your API Key and API Hash
 
-The bot relies on a config file, either `.env` or `.py`. You can find the sample configs inside `userbot` directory of HyperUBot.
-Sample configs are **NOT** to be used and just serves as demonstration files, with descriptions of the supported fields.
+These 2 values mentioned in the title above are required in order to run an userbot at all. To get the `API Key` and `API Hash` values, you will need to login to [My Telegram](https://my.telegram.org/).
+
+![](images/common/mytelegram.jpg)
+
+Here you can create an App, in the API Development Tools page.
+After creating an App, your will need the `App api_id` value, and the `App api_hash` for generating a `String session` and for your
+secure configuration.
+
+![](images/common/mytelegram_ids.jpg)
+
+IMPORTANT: **Don't share these values with anyone!**
+
+### 2.2.3 Generate a String session
+
+We have included, in the root folder of the userbot, a python script to generate a `String session` by using the values you got before.
+This is required in order to run HyperUBot properly. To do such, you can run the command:
+
+`python generate_session.py`
+
+It will ask you for your phone number the login code message and probably for your accounts password.
+
+> This all sounds very... yeah suspicious but we guarantee you that we are not collecting any data. The only purpose of this is to allow HyperUBot to login into your acoount. If you still think this all is suspicious, you're free to review the whole source code (which is why we made it publicly viewable)
+
+After you generated your `String session`, you may got a long string, keep it safe, you will need it for the next step.
+
+### 2.2.4 Create your secure configuration
+
+As you probably thought already this step will create a secured configuration of your `App api_id`, `App api_hash` and your previously
+generated `String session` to keep them safe from unauthorized access. To finally create your secure config, run the following command:
+
+`python update_secure_cfg.py`
+
+It will ask you for your `API Key`, `API Hash` and your `String session`. Optionally you can also setup a password to additionally protect your secure config, however HyperUBot will ask you each time for the password at start if you setting up one.
+
+> If you forgot your password, you will have to create a new secure config!
+
+### 2.2.5 Create an optional configuration file (yes this step is optional)
+
+The bot can additionally load a config file, either `.env` or `.py`. You can find the sample configs inside `userbot` directory of HyperUBot. Sample configs are **NOT** to be used and just serves as demonstration files, with descriptions of the supported fields.
 Some modules downloaded from community repos might require you to add extra configuration fields or classes for them to properly work!
 
-### 2.2.3-1 Setup config using ENV
+### 2.2.5-1 Setup config using ENV
 
 Locate to `userbot` directory of `HyperUBot` using Windows Explorer. In Windows Explorer tab on "View" and set a check to "File name extentions" to see the extentions of all files. Now __right click > New > Text document__ and rename `New Text Document.txt` to `config.env`. Windows will pop up a warning that you're sure you want to edit the file's name extention. Hit `Yes`. **Make sure the file extention does actually end with `.env`**
 
 ![](images/powershell/we_config_env.jpg)
 
-Now open `config.env` with Notepad++ or Atoms and copy the template below in your config file
+Now open `config.env` with Notepad++ or Atom and copy the template below in your config file
 
 ```
-# Required configs
-API_KEY = ""
-API_HASH = ""
-STRING_SESSION = ""
-
 # Optional configs
 UBOT_LANG = "en"
 LOGGING = False
@@ -111,21 +144,16 @@ COMMUNITY_REPOS = []
 
 ![](images/powershell/notepad_env.jpg)
 
-### 2.2.3-2 Setup config using py script
+### 2.2.5-2 Setup config using py script
 
 Locate to `userbot` directory of `HyperUBot` using Windows Explorer. In Windows Explorer tab on "View" and set a check to "File name extentions" to see the extentions of all files. Now __right click > New > Text document__ and rename `New Text Document.txt` to `config.py`. Windows will pop up a warning that you're sure you want to edit the file's name extention. Hit `Yes`. **Make sure the file extention does actually end with `.py`**
 
 ![](images/powershell/we_config_py.jpg)
 
-Now open `config.py` with Notepad++ or Atoms and copy the template below in your config file
+Now open `config.py` with Notepad++ or Atom and copy the template below in your config file
 
 ```python
 class ConfigClass(object):
-    # Required configs
-    API_KEY = ""
-    API_HASH = ""
-    STRING_SESSION = ""
-
     # Optional configs
     UBOT_LANG = "en"
     LOGGING = False
@@ -140,35 +168,10 @@ class ConfigClass(object):
 
 Save it, by doing **Ctrl + S** or **File > Save**
 
-To get the `API_KEY` and `API_HASH` values, you will need to login to [My Telegram](https://my.telegram.org/).
-
-![](images/common/mytelegram.jpg)
-
-Here you can create an App, in the API Development Tools page.
-After creating an App, your `API_KEY` is the `App api_id` value, and your `API_HASH` is the `App api_hash`.
-
-![](images/common/mytelegram_ids.jpg)
-
-**Don't share these values with anyone!** You can copy and paste these values to between the "" in each of these fields in your config file.
-
-![](images/powershell/notepad_ids.jpg)
-
-Note: Only one config file, either `config.env` or `config.py`, should be configured in `userbot` directory.
+> Note: Only one config file, either `config.env` or `config.py`, should be configured in `userbot` directory.
 If both are configured there, then only `config.env` will be loaded.
 
-### 2.2.4 Generating a String Session
-
-We have included, in the root folder of the userbot, a python script to generate a string session.
-This is required in order to run HyperUBot properly. To do such, you can run the command:
-
-`python generate_session.py`
-
-It will ask you for your phone number and the login code message. After obtaining the String session,
-you can copy the value, and the paste it in the `STRING_SESSION` configuration field, between the "", of your previous created config file
-
-![](images/powershell/notepad_string.jpg)
-
-### 2.2.5 Logging, Language and Community Repos (optional)
+### 2.2.5.1 Logging, Language and Community Repos (optional)
 
 Setting up logging is easy, all you need is a designated log group **(Do not use public groups, or you could be banned for spam!)**.
 Having the log group, you need to find it's ID. You can do such by using a Group Manager Bot,
