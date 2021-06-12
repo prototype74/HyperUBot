@@ -272,8 +272,6 @@ def requiredVersion(min_ver: str, max_ver: str, empty_func: bool = False):
             return efunc
         if ver_tuple >= min_tuple and \
            ver_tuple <= max_tuple:
-            def func(*args, **kwargs):
-                return function(*args, **kwargs)
-            return func
+            return function
         return efunc
     return wrapper
