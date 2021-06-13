@@ -622,6 +622,18 @@ class SideloaderText(object):
     INVALID_FILE = "Bitte antworte auf eine gültige Datei!"
 
 
+class FeatureMgrText(object):
+    DISABLE_FTR = "Nenne einen Befehl oder ein Feature, um sie zu deaktiveren!"
+    DISABLE_FTR_FAIL = ("Anscheinend kann ich diesen Befehl oder Feature "
+                        "nicht deaktivieren")
+    DISABLE_FTR_SUCCESS = ("Der Befehl oder das Feature '`{}`' wurde "
+                           "deaktiviert")
+    ENABLE_FTR = "Nenne einen Befehl oder ein Feature, um sie zu aktiveren!"
+    ENABLE_FTR_FAIL = ("Anscheinend kann ich diesen Befehl oder Feature "
+                       "nicht aktivieren")
+    ENABLE_FTR_SUCCESS = "Der Befehl oder das Feature '`{}`' wurde aktiviert"
+
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
     ADMIN_DESC = ("Ein Modul, dass ihr oder eines Freundes Gruppe einfacher "
@@ -708,6 +720,10 @@ class ModuleDescriptions(object):
                        "API KEY und/oder String Session) zu einem bösartigen "
                        "Hacker weiterleiten! Beziehen Sie Module nur "
                        "aus vertrauenswürdigen Quellen!")
+    FEATURE_MGR_DESC = ("Das Feature-Manager-Modul erlaubt es dem Nutzer, "
+                        "einen Befehl oder ein Feature in Echtzeit zu "
+                        "(de)aktivieren, und Nein, die Enable- und Disable-"
+                        "Befehle können nicht deaktiviert werden.")
 
 
 class ModuleUsages(object):
@@ -1043,3 +1059,15 @@ class ModuleUsages(object):
                                                "weiterleiten! Beziehen Sie "
                                                "Module nur aus "
                                                "vertrauenswürdigen Quellen!")}}
+
+    FEATURE_MGR_USAGE = {"disable": {"args": ("<Name des Befehls/Alias oder "
+                                              "Feature>"),
+                                     "usage": ("Deakiviert ein gegebenen "
+                                               "Befehl oder Feature. "
+                                               "Funktioniert auch mit "
+                                               "Aliase")},
+                         "enable": {"args": ("<Name des Befehls/Alias oder "
+                                             "Feature>"),
+                                    "usage": ("Akiviert ein gegebenen Befehl "
+                                              "oder Feature. Funktioniert "
+                                              "auch mit Aliase")}}

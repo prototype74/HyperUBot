@@ -6,6 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from .feature_manager import _is_active
 from .registration import pre_register_cmd
 from inspect import currentframe, getouterframes
 from os.path import basename
@@ -122,7 +123,8 @@ class EventHandler:
                 return None
             async def func_callback(event):
                 try:
-                    await function(event)
+                    if _is_active(command):
+                        await function(event)
                 except Exception as e:
                     # This block will be executed if the function, where
                     # the events are being used, has no own
@@ -320,7 +322,8 @@ class EventHandler:
                 return None
             async def func_callback(event):
                 try:
-                    await function(event)
+                    if _is_active(name):
+                        await function(event)
                 except Exception as e:
                     if not no_cmd:
                         self.log.error(f"Command '{name}' stopped due to "

@@ -2,6 +2,7 @@
 hyper.log
 backup/*
 releases/*
+userbot/.dsbld_features.json
 userbot/config.env
 userbot/config.py
 userbot/secure_config

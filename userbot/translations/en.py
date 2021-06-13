@@ -588,6 +588,15 @@ class SideloaderText(object):
     INVALID_FILE = "Please reply to a valid file!"
 
 
+class FeatureMgrText(object):
+    DISABLE_FTR = "Name a command or feature to disable it!"
+    DISABLE_FTR_FAIL = "Seems like I can't disable this command or feature"
+    DISABLE_FTR_SUCCESS = "Command or feature '`{}`' has been disabled"
+    ENABLE_FTR = "Name a command or feature to enable it!"
+    ENABLE_FTR_FAIL = "Seems like I can't enable this command or feature"
+    ENABLE_FTR_SUCCESS = "Command or feature '`{}`' has been enabled"
+
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
     ADMIN_DESC = ("A module to help you to manage your or a "
@@ -664,6 +673,10 @@ class ModuleDescriptions(object):
                        "send some of your information (namely API KEY and/or "
                        "String Session) to a malicious hacker! Only "
                        "sideload modules if you trust the source!")
+    FEATURE_MGR_DESC = ("The Feature Manager module allows the user "
+                        "to enable/disable a command or feature in "
+                        "real time and no, the enable and disable "
+                        "commands cannot be disabled.")
 
 
 class ModuleUsages(object):
@@ -945,3 +958,14 @@ class ModuleUsages(object):
                                                "malicious hacker! Only "
                                                "sideload modules if you "
                                                "trust the source!")}}
+
+    FEATURE_MGR_USAGE = {"disable": {"args": ("<name of command/alias or "
+                                              "feature>"),
+                                     "usage": ("Disable the given command "
+                                               "or feature. Works with "
+                                               "aliases too")},
+                         "enable": {"args": ("<name of command/alias or "
+                                             "feature>"),
+                                    "usage": ("Enable the given command "
+                                              "or feature. Works with "
+                                              "aliases too")}}

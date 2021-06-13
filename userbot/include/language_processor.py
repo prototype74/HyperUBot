@@ -1168,6 +1168,21 @@ class SideloaderText(object):
         lang, _getframe().f_code.co_name, "INVALID_FILE")
 
 
+class FeatureMgrText(object):
+    DISABLE_FTR = getLangString(
+        lang, _getframe().f_code.co_name, "DISABLE_FTR")
+    DISABLE_FTR_FAIL = getLangString(
+        lang, _getframe().f_code.co_name, "DISABLE_FTR_FAIL")
+    DISABLE_FTR_SUCCESS = getLangString(
+        lang, _getframe().f_code.co_name, "DISABLE_FTR_SUCCESS")
+    ENABLE_FTR = getLangString(
+        lang, _getframe().f_code.co_name, "ENABLE_FTR")
+    ENABLE_FTR_FAIL = getLangString(
+        lang, _getframe().f_code.co_name, "ENABLE_FTR_FAIL")
+    ENABLE_FTR_SUCCESS = getLangString(
+        lang, _getframe().f_code.co_name, "ENABLE_FTR_SUCCESS")
+
+
 class ModuleDescriptions(object):
     ADMIN_DESC = getLangString(
         lang, _getframe().f_code.co_name, "ADMIN_DESC")
@@ -1201,6 +1216,8 @@ class ModuleDescriptions(object):
         lang, _getframe().f_code.co_name, "UPDATER_DESC")
     SIDELOADER_DESC = getLangString(
         lang, _getframe().f_code.co_name, "SIDELOADER_DESC")
+    FEATURE_MGR_DESC = getLangString(
+        lang, _getframe().f_code.co_name, "FEATURE_MGR_DESC")
 
 
 class ModuleUsages(object):
@@ -1238,6 +1255,8 @@ class ModuleUsages(object):
         lang, _getframe().f_code.co_name, "SIDELOADER_USAGE")
     MODULES_UTILS_USAGE = getLangString(
         lang, _getframe().f_code.co_name, "MODULES_UTILS_USAGE")
+    FEATURE_MGR_USAGE = getLangString(
+        lang, _getframe().f_code.co_name, "FEATURE_MGR_USAGE")
 
 
 def getBotLang() -> str:
