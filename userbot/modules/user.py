@@ -6,7 +6,6 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient
 from userbot.include.aux_funcs import event_log, fetch_user
 from userbot.include.language_processor import (UserText as msgRep,
                                                 ModuleDescriptions as descRep,
@@ -121,7 +120,7 @@ async def stats(event):
     except:
         pass
 
-    async for dialog in tgclient.iter_dialogs(ignore_migrated=True):
+    async for dialog in event.client.iter_dialogs(ignore_migrated=True):
         total += 1
         if isinstance(dialog.entity, Chat):
             groups += 1
