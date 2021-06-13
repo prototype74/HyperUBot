@@ -99,7 +99,7 @@ class _SysConfigurations:
         if config == "UPDATE_COMMIT_ID" and \
            not module_caller.endswith(
                join("userbot", "modules", "updater.py")):
-            raise AccessError("Access to {config} denied")
+            raise AccessError(f"Access to '{config}' denied")
         if config in self.__botconfigs.keys():
             self.__botconfigs[config] = value
         return
