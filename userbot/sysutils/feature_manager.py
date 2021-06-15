@@ -33,9 +33,14 @@ class _FeatureManager:
         return
 
     def __check_json(self):
-        if not os.path.exists(self.__filename) and \
-           not os.path.isfile(self.__filename):
-            self.__init_json()
+        for key, val in self.__disabled_features.items():
+            if not isinstance(key, str) or \
+               (not isinstance(val, str) and val is not None):
+                log.error("JSON file invalid format. Resetting...")
+                if not self.__init_failed:
+                    self.__init_json()
+                self.__disabled_features = {}
+                break
         return
 
     def _read_json(self):
@@ -43,11 +48,14 @@ class _FeatureManager:
         if not getouterframes(currentframe(), 2)[1].filename.endswith(caller):
             log.warning("Not a valid caller")
             return
-        self.__check_json()
+        if not os.path.exists(self.__filename) and \
+           not os.path.isfile(self.__filename):
+            self.__init_json()
         try:
             with open(self.__filename, "r") as js:
                 try:
                     self.__disabled_features = json.load(js)
+                    self.__check_json()
                 except:
                     log.error("JSON file is invalid. Resetting...")
                     if not self.__init_failed:
