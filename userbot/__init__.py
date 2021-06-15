@@ -18,7 +18,7 @@ from telethon.sessions import StringSession
 from dotenv import load_dotenv
 from getpass import getpass
 from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
-from os import path, execle, environ, mkdir, remove
+from os import path, execle, environ, listdir, mkdir, remove
 from platform import platform, machine, processor
 from pyAesCrypt import decryptFile
 from sys import argv, executable, version_info
@@ -211,6 +211,13 @@ if path.exists(path.join(".", "userbot", "secure_config")):
     finally:
         if path.exists(path.join(".", "userbot", "_temp.py")):
             remove(path.join(".", "userbot", "_temp.py"))
+        if path.exists(path.join(".", "userbot", "__pycache__")) and \
+           path.isdir(path.join(".", "userbot", "__pycache__")):
+            for name in listdir(path.join(".", "userbot", "__pycache__")):
+                if name.startswith("_temp.cpython-") and \
+                   name.endswith(".pyc"):
+                    remove(path.join(".", "userbot", "__pycache__", name))
+                    break
         del _password
         del _pwd_confm
         del _attempts
