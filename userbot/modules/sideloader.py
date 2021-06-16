@@ -27,6 +27,8 @@ USER_MODULES_DIR = os.path.join(".", "userbot", "modules_user")
 
 @ehandler.on(command="sideload", hasArgs=True, outgoing=True)
 async def sideload(event):
+    if not getConfig("ALLOW_SIDELOAD"):
+        return
     OVR_WRT_CAUT = True
     cmd_args = event.pattern_match.group(1).split(" ", 1)
     if cmd_args[0].lower() == "force":
@@ -59,9 +61,14 @@ async def sideload(event):
     return
 
 
-register_cmd_usage("sideload",
-                   usageRep.SIDELOADER_USAGE.get("sideload", {}).get("args"),
-                   usageRep.SIDELOADER_USAGE.get("sideload", {}).get("usage"))
+if getConfig("ALLOW_SIDELOAD"):
+    register_cmd_usage("sideload",
+                       usageRep.SIDELOADER_USAGE.get(
+                           "sideload", {}).get("args"),
+                       usageRep.SIDELOADER_USAGE.get(
+                           "sideload", {}).get("usage"))
+else:
+    register_cmd_usage("sideload", None, None)
 
 register_module_desc(descRep.SIDELOADER_DESC)
 register_module_info(
