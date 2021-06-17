@@ -25,7 +25,7 @@ ehandler = EventHandler(log)
 USER_MODULES_DIR = os.path.join(".", "userbot", "modules_user")
 
 
-@ehandler.on(command="sideload", hasArgs=True, outgoing=True)
+@ehandler.on(command="sideload", alt="install", hasArgs=True, outgoing=True)
 async def sideload(event):
     if not getConfig("ALLOW_SIDELOAD"):
         return

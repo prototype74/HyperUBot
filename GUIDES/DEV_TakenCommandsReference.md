@@ -39,7 +39,7 @@ This contains a short list of all the commands used in a stock HyperUBot distrib
 - `.setlang` - scrappers module (scrappers.py)
 - `.shell` - terminal module (terminal.py)
 - `.shutdown` - system tools module (systools.py)
-- `.sideload` - sideloader module (sideloader.py)
+- `.sideload` (alias `.install`) - sideloader module (sideloader.py)
 - `.speedtest` - web tools module (webtools.py)
 - `.stats` - user module (user.py)
 - `.status` - system tools module (systools.py)
