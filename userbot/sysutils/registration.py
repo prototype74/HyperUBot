@@ -8,7 +8,7 @@
 
 from inspect import getfile, currentframe, getouterframes
 from logging import getLogger
-from os.path import basename
+from os.path import basename, join
 
 log = getLogger(__name__)
 
@@ -24,9 +24,7 @@ class _RegisterModules:
     def _update_all_modules(self, name_of_module: str):
         caller = (True
                   if getouterframes(currentframe(), 2)[2].filename.endswith(
-                      "userbot/__main__.py") or
-                  getouterframes(currentframe(), 2)[2].filename.endswith(
-                      "userbot\\__main__.py") else False)
+                      join("userbot", "__main__.py")) else False)
         if not caller:
             caller = getouterframes(currentframe(), 2)[2]
             log.error("update_all_modules only callable in main "
@@ -37,9 +35,7 @@ class _RegisterModules:
     def _update_load_modules(self, name_of_module: str, is_running: bool):
         caller = (True
                   if getouterframes(currentframe(), 2)[2].filename.endswith(
-                      "userbot/__main__.py") or
-                  getouterframes(currentframe(), 2)[2].filename.endswith(
-                      "userbot\\__main__.py") else False)
+                      join("userbot", "__main__.py")) else False)
         if not caller:
             caller = getouterframes(currentframe(), 2)[2]
             log.error("update_load_modules only callable in main "
@@ -50,9 +46,7 @@ class _RegisterModules:
     def _update_user_modules(self, name_of_module: str):
         caller = (True
                   if getouterframes(currentframe(), 2)[2].filename.endswith(
-                      "userbot/__main__.py") or
-                  getouterframes(currentframe(), 2)[2].filename.endswith(
-                      "userbot\\__main__.py") else False)
+                      join("userbot", "__main__.py")) else False)
         if not caller:
             caller = getouterframes(currentframe(), 2)[2]
             log.error("update_user_modules only callable in main "
@@ -165,9 +159,8 @@ class _RegisterCMD:
         """
         caller = (True
                   if getouterframes(currentframe(), 2)[2].filename.endswith(
-                      "userbot/sysutils/event_handler.py") or
-                  getouterframes(currentframe(), 2)[2].filename.endswith(
-                      "userbot\\sysutils\\event_handler.py") else False)
+                      join("userbot", "sysutils", "event_handler.py"))
+                  else False)
         if not caller:
             caller = getouterframes(currentframe(), 2)[2]
             log.error("pre_register_cmd only callable in EventHandler "
