@@ -178,6 +178,8 @@ def _getAPIs() -> tuple:
 
 
 def _generateStringSession() -> tuple:
+    from telethon.sync import TelegramClient
+    from telethon.sessions import StringSession
     from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
                                               PhoneNumberInvalidError)
     while True:
@@ -247,8 +249,6 @@ def main():
                            "are not present. Exiting...", Colors.RED))
         return
 
-    from telethon.sync import TelegramClient
-    from telethon.sessions import StringSession
     from pyAesCrypt import encryptFile
 
     print("HyperUBot requires, like all other Telegram userbots, "
@@ -299,6 +299,7 @@ def main():
                        "a new secure configuration!",
                        Colors.YELLOW))
 
+    set_pwd = False
     while True:
         inp = input("Set password? (y/n): ")
         if inp.lower() in ("y", "yes"):
