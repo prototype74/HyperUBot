@@ -28,7 +28,7 @@ log = getLogger(__name__)
 ehandler = EventHandler(log)
 
 
-@ehandler.on(command="minfo", hasArgs=True, outgoing=True)
+@ehandler.on(command="minfo", alt="member", hasArgs=True, outgoing=True)
 async def memberinfo(event):
     await event.edit(msgRep.SCAN)
 
