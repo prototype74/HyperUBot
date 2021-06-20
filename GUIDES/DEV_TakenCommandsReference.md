@@ -22,7 +22,7 @@ This contains a short list of all the commands used in a stock HyperUBot distrib
 - `.kick` - admin module (admin.py)
 - `.kickme` (alias `.leave`) - user module (user.py)
 - `.listcmds` (alias `.help`) - modules utilities module (modules_utils.py)
-- `.minfo` - member info module (memberinfo.py)
+- `.minfo` (alias `.member`) - member info module (memberinfo.py)
 - `.modules` (alias `.module`) - modules utilities module (modules_utils.py)
 - `.msgs` - messages module (messages.py)
 - `.mute` - admin module (admin.py)
