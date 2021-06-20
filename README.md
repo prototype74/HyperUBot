@@ -36,6 +36,14 @@ We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier, and str
 | Windows (PowerShell) | [SETUP_Windows.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Windows.md) |
 | Unsupported Platforms | [Read this...](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Unsupported.md) |
 
+## Getting started with basic commands
+
+There are 3 basic commands which users of HyperUBot should know about. These commands can be used in any chat by typing:
+
+_.status_ - Get the current status of HyperUBot such as the version, uptime etc. Useful to check if the bot is actually online.\
+_.listcmds_ (or _.help_) - lists all available commands and features from all modules to use. Pass the name of a command or feature (e.g. `.help status`) to get the usage of the certain command or feature.\
+_.modules_ - lists all built-in and user modules at one place. `.modules` takes arguments to get further information of a module such as the description or usage.
+
 ## Report a bug
 
 ### How to proper report a bug
