@@ -9,6 +9,8 @@ Before starting up, make sure you have the following packages installed:
 - FFmpeg
 - FLAC
 - Nano editor
+- curl
+- wget
 
 It is required to have at least Python 3.8. Firstly, let's add rpmfusion packages, so we can install the ffmpeg codec:
 
@@ -16,7 +18,7 @@ It is required to have at least Python 3.8. Firstly, let's add rpmfusion package
 
 Secondly, to install all the other packages, run the following command:
 
-`sudo dnf install python3 git neofetch ffmpeg flac nano python3-wheel`
+`sudo dnf install python3 git neofetch ffmpeg flac nano python3-wheel curl wget`
 
 The prefered distro to work is Fedora 33 or later, however Fedora Spins and other RHEL based distros should work as well.
 
