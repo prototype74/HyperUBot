@@ -36,7 +36,7 @@ from zipfile import BadZipFile, ZipFile
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 TEMP_DL_DIR = getConfig("TEMP_DL_DIR")
-CC_CSV_PATH = join(TEMP_DL_DIR, "currency.csv")
+CC_CSV_PATH = join(getConfig("USERDATA"), "currency.csv")
 DEST_LANG = getBotLangCode()
 
 

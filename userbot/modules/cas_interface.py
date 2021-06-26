@@ -28,7 +28,7 @@ from requests import get, ConnectionError, Timeout
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
-CAS_CSV = path.join(getConfig("TEMP_DL_DIR"), "export.csv")
+CAS_CSV = path.join(getConfig("USERDATA"), "export.csv")
 CAS_USER_IDS = []
 
 
