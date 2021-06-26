@@ -149,8 +149,8 @@ def modules_listing(error_text: str = None) -> str:
     modules_listed += f"{msgRep.AVAILABLE_MODULES}:\n"
 
     modules_list = update_list()
-    all_running = all(True for ir in [modules[-1] for modules in modules_list]
-                      if ir)
+    all_running = all(True if ir else False
+                      for ir in [modules[-1] for modules in modules_list])
     num = 0
     warning = u"\u26A0"  # warn emoji
     user_modules = getUserModules()
