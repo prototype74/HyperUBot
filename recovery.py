@@ -250,6 +250,31 @@ class _Backup(_Recovery):
         return
 
 
+class _Cache(_Recovery):
+    def __init__(self):
+        super().__init__()
+
+    def clear(self):
+        pyc_list = []
+        ubot_dir = self._list_dirs(os.path.join(".", "userbot"))
+        for name in ubot_dir:
+            if "__pycache__" in name:
+                pyc_list.append(name)
+        try:
+            print("Clearing caches...")
+            self._remove(pyc_list)
+        except Exception as e:
+            print(
+                setColorText(f"Failed to clear caches: {e}", Colors.RED))
+            return
+        if all(True if not os.path.exists(name) else False
+               for name in pyc_list):
+            print(setColorText("Caches cleaned.", Colors.GREEN))
+        else:
+            print(setColorText("Failed to clear caches.", Colors.RED))
+        return
+
+
 class _Installer(_Recovery):
     def __init__(self):
         self.__download_successful = False
@@ -700,6 +725,10 @@ _option_table = {
                   "status": 0,
                   "name": "Run HyperUBot (safe mode)",
                   "func": (lambda r: r.run_userbot(True))},
+    "clear":     {"enabled": True,
+                  "status": 0,
+                  "name": "Clear caches",
+                  "func": (lambda: _clear_caches())},
     "update":    {"enabled": True,
                   "status": 0,
                   "name": "Apply update",
@@ -731,7 +760,7 @@ def _update_option_table(recovery: _Recovery):
     bot_installed = recovery.userbot_installed()
     is_git_repo = recovery.detect_git()
     for i, (key, val) in enumerate(_option_table.items(), start=1):
-        if key in ("boot", "boot_safe", "update", "backup"):
+        if key in ("boot", "boot_safe", "clear", "update", "backup"):
             if not bot_installed:
                 if val.get("enabled"):
                     _option_table[key]["enabled"] = False
@@ -801,6 +830,25 @@ def _apply_update(auto: bool, commit_id=None):
                            "Please restore a backup if available or "
                            "reinstall HyperUBot!",
                            Colors.RED))
+    return
+
+
+def _clear_caches():
+    try:
+        while True:
+            temp = input("Do you want to clear all caches? (y/n): ")
+            if temp.lower() in ("yes", "y"):
+                break
+            elif temp.lower() in ("no", "n"):
+                raise KeyboardInterrupt
+            else:
+                print(
+                    setColorText("Invalid input. Try again",
+                                 Colors.YELLOW))
+    except KeyboardInterrupt:
+        return
+    cache = _Cache()
+    cache.clear()
     return
 
 
