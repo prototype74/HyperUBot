@@ -6,6 +6,7 @@ userbot/.dsbld_features.json
 userbot/config.env
 userbot/config.py
 userbot/secure_config
+userbot/userdata
 userbot/modules_user/*.py
 userbot/*.hbot
 

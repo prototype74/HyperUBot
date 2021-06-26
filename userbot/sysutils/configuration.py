@@ -34,7 +34,8 @@ class _SysConfigurations:
         Certain configs may be inaccessible due to security reasons
         """
         self.__botconfigs = {"REBOOT": False, "REBOOT_SAFEMODE": False,
-                             "START_RECOVERY": False, "UPDATE_COMMIT_ID": None}
+                             "START_RECOVERY": False, "UPDATE_COMMIT_ID": None,
+                             "USERDATA": join(".", "userbot", "userdata")}
         self.__protect_configs = ("API_KEY", "API_HASH", "STRING_SESSION")
 
     def _addConfiguration(self, config: str, value):

@@ -232,6 +232,12 @@ if not getConfig("TEMP_DL_DIR"):
 log.info("Configurations loaded")
 
 try:
+    if getConfig("USERDATA") and not path.exists(getConfig("USERDATA")):
+        mkdir(getConfig("USERDATA"))
+except Exception:
+    log.error("Failed to initialize user data directory")
+
+try:
     if not path.exists(getConfig("TEMP_DL_DIR")):
         mkdir(getConfig("TEMP_DL_DIR"))
 except Exception:
