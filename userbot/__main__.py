@@ -36,7 +36,8 @@ class _Modules:
         user_module_paths = sorted(
             glob(join(dirname(__file__), "modules_user", "*.py")))
         for module in sys_module_paths:
-            if isfile(module) and module.endswith(".py"):
+            if isfile(module) and not basename(module).startswith("__") and \
+               module.endswith(".py"):
                 filename = basename(module)[:-3]
                 all_modules.append(filename)
                 try:
@@ -45,7 +46,8 @@ class _Modules:
                 except:
                     sys_modules.append(filename)
         for module in user_module_paths:
-            if isfile(module) and module.endswith(".py"):
+            if isfile(module) and not basename(module).startswith("__") and \
+               module.endswith(".py"):
                 filename = basename(module)[:-3]
                 all_modules.append(filename)
                 if filename not in sys_modules:
