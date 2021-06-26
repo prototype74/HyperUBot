@@ -596,6 +596,7 @@ class _Updater(_Recovery):
         always_ignore = [os.path.join(".", "userbot"),
                          os.path.join(".", "userbot", ".dsbld_features.json"),
                          os.path.join(".", "userbot", "modules_user"),
+                         os.path.join(".", "userbot", "userdata"),
                          os.path.join(".", "userbot", "config.env"),
                          os.path.join(".", "userbot", "config.py"),
                          os.path.join(".", "userbot", "secure_config"),
