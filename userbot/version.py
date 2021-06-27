@@ -6,4 +6,4 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-VERSION = "5.0.0"
+VERSION = "5.0.1"
