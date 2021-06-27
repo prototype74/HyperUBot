@@ -27,7 +27,7 @@ from datetime import datetime, timedelta
 from uptime import uptime
 from subprocess import check_output
 from logging import getLogger
-from os.path import getsize, isfile, join
+from os.path import getsize, isdir, isfile, join
 from shutil import disk_usage
 import time
 from os import listdir
@@ -111,31 +111,43 @@ async def statuschecker(stat):
 
 @ehandler.on(command="storage", outgoing=True)
 async def storage(event):
-    result = f"**{msgRep.STORAGE}**\n\n"
+    def list_dirs(source) -> list:
+        listed_dirs = []
+        for name in listdir(source):
+            srcname = join(source, name)
+            listed_dirs.append(srcname)
+            if isdir(srcname):
+                for elem in list_dirs(srcname):
+                    listed_dirs.append(elem)
+        return listed_dirs
+    def getSizeFromPath(path) -> int:
+        listed_paths = list_dirs(path)
+        size = getsize(path)
+        for name in listed_paths:
+            size += getsize(name)
+        return size
 
-    syspath = join(".", "userbot", "modules")
-    userpath = join(".", "userbot", "modules_user")
-
-    size = getsize(syspath)
-    for module in listdir(syspath):
-        item = join(syspath, module)
-        if isfile(item):
-            size += getsize(item)
-    sys_size = size
-
-    size = getsize(userpath)
-    for module in listdir(userpath):
-        item = join(userpath, module)
-        if isfile(item):
-            size += getsize(item)
-    user_size = size
+    ubot_size = getSizeFromPath(".")
+    sys_size = getSizeFromPath(join(".", "userbot", "modules"))
+    user_size = getSizeFromPath(join(".", "userbot", "modules_user"))
+    userdata_size = getSizeFromPath(getConfig("USERDATA"))
+    try:
+        tmpdl_size = getSizeFromPath(getConfig("TEMP_DL_DIR"))
+    except:
+        tmpdl_size = 0
 
     hdd = disk_usage("./")
+    result = f"**{msgRep.STORAGE}**\n\n"
+    result += f"__{msgRep.GENERAL}__\n"
     result += f"`{msgRep.STORAGE_TOTAL}: {sizeStrMaker(hdd.total)}`\n"
     result += f"`{msgRep.STORAGE_USED}: {sizeStrMaker(hdd.used)}`\n"
-    result += f"`{msgRep.STORAGE_FREE}: {sizeStrMaker(hdd.free)}`\n"
+    result += f"`{msgRep.STORAGE_FREE}: {sizeStrMaker(hdd.free)}`\n\n"
+    result += f"__{msgRep.USED_BY_HYPERUBOT}__\n"
+    result += f"`{msgRep.STORAGE_TOTAL}: {sizeStrMaker(ubot_size)}`\n"
     result += f"`{msgRep.STORAGE_SYSTEM}: {sizeStrMaker(sys_size)}`\n"
     result += f"`{msgRep.STORAGE_USER}: {sizeStrMaker(user_size)}`\n"
+    result += f"`{msgRep.STORAGE_USERDATA}: {sizeStrMaker(userdata_size)}`\n"
+    result += f"`{msgRep.STORAGE_TEMP_DL}: {sizeStrMaker(tmpdl_size)}`\n\n"
     result += (f"`{msgRep.STORAGE_HDD} "
                f"{textProgressBar(22, hdd.total, hdd.used)}`")
     await event.edit(result)

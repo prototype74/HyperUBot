@@ -107,12 +107,16 @@ class SystemToolsText(object):
     RESTART = "`A reiniciar...`"
     RESTART_LOG = "O Userbot está a reiniciar!"
     RESTARTED = "Reinicio completo!"
+    GENERAL = "General"  # translation needed
     STORAGE = "Armazenamento"
     STORAGE_TOTAL = "Total"
     STORAGE_USED = "Usado"
     STORAGE_FREE = "Livre"
+    USED_BY_HYPERUBOT = "Used by HyperUBot"  # translation needed
     STORAGE_SYSTEM = "Módulos de sistema"
     STORAGE_USER = "Módulos de utilizador"
+    STORAGE_USERDATA = "User data"  # translation needed
+    STORAGE_TEMP_DL = "Temporary downloads"  # translation needed
     STORAGE_HDD = "HDD"
     UPLD_LOG = "`A fazer upload do log...`"
     SUCCESS_UPLD_LOG = "`O Log do HyperUBot foi enviado com sucesso!`"

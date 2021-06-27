@@ -323,6 +323,8 @@ class SystemToolsText(object):
         lang, _getframe().f_code.co_name, "RESTART_LOG")
     RESTARTED = getLangString(
         lang, _getframe().f_code.co_name, "RESTARTED")
+    GENERAL = getLangString(
+        lang, _getframe().f_code.co_name, "GENERAL")
     STORAGE = getLangString(
         lang, _getframe().f_code.co_name, "STORAGE")
     STORAGE_TOTAL = getLangString(
@@ -331,10 +333,16 @@ class SystemToolsText(object):
         lang, _getframe().f_code.co_name, "STORAGE_USED")
     STORAGE_FREE = getLangString(
         lang, _getframe().f_code.co_name, "STORAGE_FREE")
+    USED_BY_HYPERUBOT = getLangString(
+        lang, _getframe().f_code.co_name, "USED_BY_HYPERUBOT")
     STORAGE_SYSTEM = getLangString(
         lang, _getframe().f_code.co_name, "STORAGE_SYSTEM")
     STORAGE_USER = getLangString(
         lang, _getframe().f_code.co_name, "STORAGE_USER")
+    STORAGE_USERDATA = getLangString(
+        lang, _getframe().f_code.co_name, "STORAGE_USERDATA")
+    STORAGE_TEMP_DL = getLangString(
+        lang, _getframe().f_code.co_name, "STORAGE_TEMP_DL")
     STORAGE_HDD = getLangString(
         lang, _getframe().f_code.co_name, "STORAGE_HDD")
     UPLD_LOG = getLangString(
