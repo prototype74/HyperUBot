@@ -77,9 +77,9 @@ if (version_info.major, version_info.minor) < (3, 8):
     quit(1)
 
 # Check Telethon version
-if verAsTuple(version.__version__) < (1, 21, 1):
-    log.error("Telethon version 1.21.1+ is required! "
-              "Please update Telethon to v1.21.1 or newer "
+if verAsTuple(version.__version__) < (1, 23, 0):
+    log.error("Telethon version 1.23.0+ is required! "
+              "Please update Telethon to v1.23.0 or newer "
               f"(current version: {version.__version__}).")
     quit(1)
 

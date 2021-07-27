@@ -90,7 +90,7 @@ def _check_setup_req() -> bool:
         else:
             telethon_version = tuple(
                 map(int, setup_req.get("Telethon").split(".")))
-            if telethon_version < (1, 21, 1):
+            if telethon_version < (1, 23, 0):
                 try:
                     check_call(
                         [PY_EXEC, "-m", "pip", "install", "--upgrade",
