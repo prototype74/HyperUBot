@@ -792,11 +792,11 @@ class ModuleUsages(object):
                                         "(aus der Ferne) in einem Chat auf. "
                                         "Erfordert Adminrechte mit Nutzer "
                                         "sperren Berechtigung.")},
-                   "delaccs": {"args": None,
+                   "delaccs": {"args": "[optional: <Chat-ID oder Link>]",
                                "usage": ("Versucht gelöschte Konten "
                                          "automatisch aus einem Chat zu "
                                          "entfernen, falls Adminrechte mit "
-                                         "vorhanden sind.\n"
+                                         "Ban-Berechtigung vorhanden sind.\n"
                                          "Ansonsten werden nur die Anzahl "
                                          "an gelöschten Konten im "
                                          "jeweiligen Chat angezeigt.")}}

@@ -770,7 +770,7 @@ class ModuleUsages(object):
                                         "um chat (remotamente). Precisa "
                                         "de permissão de administrador "
                                         "com direito de banir.")},
-                   "delaccs": {"args": None,
+                   "delaccs": {"args": "[opcional: <chat id ou link>]",
                                "usage": ("Tenta remover contas excluídas "
                                          "de um chat. Precisa de "
                                          "permissão de administrador "

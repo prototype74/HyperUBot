@@ -737,7 +737,7 @@ class ModuleUsages(object):
                               "usage": ("Unmute a certain user from a chat "
                                         "(remotely). Requires admin "
                                         "privileges with ban permission.")},
-                   "delaccs": {"args": None,
+                   "delaccs": {"args": "[optional: <chat id or link>]",
                                "usage": ("Tries to remove deleted accounts "
                                          "automatically in a chat if admin "
                                          "privileges with ban permission "
