@@ -19,7 +19,7 @@ from userbot.version import VERSION
 from telethon.errors import (ChatAdminRequiredError, InputUserDeactivatedError,
                              SearchQueryEmptyError)
 from telethon.tl.functions.messages import SearchRequest
-from telethon.tl.types import InputMessagesFilterEmpty
+from telethon.tl.types import InputMessagesFilterEmpty, User
 from logging import getLogger
 
 log = getLogger(__name__)
@@ -99,7 +99,11 @@ async def pin(event):
     arg_from_event = event.pattern_match.group(1)
     notify = True if arg_from_event.lower() == "loud" else False
     try:
-        await event.client.pin_message(chat.id, msg_id, notify=notify)
+        if isinstance(chat, User):
+            await event.client.pin_message(
+                chat.id, msg_id, pm_oneside=False if notify else True)
+        else:
+            await event.client.pin_message(chat.id, msg_id, notify=notify)
         await event.edit(msgRep.PIN_SUCCESS)
         if LOGGING:
             await event_log(event, "PINNED MESSAGE", chat_title=chat.title
