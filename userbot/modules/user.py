@@ -16,7 +16,7 @@ from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
 from userbot.version import VERSION
-from telethon.tl.types import User, Chat, Channel
+from telethon.tl.types import User, Chat, Channel, PeerChannel, PeerChat
 from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
 from logging import getLogger
@@ -92,11 +92,14 @@ async def userid(event):
 
 @ehandler.on(command="kickme", alt="leave", outgoing=True)
 async def kickme(leave):
+    if not isinstance(leave.message.peer_id, (PeerChannel, PeerChat)):
+        await leave.edit(msgRep.CANNOT_LEAVE)
+        return
     await leave.edit(msgRep.LEAVING)
     await leave.client.kick_participant(leave.chat_id, 'me')
     if getConfig("LOGGING"):
         await event_log(leave, "KICKME", chat_title=leave.chat.title,
-                        chat_id=leave.chat.id)
+                        chat_id=leave.chat_id)
     return
 
 

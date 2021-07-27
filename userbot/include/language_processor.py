@@ -739,6 +739,8 @@ class ScrappersText(object):
 
 
 class UserText(object):
+    CANNOT_LEAVE = getLangString(
+        lang, _getframe().f_code.co_name, "CANNOT_LEAVE")
     LEAVING = getLangString(
         lang, _getframe().f_code.co_name, "LEAVING")
     STATS_PROCESSING = getLangString(

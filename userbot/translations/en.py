@@ -329,6 +329,7 @@ class ScrappersText(object):
 
 
 class UserText(object):
+    CANNOT_LEAVE = "`This chat doesn't seem to be a group or channel`"
     LEAVING = "`Leaving chat...`"
     STATS_PROCESSING = "`Computing stats...`"
     STATS_HEADER = "My Telegram stats"

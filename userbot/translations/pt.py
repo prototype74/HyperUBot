@@ -345,6 +345,8 @@ class ScrappersText(object):
 
 
 class UserText(object):
+    # translation needed
+    CANNOT_LEAVE = "`This chat doesn't seem to be a group or channel`"
     LEAVING = "`A abandonar chat...`"
     STATS_PROCESSING = "`A calcular estatísticas...`"
     STATS_HEADER = "Minhas estatísticas do Telegram"

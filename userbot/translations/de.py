@@ -351,6 +351,7 @@ class ScrappersText(object):
 
 
 class UserText(object):
+    CANNOT_LEAVE = "`Dieser Chat scheint kein Kanal oder eine Gruppe zu sein`"
     LEAVING = "`Verlasse den Chat...`"
     STATS_PROCESSING = "`Berechne die Statistiken...`"
     STATS_HEADER = "Meine Telegram-Statistiken"
