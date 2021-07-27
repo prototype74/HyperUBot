@@ -77,12 +77,18 @@ class AdminText(object):
     UNMUTE_SUCCESS = "Die Stummschaltung von {} wurde aufgehoben"
     UNMUTE_FAILED = ("`Die Stummschaltung dieses Persones konnte nicht "
                      "aufgehoben werden`")
+    INVALID_ID = "`Angegebene ID ist ungültig`"
+    INVALID_USERNAME = "`Angegebene Benutzername oder Link ist ungültig`"
     TRY_DEL_ACCOUNTS = "`Versuche gelöschte Konten zu entfernen...`"
-    DEL_ACCS_COUNT = "`{} gelöschte Konten in diesem Chat gefunden`"
-    REM_DEL_ACCS_COUNT = "`{} gelöschte Konten wurden entfernt`"
-    REM_DEL_ACCS_COUNT_EXCP = ("`{} gelöschte (Admin-) Konten konnten "
-                               "nicht entfernt werden`")
+    DEL_ACCS_COUNT = "`{} gelöschte(s) Konto/Konten in diesem Chat gefunden`"
+    DEL_ACCS_COUNT_REMOTE = "`{} gelöschte(s) Konto/Konten in {} gefunden`"
+    REM_DEL_ACCS_COUNT = "`{} gelöschte(s) Konto/Konten wurden entfernt`"
+    REM_DEL_ACCS_COUNT_REMOTE = ("`{} gelöschte(s) Konto/Konten wurde(n) "
+                                 "aus {} entfernt`")
+    REM_DEL_ACCS_COUNT_EXCP = ("`{} gelöschte(s) (Admin-) Konto/Konten "
+                               "konnte(n) nicht entfernt werden`")
     NO_DEL_ACCOUNTS = "`Keine gelöschte Konten in diesem Chat gefunden`"
+    NO_DEL_ACCOUNTS_REMOTE = "`Keine gelöschte Konten in {} gefunden`"
 
 
 class SystemToolsText(object):

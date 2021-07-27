@@ -260,16 +260,26 @@ class AdminText(object):
         lang, _getframe().f_code.co_name, "UNMUTE_SUCCESS")
     UNMUTE_FAILED = getLangString(
         lang, _getframe().f_code.co_name, "UNMUTE_FAILED")
+    INVALID_ID = getLangString(
+        lang, _getframe().f_code.co_name, "INVALID_ID")
+    INVALID_USERNAME = getLangString(
+        lang, _getframe().f_code.co_name, "INVALID_USERNAME")
     TRY_DEL_ACCOUNTS = getLangString(
         lang, _getframe().f_code.co_name, "TRY_DEL_ACCOUNTS")
     DEL_ACCS_COUNT = getLangString(
         lang, _getframe().f_code.co_name, "DEL_ACCS_COUNT")
+    DEL_ACCS_COUNT_REMOTE = getLangString(
+        lang, _getframe().f_code.co_name, "DEL_ACCS_COUNT_REMOTE")
     REM_DEL_ACCS_COUNT = getLangString(
         lang, _getframe().f_code.co_name, "REM_DEL_ACCS_COUNT")
+    REM_DEL_ACCS_COUNT_REMOTE = getLangString(
+        lang, _getframe().f_code.co_name, "REM_DEL_ACCS_COUNT_REMOTE")
     REM_DEL_ACCS_COUNT_EXCP = getLangString(
         lang, _getframe().f_code.co_name, "REM_DEL_ACCS_COUNT_EXCP")
     NO_DEL_ACCOUNTS = getLangString(
         lang, _getframe().f_code.co_name, "NO_DEL_ACCOUNTS")
+    NO_DEL_ACCOUNTS_REMOTE = getLangString(
+        lang, _getframe().f_code.co_name, "NO_DEL_ACCOUNTS_REMOTE")
 
 
 class SystemToolsText(object):

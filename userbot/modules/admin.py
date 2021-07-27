@@ -554,9 +554,27 @@ async def unmute(event):
     return
 
 
-@ehandler.on(command="delaccs", outgoing=True)
+@ehandler.on(command="delaccs", hasArgs=True, outgoing=True)
 async def delaccs(event):
-    chat = await event.get_chat()
+    arg_from_event = event.pattern_match.group(1)
+    if arg_from_event:
+        is_id = False
+        try:
+            arg_from_event = int(arg_from_event)
+            is_id = True
+        except:
+            pass
+        try:
+            chat = await event.client.get_entity(arg_from_event)
+        except:
+            if is_id:
+                await event.edit(msgRep.INVALID_ID)
+            else:
+                await event.edit(msgRep.INVALID_USERNAME)
+            return
+    else:
+        chat = await event.get_chat()
+
     if type(chat) is User:
         await event.edit(msgRep.NO_GROUP_CHAN)
         return
@@ -575,25 +593,43 @@ async def delaccs(event):
                 except:
                     pass
 
+    remote = isRemoteCMD(event, chat.id)
+
     if deleted_accounts > 0 and not rem_del_accounts:
-        await event.edit(msgRep.DEL_ACCS_COUNT.format(deleted_accounts))
+        if remote:
+            await event.edit(msgRep.DEL_ACCS_COUNT_REMOTE.format(
+                deleted_accounts, chat.title))
+        else:
+            await event.edit(msgRep.DEL_ACCS_COUNT.format(deleted_accounts))
     elif rem_del_accounts > 0 and rem_del_accounts <= deleted_accounts:
         if not (deleted_accounts - rem_del_accounts) == 0:
-            rem_accs_text = msgRep.REM_DEL_ACCS_COUNT.format(rem_del_accounts)
+            if remote:
+                rem_accs_text = msgRep.REM_DEL_ACCS_COUNT_REMOTE.format(
+                    rem_del_accounts, chat.title)
+            else:
+                rem_accs_text = msgRep.REM_DEL_ACCS_COUNT.format(
+                    rem_del_accounts)
             rem_accs_excp_text = msgRep.REM_DEL_ACCS_COUNT_EXCP.format(
                 deleted_accounts - rem_del_accounts)
             await event.edit(f"{rem_accs_text}`. `{rem_accs_excp_text}")
         else:
-            await event.edit(
-                msgRep.REM_DEL_ACCS_COUNT.format(rem_del_accounts))
+            if remote:
+                await event.edit(msgRep.REM_DEL_ACCS_COUNT_REMOTE.format(
+                    rem_del_accounts, chat.title))
+            else:
+                await event.edit(
+                    msgRep.REM_DEL_ACCS_COUNT.format(rem_del_accounts))
         if LOGGING:
             await event_log(event, "DELACCS", chat_title=chat.title,
                             chat_link=chat.username
                             if hasattr(chat, "username") else None,
-                            chat_id=event.chat_id)
+                            chat_id=format_chat_id(chat)
+                            if remote else event.chat_id)
     else:
-        await event.edit(msgRep.NO_DEL_ACCOUNTS)
-
+        if remote:
+            await event.edit(msgRep.NO_DEL_ACCOUNTS_REMOTE.format(chat.title))
+        else:
+            await event.edit(msgRep.NO_DEL_ACCOUNTS)
     return
 
 

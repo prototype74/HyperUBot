@@ -71,11 +71,16 @@ class AdminText(object):
     UNMUTE_SUCCESS_REMOTE = "{} has been unmuted in **{}**"
     UNMUTE_SUCCESS = "Unmuted {}"  # user name
     UNMUTE_FAILED = "`Failed to unmute this person`"
+    INVALID_ID = "`Invalid ID given`"
+    INVALID_USERNAME = "`Invalid username or link given`"
     TRY_DEL_ACCOUNTS = "`Trying to remove deleted accounts...`"
     DEL_ACCS_COUNT = "`{} deleted accounts found in this chat`"
+    DEL_ACCS_COUNT_REMOTE = "`{} deleted accounts found in {}`"
     REM_DEL_ACCS_COUNT = "`Removed {} deleted accounts`"
+    REM_DEL_ACCS_COUNT_REMOTE = "`Removed {} deleted accounts in {}`"
     REM_DEL_ACCS_COUNT_EXCP = "`Couldn't remove {} deleted (admin) accounts`"
     NO_DEL_ACCOUNTS = "`No deleted accounts found in this chat`"
+    NO_DEL_ACCOUNTS_REMOTE = "`No deleted accounts found in {}`"
 
 
 class SystemToolsText(object):

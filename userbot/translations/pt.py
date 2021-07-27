@@ -71,13 +71,21 @@ class AdminText(object):
     CANNOT_UNMUTE_SELF = "`Não posso remover o meu próprio silenciamento`"
     UNMUTE_SUCCESS_REMOTE = "Foi removido o silenciamento de {} em **{}**"
     UNMUTE_SUCCESS = "Removido o silenciamento de {}"
+    INVALID_ID = "`Invalid ID given`"  # translation needed
+    INVALID_USERNAME = "`Invalid username or link given`"  # translation needed
     UNMUTE_FAILED = "`Falha ao remover o silenciamento desta pessoa.`"
     TRY_DEL_ACCOUNTS = "`Tentando remover contas excluídas...`"
     DEL_ACCS_COUNT = "`Foram encontradas {} contas excluídas`"
+    # translation needed
+    DEL_ACCS_COUNT_REMOTE = "`{} deleted accounts found in {}`"
     REM_DEL_ACCS_COUNT = "`Removidas {} contas excluídas`"
+    # translation needed
+    REM_DEL_ACCS_COUNT_REMOTE = "`Removed {} deleted accounts in {}`"
     REM_DEL_ACCS_COUNT_EXCP = ("`Não foi possivel remover {} contas "
                                "(de admin) excluídas`")
     NO_DEL_ACCOUNTS = "`Não existem contas excluídas neste chat.`"
+    # translation needed
+    NO_DEL_ACCOUNTS_REMOTE = "`No deleted accounts found in {}`"
 
 
 class SystemToolsText(object):
