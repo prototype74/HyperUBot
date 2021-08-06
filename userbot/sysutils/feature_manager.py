@@ -17,7 +17,8 @@ log = getLogger(__name__)
 
 class _FeatureManager:
     def __init__(self):
-        self.__filename = os.path.join(".", "userbot", ".dsbld_features.json")
+        self.__filename = os.path.join(".", "userbot", "userdata",
+                                       ".dsbld_features.json")
         self.__disabled_features = {}
         self.__init_failed = False
 
