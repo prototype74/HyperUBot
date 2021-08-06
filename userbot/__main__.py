@@ -129,8 +129,7 @@ def run_client():
     except KeyboardInterrupt:
         raise KeyboardInterrupt
     except (BaseException, Exception) as e:
-        log.critical(f"Failed to start client properly: {e}",
-                     exc_info=True)
+        log.critical(f"Client has stopped: {e}", exc_info=True)
     return
 
 
