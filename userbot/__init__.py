@@ -6,6 +6,9 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot.sysutils.config_loader import (check_secure_config,
+                                            load_configs,
+                                            get_secure_config)
 from userbot.sysutils.configuration import addConfig, getConfig
 from userbot.sysutils.colors import Color, setColorText
 from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
@@ -15,13 +18,10 @@ from telethon import TelegramClient, version
 from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
                                           PhoneNumberInvalidError)
 from telethon.sessions import StringSession
-from dotenv import load_dotenv
-from getpass import getpass
 from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
-from os import path, execle, environ, listdir, mkdir, remove
+from os import path, mkdir, remove
 from platform import platform, machine, processor
-from pyAesCrypt import decryptFile
-from sys import argv, executable, version_info
+from sys import argv, version_info
 
 # Terminal logging
 LOGFILE = "hyper.log"
@@ -89,139 +89,15 @@ if SAFEMODE:
 else:
     log.info("Loading configurations")
 
-if path.exists(path.join(".", "userbot", "config.env")):
-    from userbot.include.aux_funcs import strlist_to_list, str_to_bool
-    _len_before = len(environ.items())
-    load_dotenv(path.join(".", "userbot", "config.env"))
-    loaded_env = {key: value
-                  for key, value in list(environ.items())[_len_before:]}
-    if not SAFEMODE:
-        for key, value in loaded_env.items():
-            if key not in ("API_KEY", "API_HASH", "STRING_SESSION"):
-                if value.startswith("[") and value.endswith("]"):
-                    addConfig(key, strlist_to_list(value))
-                elif value in ("True", "true", "False", "false"):
-                    addConfig(key, str_to_bool(value))
-                else:  # default case
-                    addConfig(key, int(value) if value.isnumeric() else value)
-    if getConfig("SAMPLE_CONFIG", None):
-        log.error("Please remove SAMPLE_CONFIG from config.env!")
-        quit(1)
-    if SAFEMODE:
-        addConfig("UBOT_LANG", loaded_env.get("UBOT_LANG", "en"))
-    environ["API_KEY"] = "0"
-    environ["API_HASH"] = "None"
-    environ["STRING_SESSION"] = "None"
-    del loaded_env
-elif path.exists(path.join(".", "userbot", "config.py")):
-    _cfg_loadable = False
-    try:
-        import userbot.config as cfg
-        _cfg_loadable = True
-    except (IndentationError, NameError,
-            TypeError, ValueError, SyntaxError):  # totally F
-        log.warning("config.py file isn't well-formed. Please make sure "
-                    "your config file matches expected python script "
-                    "formation", exc_info=True)
-    except Exception as e:
-        log.warning(f"Unable to load configs: {e}", exc_info=True)
-    try:
-        if not SAFEMODE:
-            from inspect import getmembers, isclass, isfunction
-    except Exception as e:
-        log.warning(f"Couldn't import config components: {e}", exc_info=True)
-        if _cfg_loadable:
-            _cfg_loadable = False
-    if not SAFEMODE and _cfg_loadable:
-        for name, cfgclass in getmembers(cfg, isclass):
-            for attr_name in vars(cfgclass):
-                attr_val = getattr(cfgclass, attr_name)
-                if not attr_name.startswith("__") and \
-                   not isfunction(attr_val):
-                    if attr_name not in ("API_KEY", "API_HASH",
-                                         "STRING_SESSION"):
-                        addConfig(attr_name, attr_val)
-    if SAFEMODE and _cfg_loadable:
-        addConfig("UBOT_LANG",
-                  (cfg.ConfigClass.UBOT_LANG
-                   if hasattr(cfg.ConfigClass, "UBOT_LANG") else "en"))
-    del _cfg_loadable
-    try:
-        del cfg
-    except:
-        pass
-elif not path.exists(path.join(".", "userbot", "secure_config")):
-    try:
-        log.warning("Couldn't find config file(s) in \"userbot\" directory. "
-                    "Starting Setup Assistant...")
-        _PY_EXEC = (executable
-                    if " " not in executable else '"' + executable + '"')
-        _tcmd = [_PY_EXEC, "setup.py"]
-        execle(_PY_EXEC, *_tcmd, environ)
-    except Exception as e:
-        log.warning(f"Failed to start Setup Assistant: {e}", exc_info=True)
-        log.error("Couldn't find config file(s) in \"userbot\" directory. "
-                  "Please run the Setup Assistant to setup your config "
-                  "file(s) or create them manually: "
-                  "Environment and Python scripts are supported")
-    quit()
+API_KEY, API_HASH, STRING_SESSION = get_secure_config()
 
-if path.exists(path.join(".", "userbot", "secure_config")):
-    _password = ""
-    _pwd_confm = False
-    _attempts = 0
-    while True:
-        try:
-            decryptFile(infile=path.join(".", "userbot", "secure_config"),
-                        outfile=path.join(".", "userbot", "_temp.py"),
-                        passw=_password,
-                        bufferSize=(64 * 1024))
-            break
-        except ValueError as e:
-            if "wrong password" in str(e).lower() and \
-               _attempts < 5:
-                if not _pwd_confm:
-                    log.info("Password required for secure config")
-                else:
-                    log.warning("Invalid password. Try again...")
-                try:
-                    while True:
-                        _password = getpass("Please enter your password: ")
-                        if not _pwd_confm:
-                            _pwd_confm = True
-                        break
-                except KeyboardInterrupt:
-                    quit()
-                _attempts += 1
-            else:
-                log.error("Unable to read secure config")
-                quit(1)
-        except Exception:
-            log.error("Unable to read secure config")
-            quit(1)
+if not API_KEY and not API_HASH and not STRING_SESSION:
+    if not check_secure_config():
+        log.error("Cannot continue to start HyperUBot. "
+                  "You may need to create a (new) secure config first.")
+    quit(1)
 
-    try:
-        import userbot._temp as _s_cfg
-        API_KEY = _s_cfg.API_KEY
-        API_HASH = _s_cfg.API_HASH
-        STRING_SESSION = _s_cfg.STRING_SESSION
-    except Exception:
-        log.error("Unable to read secure config")
-        quit(1)
-    finally:
-        if path.exists(path.join(".", "userbot", "_temp.py")):
-            remove(path.join(".", "userbot", "_temp.py"))
-        if path.exists(path.join(".", "userbot", "__pycache__")) and \
-           path.isdir(path.join(".", "userbot", "__pycache__")):
-            for name in listdir(path.join(".", "userbot", "__pycache__")):
-                if name.startswith("_temp.cpython-") and \
-                   name.endswith(".pyc"):
-                    remove(path.join(".", "userbot", "__pycache__", name))
-                    break
-        del _password
-        del _pwd_confm
-        del _attempts
-    del _s_cfg
+load_configs(SAFEMODE)  # optional configs
 
 if SAFEMODE and not getConfig("UBOT_LANG"):
     addConfig("UBOT_LANG", "en")

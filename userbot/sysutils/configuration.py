@@ -52,12 +52,22 @@ class _SysConfigurations:
             addConfiguration("EXAMPLE_STR", "Test")
             addConfiguration("EXAMPLE_LIST", [25, "test"])
         """
-        module_caller = (getouterframes(currentframe(), 2)[2].filename
-                         if getouterframes(
-                             currentframe(), 2)[2].filename.endswith(
-                                 join("userbot", "__init__.py")) else
-                         getouterframes(currentframe(), 2)[1].filename)
-        if not module_caller.endswith(join("userbot", "__init__.py")):
+        special_caller = [join("userbot", "__init__.py"),
+                          join("userbot", "sysutils", "config_loader.py")]
+        valid_caller = False
+        for caller in special_caller:
+            if getouterframes(currentframe(), 2)[2].filename.endswith(caller):
+                valid_caller = True
+                break
+        sys_caller = (getouterframes(currentframe(), 2)[2].filename
+                      if valid_caller else
+                      getouterframes(currentframe(), 2)[1].filename)
+        valid_caller = False
+        for caller in special_caller:
+            if sys_caller.endswith(caller):
+                valid_caller = True
+                break
+        if not valid_caller:
             raise AccessError("Access to configurations denied")
         if config in self.__protect_configs:
             raise AccessError(f"Access to '{config}' denied")
