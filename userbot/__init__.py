@@ -97,7 +97,13 @@ if not API_KEY and not API_HASH and not STRING_SESSION:
                   "You may need to create a (new) secure config first.")
     quit(1)
 
-load_configs(SAFEMODE)  # optional configs
+try:
+    load_configs(SAFEMODE)  # optional configs
+except KeyboardInterrupt:
+    log.info("Exiting...")
+    quit()
+except Exception:
+    log.error("Unable to load optional configurations", exc_info=True)
 
 if SAFEMODE and not getConfig("UBOT_LANG"):
     addConfig("UBOT_LANG", "en")

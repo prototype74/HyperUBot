@@ -184,22 +184,27 @@ class _ConfigLoader:
                 value = value.split("\\" if isWindows() else "/")[-1]
                 config_text += f"[{key}] {value}\n"
             print(config_text)
-            while True:
-                inp = input(f"Your input [1-{arr_size}] (or 'X' to exit): ")
-                if inp in temp_dict.keys():
-                    for key, value in temp_dict.items():
-                        if inp == key:
-                            self.__curr_config = value
-                            value = value.split("\\"
-                                                if isWindows() else "/")[-1]
-                            log.info(f"Loading configs from {value}")
-                            break
-                    break
-                elif inp.lower() == "x":
-                    raise KeyboardInterrupt
-                else:
-                    print(setColorText("Invalid input. Try again...",
-                                       Color.YELLOW))
+            try:
+                while True:
+                    inp = input(f"Your input [1-{arr_size}] (or 'X' to skip): ")
+                    if inp in temp_dict.keys():
+                        for key, value in temp_dict.items():
+                            if inp == key:
+                                self.__curr_config = value
+                                value = value.split("\\"
+                                                    if isWindows() else "/")[-1]
+                                log.info(f"Loading configs from {value}")
+                                break
+                        break
+                    elif inp.lower() == "x":
+                        raise KeyboardInterrupt
+                    else:
+                        print(setColorText("Invalid input. Try again...",
+                                           Color.YELLOW))
+            except KeyboardInterrupt:
+                log.info("Skipping optional configs")
+                self.__curr_config = "Skipped"
+                return
         elif self.__detected_configs:
             self.__curr_config = self.__detected_configs[0]
         return
@@ -231,6 +236,8 @@ class _ConfigLoader:
             self.__load_ini(is_safemode)
         elif self.__curr_config.endswith(".py"):
             self.__load_py(is_safemode)
+        else:  # User skipped to load optional configs
+            self.__configs_loaded = True
         return
 
 
