@@ -338,20 +338,24 @@ def main():
     print()
     print("HyperUBot supports additional configurations such as logging, "
           "download path for temporary downloads etc.\n"
-          "There are 2 types: Environment (config.env) and "
-          "Python script (config.py).\n"
+          "There are 3 types: Environment (config.env), configuration file "
+          "(config.ini) and Python script (config.py).\n"
           "Which type of configuration file you wish to have?\n")
     print("[1] Environment (config.env)\n"
-          "[2] Python script (config.py)\n")
+          "[2] Configuration file (config.ini)\n"
+          "[3] Python script (config.py)\n")
 
     config_file = None
 
     while True:
-        inp = input("Your input [1-2] (or 'X' to cancel setup): ")
+        inp = input("Your input [1-3] (or 'X' to cancel setup): ")
         if inp == "1":
             config_file = os.path.join(".", "userbot", "config.env")
             break
         elif inp == "2":
+            config_file = os.path.join(".", "userbot", "config.ini")
+            break
+        elif inp == "3":
             config_file = os.path.join(".", "userbot", "config.py")
             break
         elif inp.lower() == "x":
@@ -431,7 +435,17 @@ def main():
                        'LOGGING_CHATID = 0\n'
                        f'TEMP_DL_DIR = "{dl_path}"\n'
                        'NOT_LOAD_MODULES = []\n'
-                       'COMMUNITY_REPOS = []\n')
+                       'COMMUNITY_REPOS = []\n'
+                       'ALLOW_SIDELOAD = False\n')
+        elif config_file.endswith(".ini"):
+            configs = ('[CONFIGS]\n'
+                       f'UBOT_LANG = {lang_code}\n'
+                       'LOGGING = no\n'
+                       'LOGGING_CHATID = 0\n'
+                       f'TEMP_DL_DIR = {dl_path}\n'
+                       'NOT_LOAD_MODULES = []\n'
+                       'COMMUNITY_REPOS = []\n'
+                       'ALLOW_SIDELOAD = no\n')
         else:  # py script
             configs = ('class ConfigClass(object):\n'
                        f'{"":4}UBOT_LANG = "{lang_code}"\n'
@@ -439,7 +453,8 @@ def main():
                        f'{"":4}LOGGING_CHATID = 0\n'
                        f'{"":4}TEMP_DL_DIR = "{dl_path}"\n'
                        f'{"":4}NOT_LOAD_MODULES = []\n'
-                       f'{"":4}COMMUNITY_REPOS = []\n')
+                       f'{"":4}COMMUNITY_REPOS = []\n'
+                       f'{"":4}ALLOW_SIDELOAD = False\n')
         with open(config_file, "w") as cfg_file:
             print(f"Writing optional configuration file in {config_file}")
             cfg_file.write(configs)
