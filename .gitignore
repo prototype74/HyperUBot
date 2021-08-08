@@ -3,6 +3,7 @@ hyper.log
 backup/*
 releases/*
 userbot/config.env
+userbot/config.ini
 userbot/config.py
 userbot/secure_config
 userbot/userdata

@@ -7,6 +7,7 @@
 # compliance with the PE License
 
 from .configuration import addConfig, getConfig
+from configparser import ConfigParser
 from getpass import getpass
 from inspect import currentframe, getouterframes
 from logging import getLogger
@@ -23,6 +24,7 @@ class _ConfigLoader:
         Initialize supported configs by HyperUBot
         """
         self.__supported_configs = [os.path.join(".", "userbot", "config.env"),
+                                    os.path.join(".", "userbot", "config.ini"),
                                     os.path.join(".", "userbot", "config.py")]
         self.__curr_config = None
         self.__configs_loaded = False
@@ -86,6 +88,36 @@ class _ConfigLoader:
         self.__configs_loaded = True
         return
 
+    def __load_ini(self, is_safemode: bool):
+        """
+        Loads all configurations from config.ini file
+
+        Args:
+            is_safemode (bool): if HyperUBot is currently in safe mode
+        """
+        from userbot.include.aux_funcs import strlist_to_list
+        configs = ConfigParser()
+        configs.read(self.__curr_config)
+        if not is_safemode:
+            for section in configs.sections():
+                for key, value in configs.items(section):
+                    key = key.upper()
+                    if key not in ("API_KEY", "API_HASH", "STRING_SESSION"):
+                        if value.startswith("[") and value.endswith("]"):
+                            addConfig(key, strlist_to_list(value))
+                        elif value.lower() in ("no"):
+                            addConfig(key, False)
+                        elif value.lower() in ("yes"):
+                            addConfig(key, True)
+                        else:
+                            addConfig(key, int(value)
+                                      if value.isnumeric() else value)
+        if is_safemode:
+            addConfig("UBOT_LANG", configs["CONFIGS"].get("UBOT_LANG",
+                                                          fallback="en"))
+        self.__configs_loaded = True
+        return
+
     def __load_py(self, is_safemode: bool):
         """
         Loads all configurations from config.py file
@@ -134,8 +166,8 @@ class _ConfigLoader:
 
     def _load_configs(self, is_safemode: bool):
         """
-        Searches for config.env and config.py (config.env preferred if both
-        exist) and starts to load the target config file
+        Searches for config.env, config.ini and config.py (preferred in
+        descending order) and starts to load the target config file
 
         Args:
             is_safemode (bool): if HyperUBot is currently in safe mode
@@ -154,6 +186,8 @@ class _ConfigLoader:
             return
         if self.__curr_config.endswith(".env"):
             self.__load_env(is_safemode)
+        elif self.__curr_config.endswith(".ini"):
+            self.__load_ini(is_safemode)
         elif self.__curr_config.endswith(".py"):
             self.__load_py(is_safemode)
         return
