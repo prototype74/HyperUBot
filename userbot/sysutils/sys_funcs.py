@@ -8,9 +8,58 @@
 
 from userbot.version import VERSION
 from subprocess import check_output
+from json import loads
 import platform
 import os
 import sys
+
+
+def strlist_to_list(strlist: str) -> list:
+    """
+    Casting string formatted list to a real list
+
+    Args:
+        strlist (string): a string formatted list
+
+    Example:
+        mystr = "[25, 100, 'example']"
+        mylist = strlist_to_list(mystr)
+        for elem in mylist:
+            print(elem)
+
+    Returns:
+        a real list from string
+    """
+    try:
+        list_obj = loads(strlist)
+    except:
+        list_obj = []
+    return list_obj
+
+
+def str_to_bool(strbool: str) -> bool:
+    """
+    Casting string formatted boolean to a real boolean
+
+    Args:
+        strbool (string): a string formatted boolean
+
+    Example:
+        mystr = "true"
+        mybool = str_to_bool(mystr)
+        if mybool:
+            print("it's true")
+        else:
+            print("it's not true")
+
+    Returns:
+        a real bool from string
+    """
+    if strbool in ("True", "true"):
+        return True
+    elif strbool in ("False", "false"):
+        return False
+    raise ValueError(f"{strbool} is not a bool")
 
 
 def isLinux() -> bool:

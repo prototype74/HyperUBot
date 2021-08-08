@@ -62,7 +62,7 @@ class _ConfigLoader:
         Args:
             is_safemode (bool): if HyperUBot is currently in safe mode
         """
-        from userbot.include.aux_funcs import strlist_to_list, str_to_bool
+        from userbot.sysutils.sys_funcs import strlist_to_list, str_to_bool
         from dotenv import load_dotenv
         len_before = len(os.environ.items())
         load_dotenv(self.__curr_config)
@@ -95,7 +95,7 @@ class _ConfigLoader:
         Args:
             is_safemode (bool): if HyperUBot is currently in safe mode
         """
-        from userbot.include.aux_funcs import strlist_to_list
+        from userbot.sysutils.sys_funcs import strlist_to_list
         configs = ConfigParser()
         configs.read(self.__curr_config)
         if not is_safemode:

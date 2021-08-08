@@ -14,7 +14,6 @@ from logging import getLogger
 from subprocess import check_output, CalledProcessError
 from asyncio import create_subprocess_exec as asyncr
 from asyncio.subprocess import PIPE as asyncPIPE
-from json import loads
 from shutil import which
 from icmplib import ping
 
@@ -235,54 +234,6 @@ def format_chat_id(chat) -> int:
     except Exception as e:
         log.error(f"Failed to format chat id")
     return chat_id
-
-
-def strlist_to_list(strlist: str) -> list:
-    """
-    Casting string formatted list to a real list
-
-    Args:
-        strlist (string): a string formatted list
-
-    Example:
-        mystr = "[25, 100, 'example']"
-        mylist = strlist_to_list(mystr)
-        for elem in mylist:
-            print(elem)
-
-    Returns:
-        a real list from string
-    """
-    try:
-        list_obj = loads(strlist)
-    except:
-        list_obj = []
-    return list_obj
-
-
-def str_to_bool(strbool: str) -> bool:
-    """
-    Casting string formatted boolean to a real boolean
-
-    Args:
-        strbool (string): a string formatted boolean
-
-    Example:
-        mystr = "true"
-        mybool = str_to_bool(mystr)
-        if mybool:
-            print("it's true")
-        else:
-            print("it's not true")
-
-    Returns:
-        a real bool from string
-    """
-    if strbool in ("True", "true"):
-        return True
-    elif strbool in ("False", "false"):
-        return False
-    raise ValueError(f"{strbool} is not a bool")
 
 
 def shell_runner(commands: list):
