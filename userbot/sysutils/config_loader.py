@@ -6,7 +6,9 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from .colors import Color, setColorText
 from .configuration import addConfig, getConfig
+from .sys_funcs import isWindows
 from configparser import ConfigParser
 from getpass import getpass
 from inspect import currentframe, getouterframes
@@ -26,22 +28,22 @@ class _ConfigLoader:
         self.__supported_configs = [os.path.join(".", "userbot", "config.env"),
                                     os.path.join(".", "userbot", "config.ini"),
                                     os.path.join(".", "userbot", "config.py")]
+        self.__detected_configs = []
         self.__curr_config = None
         self.__configs_loaded = False
 
-    def _initialize_config(self):
+    def _initialize_configs(self):
         """
-        Set optional config. Leaves current config to None if no optional
-        config has been found
+        Look for supported configs and add them. Leave the list empty if no
+        optional config has been found
         """
         caller = os.path.join("userbot", "sysutils", "config_loader.py")
         if not getouterframes(currentframe(), 2)[1].filename.endswith(caller):
             log.warning("Not a valid caller")
             return
         for c in self.__supported_configs:
-            if os.path.exists(c):
-                self.__curr_config = c
-                break
+            if os.path.exists(c) and os.path.isfile(c):
+                self.__detected_configs.append(c)
         return
 
     def __config_available(self) -> bool:
@@ -164,6 +166,44 @@ class _ConfigLoader:
         self.__configs_loaded = True
         return
 
+    def __config_selector(self):
+        """
+        Check if multiple configs have been found and display them to
+        promt the user to select the preferred config file. If only one is
+        available, it will be selected automatically.
+        """
+        arr_size = len(self.__detected_configs)
+        if arr_size >= 2:
+            temp_dict = {}
+            for i, item in enumerate(self.__detected_configs, start=1):
+                temp_dict[str(i)] = item
+            log.info("Multiple configs found!")
+            print()
+            config_text = "Please select your preferred config file:\n"
+            for key, value in temp_dict.items():
+                value = value.split("\\" if isWindows() else "/")[-1]
+                config_text += f"[{key}] {value}\n"
+            print(config_text)
+            while True:
+                inp = input(f"Your input [1-{arr_size}] (or 'X' to exit): ")
+                if inp in temp_dict.keys():
+                    for key, value in temp_dict.items():
+                        if inp == key:
+                            self.__curr_config = value
+                            value = value.split("\\"
+                                                if isWindows() else "/")[-1]
+                            log.info(f"Loading configs from {value}")
+                            break
+                    break
+                elif inp.lower() == "x":
+                    raise KeyboardInterrupt
+                else:
+                    print(setColorText("Invalid input. Try again...",
+                                       Color.YELLOW))
+        elif self.__detected_configs:
+            self.__curr_config = self.__detected_configs[0]
+        return
+
     def _load_configs(self, is_safemode: bool):
         """
         Searches for config.env, config.ini and config.py (preferred in
@@ -178,6 +218,7 @@ class _ConfigLoader:
             log.warning("Not a valid caller "\
                         f"(requested by {os.path.basename(caller)}")
             return
+        self.__config_selector()
         if not self.__config_available():
             log.info("No optional configs found")
             return
@@ -303,7 +344,7 @@ class _SecureConfigLoader:
 
 _cfg_loader = _ConfigLoader()
 _scfg_loader = _SecureConfigLoader()
-_cfg_loader._initialize_config()
+_cfg_loader._initialize_configs()
 
 
 def check_secure_config() -> bool:
