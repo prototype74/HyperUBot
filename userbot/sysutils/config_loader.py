@@ -154,6 +154,7 @@ class _ConfigLoader:
                        not isfunction(attr_val):
                         if attr_name not in ("API_KEY", "API_HASH",
                                              "STRING_SESSION"):
+                            attr_name = attr_name.upper()
                             addConfig(attr_name, attr_val)
         if is_safemode and cfg_loadable:
             addConfig("UBOT_LANG",
