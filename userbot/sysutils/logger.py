@@ -8,6 +8,7 @@
 
 from .colors import Color, ColorBG, setColorText, setColorTextBG
 from .sys_funcs import os_name
+from userbot.version import VERSION
 from inspect import currentframe, getouterframes
 from platform import platform, machine, processor
 import logging
@@ -74,8 +75,7 @@ class _UserbotLogger:
                            level=logging.INFO)
         return
 
-    def _initialize_logfile(self, project_name: str, bot_version: str,
-                            is_safemode: bool,
+    def _initialize_logfile(self, project_name: str, is_safemode: bool,
                             python_version, telethon_version):
         caller = getouterframes(currentframe(), 2)[1].filename
         valid_caller = os.path.join("userbot", "__init__.py")
@@ -91,7 +91,7 @@ class _UserbotLogger:
         try:
             sys_string = "======= SYS INFO\n\n"
             sys_string += "Project: {}\n".format(project_name)
-            sys_string += "Version: {}\n".format(bot_version)
+            sys_string += "Version: {}\n".format(VERSION)
             sys_string += "Safe mode: {}\n".format("On"
                                                    if is_safemode else "Off")
             sys_string += "Operating System: {}\n".format(os_name())
