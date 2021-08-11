@@ -6,29 +6,19 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot.sysutils.config_loader import (check_secure_config,
-                                            load_configs,
-                                            get_secure_config)
-from userbot.sysutils.configuration import addConfig, getConfig
 from userbot.sysutils.colors import Color, setColorText
-from userbot.sysutils.logger import _UserbotLogger
-from userbot.sysutils.sys_funcs import os_name, verAsTuple
-from userbot.version import VERSION as hubot_version
-from telethon import TelegramClient, version
-from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
-                                          PhoneNumberInvalidError)
-from telethon.sessions import StringSession
-from logging import getLogger
-from os import path, mkdir
 from sys import argv, version_info
 
-# Terminal logging
-log = getLogger(__name__)
-_hyper_logger = _UserbotLogger(log)
-_hyper_logger._setup_logger()
+# Check Python version
+if (version_info.major, version_info.minor) < (3, 8):
+    print(setColorText("HyperUBot requires at least Python v3.8! "
+                       "Please update Python to v3.8 or newer "
+                       "(current version is {}.{}.{})".format(
+                           version_info.major, version_info.minor,
+                           version_info.micro), Color.RED))
+    quit(1)
 
 PROJECT = "HyperUBot"
-OS = os_name()  # Current Operating System [DEPRECATED]
 SAFEMODE = False
 
 # Check safe mode from command line
@@ -36,24 +26,35 @@ if len(argv) >= 2:
     if argv[1].lower() == "-safemode":
         SAFEMODE = True
 
-_hyper_logger._initialize_logfile(PROJECT, hubot_version, SAFEMODE,
-                                  version_info, version)
+from telethon import TelegramClient, version  # noqa: E402
+from userbot.sysutils.sys_funcs import os_name, verAsTuple  # noqa: E402
 
-# Check Python version
-if (version_info.major, version_info.minor) < (3, 8):
-    log.error("Python v3.8+ is required! "
-              "Please update Python to v3.8 or newer "
-              "(current version: {}.{}.{}).".format(version_info.major,
-                                                    version_info.minor,
-                                                    version_info.micro))
-    quit(1)
+OS = os_name()  # Current Operating System [DEPRECATED]
 
 # Check Telethon version
 if verAsTuple(version.__version__) < (1, 23, 0):
-    log.error("Telethon version 1.23.0+ is required! "
-              "Please update Telethon to v1.23.0 or newer "
-              f"(current version: {version.__version__}).")
+    print(setColorText("HyperUBot requires at least Telethon version 1.23.0! "
+                       "Please update Telethon to v1.23.0 or newer "
+                       f"(current version is {version.__version__})",
+                       Color.RED))
     quit(1)
+
+from userbot.sysutils.config_loader import (check_secure_config,
+                                            load_configs,
+                                            get_secure_config)  # noqa: E402
+from userbot.sysutils.configuration import addConfig, getConfig  # noqa: E402
+from userbot.sysutils.logger import _UserbotLogger  # noqa: E402
+from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
+                                          PhoneNumberInvalidError)  # noqa: E402
+from telethon.sessions import StringSession  # noqa: E402
+from logging import getLogger  # noqa: E402
+from os import path, mkdir  # noqa: E402
+
+# Start file and terminal logging
+log = getLogger(__name__)
+_hyper_logger = _UserbotLogger(log)
+_hyper_logger._setup_logger()
+_hyper_logger._initialize_logfile(PROJECT, SAFEMODE, version_info, version)
 
 if SAFEMODE:
     log.info(setColorText("Booting in SAFE MODE", Color.GREEN))
