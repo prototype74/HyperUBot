@@ -68,6 +68,7 @@ if not API_KEY and not API_HASH and not STRING_SESSION:
     if not check_secure_config():
         log.error("Cannot continue to start HyperUBot. "
                   "You may need to create a (new) secure config first.")
+    # TODO
     quit(1)
 
 try:
@@ -98,22 +99,23 @@ try:
 except Exception:
     log.error("Failed to initialize download directory")
 
-if "API_KEY" not in globals() or ("API_KEY" in globals() and not API_KEY):
+if not API_KEY:
     log.error("API Key is empty or doesn't exist")
     log.error("API Key is required in order to use HyperUBot properly")
     log.error("Please obtain your API Key from 'https://my.telegram.org' "
               "or if not present create/update your secure config")
+    # TODO
     quit(1)
 
-if "API_HASH" not in globals() or ("API_HASH" in globals() and not API_HASH):
+if not API_HASH:
     log.error("API Hash is empty or doesn't exist")
     log.error("API Hash is required in order to use HyperUBot properly")
     log.error("Please obtain your API Hash from 'https://my.telegram.org' "
               "or if not present create/update your secure config")
+    # TODO
     quit(1)
 
-if "STRING_SESSION" not in globals() or \
-   ("STRING_SESSION" in globals() and not STRING_SESSION):
+if not STRING_SESSION:
     log.error("String session is empty or doesn't exist")
     log.error("string session is required in order to use HyperUBot "
               "properly")
@@ -121,6 +123,7 @@ if "STRING_SESSION" not in globals() or \
               "session, or if present already, then update your secure "
               "config using 'update_secure_cfg.py' in HyperUBot's "
               "root directory")
+    # TODO
     quit(1)
 
 try:
