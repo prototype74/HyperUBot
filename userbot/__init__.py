@@ -11,31 +11,21 @@ from userbot.sysutils.config_loader import (check_secure_config,
                                             get_secure_config)
 from userbot.sysutils.configuration import addConfig, getConfig
 from userbot.sysutils.colors import Color, setColorText
-from userbot.sysutils.log_formatter import LogFileFormatter, LogColorFormatter
+from userbot.sysutils.logger import _UserbotLogger
 from userbot.sysutils.sys_funcs import os_name, verAsTuple
 from userbot.version import VERSION as hubot_version
 from telethon import TelegramClient, version
 from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
                                           PhoneNumberInvalidError)
 from telethon.sessions import StringSession
-from logging import FileHandler, StreamHandler, basicConfig, INFO, getLogger
-from os import path, mkdir, remove
-from platform import platform, machine, processor
+from logging import getLogger
+from os import path, mkdir
 from sys import argv, version_info
 
 # Terminal logging
-LOGFILE = "hyper.log"
-try:
-    if path.exists(LOGFILE):
-        remove(LOGFILE)
-except:
-    pass
 log = getLogger(__name__)
-_fhandler = FileHandler(LOGFILE)
-_fhandler.setFormatter(LogFileFormatter())
-_shandler = StreamHandler()
-_shandler.setFormatter(LogColorFormatter())
-basicConfig(handlers=[_fhandler, _shandler], level=INFO)
+_hyper_logger = _UserbotLogger(log)
+_hyper_logger._setup_logger()
 
 PROJECT = "HyperUBot"
 OS = os_name()  # Current Operating System [DEPRECATED]
@@ -46,26 +36,8 @@ if len(argv) >= 2:
     if argv[1].lower() == "-safemode":
         SAFEMODE = True
 
-try:
-    if path.exists(LOGFILE):
-        _sys_string = "======= SYS INFO\n\n"
-        _sys_string += "Project: {}\n".format(PROJECT)
-        _sys_string += "Version: {}\n".format(hubot_version)
-        _sys_string += "Safe mode: {}\n".format("On" if SAFEMODE else "Off")
-        _sys_string += "Operating System: {}\n".format(os_name())
-        _sys_string += "Platform: {}\n".format(platform())
-        _sys_string += "Machine: {}\n".format(machine())
-        _sys_string += "Processor: {}\n".format(processor())
-        _sys_string += "Python: v{}.{}.{}\n".format(version_info.major,
-                                                    version_info.minor,
-                                                    version_info.micro)
-        _sys_string += "Telethon: v{}\n\n".format(version.__version__)
-        _sys_string += "======= TERMINAL LOGGING\n\n"
-        _file = open(LOGFILE, "w")
-        _file.write(_sys_string)
-        _file.close()
-except Exception as e:
-    log.warning("Unable to write system information into log: {}".format(e))
+_hyper_logger._initialize_logfile(PROJECT, hubot_version, SAFEMODE,
+                                  version_info, version)
 
 # Check Python version
 if (version_info.major, version_info.minor) < (3, 8):
