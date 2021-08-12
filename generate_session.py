@@ -105,7 +105,7 @@ try:
     client = TelegramClient(StringSession(), API_KEY, API_HASH)
     with client:
         print("This long string below is your new String Session:\n\n")
-        print(client.session.save())
+        print(setColorText(client.session.save(), Colors.GREEN))
         print("\n\nPlease keep this string to a safe place!\n"
               "Next step is to run Secure-Config-Updater to store your new "
               "string session safe in a secured config file")
