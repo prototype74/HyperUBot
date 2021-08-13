@@ -25,7 +25,7 @@ ehandler = EventHandler(log)
 
 
 async def outputAsFile(event, output_text) -> bool:
-    temp_file = path.join(getConfig("TEMP_DL_DIR"), "shell_output.txt")
+    temp_file = path.join(getConfig("USERDATA"), "shell_output.txt")
     try:
         with open(temp_file, "w") as output_file:
             output_file.write(output_text)

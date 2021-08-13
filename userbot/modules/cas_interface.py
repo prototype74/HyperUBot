@@ -71,7 +71,7 @@ async def _casSendAsFile(event, title: str, cas_list: dict):
     await event.edit(msgRep.TOO_MANY_CAS)
     try:
         filename, success = _createCASFile(title, cas_list,
-                                           path.join(getConfig("TEMP_DL_DIR"),
+                                           path.join(getConfig("USERDATA"),
                                                      "caslist.txt"))
         if success:
             await event.client.send_file(event.chat_id, filename)

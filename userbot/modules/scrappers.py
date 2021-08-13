@@ -226,8 +226,12 @@ def update_currency_data():
         if not duration.days >= 1:  # don't update if file is not a day old
             return
 
+    userdata_dir = getConfig("USERDATA")
+    if not userdata_dir:
+        log.warning("Userdata directory not available")
+        return
     try:
-        zipfile = join(TEMP_DL_DIR, "currency.zip")
+        zipfile = join(userdata_dir, "currency.zip")
         # get latest data from the European Central Bank
         data_history = urlretrieve(
             "http://www.ecb.int/stats/eurofxref/eurofxref-hist.zip", zipfile)
@@ -242,11 +246,11 @@ def update_currency_data():
             for filename in contents:
                 if filename.endswith(".csv"):
                     csv_filename = filename
-                    zipObject.extract(filename, TEMP_DL_DIR)
+                    zipObject.extract(filename, userdata_dir)
                     break
             zipObject.close()
         try:
-            rename(join(TEMP_DL_DIR, filename), CC_CSV_PATH)
+            rename(join(userdata_dir, filename), CC_CSV_PATH)
             log.info("[CURRENCY] data history successfully updated")
         except Exception as e:
             log.warning(f"Unable to rename csv file: {e}")
