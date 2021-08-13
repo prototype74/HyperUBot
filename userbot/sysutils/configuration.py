@@ -6,22 +6,12 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from .errors import AccessError
 from inspect import currentframe, getouterframes
 from logging import getLogger
 from os.path import basename, join
 
 log = getLogger(__name__)
-
-
-class AccessError(Exception):
-    __module__ = Exception.__module__
-
-    def __init__(self, message="Access denied", *args, **kwargs):
-        """
-        Custom Exception to inform about inaccessibility
-        """
-        self.message = message
-        super().__init__(self.message, *args, **kwargs)
 
 
 class _SysConfigurations:

@@ -8,6 +8,7 @@
 
 from .colors import Color, setColorText
 from .configuration import addConfig, getConfig
+from .errors import UnauthorizedAccessError
 from .sys_funcs import isWindows
 from configparser import ConfigParser
 from getpass import getpass
@@ -187,13 +188,14 @@ class _ConfigLoader:
             print(config_text)
             try:
                 while True:
-                    inp = input(f"Your input [1-{arr_size}] (or 'X' to skip): ")
+                    inp = input(f"Your input [1-{arr_size}] "
+                                "(or 'X' to skip): ")
                     if inp in temp_dict.keys():
                         for key, value in temp_dict.items():
                             if inp == key:
                                 self.__curr_config = value
-                                value = value.split("\\"
-                                                    if isWindows() else "/")[-1]
+                                value = value.split(
+                                    "\\" if isWindows() else "/")[-1]
                                 log.info(f"Loading configs from {value}")
                                 break
                         break
@@ -221,7 +223,7 @@ class _ConfigLoader:
         caller = getouterframes(currentframe(), 2)[2].filename
         valid_caller = os.path.join("userbot", "__init__.py")
         if not caller.endswith(valid_caller):
-            log.warning("Not a valid caller "\
+            log.warning("Not a valid caller "
                         f"(requested by {os.path.basename(caller)}")
             return
         self.__config_selector()
@@ -311,9 +313,9 @@ class _SecureConfigLoader:
         caller = getouterframes(currentframe(), 2)[2].filename
         valid_caller = os.path.join("userbot", "__init__.py")
         if not caller.endswith(valid_caller):
-            log.critical("Unauthorized access to secure config blocked "\
-                         f"(requested by {os.path.basename(caller)})")
-            return (None, None, None)
+            raise UnauthorizedAccessError("Unauthorized access to secure "
+                                          "config blocked (requested by "
+                                          f"{os.path.basename(caller)})")
         if self.__configs_loaded:
             log.info("Secure config loaded already")
             return (None, None, None)
@@ -369,7 +371,11 @@ def get_secure_config() -> tuple:
     Returns:
         A tuple of the sensitive data else an empty tuple
     """
-    return _scfg_loader._get_secure_config()
+    try:
+        return _scfg_loader._get_secure_config()
+    except UnauthorizedAccessError as ue:
+        log.critical(ue)
+    return (None, None, None)
 
 
 def load_configs(is_safemode: bool):
