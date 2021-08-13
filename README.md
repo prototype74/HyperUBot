@@ -5,7 +5,7 @@ A customizable, modular Telegram userbot, with innovative components.
 Copyright (C) 2020-2021 nunopenim\
 Copyright (C) 2020-2021 prototype74
 
-> Licensed under [PEL](https://github.com/nunopenim/HyperUBot/blob/master/LICENSE.md)
+> Licensed under [PEL](https://github.com/prototype74/HyperUBot/blob/master/LICENSE.md)
 
 All rights reserved.
 
@@ -28,13 +28,13 @@ We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier, and str
 
 | Platforms | Guides |
 | - | - |
-| Android (Termux) | [SETUP_Android.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Android.md) |
-| Arch Based Distros (Native Linux) | [SETUP_ArchBasedLinux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_ArchBasedLinux.md) |
-| Debian Based Distros (Native Linux, WSL) | [SETUP_DebianBasedLinux.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_DebianBasedLinux.md) |
-| Red Hat Based Distros (Native Linux) | [SETUP_RHELBasedLinux](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_RHELBasedLinux.md) |
-| macOS | [SETUP_macOS.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_MacOS.md) |
-| Windows (PowerShell) | [SETUP_Windows.md](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Windows.md) |
-| Unsupported Platforms | [Read this...](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_Unsupported.md) |
+| Android (Termux) | [SETUP_Android.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_Android.md) |
+| Arch Based Distros (Native Linux) | [SETUP_ArchBasedLinux.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_ArchBasedLinux.md) |
+| Debian Based Distros (Native Linux, WSL) | [SETUP_DebianBasedLinux.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_DebianBasedLinux.md) |
+| Red Hat Based Distros (Native Linux) | [SETUP_RHELBasedLinux](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_RHELBasedLinux.md) |
+| macOS | [SETUP_macOS.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_MacOS.md) |
+| Windows (PowerShell) | [SETUP_Windows.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_Windows.md) |
+| Unsupported Platforms | [Read this...](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_Unsupported.md) |
 
 ## Getting started with basic commands
 
@@ -48,7 +48,7 @@ _.modules_ - lists all built-in and user modules at one place. `.modules` takes 
 
 ### How to proper report a bug
 
-A bug report can be done either in the [Issues](https://github.com/nunopenim/HyperUBot/issues) section of this repository or
+A bug report can be done either in the [Issues](https://github.com/prototype74/HyperUBot/issues) section of this repository or
 in our Telegram Support Group. In order to solve the bug or issue report from you as fast as possible, please answer the following requirements as detailed as possible (this can be used as a template):
 
 - Which HyperUBot, Python and Telethon versions are you running?
@@ -68,7 +68,7 @@ Bugs caused by non-official sources for example from sideloads are irrelevant an
 
 ## Developing modules
 
-A small, introductory guide in how to develop your modules can be found [here](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/DEV_DevelopingModules.md). This explains the basics in how to setup your module's .py file, so that HyperUBot can load it and run it when it is called.
+A small, introductory guide in how to develop your modules can be found [here](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/DEV_DevelopingModules.md). This explains the basics in how to setup your module's .py file, so that HyperUBot can load it and run it when it is called.
 
 ## Support Groups and Channels
 
