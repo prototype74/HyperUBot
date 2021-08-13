@@ -38,9 +38,11 @@ class _ConfigLoader:
         Look for supported configs and add them. Leave the list empty if no
         optional config has been found
         """
-        caller = os.path.join("userbot", "sysutils", "config_loader.py")
-        if not getouterframes(currentframe(), 2)[1].filename.endswith(caller):
-            log.warning("Not a valid caller")
+        caller = getouterframes(currentframe(), 2)[1].filename
+        valid_caller = os.path.join("userbot", "sysutils", "config_loader.py")
+        if not caller.endswith(valid_caller):
+            log.warning("Not a valid caller "
+                        f"(requested by {os.path.basename(caller)}")
             return
         for c in self.__supported_configs:
             if os.path.exists(c) and os.path.isfile(c):

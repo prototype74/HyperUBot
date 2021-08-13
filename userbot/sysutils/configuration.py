@@ -44,23 +44,18 @@ class _SysConfigurations:
         """
         special_caller = [join("userbot", "__init__.py"),
                           join("userbot", "sysutils", "config_loader.py")]
-        valid_caller = False
-        for caller in special_caller:
-            if getouterframes(currentframe(), 2)[2].filename.endswith(caller):
-                valid_caller = True
-                break
-        sys_caller = (getouterframes(currentframe(), 2)[2].filename
-                      if valid_caller else
-                      getouterframes(currentframe(), 2)[1].filename)
+        sys_caller = getouterframes(currentframe(), 2)[2].filename
         valid_caller = False
         for caller in special_caller:
             if sys_caller.endswith(caller):
                 valid_caller = True
                 break
         if not valid_caller:
-            raise AccessError("Access to configurations denied")
+            raise AccessError("Access to configurations denied "
+                              f"(requested by {basename(sys_caller)})")
         if config in self.__protect_configs:
-            raise AccessError(f"Access to '{config}' denied")
+            raise AccessError(f"Access to '{config}' denied "
+                              f"(requested by {basename(sys_caller)})")
         if config not in self.__botconfigs.keys():
             self.__botconfigs[config] = value
         return
@@ -82,25 +77,20 @@ class _SysConfigurations:
                           join("userbot", "modules", "updater.py"),
                           join("userbot", "modules", "package_manager.py"),
                           join("userbot", "modules", "sideloader.py")]
-        valid_caller = False
-        for caller in special_caller:
-            if getouterframes(currentframe(), 2)[2].filename.endswith(caller):
-                valid_caller = True
-                break
-        module_caller = (getouterframes(currentframe(), 2)[2].filename
-                         if valid_caller else
-                         getouterframes(currentframe(), 2)[1].filename)
+        module_caller = getouterframes(currentframe(), 2)[2].filename
         valid_caller = False
         for caller in special_caller:
             if module_caller.endswith(caller):
                 valid_caller = True
                 break
         if not valid_caller:
-            raise AccessError("Access to configurations denied")
+            raise AccessError("Access to configurations denied "
+                              f"(requested by {basename(module_caller)})")
         if config == "UPDATE_COMMIT_ID" and \
            not module_caller.endswith(
                join("userbot", "modules", "updater.py")):
-            raise AccessError(f"Access to '{config}' denied")
+            raise AccessError(f"Access to '{config}' denied "
+                              f"(requested by {basename(module_caller)})")
         if config in self.__botconfigs.keys():
             self.__botconfigs[config] = value
         return
@@ -121,11 +111,7 @@ class _SysConfigurations:
         Returns:
             the value from config, default if config doesn't exist
         """
-        module_caller = (getouterframes(currentframe(), 2)[2].filename
-                         if not getouterframes(
-                             currentframe(), 2)[2].filename.endswith(
-                                 __name__) else
-                         getouterframes(currentframe(), 2)[1].filename)
+        module_caller = getouterframes(currentframe(), 2)[2].filename
         if not config:
             return default
         if config in self.__protect_configs:
