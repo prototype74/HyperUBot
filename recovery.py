@@ -313,7 +313,7 @@ class _Installer(_Recovery):
 
         try:
             print("Parsing latest release data...")
-            repo_url = urlopen("https://api.github.com/repos/nunopenim/"
+            repo_url = urlopen("https://api.github.com/repos/prototype74/"
                                "HyperUBot/releases/latest")
             repo_data = loads(repo_url.read().decode())
             dw_url = repo_data.get("zipball_url")
