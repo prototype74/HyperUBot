@@ -21,7 +21,7 @@ This guide is written specifically to an installation of Arch Linux, however it 
 After having the needed packages installed, you will need to download and extract the bot's package from the GitHub release section.
 You can do such with the following commands:
 
-1. `curl -H "Accept: application/json" https://api.github.com/repos/nunopenim/HyperUBot/releases/latest | grep '"tarball_url"' | cut -d '"' -f4 | wget --output-document=HyperUBot.tar.gz -i -`
+1. `curl -H "Accept: application/json" https://api.github.com/repos/prototype74/HyperUBot/releases/latest | grep '"tarball_url"' | cut -d '"' -f4 | wget --output-document=HyperUBot.tar.gz -i -`
 2. `mkdir HyperUBot` (create a new directory named `HyperUBot`)
 3. `tar -xvf HyperUBot.tar.gz --directory HyperUBot --strip-components=1` (extract downloaded package to `HyperUBot` directory)
 4. `rm HyperUBot.tar.gz` (delete downloaded package; optional)

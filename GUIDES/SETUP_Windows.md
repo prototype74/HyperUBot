@@ -3,7 +3,7 @@
 
 Before we start, make sure you are running Windows 10, as only Windows 10 is supported. This has only been done in Windows 10 2004 too, so it is recommended to use that version only.
 
-**Attention:** This guide is for setting up the bot in Windows PowerShell, if you are looking to set it up using WSL (Windows Subsystem for Linux), we recommend a Debian Based Distro, and the guide for those can be found [here](https://github.com/nunopenim/HyperUBot/blob/master/GUIDES/SETUP_DebianBasedLinux.md).
+**Attention:** This guide is for setting up the bot in Windows PowerShell, if you are looking to set it up using WSL (Windows Subsystem for Linux), we recommend a Debian Based Distro, and the guide for those can be found [here](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_DebianBasedLinux.md).
 
 The bot in Windows requires 5 main components:
  - Python 3.8 or newer (download from [Microsoft Store](https://www.microsoft.com/en-us/p/python-38/9mssztt1n39l) or [Python website](https://www.python.org/downloads/))
@@ -27,7 +27,7 @@ If everything went well, you should be ready for the next step!
 ## 1. Download HyperUBot
 
 After having the needed packages installed, you will need to download and extract the bot's package from the GitHub release section.
-Get the latest release from here: https://github.com/nunopenim/HyperUBot/releases/latest
+Get the latest release from here: https://github.com/prototype74/HyperUBot/releases/latest
 
 Make sure you download it as ZIP `Source code(zip)`
 
