@@ -147,7 +147,7 @@ async def updater(event):
         return
 
     try:
-        release_data = getLatestData("nunopenim/HyperUBot")
+        release_data = getLatestData("prototype74/HyperUBot")
         if not release_data:
             raise Exception
     except Exception:
