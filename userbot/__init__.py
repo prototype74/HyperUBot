@@ -39,9 +39,8 @@ if verAsTuple(version.__version__) < (1, 23, 0):
                        Color.RED))
     quit(1)
 
-from userbot.sysutils.config_loader import (check_secure_config,
-                                            load_configs,
-                                            get_secure_config)  # noqa: E402
+from userbot.sysutils.config_loader import (_ConfigLoader,
+                                            _SecureConfigLoader)  # noqa: E402
 from userbot.sysutils.configuration import addConfig, getConfig  # noqa: E402
 from userbot.sysutils.logger import _UserbotLogger  # noqa: E402
 from userbot.sysutils.properties import _SysProperties  # noqa: E402
@@ -53,9 +52,9 @@ from os import path, mkdir  # noqa: E402
 
 # Start file and terminal logging
 log = getLogger(__name__)
-_hyper_logger = _UserbotLogger(log)
-_hyper_logger._setup_logger()
-_hyper_logger._initialize_logfile(PROJECT, SAFEMODE, version_info, version)
+__hyper_logger__ = _UserbotLogger(log)
+__hyper_logger__._setup_logger()
+__hyper_logger__._initialize_logfile(PROJECT, SAFEMODE, version_info, version)
 
 # Initialize system props
 __sysprops__ = _SysProperties()
@@ -63,23 +62,28 @@ __sysprops__._init_props()
 _setprop = __sysprops__._setprop
 _getprop = __sysprops__._getprop
 
+# Initialize configurations
+__cfg_loader__ = _ConfigLoader()
+__scfg_loader__ = _SecureConfigLoader()
+__cfg_loader__._initialize_configs()
+
 if SAFEMODE:
     log.info(setColorText("Booting in SAFE MODE", Color.GREEN))
     log.info("Loading required configurations")
 else:
     log.info("Loading configurations")
 
-API_KEY, API_HASH, STRING_SESSION = get_secure_config()
+API_KEY, API_HASH, STRING_SESSION = __scfg_loader__._get_secure_config()
 
 if not API_KEY and not API_HASH and not STRING_SESSION:
-    if not check_secure_config():
+    if not __scfg_loader__._check_secure_config():
         log.error("Cannot continue to start HyperUBot. "
-                  "You may need to create a (new) secure config first.")
+                  "You may need to create a (new) secure config first")
     # TODO
     quit(1)
 
 try:
-    load_configs(SAFEMODE)  # optional configs
+    __cfg_loader__._load_configs(SAFEMODE)  # optional configs
 except KeyboardInterrupt:
     log.info("Exiting...")
     quit()

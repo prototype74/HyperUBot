@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, log, _hyper_logger, PROJECT, SAFEMODE
+from userbot import tgclient, log, __hyper_logger__, PROJECT, SAFEMODE
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (update_all_modules,
                                            update_load_modules,

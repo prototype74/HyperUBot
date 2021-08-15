@@ -39,10 +39,10 @@ class _ConfigLoader:
         optional config has been found
         """
         caller = getouterframes(currentframe(), 2)[1].filename
-        valid_caller = os.path.join("userbot", "sysutils", "config_loader.py")
+        valid_caller = os.path.join("userbot", "__init__.py")
         if not caller.endswith(valid_caller):
             log.warning("Not a valid caller "
-                        f"(requested by {os.path.basename(caller)}")
+                        f"(requested by {os.path.basename(caller)})")
             return
         for c in self.__supported_configs:
             if os.path.exists(c) and os.path.isfile(c):
@@ -222,7 +222,7 @@ class _ConfigLoader:
         Args:
             is_safemode (bool): if HyperUBot is currently in safe mode
         """
-        caller = getouterframes(currentframe(), 2)[2].filename
+        caller = getouterframes(currentframe(), 2)[1].filename
         valid_caller = os.path.join("userbot", "__init__.py")
         if not caller.endswith(valid_caller):
             log.warning("Not a valid caller "
@@ -312,12 +312,16 @@ class _SecureConfigLoader:
         Returns:
             A tuple of the sensitive data else an empty tuple
         """
-        caller = getouterframes(currentframe(), 2)[2].filename
+        caller = getouterframes(currentframe(), 2)[1].filename
         valid_caller = os.path.join("userbot", "__init__.py")
-        if not caller.endswith(valid_caller):
-            raise UnauthorizedAccessError("Unauthorized access to secure "
-                                          "config blocked (requested by "
-                                          f"{os.path.basename(caller)})")
+        try:
+            if not caller.endswith(valid_caller):
+                raise UnauthorizedAccessError("Unauthorized access to secure "
+                                              "config blocked (requested by "
+                                              f"{os.path.basename(caller)})")
+        except UnauthorizedAccessError as ue:
+            log.critical(ue)
+            return (None, None, None)
         if self.__configs_loaded:
             log.info("Secure config loaded already")
             return (None, None, None)
@@ -352,41 +356,3 @@ class _SecureConfigLoader:
                         break
         del s_cfg
         return (api_key, api_hash, string_session)
-
-
-_cfg_loader = _ConfigLoader()
-_scfg_loader = _SecureConfigLoader()
-_cfg_loader._initialize_configs()
-
-
-def check_secure_config() -> bool:
-    """
-    Check if secure config exists
-    """
-    return _scfg_loader._check_secure_config()
-
-
-def get_secure_config() -> tuple:
-    """
-    Reads the secure config and returns the sensitive data.
-
-    Returns:
-        A tuple of the sensitive data else an empty tuple
-    """
-    try:
-        return _scfg_loader._get_secure_config()
-    except UnauthorizedAccessError as ue:
-        log.critical(ue)
-    return (None, None, None)
-
-
-def load_configs(is_safemode: bool):
-    """
-    Searches for config.env and config.py (config.env preferred if both
-    exist) and starts to load the target config file
-
-    Args:
-        is_safemode (bool): if HyperUBot is currently in safe mode
-    """
-    _cfg_loader._load_configs(is_safemode)
-    return
