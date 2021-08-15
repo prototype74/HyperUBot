@@ -45,9 +45,12 @@ class _FeatureManager:
         return
 
     def _read_json(self):
-        caller = os.path.join("userbot", "sysutils", "feature_manager.py")
-        if not getouterframes(currentframe(), 2)[1].filename.endswith(caller):
-            log.warning("Not a valid caller")
+        caller = getouterframes(currentframe(), 2)[1].filename
+        valid_caller = os.path.join("userbot", "sysutils",
+                                    "feature_manager.py")
+        if not caller.endswith(valid_caller):
+            log.warning("Not a valid caller "
+                        f"(requested by {os.path.basename(caller)})")
             return
         if not os.path.exists(self.__filename) and \
            not os.path.isfile(self.__filename):
@@ -83,9 +86,12 @@ class _FeatureManager:
         return
 
     def _disable_feature(self, feature) -> bool:
-        caller = os.path.join("userbot", "modules", "_feature_manager.py")
-        if not getouterframes(currentframe(), 2)[2].filename.endswith(caller):
-            log.warning("Not a valid caller")
+        caller = getouterframes(currentframe(), 2)[2].filename
+        valid_caller = os.path.join("userbot", "modules",
+                                    "_feature_manager.py")
+        if not caller.endswith(valid_caller):
+            log.warning("Not a valid caller "
+                        f"(requested by {os.path.basename(caller)})")
             return False
         if feature in ("enable", "disable"):
             return False
@@ -101,9 +107,12 @@ class _FeatureManager:
         return False
 
     def _enable_feature(self, feature) -> bool:
-        caller = os.path.join("userbot", "modules", "_feature_manager.py")
-        if not getouterframes(currentframe(), 2)[2].filename.endswith(caller):
-            log.warning("Not a valid caller")
+        caller = getouterframes(currentframe(), 2)[2].filename
+        valid_caller = os.path.join("userbot", "modules",
+                                    "_feature_manager.py")
+        if not caller.endswith(valid_caller):
+            log.warning("Not a valid caller "
+                        f"(requested by {os.path.basename(caller)})")
             return False
         if feature in ("enable", "disable"):
             return False
