@@ -44,6 +44,7 @@ from userbot.sysutils.config_loader import (check_secure_config,
                                             get_secure_config)  # noqa: E402
 from userbot.sysutils.configuration import addConfig, getConfig  # noqa: E402
 from userbot.sysutils.logger import _UserbotLogger  # noqa: E402
+from userbot.sysutils.properties import _SysProperties  # noqa: E402
 from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
                                           PhoneNumberInvalidError)  # noqa: E402
 from telethon.sessions import StringSession  # noqa: E402
@@ -55,6 +56,12 @@ log = getLogger(__name__)
 _hyper_logger = _UserbotLogger(log)
 _hyper_logger._setup_logger()
 _hyper_logger._initialize_logfile(PROJECT, SAFEMODE, version_info, version)
+
+# Initialize system props
+__sysprops__ = _SysProperties()
+__sysprops__._init_props()
+_setprop = __sysprops__._setprop
+_getprop = __sysprops__._getprop
 
 if SAFEMODE:
     log.info(setColorText("Booting in SAFE MODE", Color.GREEN))
