@@ -72,7 +72,7 @@ class _UserbotLogger:
         self.__shandler = logging.StreamHandler()
         self.__shandler.setFormatter(LogColorFormatter())
         logging.basicConfig(handlers=[self.__fhandler, self.__shandler],
-                           level=logging.INFO)
+                            level=logging.INFO)
         return
 
     def _initialize_logfile(self, project_name: str, is_safemode: bool,
@@ -80,8 +80,8 @@ class _UserbotLogger:
         caller = getouterframes(currentframe(), 2)[1].filename
         valid_caller = os.path.join("userbot", "__init__.py")
         if not caller.endswith(valid_caller):
-            log.warning("Not a valid caller "\
-                        f"(requested by {os.path.basename(caller)}")
+            log.warning("Not a valid caller "
+                        f"(requested by {os.path.basename(caller)})")
             return
         try:
             if os.path.exists(self.__logfile):
@@ -113,11 +113,17 @@ class _UserbotLogger:
         return
 
     def _stop_logging(self):
-        caller = getouterframes(currentframe(), 2)[1].filename
-        valid_caller = os.path.join("userbot", "__main__.py")
-        if not caller.endswith(valid_caller):
-            self.__log.warning("Not a valid caller "\
-                               f"(requested by {os.path.basename(caller)}")
+        special_caller = [join("userbot", "__main__.py"),
+                          join("userbot", "sysutils", "_services.py")]
+        sys_caller = getouterframes(currentframe(), 2)[1].filename
+        valid_caller = False
+        for caller in special_caller:
+            if sys_caller.endswith(caller):
+                valid_caller = True
+                break
+        if not valid_caller:
+            self.__log.warning("Not a valid caller "
+                               f"(requested by {os.path.basename(caller)})")
             return
         if self.__fhandler:
             self.__fhandler.close()

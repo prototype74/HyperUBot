@@ -6,7 +6,8 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient, log, __hyper_logger__, PROJECT, SAFEMODE
+from userbot import (tgclient, log, __hyper_logger__, _services,
+                     PROJECT, SAFEMODE)
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (update_all_modules,
                                            update_load_modules,
@@ -16,9 +17,7 @@ from userbot.version import VERSION
 from logging import shutdown
 from importlib import import_module
 from glob import glob
-from os import execle, environ
 from os.path import dirname, basename, isfile, join
-from sys import executable
 
 
 class _Modules:
@@ -135,7 +134,7 @@ def run_client():
 
 def shutdown_logging():
     try:
-        _hyper_logger._stop_logging()
+        __hyper_logger__._stop_logging()
         shutdown()
     except:
         pass
@@ -147,25 +146,17 @@ def check_reboot():
     start_recovery = getConfig("START_RECOVERY", False)
     try:
         if perf_reboot or start_recovery:
-            py_exec = (executable
-                       if " " not in executable else '"' + executable + '"')
             if perf_reboot:  # preferred if True
                 if getConfig("REBOOT_SAFEMODE"):
-                    log.info("Rebooting into safe mode...")
-                    tcmd = [py_exec, "-m", "userbot", "-safemode"]
+                    _services._reboot(True)
                 else:
-                    log.info("Performing normal reboot...")
-                    tcmd = [py_exec, "-m", "userbot"]
+                    _services._reboot()
             elif start_recovery:
                 commit_id = getConfig("UPDATE_COMMIT_ID")
                 if commit_id:
-                    log.info("Starting auto update in recovery...")
-                    tcmd = [py_exec, "recovery.py", "-autoupdate", commit_id]
+                    _services._reboot_recovery(True, commit_id)
                 else:
-                    log.info("Rebooting into recovery...")
-                    tcmd = [py_exec, "recovery.py"]
-            shutdown_logging()
-            execle(py_exec, *tcmd, environ)
+                    _services._reboot_recovery(False)
     except KeyboardInterrupt:
         raise KeyboardInterrupt
     except (BaseException, Exception) as e:

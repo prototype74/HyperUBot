@@ -44,6 +44,7 @@ from userbot.sysutils.config_loader import (_ConfigLoader,
 from userbot.sysutils.configuration import addConfig, getConfig  # noqa: E402
 from userbot.sysutils.logger import _UserbotLogger  # noqa: E402
 from userbot.sysutils.properties import _SysProperties  # noqa: E402
+from userbot.sysutils._services import _SysServices  # noqa: E402
 from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
                                           PhoneNumberInvalidError)  # noqa: E402
 from telethon.sessions import StringSession  # noqa: E402
@@ -61,6 +62,9 @@ __sysprops__ = _SysProperties()
 __sysprops__._init_props()
 _setprop = __sysprops__._setprop
 _getprop = __sysprops__._getprop
+
+# Initialize services
+_services = _SysServices(__hyper_logger__)
 
 # Initialize configurations
 __cfg_loader__ = _ConfigLoader()
