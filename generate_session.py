@@ -15,15 +15,16 @@ if (version_info.major, version_info.minor) < (3, 8):
              version_info.major, version_info.minor, version_info.micro))
     quit(1)
 
-from os import name  # noqa: E402
+from os import environ, execle, name  # noqa: E402
 from platform import system  # noqa: E402
-from sys import platform  # noqa: E402
+from sys import executable, platform  # noqa: E402
 from telethon import version  # noqa: E402
 from telethon.sync import TelegramClient  # noqa: E402
 from telethon.sessions import StringSession  # noqa: E402
 
 IS_WINDOWS = (True if system().lower() == "windows" or
               name == "nt" or platform.startswith("win") else False)
+PY_EXEC = executable if " " not in executable else '"' + executable + '"'
 WIN_COLOR_ENABLED = False
 
 try:
@@ -101,24 +102,39 @@ except KeyboardInterrupt:
     print("Exiting...")
     quit()
 
+start_scfg_updater = False
+
 try:
     client = TelegramClient(StringSession(), API_KEY, API_HASH)
     with client:
         print("This long string below is your new String Session:\n\n")
         print(setColorText(client.session.save(), Colors.GREEN))
-        print("\n\nPlease keep this string to a safe place!\n"
-              "Next step is to run Secure-Config-Updater to store your new "
-              "string session safe in a secured config file")
-        if IS_WINDOWS:
-            print("To start Secure-Config-Updater: "
-                  "python update_secure_cfg.py")
-        else:
-            print("To start Secure-Config-Updater: "
-                  "python3 update_secure_cfg.py")
+        print("\n\nPlease keep this string to a safe place and " +
+              setColorText("DON'T SHARE IT WITH ANYONE!!", Colors.RED))
+        print("Next step is to start Secure-Config-Updater to store your new "
+              "string session safe in a secured config file\n")
+        while True:
+            inp = input("Start Secure-Config-Updater? (y/n): ")
+            if inp.lower() in ("y", "yes"):
+                start_scfg_updater = True
+                break
+            elif inp.lower() in ("n", "no"):
+                raise KeyboardInterrupt
+            else:
+                print(setColorText("Invalid input. Try again...",
+                                   Colors.YELLOW))
 except KeyboardInterrupt:
     print("Exiting...")
 except Exception as e:
-    print(setColorText(f"Unable to obtain new string session: {e}",
+    print(setColorText(f"Unable to obtain a new string session: {e}",
                        Colors.RED))
     quit(1)
+
+if start_scfg_updater:
+    try:
+        tcmd = [PY_EXEC, "update_secure_cfg.py"]
+        execle(PY_EXEC, *tcmd, environ)
+    except Exception as e:
+        print(setColorText(f"Failed to start Secure-Config-Updater: {e}",
+                           Colors.RED))
 quit()
