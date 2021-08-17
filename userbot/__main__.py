@@ -14,6 +14,9 @@ from userbot.sysutils.registration import (update_all_modules,
                                            update_user_modules,
                                            getAllModules)
 from userbot.version import VERSION
+from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
+                                          PhoneNumberBannedError,
+                                          PhoneNumberInvalidError)
 from logging import shutdown
 from importlib import import_module
 from glob import glob
@@ -107,6 +110,20 @@ def start_modules():
         raise KeyboardInterrupt
     except (BaseException, Exception) as e:
         log.critical(f"Failed to start modules: {e}", exc_info=True)
+        option = _services._suggest_options(["Start Recovery",
+                                             "Contact support",
+                                             "Keep HyperUBot running",
+                                             "Quit HyperUBot"])
+        if option == 1:
+            _services._reboot_recovery(False)
+        elif option == 2:
+            log.info("That all modules are failing to start shouldn't "
+                     "happen. Feel free to contact us at Telegram "
+                     "'https://t.me/HyperUBotSupport' and keep your "
+                     "hyper.log file ready!")
+            raise KeyboardInterrupt
+        elif option == 4:
+            raise KeyboardInterrupt
     load_modules_count = modules.loaded_modules()
     sum_modules = len(getAllModules())
     if not load_modules_count:
@@ -125,10 +142,48 @@ def run_client():
             log.info(f"You're running {PROJECT} v{VERSION} as "
                      f"{me.first_name} (ID: {me.id})")
             tgclient.run_until_disconnected()
+    except ApiIdInvalidError as ae:
+        log.critical(f"API Key and/or API Hash is/are invalid: {ae}",
+                     exc_info=True)
+        log.warning("It may be possible that there is/are a typo in "
+                    "your API Key and/or API Hash. If so, just start "
+                    "'Secure-Config-Updater' and update them with your "
+                    "correct keys")
+        option = _services._suggest_options(["Start Secure-Config-Updater",
+                                             "Quit HyperUBot"])
+        if option == 1:
+            _services._start_scfg_updater()
+        elif option == 2:
+            raise KeyboardInterrupt
+    except PhoneNumberInvalidError:
+        log.critical("Phone number is not valid", exc_info=True)
+        option = _services._suggest_options(["Start String Session Generator",
+                                             "Quit HyperUBot"])
+        if option == 1:
+            _services._start_session_gen()
+        elif option == 2:
+            raise KeyboardInterrupt
+    except PhoneNumberBannedError as pbe:
+        log.critical(f"Phone number banned: {pbe}", exc_info=True)
+        log.warning("The phone number is banned, something HyperUBot can't "
+                    "fix. Please contact the Telegram Support")
+        raise KeyboardInterrupt
     except KeyboardInterrupt:
         raise KeyboardInterrupt
     except (BaseException, Exception) as e:
         log.critical(f"Client has stopped: {e}", exc_info=True)
+        option = _services._suggest_options(["Start Recovery",
+                                             "Contact support",
+                                             "Quit HyperUBot"])
+        if option == 1:
+            _services._reboot_recovery(False)
+        elif option == 2:
+            log.info("If you facing issues with HyperUBot contact us at "
+                     "Telegram 'https://t.me/HyperUBotSupport' and keep "
+                     "your hyper.log file ready!")
+            raise KeyboardInterrupt
+        elif option == 3:
+            raise KeyboardInterrupt
     return
 
 
@@ -182,7 +237,7 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        log.info("Keyboard interruption. Exiting...")
+        log.info("Exiting...")
     except (BaseException, Exception) as e:
         log.critical(f"HyperUBot has stopped: {e}", exc_info=True)
         quit(1)
