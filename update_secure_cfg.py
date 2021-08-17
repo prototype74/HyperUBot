@@ -16,7 +16,7 @@ if (version_info.major, version_info.minor) < (3, 8):
     quit(1)
 
 from platform import system  # noqa: E402
-from sys import platform  # noqa: E402
+from sys import executable, platform  # noqa: E402
 import os  # noqa: E402
 
 IS_WINDOWS = (True if system().lower() == "windows" or
@@ -91,6 +91,17 @@ def _getAPIsAndSession() -> tuple:
     return (None, None, None)
 
 
+def _start_userbot():
+    py_exec = executable if " " not in executable else '"' + executable + '"'
+    try:
+        tcmd = [py_exec, "-m", "userbot"]
+        os.execle(py_exec, *tcmd, os.environ)
+    except Exception as e:
+        print(setColorText(f"Failed to start HyperUBot: {e}",
+                           Colors.RED))
+    return
+
+
 def main():
     print("Secure-Config-Updater creates a new secured config file "
           "with your API Key, Hash and String Session stored "
@@ -158,6 +169,7 @@ def main():
                                    Colors.YELLOW))
 
     print()
+    cfg_secured = False
     try:
         print("Securing configs...")
         if os.path.exists(SECURE_CONFIG):
@@ -177,10 +189,25 @@ def main():
         os.remove("_temp.py")
         if os.path.exists(SECURE_CONFIG):
             print(setColorText("Configs secured", Colors.GREEN))
+            cfg_secured = True
         else:
             print(setColorText("Failed to secure configs", Colors.RED))
     except Exception as e:
         print(setColorText(f"Failed to secure configs: {e}", Colors.RED))
+
+    if cfg_secured:
+        print("Do you wish to start HyperUBot?")
+        print()
+        while True:
+            inp = input("Start HyperUBot? (y/n): ")
+            if inp.lower() in ("y", "yes"):
+                _start_userbot()
+                break
+            elif inp.lower() in ("n", "no"):
+                break
+            else:
+                print(setColorText("Invalid input. Try again...",
+                                   Colors.YELLOW))
     return
 
 
@@ -190,7 +217,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Exiting...")
     except (BaseException, Exception) as e:
-        print(setColorText(f"Secure config updater stopped: {e}",
+        print(setColorText(f"Secure-Config-Updater stopped: {e}",
                            Colors.RED_BG))
         quit(1)
     quit()
