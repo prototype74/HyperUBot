@@ -119,7 +119,7 @@ try:
                 start_scfg_updater = True
                 break
             elif inp.lower() in ("n", "no"):
-                raise KeyboardInterrupt
+                break
             else:
                 print(setColorText("Invalid input. Try again...",
                                    Colors.YELLOW))
