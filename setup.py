@@ -350,6 +350,7 @@ def main():
     print(setColorText("If you forgot your password, you have to create "
                        "a new secure configuration!",
                        Colors.YELLOW))
+    print()
 
     set_pwd = False
     while True:
@@ -371,7 +372,9 @@ def main():
         print()
         from getpass import getpass
         print("Your password must have at least a length of 4 characters. "
-              "Maximum length is 1024 characters")
+              "Maximum length is 1024 characters \nNote: Your password is "
+              "hidden while typing.")
+        print()
         while True:
             try:
                 password = getpass("Your password: ")
