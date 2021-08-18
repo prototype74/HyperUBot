@@ -295,7 +295,7 @@ class _SecureConfigLoader:
                                 pwd_confm = True
                             break
                     except KeyboardInterrupt:
-                        return False
+                        raise KeyboardInterrupt
                     attempts += 1
                 else:
                     log.error("Unable to read secure config")

@@ -75,7 +75,12 @@ if SAFEMODE:
 else:
     log.info("Loading configurations")
 
-API_KEY, API_HASH, STRING_SESSION = __scfg_loader__._get_secure_config()
+try:
+    API_KEY, API_HASH, STRING_SESSION = __scfg_loader__._get_secure_config()
+except KeyboardInterrupt:
+    print()
+    log.info("Exiting...")
+    quit()
 
 if not API_KEY and not API_HASH and not STRING_SESSION:
     if not __scfg_loader__._check_secure_config():
