@@ -39,6 +39,7 @@ class Colors:
     RED = "\033[91m"
     GREEN = "\033[92m"
     YELLOW = "\033[93m"
+    CYAN = "\033[96m"
     RED_BG = "\033[101m"
     END = "\033[0m"
 
@@ -150,7 +151,11 @@ def _getAPIs() -> tuple:
     api_key, api_hash = (None,)*2
     try:
         while True:
-            api_key = input("Please enter your API Key: ")
+            try:
+                api_key = input("Please enter your API Key: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             try:
                 api_key = int(api_key)
                 break
@@ -159,7 +164,11 @@ def _getAPIs() -> tuple:
                                    Colors.YELLOW))
 
         while True:
-            api_hash = input("Please enter your API Hash: ")
+            try:
+                api_hash = input("Please enter your API Hash: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             if len(api_hash) == 32:
                 break
             elif len(api_hash) > 0:
@@ -181,6 +190,7 @@ def _generateStringSession() -> tuple:
     from telethon.sync import TelegramClient
     from telethon.sessions import StringSession
     from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
+                                              PhoneNumberBannedError,
                                               PhoneNumberInvalidError)
     while True:
         try:
@@ -199,12 +209,19 @@ def _generateStringSession() -> tuple:
                 Colors.YELLOW))
         except PhoneNumberInvalidError:
             print(setColorText(
-                "Phone number is not valid. Try again...", Colors.YELLOW))
+                "The phone number is not valid. Try again...", Colors.YELLOW))
+        except PhoneNumberBannedError:
+            print(setColorText(
+                "The phone number is banned, probably forever. "
+                "At this point there is nothing HyperUBot can do to fix it. "
+                "The only possible way is to contact the Telegram Support",
+                Colors.YELLOW))
+            raise KeyboardInterrupt
         except KeyboardInterrupt:
             raise KeyboardInterrupt
         except Exception as e:
             print(setColorText(
-                f"Unable to obtain new string session: {e}", Colors.RED))
+                f"Unable to obtain a new string session: {e}", Colors.RED))
             break
     return (None, None, None)
 
@@ -214,17 +231,22 @@ def _run_userbot():
         tcmd = [PY_EXEC, "-m", "userbot"]
         os.execle(PY_EXEC, *tcmd, os.environ)
     except Exception as e:
-        print(setColorText(f"Failed to run HyperUBot: {e}", Colors.RED))
+        print(setColorText(f"Failed to start HyperUBot: {e}", Colors.RED))
     return
 
 
 def main():
-    print("Welcome to HyperUBot's Setup Assistant!")
-    print("This setup will guide you through required processes to run "
-          "HyperUBot on your Machine")
+    print(setColorText("Welcome to HyperUBot's Setup Assistant!", Colors.CYAN))
+    print("The Setup Assistant will guide you through all required "
+          "processes to run HyperUBot on your device properly")
+    print()
 
     while True:
-        con = input("Continue? (y/n): ")
+        try:
+            con = input("Continue? (y/n): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if con.lower() in ("y", "yes"):
             break
         elif con.lower() in ("n", "no"):
@@ -239,14 +261,33 @@ def main():
         print(setColorText("HyperUBot not installed", Colors.RED_BG))
         return
 
-    if os.path.exists(os.path.join(".", "userbot", "secure_config")):
+    secure_config = os.path.join(".", "userbot", "secure_config")
+
+    if os.path.exists(secure_config) and os.path.isfile(secure_config):
         print(setColorText("Seems like the setup is completed already "
                            "or done manually", Colors.GREEN))
-        return
+        while True:
+            try:
+                inp = input("Continue Setup Assistant? (y/n): ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
+            if inp.lower() in ("y", "yes"):
+                break
+            elif inp.lower() in ("n", "no"):
+                print("Alright, exiting Setup Assistant...")
+                return
+            else:
+                print(setColorText("Invalid input. Try again...",
+                                   Colors.YELLOW))
 
     if not _check_setup_req():
         print(setColorText("All or some packages required for Setup Assistant "
-                           "are not present. Exiting...", Colors.RED))
+                           "are not present. Setup Assistant requires "
+                           "'Telethon>=1.23.0' and 'pyAesCrypt>=6.0.0'. "
+                           "Make sure these packages are installed in order "
+                           "to continue. Exiting Setup Assistant...",
+                           Colors.RED))
         return
 
     from pyAesCrypt import encryptFile
@@ -254,7 +295,7 @@ def main():
     print("HyperUBot requires, like all other Telegram userbots, "
           "an API Key, an API Hash and a String Session in order "
           "to run HyperUBot as an user client.\n"
-          "If not done yet, please go to https://my.telegram.org and\n"
+          "If not done yet, please go to 'https://my.telegram.org' and\n"
           "1. log in into your Telegram account\n"
           "2. create a new application (or use an existing one)\n"
           "3. get your API Key and Hash (do NOT share these values with "
@@ -267,13 +308,18 @@ def main():
           "(required to log in into your account)\n"
           "- Your Account's password (Two-Step Verification; "
           "if enabled)\n")
+    print()
 
     while True:
-        inp = input("Ready? (y/n): ")
+        try:
+            inp = input("Ready? (y/n): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if inp.lower() in ("y", "yes"):
             break
         elif inp.lower() in ("n", "no"):
-            print("Alright, cancelling Setup Assistant")
+            print("Alright, exiting Setup Assistant...")
             raise KeyboardInterrupt
         else:
             print(setColorText("Invalid input. Try again...",
@@ -286,12 +332,18 @@ def main():
             setColorText("Setup Assistant failed to get a new "
                          "string session from your API Key/Hash",
                          Colors.RED))
+        print(
+            setColorText("Feel free to contact us at Telegram "
+                         "'https://t.me/HyperUBotSupport' if you need help "
+                         "to handle this issue. Please keep a copy of the "
+                         "error above ready or take a screenshot of it",
+                         Colors.YELLOW))
         return
 
     print()
     print("As the API Key, API Hash and String Session are vaild, it's "
           "important to store them into a secured configuration file "
-          "to avoid unauthorized access to these values. You have the "
+          "to avoid unauthorized access to these values. There is also an "
           "option to setup a password to your secured configuration "
           "to increase the security of your sensitive data. This is "
           "optional and not needed. This cannot be setup later.")
@@ -301,7 +353,11 @@ def main():
 
     set_pwd = False
     while True:
-        inp = input("Set password? (y/n): ")
+        try:
+            inp = input("Set password? (y/n): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if inp.lower() in ("y", "yes"):
             set_pwd = True
             break
@@ -317,7 +373,11 @@ def main():
         print("Your password must have at least a length of 4 characters. "
               "Maximum length is 1024 characters")
         while True:
-            password = getpass("Your password: ")
+            try:
+                password = getpass("Your password: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             if len(password) >= 4 and len(password) <= 1024:
                 break
             elif len(password) < 4:
@@ -328,7 +388,11 @@ def main():
                 print(setColorText("Invalid input. Try again...",
                                    Colors.YELLOW))
         while True:
-            retype_pwd = getpass("Retype your password: ")
+            try:
+                retype_pwd = getpass("Retype your password: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             if password == retype_pwd:
                 break
             else:
@@ -348,7 +412,11 @@ def main():
     config_file = None
 
     while True:
-        inp = input("Your input [1-3] (or 'X' to cancel setup): ")
+        try:
+            inp = input("Your input [1-3] (or 'X' to exit setup): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if inp == "1":
             config_file = os.path.join(".", "userbot", "config.env")
             break
@@ -386,9 +454,13 @@ def main():
     lang_code = "en"  # default language
 
     while True:
-        inp = input("Your input "
-                    f"[{first_key_from_langs}-{last_key_from_langs}] "
-                    "(or 'X' to cancel setup): ")
+        try:
+            inp = input("Your input "
+                        f"[{first_key_from_langs}-{last_key_from_langs}] "
+                        "(or 'X' to exit setup): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if inp in langs.keys():
             for key, value in langs.items():
                 if inp == key:
@@ -405,6 +477,8 @@ def main():
     try:
         if os.path.exists("_temp.py"):
             os.remove("_temp.py")
+        if os.path.exists(secure_config) and os.path.isfile(secure_config):
+            os.remove(secure_config)
         secure_configs = (f'API_KEY = "{api_key}"\n'
                           f'API_HASH = "{api_hash}"\n'
                           f'STRING_SESSION = "{string_session}"')
@@ -413,12 +487,11 @@ def main():
         temp_file.close()
         print(f"Securing API configurations...")
         encryptFile(infile="_temp.py",
-                    outfile=os.path.join(
-                        ".", "userbot", "secure_config"),
+                    outfile=secure_config,
                     passw=password,
                     bufferSize=(64 * 1024))
         os.remove("_temp.py")
-        if not os.path.exists(os.path.join(".", "userbot", "secure_config")):
+        if not os.path.exists(secure_config):
             print(setColorText("Failed to secure configurations", Colors.RED))
             return
     except Exception as e:
@@ -471,8 +544,8 @@ def main():
     print()
     print(setColorText("Yaaaay! Setup completed! :P", Colors.GREEN))
     print()
-    start_bot_text = ("Do you wish to run HyperUBot now? You can always "
-                      "run it by executing 'python3 -m userbot' in "
+    start_bot_text = ("Do you wish to start HyperUBot now? You can always "
+                      "start it by executing 'python3 -m userbot' in "
                       "HyperUBot's directory later.")
 
     if IS_WINDOWS:
@@ -481,7 +554,11 @@ def main():
     print(start_bot_text)
 
     while True:
-        inp = input("Run HyperUBot now? (y/n): ")
+        try:
+            inp = input("Start HyperUBot now? (y/n): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if inp.lower() in ("y", "yes"):
             _run_userbot()
             break
