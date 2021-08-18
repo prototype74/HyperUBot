@@ -110,10 +110,14 @@ def start_modules():
         raise KeyboardInterrupt
     except (BaseException, Exception) as e:
         log.critical(f"Failed to start modules: {e}", exc_info=True)
-        option = _services._suggest_options(["Start Recovery",
-                                             "Contact support",
-                                             "Keep HyperUBot running",
-                                             "Quit HyperUBot"])
+        try:
+            option = _services._suggest_options(["Start Recovery",
+                                                 "Contact support",
+                                                 "Keep HyperUBot running",
+                                                 "Quit HyperUBot"])
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if option == 1:
             _services._reboot_recovery(False)
         elif option == 2:
@@ -149,16 +153,25 @@ def run_client():
                     "your API Key and/or API Hash. If so, just start "
                     "'Secure-Config-Updater' and update them with your "
                     "correct keys")
-        option = _services._suggest_options(["Start Secure-Config-Updater",
-                                             "Quit HyperUBot"])
+        try:
+            option = _services._suggest_options(["Start Secure-Config-Updater",
+                                                 "Quit HyperUBot"])
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if option == 1:
             _services._start_scfg_updater()
         elif option == 2:
             raise KeyboardInterrupt
     except PhoneNumberInvalidError:
         log.critical("Phone number is not valid", exc_info=True)
-        option = _services._suggest_options(["Start String Session Generator",
-                                             "Quit HyperUBot"])
+        try:
+            option = _services._suggest_options(["Start String Session "
+                                                 "Generator",
+                                                 "Quit HyperUBot"])
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if option == 1:
             _services._start_session_gen()
         elif option == 2:
@@ -172,9 +185,13 @@ def run_client():
         raise KeyboardInterrupt
     except (BaseException, Exception) as e:
         log.critical(f"Client has stopped: {e}", exc_info=True)
-        option = _services._suggest_options(["Start Recovery",
-                                             "Contact support",
-                                             "Quit HyperUBot"])
+        try:
+            option = _services._suggest_options(["Start Recovery",
+                                                 "Contact support",
+                                                 "Quit HyperUBot"])
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if option == 1:
             _services._reboot_recovery(False)
         elif option == 2:
