@@ -70,7 +70,7 @@ class _Recovery:
     def __init__(self):
         self.__recovery_mode = "NORMAL"
 
-    def run_userbot(self, safemode: bool = False):
+    def start_userbot(self, safemode: bool = False):
         try:
             if safemode:
                 tcmd = [PY_EXEC, "-m", "userbot", "-safemode"]
@@ -79,7 +79,7 @@ class _Recovery:
             os.execle(PY_EXEC, *tcmd, os.environ)
         except Exception as e:
             print(setColorText(
-                f"Failed to run HyperUBot: {e}", Colors.RED))
+                f"Failed to start HyperUBot: {e}", Colors.RED))
         return
 
     def userbot_installed(self) -> bool:
@@ -719,12 +719,12 @@ _option_table = {
     # status can be 0=ok, 1=warn or 2=error
     "boot":      {"enabled": True,
                   "status": 0,
-                  "name": "Run HyperUBot",
-                  "func": (lambda r: r.run_userbot())},
+                  "name": "Start HyperUBot",
+                  "func": (lambda r: r.start_userbot())},
     "boot_safe": {"enabled": True,
                   "status": 0,
-                  "name": "Run HyperUBot (safe mode)",
-                  "func": (lambda r: r.run_userbot(True))},
+                  "name": "Start HyperUBot (safe mode)",
+                  "func": (lambda r: r.start_userbot(True))},
     "clear":     {"enabled": True,
                   "status": 0,
                   "name": "Clear caches",
@@ -819,8 +819,8 @@ def _apply_update(auto: bool, commit_id=None):
     updater = _Updater(cid)
     updater.install_update_package()
     if auto and updater.getSuccessful():
-        print("Booting HyperUBot...")
-        updater.run_userbot()
+        print("Starting HyperUBot...")
+        updater.start_userbot()
     elif updater.getSuccessful():
         global _modified
         _modified = True
