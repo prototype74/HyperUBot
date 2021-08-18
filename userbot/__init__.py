@@ -107,6 +107,7 @@ if not API_KEY and not API_HASH and not STRING_SESSION:
         elif option == 3:
             _services._start_scfg_updater()
     except KeyboardInterrupt:
+        print()
         log.info("Exiting...")
     quit(1)
 
@@ -140,6 +141,7 @@ if not API_KEY or not API_HASH or not STRING_SESSION:
         elif option == 2 and not STRING_SESSION:
             _services._start_session_gen()
     except KeyboardInterrupt:
+        print()
         log.info("Exiting...")
     quit(1)
 
@@ -189,6 +191,7 @@ except Exception as e:
                      "Telegram 'https://t.me/HyperUBotSupport' and keep your "
                      "hyper.log file ready!")
     except KeyboardInterrupt:
+        print()
         log.info("Exiting...")
     except:
         pass
