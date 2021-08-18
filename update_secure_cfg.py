@@ -37,6 +37,7 @@ class Colors:
     RED = "\033[91m"
     GREEN = "\033[92m"
     YELLOW = "\033[93m"
+    CYAN = "\033[96m"
     RED_BG = "\033[101m"
     END = "\033[0m"
 
@@ -51,13 +52,25 @@ try:
     import pyAesCrypt
 except:
     print(setColorText("pyAesCrypt is not installed!", Colors.RED))
+    if IS_WINDOWS:
+        print(setColorText("Please install pyAesCrypt package by "
+                           "executing 'pip install pyAesCrypt'",
+                           Colors.YELLOW))
+    else:
+        print(setColorText("Please install pyAesCrypt package by "
+                           "executing 'python3 -m pip install pyAesCrypt'",
+                           Colors.YELLOW))
     quit(1)
 
 
 def _getAPIsAndSession() -> tuple:
     try:
         while True:
-            api_key = input("Please enter your API Key: ")
+            try:
+                api_key = input("Please enter your API Key: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             try:
                 api_key = int(api_key)
                 break
@@ -66,7 +79,11 @@ def _getAPIsAndSession() -> tuple:
                                    Colors.YELLOW))
 
         while True:
-            api_hash = input("Please enter your API Hash: ")
+            try:
+                api_hash = input("Please enter your API Hash: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             if len(api_hash) == 32:
                 break
             elif len(api_hash) > 0:
@@ -77,7 +94,11 @@ def _getAPIsAndSession() -> tuple:
                                    Colors.YELLOW))
 
         while True:
-            string_session = input("Please enter your String Session: ")
+            try:
+                string_session = input("Please enter your String Session: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             if string_session:
                 break
             else:
@@ -103,13 +124,18 @@ def _start_userbot():
 
 
 def main():
-    print("Secure-Config-Updater creates a new secured config file "
-          "with your API Key, Hash and String Session stored "
-          "to protect these sensitive data from unauthorized access")
+    print(setColorText("Secure-Config-Updater", Colors.CYAN) +
+          " creates a new secured config file with your API Key, "
+          "Hash and String Session stored to protect these sensitive "
+          "data from unauthorized access")
     print()
 
     while True:
-        inp = input("Continue? (y/n): ")
+        try:
+            inp = input("Continue? (y/n): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if inp.lower() in ("y", "yes"):
             break
         elif inp.lower() in ("n", "no"):
@@ -120,11 +146,11 @@ def main():
     api_key, api_hash, string_session = _getAPIsAndSession()
 
     if not api_key or not api_hash or not string_session:
-        print(setColorText("Input values not valid", Colors.RED))
+        print(setColorText("Input values are not valid", Colors.RED))
         return
 
     print()
-    print("You have the option to setup a password to your secure config "
+    print("There is an option to setup a password to your secure config "
           "to increase the security of your sensitive data. This is "
           "optional and not mandatory but extra protection doesn't hurt.")
     print(setColorText("If you forgot your password, you have to create "
@@ -134,7 +160,11 @@ def main():
     set_pwd = False
 
     while True:
-        inp = input("Set password? (y/n): ")
+        try:
+            inp = input("Set password? (y/n): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
         if inp.lower() in ("y", "yes"):
             set_pwd = True
             break
@@ -148,9 +178,15 @@ def main():
         print()
         from getpass import getpass
         print("Your password must have at least a length of 4 characters. "
-              "Maximum length is 1024 characters")
+              "Maximum length is 1024 characters. \nNote: Your password is "
+              "hidden while typing.")
+        print()
         while True:
-            password = getpass("Your password: ")
+            try:
+                password = getpass("Your password: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             if len(password) >= 4 and len(password) <= 1024:
                 break
             elif len(password) < 4:
@@ -161,7 +197,11 @@ def main():
                 print(setColorText("Invalid input. Try again...",
                                    Colors.YELLOW))
         while True:
-            retype_pwd = getpass("Retype your password: ")
+            try:
+                retype_pwd = getpass("Retype your password: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             if password == retype_pwd:
                 break
             else:
@@ -199,7 +239,11 @@ def main():
         print("Do you wish to start HyperUBot?")
         print()
         while True:
-            inp = input("Start HyperUBot? (y/n): ")
+            try:
+                inp = input("Start HyperUBot? (y/n): ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
             if inp.lower() in ("y", "yes"):
                 _start_userbot()
                 break
