@@ -813,6 +813,7 @@ def _apply_update(auto: bool, commit_id=None):
                         setColorText("Invalid input. Try again",
                                      Colors.YELLOW))
         except KeyboardInterrupt:
+            print()
             return
         if cid.lower() == "x":
             return
@@ -846,6 +847,7 @@ def _clear_caches():
                     setColorText("Invalid input. Try again",
                                  Colors.YELLOW))
     except KeyboardInterrupt:
+        print()
         return
     cache = _Cache()
     cache.clear()
@@ -872,6 +874,7 @@ def _create_backup():
                     setColorText("Invalid input. Try again",
                                  Colors.YELLOW))
     except KeyboardInterrupt:
+        print()
         return
     bkName = "HyperUBot-" + backup.userbot_version()
     if backup.backup_exists(bkName):
@@ -888,6 +891,7 @@ def _create_backup():
                         setColorText("Invalid input. Try again",
                                      Colors.YELLOW))
         except KeyboardInterrupt:
+            print()
             return
     backup.generate_backup(bkName)
     return
@@ -917,6 +921,7 @@ def _restore_backup():
                 setColorText("Invalid input. Try again",
                              Colors.YELLOW))
     except KeyboardInterrupt:
+        print()
         return
     selected_backup = None
     for key, value in backups.items():
@@ -938,6 +943,7 @@ def _restore_backup():
                     setColorText("Invalid input. Try again",
                                  Colors.YELLOW))
     except KeyboardInterrupt:
+        print()
         return
     restore.restore(selected_backup)
     global _modified
@@ -968,6 +974,7 @@ def _reinstall_userbot():
                     setColorText("Invalid input. Try again",
                                  Colors.YELLOW))
     except KeyboardInterrupt:
+        print()
         return
 
     installer = _Installer()
