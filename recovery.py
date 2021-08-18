@@ -813,7 +813,7 @@ def _apply_update(auto: bool, commit_id=None):
                         setColorText("Invalid input. Try again",
                                      Colors.YELLOW))
         except KeyboardInterrupt:
-            pass
+            return
         if cid.lower() == "x":
             return
     updater = _Updater(cid)
