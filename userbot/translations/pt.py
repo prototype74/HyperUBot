@@ -113,6 +113,9 @@ class SystemToolsText(object):
     SYSD_NEOFETCH_REQ = ("`O pacote neofetch é necessário para apresentar "
                          "informações do sistema!`")
     RESTART = "`A reiniciar...`"
+    # translation needed
+    RESTART_UNSUPPORTED = ("`Reboot isn't supported on Windows but heads "
+                           "up! Ctrl+C still does the job`")
     RESTART_LOG = "O Userbot está a reiniciar!"
     RESTARTED = "Reinicio completo!"
     GENERAL = "General"  # translation needed
@@ -576,6 +579,12 @@ class PackageManagerText(object):
                       "fornece apenas um nome.")
     NOT_IN_USERSPACE = ("`{}` não é um módulo de utilizador válido! "
                         "Processo interrompido!")
+    INSTALL_WIN = ("The following module(s) have been installed: "
+                   "`{}`\nPlease reboot HyperUBot now to load the "
+                   "installed module(s)")   # translation needed
+    UNINSTALL_WIN = ("The following module has been uninstalled: "
+                     "`{}`\nPlease reboot HyperUBot now to unload the "
+                     "uninstalled module")   # translation needed
     UNINSTALLING = "`Desinstalando {}...`"
     REBOOT_DONE_INS = "Feito! Módulo(s) instalado(s): `{}`"
     REBOOT_DONE_UNINS = "Feito! Desinstalado `{}`!"
@@ -605,6 +614,10 @@ class UpdaterText(object):
     CHANGELOG_AT = "Changelog em {}"
     DOWNLOAD_SUCCESS = ("Download completo. A desligar o bot para instalar "
                         "o pacote de atualizações...")
+    DOWNLOAD_SUCCESS_WIN = ("Download successful and ready. Please "
+                            "shutdown the bot and follow the instructions "
+                            "in your terminal to apply the update package "
+                            "manually")  # translation needed
     UPDATE_QUEUED = ("Usa `.update upgrade` para fazer download e "
                      "instalar o pacote de atualizações agora.")
 
@@ -618,6 +631,8 @@ class SideloaderText(object):
                      "executa o comando com o argumento `force` !")
     SUCCESS = "Instalado `{}` com sucesso! A reiniciar..."
     LOG = "O módulo `{}` foi carregado sideload com sucesso!"
+    # translation needed
+    REBOOT_WIN = "Please reboot HyperUBot now to load the sideloaded module"
     RBT_CPLT = "Reinicio completo!"
     INVALID_FILE = "Por favor responde a um ficheiro válido!"
 
