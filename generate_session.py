@@ -101,6 +101,7 @@ try:
         else:
             print(setColorText("Invalid input. Try again...", Colors.YELLOW))
 except KeyboardInterrupt:
+    print()
     print("Exiting...")
     quit()
 
@@ -131,6 +132,7 @@ try:
                     print(setColorText("Invalid input. Try again...",
                                        Colors.YELLOW))
 except KeyboardInterrupt:
+    print()
     print("Exiting...")
 except Exception as e:
     print(setColorText(f"Unable to obtain a new string session: {e}",
