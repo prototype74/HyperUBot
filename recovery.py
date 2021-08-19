@@ -1059,7 +1059,7 @@ def main():
     # INIT
     args = argv
     auto_updater = False
-    print("HyperUBot Recovery System")
+    print(setColorText("HyperUBot Recovery System", Colors.CYAN))
     print(f"Recovery version: {VERSION}")
     recovery = _Recovery()
     if len(args) > 1:
