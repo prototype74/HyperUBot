@@ -592,7 +592,8 @@ class UpdaterText(object):
                         "install the update package...")
     DOWNLOAD_SUCCESS_WIN = ("Download successful and ready. Please "
                             "shutdown the bot and follow the instructions "
-                            "in your terminal to apply the update manually")
+                            "in your terminal to apply the update package "
+                            "manually")
     UPDATE_QUEUED = ("Use `.update upgrade` to download and install "
                      "the update package now")
 
