@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 from userbot import (tgclient, log, __hyper_logger__, _services,
-                     PROJECT, SAFEMODE)
+                     _getprop, _setprop, PROJECT, SAFEMODE)
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (update_all_modules,
                                            update_load_modules,
@@ -22,6 +22,7 @@ from logging import shutdown
 from importlib import import_module
 from glob import glob
 from os.path import dirname, basename, isfile, join
+import asyncio
 
 
 class _Modules:
@@ -160,6 +161,24 @@ def start_modules():
     return
 
 
+async def check_last_reboot(client):
+    if _getprop("reboot"):
+        chat_id = _getprop("rebootchatid")
+        msg_id = _getprop("rebootmsgid")
+        msg = _getprop("rebootmsg")
+        if chat_id and msg_id and msg:
+            try:
+                await client.edit_message(chat_id, msg_id, msg)
+            except:
+                log.warning("Failed to edit (reboot) message")
+        # reset props
+        _setprop("reboot", False)
+        _setprop("rebootchatid", 0)
+        _setprop("rebootmsgid", 0)
+        _setprop("rebootmsg", 0)
+    return
+
+
 def run_client():
     try:
         log.info("Starting Telegram client")
@@ -167,6 +186,8 @@ def run_client():
             me = tgclient.loop.run_until_complete(tgclient.get_me())
             log.info(f"You're running {PROJECT} v{VERSION} as "
                      f"{me.first_name} (ID: {me.id})")
+            asyncio.get_event_loop().run_until_complete(
+                check_last_reboot(tgclient))
             tgclient.run_until_disconnected()
     except ApiIdInvalidError as ae:
         log.critical(f"API Key and/or API Hash is/are invalid: {ae}",
