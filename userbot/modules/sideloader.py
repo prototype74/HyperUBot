@@ -15,6 +15,7 @@ from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
+from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
 import os
 from logging import getLogger
@@ -51,11 +52,16 @@ async def sideload(event):
         if getConfig("LOGGING"):
             await event_log(event, "SIDELOAD",
                             custom_text=msgRep.LOG.format(file.name))
-        log.info("Rebooting userbot...")
-        time.sleep(1)
-        await event.edit(msgRep.RBT_CPLT)
-        setConfig("REBOOT", True)
-        await event.client.disconnect()
+        if isWindows():
+            log.info("Manual reboot required to load sideloaded module")
+            await event.edit(msgRep.REBOOT_WIN)
+        else:
+            # TODO: proper implementation
+            log.info("Rebooting userbot...")
+            time.sleep(1)
+            await event.edit(msgRep.RBT_CPLT)
+            setConfig("REBOOT", True)
+            await event.client.disconnect()
     else:
         await event.edit(msgRep.INVALID_FILE)
     return

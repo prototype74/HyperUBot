@@ -16,7 +16,7 @@ from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
-from userbot.sysutils.sys_funcs import botVerAsTuple, verAsTuple
+from userbot.sysutils.sys_funcs import botVerAsTuple, isWindows, verAsTuple
 from userbot.version import VERSION
 from logging import getLogger
 from urllib.request import urlretrieve
@@ -107,6 +107,21 @@ def _parse_datetime(date) -> str:
     return date
 
 
+def _print_instructions(commit_id: str):
+    if isWindows():
+        print()
+        print("=== UPDATE INSTRUCTIONS ===")
+        print(f"Commit ID: {commit_id}")
+        print("- Start recovery (python recovery.py)")
+        print("- Select 'Apply update'")
+        print("- Enter commit id (see above)")
+        print("- Wait for recovery to finish")
+        print("- Exit recovery")
+        print("- Start HyperUBot (python -m userbot)")
+        print()
+    return
+
+
 @ehandler.on(command="update", hasArgs=True, outgoing=True)
 async def updater(event):
     arg = event.pattern_match.group(1)
@@ -132,11 +147,15 @@ async def updater(event):
         if not commit_id:
             await event.edit(msgRep.UPDATE_FAILED)
             return
-        await event.edit(msgRep.DOWNLOAD_SUCCESS)
-        if _set_autoupdate(commit_id):
-            await event.client.disconnect()
+        if isWindows():
+            _print_instructions(commit_id)
+            await event.edit(msgRep.DOWNLOAD_SUCCESS_WIN)
         else:
-            await event.edit(msgRep.START_RECOVERY_FAILED)
+            await event.edit(msgRep.DOWNLOAD_SUCCESS)
+            if _set_autoupdate(commit_id):
+                await event.client.disconnect()
+            else:
+                await event.edit(msgRep.START_RECOVERY_FAILED)
         return
 
     try:
@@ -230,13 +249,19 @@ async def updater(event):
                 await event.edit(reply.replace(msgRep.DOWNLOADING_RELEASE,
                                                msgRep.UPDATE_FAILED))
                 return
-            await event.edit(reply.replace(msgRep.DOWNLOADING_RELEASE,
-                                           msgRep.DOWNLOAD_SUCCESS))
-            if _set_autoupdate(commit_id):
-                await event.client.disconnect()
+            if isWindows():
+                _print_instructions(commit_id)
+                await event.edit(reply.replace(msgRep.DOWNLOADING_RELEASE,
+                                               msgRep.DOWNLOAD_SUCCESS_WIN))
             else:
-                await event.edit(reply.replace(msgRep.DOWNLOAD_SUCCESS,
-                                               msgRep.START_RECOVERY_FAILED))
+                await event.edit(reply.replace(msgRep.DOWNLOADING_RELEASE,
+                                               msgRep.DOWNLOAD_SUCCESS))
+                if _set_autoupdate(commit_id):
+                    await event.client.disconnect()
+                else:
+                    await event.edit(
+                        reply.replace(msgRep.DOWNLOAD_SUCCESS,
+                                      msgRep.START_RECOVERY_FAILED))
         else:
             reply += msgRep.UPDATE_QUEUED
             await event.edit(reply)

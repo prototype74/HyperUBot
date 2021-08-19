@@ -768,6 +768,13 @@ def _update_option_table(recovery: _Recovery):
             elif not val.get("enabled"):  # reset error
                 _option_table[key]["enabled"] = True
                 _option_table[key]["status"] = 0
+        if IS_WINDOWS and key in ("boot", "boot_safe"):
+            # Disable boot options as os.execle isn't working
+            # well on Windows due to missing fork+exec support.
+            # More info: https://bugs.python.org/issue9148
+            if val.get("enabled"):
+                _option_table[key]["enabled"] = False
+                _option_table[key]["status"] = 2
         if key in ("update", "restore", "reinstall"):
             # status 2 is preferred
             if is_git_repo and not val.get("status") == 2:
@@ -820,8 +827,12 @@ def _apply_update(auto: bool, commit_id=None):
     updater = _Updater(cid)
     updater.install_update_package()
     if auto and updater.getSuccessful():
-        print("Starting HyperUBot...")
-        updater.start_userbot()
+        if IS_WINDOWS:  # No auto-start on Windows
+            print("Run the following command to start HyperUBot: " +
+                  setColorText("python -m userbot", Colors.CYAN))
+        else:
+            print("Starting HyperUBot...")
+            updater.start_userbot()
     elif updater.getSuccessful():
         global _modified
         _modified = True

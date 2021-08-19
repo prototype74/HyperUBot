@@ -549,27 +549,28 @@ def main():
     print()
     start_bot_text = ("Do you wish to start HyperUBot now? You can always "
                       "start it by executing 'python3 -m userbot' in "
-                      "HyperUBot's directory later.")
+                      "HyperUBot's directory.")
 
     if IS_WINDOWS:
         start_bot_text = start_bot_text.replace("python3", "python")
 
     print(start_bot_text)
 
-    while True:
-        try:
-            inp = input("Start HyperUBot now? (y/n): ")
-        except KeyboardInterrupt:
-            print()
-            raise KeyboardInterrupt
-        if inp.lower() in ("y", "yes"):
-            _run_userbot()
-            break
-        elif inp.lower() in ("n", "no"):
-            break
-        else:
-            print(setColorText("Invalid input. Try again...",
-                               Colors.YELLOW))
+    if not IS_WINDOWS:
+        while True:
+            try:
+                inp = input("Start HyperUBot now? (y/n): ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
+            if inp.lower() in ("y", "yes"):
+                _run_userbot()
+                break
+            elif inp.lower() in ("n", "no"):
+                break
+            else:
+                print(setColorText("Invalid input. Try again...",
+                                   Colors.YELLOW))
     return
 
 

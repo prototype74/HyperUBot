@@ -27,7 +27,8 @@ if len(argv) >= 2:
         SAFEMODE = True
 
 from telethon import TelegramClient, version  # noqa: E402
-from userbot.sysutils.sys_funcs import os_name, verAsTuple  # noqa: E402
+from userbot.sysutils.sys_funcs import (isWindows,
+                                        os_name, verAsTuple)  # noqa: E402
 
 OS = os_name()  # Current Operating System [DEPRECATED]
 
@@ -95,17 +96,24 @@ if not API_KEY and not API_HASH and not STRING_SESSION:
                 "Start 'Secure-Config-Updater' to create/update your secure "
                 "config but only if you have a valid string session already!")
     try:
-        option = _services._suggest_options(["Start Setup Assistant "
-                                             "(recommended)",
-                                             "Start String Session Generator",
-                                             "Start Secure-Config-Updater",
-                                             "Quit HyperUBot"])
-        if option == 1:
-            _services._start_setup_assistant()
-        elif option == 2:
-            _services._start_session_gen()
-        elif option == 3:
-            _services._start_scfg_updater()
+        options = ["Start Setup Assistant (recommended)",
+                   "Start String Session Generator",
+                   "Start Secure-Config-Updater",
+                   "Quit HyperUBot"]
+        if isWindows():
+            options[0] += " (python setup.py)"
+            options[1] += " (python generate_session.py)"
+            options[2] += " (python update_secure_cfg.py)"
+            options.pop()
+            _services._suggest_options(options)
+        else:
+            option = _services._suggest_options(options)
+            if option == 1:
+                _services._start_setup_assistant()
+            elif option == 2:
+                _services._start_session_gen()
+            elif option == 3:
+                _services._start_scfg_updater()
     except KeyboardInterrupt:
         print()
         log.info("Exiting...")
@@ -135,11 +143,18 @@ if not API_KEY or not API_HASH or not STRING_SESSION:
                    "Quit HyperUBot"]
         if not STRING_SESSION:
             options.insert(1, "Start String Session Generator")
-        option = _services._suggest_options(options)
-        if option == 1:
-            _services._start_scfg_updater()
-        elif option == 2 and not STRING_SESSION:
-            _services._start_session_gen()
+        if isWindows():
+            options[0] += " (python update_secure_cfg.py)"
+            if not STRING_SESSION:
+                options[1] += " (python generate_session.py)"
+            options.pop()
+            _services._suggest_options(options)
+        else:
+            option = _services._suggest_options(options)
+            if option == 1:
+                _services._start_scfg_updater()
+            elif option == 2 and not STRING_SESSION:
+                _services._start_session_gen()
     except KeyboardInterrupt:
         print()
         log.info("Exiting...")
@@ -181,15 +196,23 @@ try:
 except Exception as e:
     log.critical(f"Failed to create Telegram Client: {e}", exc_info=True)
     try:
-        option = _services._suggest_options(["Start Recovery",
-                                             "Contact support",
-                                             "Quit HyperUBot"])
-        if option == 1:
-            _services._reboot_recovery(False)
-        elif option == 2:
-            log.info("If you facing issues to start the bot contact us at "
-                     "Telegram 'https://t.me/HyperUBotSupport' and keep your "
-                     "hyper.log file ready!")
+        options = ["Start Recovery",
+                   "Contact support",
+                   "Quit HyperUBot"]
+        contact_text = ("If you facing issues to start the bot contact us at "
+                        "Telegram 'https://t.me/HyperUBotSupport' and keep "
+                        "your hyper.log file ready!")
+        if isWindows():
+            options[0] += " (python recovery.py)"
+            options[1] = contact_text
+            options.pop()
+            _services._suggest_options(options)
+        else:
+            option = _services._suggest_options(options)
+            if option == 1:
+                _services._reboot_recovery(False)
+            elif option == 2:
+                log.info(contact_text)
     except KeyboardInterrupt:
         print()
         log.info("Exiting...")

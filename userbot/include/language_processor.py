@@ -329,6 +329,8 @@ class SystemToolsText(object):
         lang, _getframe().f_code.co_name, "SYSD_NEOFETCH_REQ")
     RESTART = getLangString(
         lang, _getframe().f_code.co_name, "RESTART")
+    RESTART_UNSUPPORTED = getLangString(
+        lang, _getframe().f_code.co_name, "RESTART_UNSUPPORTED")
     RESTART_LOG = getLangString(
         lang, _getframe().f_code.co_name, "RESTART_LOG")
     RESTARTED = getLangString(
@@ -1118,6 +1120,10 @@ class PackageManagerText(object):
         lang, _getframe().f_code.co_name, "MULTIPLE_NAMES")
     NOT_IN_USERSPACE = getLangString(
         lang, _getframe().f_code.co_name, "NOT_IN_USERSPACE")
+    INSTALL_WIN = getLangString(
+        lang, _getframe().f_code.co_name, "INSTALL_WIN")
+    UNINSTALL_WIN = getLangString(
+        lang, _getframe().f_code.co_name, "UNINSTALL_WIN")
     UNINSTALLING = getLangString(
         lang, _getframe().f_code.co_name, "UNINSTALLING")
     REBOOT_DONE_INS = getLangString(
@@ -1167,6 +1173,8 @@ class UpdaterText(object):
         lang, _getframe().f_code.co_name, "CHANGELOG_AT")
     DOWNLOAD_SUCCESS = getLangString(
         lang, _getframe().f_code.co_name, "DOWNLOAD_SUCCESS")
+    DOWNLOAD_SUCCESS_WIN = getLangString(
+        lang, _getframe().f_code.co_name, "DOWNLOAD_SUCCESS_WIN")
     UPDATE_QUEUED = getLangString(
         lang, _getframe().f_code.co_name, "UPDATE_QUEUED")
 
@@ -1182,6 +1190,8 @@ class SideloaderText(object):
         lang, _getframe().f_code.co_name, "SUCCESS")
     LOG = getLangString(
         lang, _getframe().f_code.co_name, "LOG")
+    REBOOT_WIN = getLangString(
+        lang, _getframe().f_code.co_name, "REBOOT_WIN")
     RBT_CPLT = getLangString(
         lang, _getframe().f_code.co_name, "RBT_CPLT")
     INVALID_FILE = getLangString(

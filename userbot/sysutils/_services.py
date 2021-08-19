@@ -7,6 +7,7 @@
 # compliance with the PE License
 
 from .colors import Color, setColorText
+from .sys_funcs import isWindows, os_name
 from inspect import currentframe, getouterframes
 from logging import getLogger, shutdown
 from sys import executable
@@ -44,6 +45,10 @@ class _SysServices:
         if not commands:
             log.warning("[EXEC] empty commands "
                         f"(requested by {os.path.basename(caller)})")
+            return
+        if isWindows():
+            log.error(f"[EXEC] unsupported OS ({os_name()}) "
+                      f"(requested by {os.path.basename(caller)})")
             return
         py_exec = (executable
                    if " " not in executable else '"' + executable + '"')
@@ -168,17 +173,21 @@ class _SysServices:
         temp_list = []
         text = "Suggestions:\n"
         for i, item in enumerate(options, start=1):
-            temp_list.append(str(i))
-            text += f"[{i}] {item}\n"
+            if isWindows():
+                text += f"- {item}\n"
+            else:
+                temp_list.append(str(i))
+                text += f"[{i}] {item}\n"
         print()
         print(text)
-        options_size = len(temp_list)
-        while True:
-            inp = input(f"Your input [1-{options_size}]: ")
-            for i in temp_list:
-                if inp == i:
-                    return int(i)
-            else:
-                print(setColorText("Invalid input. Try again...",
-                                   Color.YELLOW))
+        if not isWindows():
+            options_size = len(temp_list)
+            while True:
+                inp = input(f"Your input [1-{options_size}]: ")
+                for i in temp_list:
+                    if inp == i:
+                        return int(i)
+                else:
+                    print(setColorText("Invalid input. Try again...",
+                                       Color.YELLOW))
         return 0

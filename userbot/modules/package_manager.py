@@ -17,6 +17,7 @@ from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import (getUserModules, register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
+from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
 import requests
 import os
@@ -173,16 +174,22 @@ async def universe_checker(msg):
                 md_installed_string += md
             else:
                 md_installed_string += ", " + md
-        log.info("Rebooting userbot...")
-        await msg.edit(msgRep.DONE_RBT)
-        time.sleep(1)  # just so we can actually see a message
+        if isWindows():
+            log.info("Manual reboot required to load installed module(s)")
+            await msg.edit(msgRep.INSTALL_WIN.format(md_installed_string))
+        else:
+            log.info("Rebooting userbot...")
+            await msg.edit(msgRep.DONE_RBT)
+            time.sleep(1)  # just so we can actually see a message
         if LOGGING:
             await event_log(msg, "MODULE INSTALL",
                             custom_text=msgRep.INSTALL_LOG.format(
                                 md_installed_string))
-        await msg.edit(msgRep.REBOOT_DONE_INS.format(md_installed_string))
-        setConfig("REBOOT", True)
-        await msg.client.disconnect()
+        if not isWindows():
+            # TODO: proper implementation
+            await msg.edit(msgRep.REBOOT_DONE_INS.format(md_installed_string))
+            setConfig("REBOOT", True)
+            await msg.client.disconnect()
     elif cmd_args[0].lower() == "uninstall":
         if len(user_modules) == 0:
             await msg.edit(msgRep.NO_UNINSTALL_MODULES)
@@ -204,18 +211,23 @@ async def universe_checker(msg):
                 await msg.edit(msgRep.NOT_IN_USERSPACE.format(modName))
                 return
             os.remove(os.path.join(USER_MODULES_DIR, modName + ".py"))
-        log.info(f"Modules '{modNames}' has been uninstalled from userspace")
-        log.info("Rebooting userbot...")
-        await msg.edit(msgRep.DONE_RBT)
-        time.sleep(1)  # just so we can actually see a message
+        log.info(f"Module '{modNames}' has been uninstalled from userspace")
+        if isWindows():
+            log.info("Manual reboot required to unload uninstalled module(s)")
+            await msg.edit(msgRep.UNINSTALL_WIN.format(modNames))
+        else:
+            log.info("Rebooting userbot...")
+            await msg.edit(msgRep.DONE_RBT)
+            time.sleep(1)  # just so we can actually see a message
         if LOGGING:
             await event_log(msg, "MODULE UNINSTALL",
                             custom_text=msgRep.UNINSTALL_LOG.format(modNames))
-        await msg.edit(msgRep.REBOOT_DONE_UNINS.format(modNames))
-        if SAFEMODE:
-            setConfig("REBOOT_SAFEMODE", True)
-        setConfig("REBOOT", True)
-        await msg.client.disconnect()
+        if not isWindows():
+            await msg.edit(msgRep.REBOOT_DONE_UNINS.format(modNames))
+            if SAFEMODE:
+                setConfig("REBOOT_SAFEMODE", True)
+            setConfig("REBOOT", True)
+            await msg.client.disconnect()
     else:
         await msg.edit(msgRep.INVALID_ARG)
     return

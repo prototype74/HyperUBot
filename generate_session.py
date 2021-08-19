@@ -40,6 +40,7 @@ class Colors:
     GREEN = "\033[92m"
     RED = "\033[91m"
     YELLOW = "\033[93m"
+    CYAN = "\033[96m"
     END = "\033[0m"
 
 
@@ -56,8 +57,9 @@ if telethon_version < (1, 23, 0):
         f"(current version: {version.__version__}).", Colors.RED))
     quit(1)
 
-print("Welcome to HyperUBot's String Session generator!\n"
-      "Get a new String Session from your Telegram account with the help of "
+print(setColorText("Welcome to HyperUBot's String Session Generator!",
+                   Colors.CYAN))
+print("Get a new String Session from your Telegram account with the help of "
       "this script.\n\n"
       "Important: If not done yet, please go to https://my.telegram.org and\n"
       "1. log in into your account\n"
@@ -113,16 +115,21 @@ try:
               setColorText("DON'T SHARE IT WITH ANYONE!!", Colors.RED))
         print("Next step is to start Secure-Config-Updater to store your new "
               "string session safe in a secured config file\n")
-        while True:
-            inp = input("Start Secure-Config-Updater? (y/n): ")
-            if inp.lower() in ("y", "yes"):
-                start_scfg_updater = True
-                break
-            elif inp.lower() in ("n", "no"):
-                break
-            else:
-                print(setColorText("Invalid input. Try again...",
-                                   Colors.YELLOW))
+        if IS_WINDOWS:
+            print("Run the following command to start the "
+                  "Secure-Config-Updater: " +
+                  setColorText("python update_secure_cfg.py", Colors.CYAN))
+        else:
+            while True:
+                inp = input("Start Secure-Config-Updater? (y/n): ")
+                if inp.lower() in ("y", "yes"):
+                    start_scfg_updater = True
+                    break
+                elif inp.lower() in ("n", "no"):
+                    break
+                else:
+                    print(setColorText("Invalid input. Try again...",
+                                       Colors.YELLOW))
 except KeyboardInterrupt:
     print("Exiting...")
 except Exception as e:

@@ -238,20 +238,24 @@ def main():
     if cfg_secured:
         print("Do you wish to start HyperUBot?")
         print()
-        while True:
-            try:
-                inp = input("Start HyperUBot? (y/n): ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if inp.lower() in ("y", "yes"):
-                _start_userbot()
-                break
-            elif inp.lower() in ("n", "no"):
-                break
-            else:
-                print(setColorText("Invalid input. Try again...",
-                                   Colors.YELLOW))
+        if IS_WINDOWS:
+            print("Run the following command to start HyperUBot: " +
+                  setColorText("python -m userbot", Colors.CYAN))
+        else:
+            while True:
+                try:
+                    inp = input("Start HyperUBot? (y/n): ")
+                except KeyboardInterrupt:
+                    print()
+                    raise KeyboardInterrupt
+                if inp.lower() in ("y", "yes"):
+                    _start_userbot()
+                    break
+                elif inp.lower() in ("n", "no"):
+                    break
+                else:
+                    print(setColorText("Invalid input. Try again...",
+                                       Colors.YELLOW))
     return
 
 

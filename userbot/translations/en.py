@@ -108,6 +108,8 @@ class SystemToolsText(object):
     SYSD_NEOFETCH_REQ = ("`neofetch package is required to display system "
                          "information`")
     RESTART = "`Rebooting...`"
+    RESTART_UNSUPPORTED = ("`Reboot isn't supported on Windows but heads "
+                           "up! Ctrl+C still does the job`")
     RESTART_LOG = "Userbot is restarting!"
     RESTARTED = "Reboot complete!"
     GENERAL = "General"
@@ -553,6 +555,12 @@ class PackageManagerText(object):
                       "one module at a time, please give a single name!")
     NOT_IN_USERSPACE = ("`{}` is not a valid Userspace module name! "
                         "Process halted!")
+    INSTALL_WIN = ("The following module(s) have been installed: "
+                   "`{}`\nPlease reboot HyperUBot now to load the "
+                   "installed module(s)")
+    UNINSTALL_WIN = ("The following module has been uninstalled: "
+                     "`{}`\nPlease reboot HyperUBot now to unload the "
+                     "uninstalled module")
     UNINSTALLING = "`Uninstalling {}...`"
     REBOOT_DONE_INS = "Done! Module(s) installed: `{}`"
     REBOOT_DONE_UNINS = "Done! Uninstalled `{}`!"
@@ -582,6 +590,9 @@ class UpdaterText(object):
     CHANGELOG_AT = "Changelog at {}"
     DOWNLOAD_SUCCESS = ("Download successful. Shutting down bot to "
                         "install the update package...")
+    DOWNLOAD_SUCCESS_WIN = ("Download successful and ready. Please "
+                            "shutdown the bot and follow the instructions "
+                            "in your terminal to apply the update manually")
     UPDATE_QUEUED = ("Use `.update upgrade` to download and install "
                      "the update package now")
 
@@ -594,6 +605,7 @@ class SideloaderText(object):
                      "command with the `force` argument!")
     SUCCESS = "Successfully installed `{}`! Rebooting..."
     LOG = "The module `{}` was sideloaded successfully!"
+    REBOOT_WIN = "Please reboot HyperUBot now to load the sideloaded module"
     RBT_CPLT = "Reboot complete!"
     INVALID_FILE = "Please reply to a valid file!"
 

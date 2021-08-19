@@ -13,6 +13,7 @@ from userbot.sysutils.registration import (update_all_modules,
                                            update_load_modules,
                                            update_user_modules,
                                            getAllModules)
+from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
 from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
                                           PhoneNumberBannedError,
@@ -110,24 +111,45 @@ def start_modules():
         raise KeyboardInterrupt
     except (BaseException, Exception) as e:
         log.critical(f"Failed to start modules: {e}", exc_info=True)
-        try:
-            option = _services._suggest_options(["Start Recovery",
-                                                 "Contact support",
-                                                 "Keep HyperUBot running",
-                                                 "Quit HyperUBot"])
-        except KeyboardInterrupt:
-            print()
-            raise KeyboardInterrupt
-        if option == 1:
-            _services._reboot_recovery(False)
-        elif option == 2:
-            log.info("That all modules are failing to start shouldn't "
-                     "happen. Feel free to contact us at Telegram "
-                     "'https://t.me/HyperUBotSupport' and keep your "
-                     "hyper.log file ready!")
-            raise KeyboardInterrupt
-        elif option == 4:
-            raise KeyboardInterrupt
+        options = ["Start Recovery",
+                   "Contact support",
+                   "Keep HyperUBot running",
+                   "Quit HyperUBot"]
+        contact_text = ("That all modules are failing to start shouldn't "
+                        "happen. Feel free to contact us at Telegram "
+                        "'https://t.me/HyperUBotSupport' and keep your "
+                        "hyper.log file ready!")
+        if isWindows():
+            options[0] += " (python recovery.py)"
+            options[1] = contact_text
+            options.pop()
+            options.pop()
+            _services._suggest_options(options)
+            while True:
+                try:
+                    inp = input("Keep HyperUBot running? (y/n): ")
+                except KeyboardInterrupt:
+                    print()
+                    raise KeyboardInterrupt
+                if inp.lower() in ("y", "yes"):
+                    break
+                elif inp.lower() in ("n", "no"):
+                    raise KeyboardInterrupt
+                else:
+                    log.warning("Invalid input. Try again...")
+        else:
+            try:
+                option = _services._suggest_options(options)
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
+            if option == 1:
+                vices._reboot_recovery(False)
+            elif option == 2:
+                log.info(contact_text)
+                raise KeyboardInterrupt
+            elif option == 4:
+                raise KeyboardInterrupt
     load_modules_count = modules.loaded_modules()
     sum_modules = len(getAllModules())
     if not load_modules_count:
@@ -153,29 +175,42 @@ def run_client():
                     "your API Key and/or API Hash. If so, just start "
                     "'Secure-Config-Updater' and update them with your "
                     "correct keys")
-        try:
-            option = _services._suggest_options(["Start Secure-Config-Updater",
-                                                 "Quit HyperUBot"])
-        except KeyboardInterrupt:
-            print()
+        options = ["Start Secure-Config-Updater",
+                   "Quit HyperUBot"]
+        if isWindows():
+            options[0] += " (python update_secure_cfg.py)"
+            options.pop()
+            _services._suggest_options(options)
             raise KeyboardInterrupt
-        if option == 1:
-            _services._start_scfg_updater()
-        elif option == 2:
-            raise KeyboardInterrupt
+        else:
+            try:
+                option = _services._suggest_options(options)
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
+            if option == 1:
+                _services._start_scfg_updater()
+            elif option == 2:
+                KeyboardInterrupt
     except PhoneNumberInvalidError:
         log.critical("Phone number is not valid", exc_info=True)
-        try:
-            option = _services._suggest_options(["Start String Session "
-                                                 "Generator",
-                                                 "Quit HyperUBot"])
-        except KeyboardInterrupt:
-            print()
+        options = ["Start String Session Generator",
+                   "Quit HyperUBot"]
+        if isWindows():
+            options[0] += " (python generate_session.py)"
+            options.pop()
+            _services._suggest_options(options)
             raise KeyboardInterrupt
-        if option == 1:
-            _services._start_session_gen()
-        elif option == 2:
-            raise KeyboardInterrupt
+        else:
+            try:
+                option = _services._suggest_options(options)
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
+            if option == 1:
+                _services._start_session_gen()
+            if option == 2:
+                raise KeyboardInterrupt
     except PhoneNumberBannedError as pbe:
         log.critical(f"Phone number banned: {pbe}", exc_info=True)
         log.warning("The phone number is banned, something HyperUBot can't "
@@ -185,22 +220,31 @@ def run_client():
         raise KeyboardInterrupt
     except (BaseException, Exception) as e:
         log.critical(f"Client has stopped: {e}", exc_info=True)
-        try:
-            option = _services._suggest_options(["Start Recovery",
-                                                 "Contact support",
-                                                 "Quit HyperUBot"])
-        except KeyboardInterrupt:
-            print()
+        options = ["Start Recovery",
+                   "Contact support",
+                   "Quit HyperUBot"]
+        contact_text = ("If you facing issues with HyperUBot contact us at "
+                        "Telegram 'https://t.me/HyperUBotSupport' and keep "
+                        "your hyper.log file ready!")
+        if isWindows():
+            options[0] += " (python recovery.py)"
+            options[1] = contact_text
+            options.pop()
+            _services._suggest_options(options)
             raise KeyboardInterrupt
-        if option == 1:
-            _services._reboot_recovery(False)
-        elif option == 2:
-            log.info("If you facing issues with HyperUBot contact us at "
-                     "Telegram 'https://t.me/HyperUBotSupport' and keep "
-                     "your hyper.log file ready!")
-            raise KeyboardInterrupt
-        elif option == 3:
-            raise KeyboardInterrupt
+        else:
+            try:
+                option = _services._suggest_options(options)
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
+            if option == 1:
+                _services._reboot_recovery(False)
+            elif option == 2:
+                log.info(contact_text)
+                raise KeyboardInterrupt
+            elif option == 3:
+                raise KeyboardInterrupt
     return
 
 

@@ -18,6 +18,7 @@ from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
+from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
 import userbot.include.cas_api as cas
 import userbot.include.git_api as git
@@ -163,6 +164,9 @@ async def shutdown(power_off):
 
 @ehandler.on(command="reboot", hasArgs=True, outgoing=True)
 async def restart(power_off):  # Totally not a shutdown kang *sips whiskey*
+    if isWindows():
+        await power_off.edit(msgRep.RESTART_UNSUPPORTED)
+        return
     cmd_args = power_off.pattern_match.group(1).split(" ", 1)
     if cmd_args[0] == "safemode":
         setConfig("REBOOT_SAFEMODE", True)
