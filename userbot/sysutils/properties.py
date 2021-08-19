@@ -82,23 +82,21 @@ class _SysProperties:
         for section in self.__parser.sections():
             if section == "SYSTEM":
                 section_found = True
-                for k, v in self.__parser.items(section):
-                    value = str(value)
-                    if value.lower() == "false":
-                        value = "no"
-                    elif value.lower() == "true":
-                        value = "yes"
-                    try:
-                        self.__parser["SYSTEM"][key.lower()] = value
-                        with open(self.__path, "w") as propfile:
-                            self.__parser.write(propfile)
-                        propfile.close()
-                        prop_set = True
-                    except Exception:
-                        log.error("Failed to update sysprops "
-                                  f"(requested by {os.path.basename(caller)})",
-                                  exc_info=True)
-                    break
+                value = str(value)
+                if value.lower() == "false":
+                    value = "no"
+                elif value.lower() == "true":
+                    value = "yes"
+                try:
+                    self.__parser["SYSTEM"][key.lower()] = value
+                    with open(self.__path, "w") as propfile:
+                        self.__parser.write(propfile)
+                    propfile.close()
+                    prop_set = True
+                except Exception:
+                    log.error("Failed to update sysprops "
+                              f"(requested by {os.path.basename(caller)})",
+                              exc_info=True)
                 break
         if not section_found:
             log.warning(f"prop '{key}' not set as system properties "
