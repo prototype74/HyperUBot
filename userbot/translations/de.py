@@ -116,6 +116,8 @@ class SystemToolsText(object):
     SYSD_NEOFETCH_REQ = ("`Das Paket neofetch ist erforderlich, um "
                          "Systeminformation anzuzeigen`")
     RESTART = "`Wird neugestartet...`"
+    RESTART_UNSUPPORTED = ("`Reboot wird auf Windows nicht unterstüzt aber "
+                           "Kopf hoch! Strg+C funktioniert weiterhin noch`")
     RESTART_LOG = "Userbot wird neugestartet!"
     RESTARTED = "Neustart abgeschlossen!"
     GENERAL = "Allgemein"
@@ -584,6 +586,12 @@ class PackageManagerText(object):
                       "deinstalliert werden, bitte gib nur einen Namen an!")
     NOT_IN_USERSPACE = ("`{}` ist kein gültiger Name für ein "
                         "Userspace-Modul! Prozess angehalten!")
+    INSTALL_WIN = ("Die folgenden Module wurden installiert: "
+                   "`{}`\nBitte starten sie HyperUBot neu, um die "
+                   "neu installierte Module zu laden")
+    UNINSTALL_WIN = ("Ein folgender Modul wurde deinstalliert: "
+                     "`{}`\nBitte starten sie HyperUBot neu, um den "
+                     "entfernten Modul zu entladen")
     UNINSTALLING = "`Deinstalliere {}...`"
     REBOOT_DONE_INS = "Fertig! Deinstallierte Module: `{}`"
     REBOOT_DONE_UNINS = "Fertig! `{}` wurde deinstalliert!"
@@ -616,6 +624,10 @@ class UpdaterText(object):
     DOWNLOAD_SUCCESS = ("Download abgeschlossen. Der Bot wird "
                         "heruntergefahren, um das Update-Paket zu "
                         "installieren...")
+    DOWNLOAD_SUCCESS_WIN = ("Download abgeschlossen und bereit. Bitte "
+                            "fahre HyperUBot herunter und folge die "
+                            "Anweisungen im Terminal, um das Update-Paket "
+                            "manuell zu installieren")
     UPDATE_QUEUED = ("Führe `.update upgrade` aus, um das Update-Paket "
                      "jetzt herunterzuladen und zu installieren")
 
@@ -629,6 +641,8 @@ class SideloaderText(object):
                      "möchten!")
     SUCCESS = "`{}` erfolgreich installiert! Wird neugestartet..."
     LOG = "Das Modul `{}` wurde erfolgrech aus dem Sideload installiert!"
+    REBOOT_WIN = ("Bitte starte HyperUBot jetzt neu, um das geladene "
+                  "Sideload-Modul zu starten")
     RBT_CPLT = "Neustart abgeschlossen!"
     INVALID_FILE = "Bitte antworte auf eine gültige Datei!"
 
