@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import SAFEMODE
+from userbot import _setprop, SAFEMODE
 import userbot.include.git_api as git
 from userbot.include.aux_funcs import event_log, sizeStrMaker
 from userbot.include.language_processor import (PackageManagerText as msgRep,
@@ -21,7 +21,6 @@ from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
 import requests
 import os
-import time
 from logging import getLogger
 
 log = getLogger(__name__)
@@ -174,20 +173,20 @@ async def universe_checker(msg):
                 md_installed_string += md
             else:
                 md_installed_string += ", " + md
-        if isWindows():
-            log.info("Manual reboot required to load installed module(s)")
-            await msg.edit(msgRep.INSTALL_WIN.format(md_installed_string))
-        else:
-            log.info("Rebooting userbot...")
-            await msg.edit(msgRep.DONE_RBT)
-            time.sleep(1)  # just so we can actually see a message
         if LOGGING:
             await event_log(msg, "MODULE INSTALL",
                             custom_text=msgRep.INSTALL_LOG.format(
                                 md_installed_string))
-        if not isWindows():
-            # TODO: proper implementation
-            await msg.edit(msgRep.REBOOT_DONE_INS.format(md_installed_string))
+        if isWindows():
+            log.info("Manual reboot required to load installed module(s)")
+            await msg.edit(msgRep.INSTALL_WIN.format(md_installed_string))
+        else:
+            await msg.edit(msgRep.DONE_RBT)
+            _setprop("reboot", True)
+            _setprop("rebootchatid", msg.chat_id)
+            _setprop("rebootmsgid", msg.message.id)
+            _setprop("rebootmsg", msgRep.REBOOT_DONE_INS.format(
+                md_installed_string))
             setConfig("REBOOT", True)
             await msg.client.disconnect()
     elif cmd_args[0].lower() == "uninstall":
@@ -212,18 +211,18 @@ async def universe_checker(msg):
                 return
             os.remove(os.path.join(USER_MODULES_DIR, modName + ".py"))
         log.info(f"Module '{modNames}' has been uninstalled from userspace")
+        if LOGGING:
+            await event_log(msg, "MODULE UNINSTALL",
+                            custom_text=msgRep.UNINSTALL_LOG.format(modNames))
         if isWindows():
             log.info("Manual reboot required to unload uninstalled module(s)")
             await msg.edit(msgRep.UNINSTALL_WIN.format(modNames))
         else:
-            log.info("Rebooting userbot...")
             await msg.edit(msgRep.DONE_RBT)
-            time.sleep(1)  # just so we can actually see a message
-        if LOGGING:
-            await event_log(msg, "MODULE UNINSTALL",
-                            custom_text=msgRep.UNINSTALL_LOG.format(modNames))
-        if not isWindows():
-            await msg.edit(msgRep.REBOOT_DONE_UNINS.format(modNames))
+            _setprop("reboot", True)
+            _setprop("rebootchatid", msg.chat_id)
+            _setprop("rebootmsgid", msg.message.id)
+            _setprop("rebootmsg", msgRep.REBOOT_DONE_UNINS.format(modNames))
             if SAFEMODE:
                 setConfig("REBOOT_SAFEMODE", True)
             setConfig("REBOOT", True)

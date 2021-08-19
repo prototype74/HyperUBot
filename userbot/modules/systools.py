@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import PROJECT, SAFEMODE
+from userbot import _setprop, PROJECT, SAFEMODE
 from userbot.include.aux_funcs import (event_log, sizeStrMaker, pinger,
                                        getGitReview)
 from userbot.include.language_processor import (SystemToolsText as msgRep,
@@ -172,10 +172,12 @@ async def restart(power_off):  # Totally not a shutdown kang *sips whiskey*
         setConfig("REBOOT_SAFEMODE", True)
     setConfig("REBOOT", True)
     await power_off.edit(msgRep.RESTART)
-    time.sleep(1)  # just so we can actually see a message
     if getConfig("LOGGING"):
         await event_log(power_off, "RESTART", custom_text=msgRep.RESTART_LOG)
-    await power_off.edit(msgRep.RESTARTED)
+    _setprop("reboot", True)
+    _setprop("rebootchatid", power_off.chat_id)
+    _setprop("rebootmsgid", power_off.message.id)
+    _setprop("rebootmsg", msgRep.RESTARTED)
     await power_off.client.disconnect()
 
 
