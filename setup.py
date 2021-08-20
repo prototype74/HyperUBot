@@ -89,9 +89,9 @@ def _check_setup_req() -> bool:
         for elem in out_json:
             name = elem.get("name")
             ver = elem.get("version")
-            if (name == "Telethon" or name == "pyAesCrypt" or
-                name == "cffi") and len(setup_req) < 3:
-                 setup_req[name] = ver
+            if ((name == "Telethon" or name == "pyAesCrypt" or
+                 name == "cffi") and len(setup_req) < 3):
+                setup_req[name] = ver
     except Exception as e:
         print(setColorText(f"Unable to get installed packages: {e}",
                            Colors.RED))
@@ -137,7 +137,8 @@ def _check_setup_req() -> bool:
 def _install_requirements():
     try:
         check_call(
-            [PY_EXEC, "-m", "pip", "install", "-r", "requirements.txt"])
+            [PY_EXEC, "-m", "pip", "install", "-r", "requirements.txt"],
+            stderr=DEVNULL)
     except Exception as e:
         print(setColorText(
             f"Failed to install pip requirements: {e}", Colors.RED))
