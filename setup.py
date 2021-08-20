@@ -61,10 +61,13 @@ def _userbot_installed() -> bool:
 def _install_package(name: str, upgrade: bool = False) -> bool:
     try:
         if upgrade:
+            print(f"Upgrading {name} package...")
             command = [PY_EXEC, "-m", "pip", "install", "--upgrade", name]
         else:
+            print(f"Installing {name} package...")
             command = [PY_EXEC, "-m", "pip", "install", name]
         check_call(command, stdout=DEVNULL, stderr=DEVNULL)
+        print(f"{name} package installed")
         return True
     except Exception as e:
         if upgrade:
@@ -77,9 +80,11 @@ def _install_package(name: str, upgrade: bool = False) -> bool:
 
 
 def _check_setup_req() -> bool:
+    print("Checking for required packages...")
     setup_req = {}
     try:
-        out = check_output([PY_EXEC, "-m", "pip", "list", "--format", "json"])
+        out = check_output([PY_EXEC, "-m", "pip", "list", "--format", "json"],
+                           stderr=DEVNULL)
         out_json = json.loads(out)
         for elem in out_json:
             name = elem.get("name")
@@ -87,13 +92,12 @@ def _check_setup_req() -> bool:
             if (name == "Telethon" or name == "pyAesCrypt" or
                 name == "cffi") and len(setup_req) < 3:
                  setup_req[name] = ver
-    except:
+    except Exception as e:
+        print(setColorText(f"Unable to get installed packages: {e}",
+                           Colors.RED))
         return False
 
     try:
-        print()
-        print("Checking for required packages...")
-        print()
         # Telethon
         if not setup_req.get("Telethon"):
             if not _install_package("Telethon"):
@@ -274,7 +278,11 @@ def main():
                 print(setColorText("Invalid input. Try again...",
                                    Colors.YELLOW))
 
-    if not _check_setup_req():
+    print()
+    check_setup_req = _check_setup_req()
+    print()
+
+    if not check_setup_req:
         print(setColorText("All or some packages required for Setup Assistant "
                            "are not present. Setup Assistant requires "
                            "'Telethon>=1.23.0', 'pyAesCrypt>=6.0.0' and "
