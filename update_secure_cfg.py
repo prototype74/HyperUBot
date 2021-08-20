@@ -49,6 +49,39 @@ def setColorText(text: str, color: Colors) -> str:
 
 
 try:
+    from cffi import __version__
+except:
+    print(setColorText("cffi is not installed!", Colors.RED))
+    if IS_WINDOWS:
+        print(setColorText("Please install cffi package by "
+                           "executing 'pip install cffi'",
+                           Colors.YELLOW))
+    else:
+        print(setColorText("Please install cffi package by "
+                           "executing 'python3 -m pip install cffi'",
+                           Colors.YELLOW))
+    quit(1)
+
+try:
+    # just to ensure proper version is installed (required by pyAesCrypt)
+    cffi_ver = tuple(map(int, __version__.split(".")))
+    if cffi_ver < (1, 14, 6):
+        print(setColorText("cffi version 1.14.6 is required. "
+                           f"Current version is {__version__}", Colors.RED))
+        if IS_WINDOWS:
+            print(setColorText("Please upgrade cffi package by "
+                               "executing 'pip install --upgrade cffi'",
+                               Colors.YELLOW))
+        else:
+            print(setColorText("Please install cffi package by "
+                               "executing 'python3 -m pip install --upgrade "
+                               "cffi'", Colors.YELLOW))
+        quit()
+except Exception as e:
+    print(setColorText("Unable to check cffi version: {e}", Colors.RED))
+    quit(1)
+
+try:
     import pyAesCrypt
 except:
     print(setColorText("pyAesCrypt is not installed!", Colors.RED))
