@@ -120,7 +120,7 @@ def _check_setup_req() -> bool:
                 return False
         else:
             cffi_version = tuple(map(int, setup_req.get("cffi").split(".")))
-            if cffi_version < (1, 23, 0):
+            if cffi_version < (1, 14, 6):
                 if not _install_package("cffi", True):
                     return False
     except Exception as e:
