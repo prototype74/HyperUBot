@@ -58,6 +58,24 @@ def _userbot_installed() -> bool:
     return True
 
 
+def _install_package(name: str, upgrade: bool = False) -> bool:
+    try:
+        if upgrade:
+            command = [PY_EXEC, "-m", "pip", "install", "--upgrade", name]
+        else:
+            command = [PY_EXEC, "-m", "pip", "install", name]
+        check_call(command, stdout=DEVNULL, stderr=DEVNULL)
+        return True
+    except Exception as e:
+        if upgrade:
+            print(setColorText(f"Failed to upgrade {name} package: {e}",
+                               Colors.RED))
+        else:
+            print(setColorText(f"Failed to install {name} package: {e}",
+                               Colors.RED))
+    return False
+
+
 def _check_setup_req() -> bool:
     setup_req = {}
     try:
@@ -66,9 +84,9 @@ def _check_setup_req() -> bool:
         for elem in out_json:
             name = elem.get("name")
             ver = elem.get("version")
-            if elem.get("name") == "Telethon" or \
-               elem.get("name") == "pyAesCrypt":
-                setup_req[name] = ver
+            if (name == "Telethon" or name == "pyAesCrypt" or
+                name == "cffi") and len(setup_req) < 3:
+                 setup_req[name] = ver
     except:
         return False
 
@@ -76,63 +94,38 @@ def _check_setup_req() -> bool:
         print()
         print("Checking for required packages...")
         print()
+        # Telethon
         if not setup_req.get("Telethon"):
-            try:
-                check_call(
-                    [PY_EXEC, "-m", "pip", "install", "Telethon"],
-                    stdout=DEVNULL,
-                    stderr=DEVNULL)
-            except Exception as e:
-                print(
-                    setColorText(
-                        f"Failed to install Telethon package: {e}",
-                        Colors.RED))
+            if not _install_package("Telethon"):
                 return False
         else:
             telethon_version = tuple(
                 map(int, setup_req.get("Telethon").split(".")))
             if telethon_version < (1, 23, 0):
-                try:
-                    check_call(
-                        [PY_EXEC, "-m", "pip", "install", "--upgrade",
-                         "Telethon"],
-                        stdout=DEVNULL,
-                        stderr=DEVNULL)
-                except Exception as e:
-                    print(
-                        setColorText(
-                            f"Failed to upgrade Telethon package: {e}",
-                            Colors.RED))
+                if not _install_package("Telethon", True):
                     return False
+        # pyAesCrypt
         if not setup_req.get("pyAesCrypt"):
-            try:
-                check_call(
-                    [PY_EXEC, "-m", "pip", "install", "pyAesCrypt"],
-                    stdout=DEVNULL,
-                    stderr=DEVNULL)
-            except Exception as e:
-                print(
-                    setColorText(
-                        f"Failed to install pyAesCrypt package: {e}",
-                        Colors.RED))
+            if not _install_package("pyAesCrypt"):
                 return False
         else:
             pyAesCrypt_vesion = tuple(
                 map(int, setup_req.get("pyAesCrypt").split(".")))
             if pyAesCrypt_vesion < (6, 0, 0):
-                try:
-                    check_call(
-                        [PY_EXEC, "-m", "pip", "install", "--upgrade",
-                         "pyAesCrypt"],
-                        stdout=DEVNULL,
-                        stderr=DEVNULL)
-                except Exception as e:
-                    print(
-                        setColorText(
-                            f"Failed to upgrade pyAesCrypt package: {e}",
-                            Colors.RED))
+                if not _install_package("pyAesCrypt", True):
                     return False
-    except:
+        # cffi
+        if not setup_req.get("cffi"):
+            if not _install_package("cffi"):
+                return False
+        else:
+            cffi_version = tuple(map(int, setup_req.get("cffi").split(".")))
+            if cffi_version < (1, 23, 0):
+                if not _install_package("cffi", True):
+                    return False
+    except Exception as e:
+        print(setColorText(f"Failed to check requirements: {e}",
+                           Colors.RED))
         return False
     return True
 
@@ -284,9 +277,10 @@ def main():
     if not _check_setup_req():
         print(setColorText("All or some packages required for Setup Assistant "
                            "are not present. Setup Assistant requires "
-                           "'Telethon>=1.23.0' and 'pyAesCrypt>=6.0.0'. "
-                           "Make sure these packages are installed in order "
-                           "to continue. Exiting Setup Assistant...",
+                           "'Telethon>=1.23.0', 'pyAesCrypt>=6.0.0' and "
+                           "'cffi>=1.14.6'. Make sure these packages are "
+                           "installed in order to continue. "
+                           "Exiting Setup Assistant...",
                            Colors.RED))
         return
 
