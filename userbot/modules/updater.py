@@ -6,6 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot import _setprop
 from userbot.include.aux_funcs import getGitReview
 from userbot.include.git_api import getLatestData
 from userbot.include.language_processor import (UpdaterText as msgRep,
@@ -79,8 +80,15 @@ def _get_commit_id():
     return commit_id
 
 
-def _set_autoupdate(commit_id: str) -> bool:
+def _set_autoupdate(chat_id: int, msg_id: int,
+                    new_version: str, commit_id: str) -> bool:
     try:
+        _setprop("reboot", True)
+        _setprop("rebootchatid", chat_id)
+        _setprop("rebootmsgid", msg_id)
+        _setprop("rebootmsg", msgRep.UPDATE_SUCESS.format(new_version))
+        _setprop("updateversion", new_version)
+        _setprop("updatefailedmsg", msgRep.UPDATE_FAIL.format(new_version))
         setConfig("UPDATE_COMMIT_ID", commit_id)
         setConfig("START_RECOVERY", True)
         return True
@@ -142,6 +150,7 @@ async def updater(event):
                       exc_info=True)
             _LATEST_VER.clear()
             return
+        release_ver = _LATEST_VER.get("version")
         _LATEST_VER.clear()
         commit_id = _get_commit_id()
         if not commit_id:
@@ -152,7 +161,8 @@ async def updater(event):
             await event.edit(msgRep.DOWNLOAD_SUCCESS_WIN)
         else:
             await event.edit(msgRep.DOWNLOAD_SUCCESS)
-            if _set_autoupdate(commit_id):
+            if _set_autoupdate(event.chat_id, event.message.id,
+                               release_ver, commit_id):
                 await event.client.disconnect()
             else:
                 await event.edit(msgRep.START_RECOVERY_FAILED)
@@ -208,6 +218,7 @@ async def updater(event):
         return
 
     if current_version < release_version:
+        _LATEST_VER["version"] = tag_version
         try:
             assets = release_data.get("assets", [])
             if assets:
@@ -256,7 +267,8 @@ async def updater(event):
             else:
                 await event.edit(reply.replace(msgRep.DOWNLOADING_RELEASE,
                                                msgRep.DOWNLOAD_SUCCESS))
-                if _set_autoupdate(commit_id):
+                if _set_autoupdate(event.chat_id, event.message.id,
+                                   tag_version, commit_id):
                     await event.client.disconnect()
                 else:
                     await event.edit(

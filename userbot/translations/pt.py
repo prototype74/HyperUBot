@@ -620,6 +620,9 @@ class UpdaterText(object):
                             "manually")  # translation needed
     UPDATE_QUEUED = ("Usa `.update upgrade` para fazer download e "
                      "instalar o pacote de atualizações agora.")
+    # translation needed
+    UPDATE_SUCESS = "HyperUBot updated to {} successfully!"
+    UPDATE_FAIL = "Failed to update HyperUBot to {}"  # translation needed
 
 
 class SideloaderText(object):

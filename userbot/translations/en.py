@@ -596,6 +596,8 @@ class UpdaterText(object):
                             "manually")
     UPDATE_QUEUED = ("Use `.update upgrade` to download and install "
                      "the update package now")
+    UPDATE_SUCESS = "HyperUBot updated to {} successfully!"
+    UPDATE_FAIL = "Failed to update HyperUBot to {}"
 
 
 class SideloaderText(object):

@@ -1177,6 +1177,10 @@ class UpdaterText(object):
         lang, _getframe().f_code.co_name, "DOWNLOAD_SUCCESS_WIN")
     UPDATE_QUEUED = getLangString(
         lang, _getframe().f_code.co_name, "UPDATE_QUEUED")
+    UPDATE_SUCESS = getLangString(
+        lang, _getframe().f_code.co_name, "UPDATE_SUCESS")
+    UPDATE_FAIL = getLangString(
+        lang, _getframe().f_code.co_name, "UPDATE_FAIL")
 
 
 class SideloaderText(object):
