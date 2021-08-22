@@ -177,11 +177,9 @@ async def updater(event):
 
     try:
         release_data = getLatestData("prototype74/HyperUBot")
-        if not release_data:
-            raise Exception
     except Exception:
         await event.edit(msgRep.UPDATE_FAILED)
-        log.error("Failed to get latest release")
+        log.error("Failed to get latest release", exc_info=True)
         return
 
     try:
