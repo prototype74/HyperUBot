@@ -22,12 +22,9 @@ def getData(repoURL):
 
 
 def getLatestData(repoURL):
-    try:
-        with url.urlopen(APIURL + repoURL + "/releases/latest") as data_raw:
-            repoData = json.loads(data_raw.read().decode())
-            return repoData
-    except:
-        return None
+    with url.urlopen(f"{APIURL}{repoURL}/releases/latest") as data_raw:
+        repoData = json.loads(data_raw.read().decode())
+    return repoData
 
 
 def getReleaseData(repoData, index):
