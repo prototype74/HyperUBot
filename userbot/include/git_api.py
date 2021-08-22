@@ -1,7 +1,7 @@
 import urllib.request as url
 import json
 
-VERSION = "1.2.0"
+VERSION = "1.2.1"
 APIURL = "https://api.github.com/repos/"
 
 
