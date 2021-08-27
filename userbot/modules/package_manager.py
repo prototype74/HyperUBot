@@ -312,7 +312,7 @@ async def _list_pkgs(command: str) -> str:
 
 
 async def _rebooter(event):
-    if isWindows() or SAFEMODE:
+    if isWindows() or SAFEMODE or getConfig("PKG_DISABLE_AUTO_REBOOT"):
         log.info("Manual reboot required to apply recent changes")
         await event.client.send_message(event.chat_id, msgRep.REBOOT_INFO)
     else:
