@@ -513,7 +513,8 @@ async def _install_pkgs(event, command: str):
     text += "\n"
     text += msgRep.INSTALLER_FINISHED
     await event.edit(text)
-    await _rebooter(event)
+    if do_update_mod_list:
+        await _rebooter(event)
     return
 
 
@@ -576,7 +577,8 @@ async def _uninstall_pkgs(event, module_names: str):
     text += "\n"
     text += msgRep.UNINSTALLER_FINISHED
     await event.edit(text)
-    await _rebooter(event)
+    if do_update_mod_list:
+        await _rebooter(event)
     return
 
 
