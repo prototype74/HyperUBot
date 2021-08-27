@@ -92,7 +92,8 @@ async def _update_pkg_list(event, repo_names=None):
     if not repos:
         # this is a "99.99% impossible" case but well
         # better safe than sorry
-        await event.edit(msgRep.REPO_LIST_EMPTY)
+        if event:
+            await event.edit(msgRep.REPO_LIST_EMPTY)
         return
 
     text = f"**{msgRep.PACKAGES_UPDATER}**\n\n"
@@ -107,10 +108,12 @@ async def _update_pkg_list(event, repo_names=None):
         except:
             log.warning(f"[UPDATE] Invalid repo URL format: {r}")
             text += f"{warning} {msgRep.INVALID_REPO_URL}: {r}\n"
-            await event.edit(text)
+            if event:
+                await event.edit(text)
             continue
         text += f"{down} {msgRep.UPDATING.format(r_name)}\n"
-        await event.edit(text)
+        if event:
+            await event.edit(text)
         for i, repo in enumerate(pkg_repos):
             if r_author == repo.get("author", "Unknown") and \
                r_name == repo.get("name", "Unknown"):
@@ -143,7 +146,8 @@ async def _update_pkg_list(event, repo_names=None):
                 text = text.replace(
                     f"{down} {msgRep.UPDATING.format(r_name)}",
                     f"{red_cross} {msgRep.UPDATE_FAILED.format(r_name)}")
-        await event.edit(text)
+        if event:
+            await event.edit(text)
     if list_modified:
         _pkg_list["last_updated"] = str(datetime.now())
         _pkg_list["repos"] = pkg_repos
@@ -151,11 +155,11 @@ async def _update_pkg_list(event, repo_names=None):
         log.info("[UPDATE] Repo data updated")
     text += "\n"
     text += msgRep.UPDATER_FINISHED
-    await event.edit(text)
+    if event:
+        await event.edit(text)
     return
 
 
-"""
 def _update_needed() -> bool:
     global _pkg_list
     try:
@@ -165,7 +169,6 @@ def _update_needed() -> bool:
     except:
         pass
     return False
-"""
 
 
 def _get_all_user_modules() -> list:
@@ -181,7 +184,7 @@ def _get_all_user_modules() -> list:
     return user_module_list
 
 
-def _list_pkgs(command: str) -> str:
+async def _list_pkgs(command: str) -> str:
     installed_only = False
     repos_only = False
     if command:
@@ -190,6 +193,10 @@ def _list_pkgs(command: str) -> str:
         elif command.lower() == "-repos":
             repos_only = True
     user_module_list = _get_all_user_modules()
+    if getConfig("PKG_ENABLE_AUTO_UPDATE"):
+        if _update_needed():
+            log.info("Auto updating repo data")
+            await _update_pkg_list(None)
     text = f"**{msgRep.LIST_OF_PACKAGES}**\n\n"
     no_entry = u"\u26D4"  # no_entry emoji
     negative_cross = u"\u274E"  # green negative cross mark emoji
@@ -662,7 +669,7 @@ async def package_manager(event):
         await _update_pkg_list(event, sec_arg)
     elif first_arg.lower() == "list":
         await event.edit(msgRep.LOAD_PGKS)
-        text = _list_pkgs(sec_arg)
+        text = await _list_pkgs(sec_arg)
         await event.edit(text)
     elif first_arg.lower() == "install":
         if SAFEMODE:
