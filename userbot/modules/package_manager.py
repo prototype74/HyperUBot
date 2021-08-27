@@ -230,8 +230,7 @@ async def _list_pkgs(command: str) -> str:
                 text += f"- {module}{info}\n"
         else:
             text += f"__{msgRep.NO_MODULES_INSTALLED}__\n"
-        if not installed_only:
-            text += "\n"
+        text += "\n"
     global _pkg_list
     pkg_repos = _pkg_list.get("repos", [])
     installed_already = False
@@ -289,6 +288,7 @@ async def _list_pkgs(command: str) -> str:
             text += "\n"
     elif not installed_only:
         text += f"__{msgRep.REPOS_NO_DATA.format('`.pkg update`')}__\n"
+        text += "\n"
 
     if installed_already:
         text += f"{check_mark} __{msgRep.INSTALLED_UPGRADEABLE}__\n"
@@ -300,7 +300,9 @@ async def _list_pkgs(command: str) -> str:
         text += f"{no_entry} __{msgRep.DISABLED}__\n"
     if equal_module:
         text += f"{info_emoji} __{msgRep.EQUAL_NAME}__\n"
-    text += "\n"
+    if any(x for x in (installed_already, installed_not_loaded,
+                       mod_not_running, disabled_module, equal_module)):
+        text += "\n"
     time = _pkg_list.get("last_updated", None)
     try:
         time = datetime.fromisoformat(time)
