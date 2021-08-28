@@ -31,6 +31,7 @@ import os
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 _pkg_manager = _PackageManagerJSON()
+_pkg_manager._init_json()
 _pkg_list = _pkg_manager._read_json()
 _pkg_list = _pkg_manager._check_packages(_pkg_list)
 _attempts = 0
@@ -344,6 +345,7 @@ async def _install_pkgs(event, command: str):
 
     queued_mod_to_install = []
     global _pkg_list
+    _pkg_list = _pkg_manager._read_json()
     pkg_repos = _pkg_list.get("repos", [])
 
     if not pkg_repos:
@@ -530,6 +532,7 @@ async def _uninstall_pkgs(event, module_names: str):
         await event.edit(msgRep.NO_MODULES_INSTALLED)
         return
     global _pkg_list
+    _pkg_list = _pkg_manager._read_json()
     pkg_mod_sources = _pkg_list.get("module_sources", [])
     do_update_mod_list = False
     text = f"**{msgRep.PACKAGE_UNINSTALLER}**\n\n"

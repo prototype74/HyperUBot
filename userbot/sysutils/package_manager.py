@@ -21,7 +21,25 @@ class _PackageManagerJSON:
                                        "package_lists.json")
         self.__init_failed = False
 
-    def __init_json(self):
+    def _init_json(self, force_init: bool = False):
+        special_caller = [os.path.join("userbot", "modules",
+                                       "package_manager.py"),
+                          os.path.join("userbot", "sysutils",
+                                       "package_manager.py")]
+        sys_caller = getouterframes(currentframe(), 2)[1].filename
+        valid_caller = False
+        for caller in special_caller:
+            if sys_caller.endswith(caller):
+                valid_caller = True
+                break
+        if not valid_caller:
+            log.warning("Not a valid caller "
+                        f"(requested by {os.path.basename(caller)})")
+            return
+        if os.path.exists(self.__filename) and \
+           os.path.isfile(self.__filename) and \
+           not force_init:
+            return
         try:
             with open(self.__filename, "w") as js:
                 json.dump({"last_updated": None, "repos": [],
@@ -42,11 +60,8 @@ class _PackageManagerJSON:
             log.warning("Not a valid caller "
                         f"(requested by {os.path.basename(caller)})")
             return
-        if not os.path.exists(self.__filename) and \
-           not os.path.isfile(self.__filename):
-            self.__init_json()
         data = {}
-        reset = False
+        reread = False
         try:
             with open(self.__filename, "r") as js:
                 try:
@@ -54,20 +69,29 @@ class _PackageManagerJSON:
                 except:
                     log.error("JSON file is invalid. Resetting...")
                     if not self.__init_failed:
-                        self.__init_json()
-                        reset = True
+                        self._init_json(True)
+                        reread = True
             js.close()
-            if reset:
-                # try to read it again after reset
-                with open(self.__filename, "r") as js:
-                    try:
-                        data = json.load(js)
-                    except:
-                        pass
-                js.close()
-            return data
+            if not reread:
+                return data
+        except FileNotFoundError:
+            if not self.__init_failed:
+                log.error("JSON file not found. Initializing data...",
+                          exc_info=True)
+                self._init_json(True)
+                reread = True
+            else:
+                log.error("JSON file not found", exc_info=True)
         except Exception:
             log.error("Failed to read JSON", exc_info=True)
+        if reread:
+            with open(self.__filename, "r") as js:
+                try:
+                    data = json.load(js)
+                except:
+                    pass
+            js.close()
+            return data
         return {}
 
     def _save_json(self, new_data: dict):
