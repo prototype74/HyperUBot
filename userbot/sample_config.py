@@ -47,3 +47,22 @@ class ConfigClass(object):
     #          community repo :)
     #
     COMMUNITY_REPOS = []
+
+    #
+    # Allow the bot to sideload modules from Telegram chats.
+    # By enabling this config you accept the risk of
+    # sideloading modules
+    #
+    ALLOW_SIDELOAD = False
+
+    #
+    # Automactially update the list of repository data when
+    # listing packages if the last update was about an hour ago
+    #
+    PKG_ENABLE_AUTO_UPDATE = False
+
+    #
+    # Don't reboot automatically if new user modules are installed
+    # or uninstalled
+    #
+    PKG_DISABLE_AUTO_REBOOT = False
