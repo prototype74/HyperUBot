@@ -19,11 +19,49 @@ from userbot.sysutils.registration import (register_cmd_usage,
 from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
 from logging import getLogger
+import json
 import os
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 USER_MODULES_DIR = os.path.join(".", "userbot", "modules_user")
+
+
+def _update_module_source(filename: str):
+    if not filename:
+        return
+    pkg_lists = os.path.join(".", "userbot", "userdata", "package_lists.json")
+    if not os.path.exists(pkg_lists):
+        return
+    pkg_data = {}
+    try:
+        with open(pkg_lists, "r") as pkg_json:
+            pkg_data = json.load(pkg_json)
+        pkg_json.close()
+    except:
+        log.error("Failed to read JSON", exc_info=True)
+        return
+
+    module_sources = pkg_data.get("module_sources", [])
+    new_data = {"name": filename, "author": "Unknown", "repo": "Unknown"}
+    for i, module in enumerate(module_sources):
+        mod_name = module.get("name", "")
+        if filename == mod_name:
+            module_sources[i] = new_data
+            break
+    else:
+        module_sources.append(new_data)
+
+    pkg_data["module_sources"] = module_sources
+
+    try:
+        with open(pkg_lists, "w") as pkg_json:
+            json.dump(pkg_data, pkg_json, indent=4)
+        pkg_json.close()
+        log.info("Module sources list updated")
+    except:
+        log.error("Failed to write JSON", exc_info=True)
+    return
 
 
 @ehandler.on(command="sideload", alt="install", hasArgs=True, outgoing=True)
@@ -47,6 +85,7 @@ async def sideload(event):
             await event.edit(msgRep.MODULE_EXISTS.format(file.name))
             return
         await event.client.download_media(message=msg, file=dest_path)
+        _update_module_source(file.name[:-3])
         log.info(f"Module '{file.name[:-3]}' has been installed to userpace")
         if getConfig("LOGGING"):
             await event_log(event, "SIDELOAD",
