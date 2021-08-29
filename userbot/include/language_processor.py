@@ -1216,6 +1216,8 @@ class PackageManagerText(object):
         lang, _getframe().f_code.co_name, "NO_OPTION")
     PKG_HELP = getLangString(
         lang, _getframe().f_code.co_name, "PKG_HELP")
+    TEXT_TOO_LONG = getLangString(
+        lang, _getframe().f_code.co_name, "TEXT_TOO_LONG")
 
 
 class UpdaterText(object):

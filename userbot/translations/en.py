@@ -596,6 +596,8 @@ class PackageManagerText(object):
     UNKNOWN_OPTION = "Unknown option '{}'"
     NO_OPTION = "No option given"
     PKG_HELP = "Need help? Type {}"
+    TEXT_TOO_LONG = ("The list is too long to display it here. The list is "
+                     "printed in your bot's terminal")
 
 
 class UpdaterText(object):

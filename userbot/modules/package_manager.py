@@ -22,6 +22,7 @@ from userbot.sysutils.registration import (getUserModules,
                                            register_module_info)
 from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
+from telethon.errors import MessageTooLongError
 from datetime import datetime, timedelta
 from glob import glob
 from logging import getLogger
@@ -677,7 +678,20 @@ async def package_manager(event):
     elif first_arg.lower() == "list":
         await event.edit(msgRep.LOAD_PGKS)
         text = await _list_pkgs(sec_arg)
-        await event.edit(text)
+        try:
+            await event.edit(text)
+        except MessageTooLongError:
+            text = text.replace("*", "")
+            text = text.replace("__", "")
+            text = text.replace(u"\u26D4", "(-)")
+            text = text.replace(u"\u274E", "(x)")
+            text = text.replace(u"\u26A0", "/!\\")
+            text = text.replace(u"\u2705", "(+)")
+            text = text.replace(u"\u2139", "(i)")
+            print(text)
+            text_alt = f"**{msgRep.LIST_OF_PACKAGES}**\n\n"
+            text_alt += f"__{msgRep.TEXT_TOO_LONG}__"
+            await event.edit(text_alt)
     elif first_arg.lower() == "install":
         if SAFEMODE:
             await event.edit(msgRep.CANNOT_INSTALL_MODULES)
