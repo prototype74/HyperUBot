@@ -134,12 +134,6 @@ def modules_listing(error_text: str = None) -> str:
     if error_text:
         modules_listed += f"{error_text}\n\n"
 
-    modules_listed += (f"{msgRep.USAGE}:\n`.modules -d, --desc "
-                       f"[{msgRep.NUMBER_OF_MODULE}]`\n"
-                       f"`.modules -i, --info [{msgRep.NUMBER_OF_MODULE}]`\n"
-                       f"`.modules -u, --usage "
-                       f"[{msgRep.NUMBER_OF_MODULE}]`\n\n")
-
     sys_count, user_count = installed_modules()
 
     modules_listed += f"`{msgRep.SYSTEM_MODULES}: {sys_count}`\n"

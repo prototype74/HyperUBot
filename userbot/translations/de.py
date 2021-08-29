@@ -427,7 +427,6 @@ class GeneralMessages(object):
 class ModulesUtilsText(object):
     INVALID_ARG = "`Ungültiges Argument \"{}\"`"
     USAGE = "Anwendung"
-    NUMBER_OF_MODULE = "Modulnummer"
     AVAILABLE_MODULES = "Verfügbare Module"
     DISABLED_MODULES = "Deaktivierte Module"
     NAME_MODULE = "**{}-Modul**"
@@ -1052,13 +1051,26 @@ class ModuleUsages(object):
                                                  "Befehls>]"),
                                         "usage": ("Listet alle verfügbare "
                                                   "und registrierte Befehle")},
-                           "modules": {"args": ("[optional: <-d (--desc) "
-                                                "oder -i (--info) oder -u "
-                                                "(--usage) [Modulnummer]>]"),
-                                       "usage": ("Zeigt alle verfügbare, "
-                                                 "deaktivierte und "
-                                                 "fehlerhafte Module an "
-                                                 "einem Ort an.")}}
+                           "modules": {"args": ("<-option> [number of module "
+                                                "from the list]"),
+                                       "usage": ("\n`.modules -d [number of "
+                                                 "module from the list]`\n"
+                                                 "Shows the description of "
+                                                 "the specific module. "
+                                                 "Maybe some hidden "
+                                                 "information are there, "
+                                                 "who knows?\n\n"
+                                                 "`.modules -i [number of "
+                                                 "module from the list]`\n"
+                                                 "Shows information about "
+                                                 "the specific module like "
+                                                 "the name, author, version "
+                                                 "etc.\n\n"
+                                                 "`.modules -u [number of "
+                                                 "module from the list]`\n"
+                                                 "Reveals the secrets and "
+                                                 "the usage of the specific "
+                                                 "module")}}
 
     TERMINAL_USAGE = {"shell": {"args": "<Befehl>",
                                 "usage": ("Führt umgehend den gegebenen "

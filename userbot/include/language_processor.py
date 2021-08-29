@@ -876,8 +876,6 @@ class ModulesUtilsText(object):
         lang, _getframe().f_code.co_name, "INVALID_ARG")
     USAGE = getLangString(
         lang, _getframe().f_code.co_name, "USAGE")
-    NUMBER_OF_MODULE = getLangString(
-        lang, _getframe().f_code.co_name, "NUMBER_OF_MODULE")
     AVAILABLE_MODULES = getLangString(
         lang, _getframe().f_code.co_name, "AVAILABLE_MODULES")
     DISABLED_MODULES = getLangString(
