@@ -298,11 +298,11 @@ async def modules(event):
         await event.edit(modules_listing())
         return
 
-    if first_arg.lower() in ("-d", "--desc"):
+    if first_arg.lower() == "-d":
         desc = True
-    elif first_arg.lower() in ("-i", "--info"):
+    elif first_arg.lower() == "-i":
         info = True
-    elif first_arg.lower() in ("-u", "--usage"):
+    elif first_arg.lower() == "-u":
         usage = True
     else:
         await event.edit(modules_listing(msgRep.INVALID_ARG.format(first_arg)))
