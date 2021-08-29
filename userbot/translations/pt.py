@@ -555,7 +555,7 @@ class MiscText(object):
     RAND_NUM_GEN = "O número gerado entre `{}` e `{}`: **`{}`**"
 
 
-class PackageManagerText(object):
+class PackageManagerText(object):  # translation needed
     REPO_LIST_EMPTY = ("List of repositories is empty! Use "
                        "`.pkg update <owner/repo>` to add a new repository "
                        "or add them to your COMMUNITY_REPOS config")
@@ -668,6 +668,36 @@ class FeatureMgrText(object):  # translation needed
     ENABLE_FTR = "Name a command or feature to enable it!"
     ENABLE_FTR_FAIL = "Seems like I can't enable this command or feature"
     ENABLE_FTR_SUCCESS = "Command or feature '`{}`' has been enabled"
+
+
+class WelcomeText(object):  # translation needed
+    WELCOME_TO_HYPERUBOT = "Welcome to HyperUBot!"
+    INFO = ("You made it to run HyperUBot on your machine successfully. So "
+            "what's next? The following commands will help you to understand "
+            "your new userbot better and what options, features etc. "
+            "HyperUBot does offer for you")
+    INFO_STATUS = ("get the current status of HyperUBot such as the "
+                   "version, uptime etc. Useful to check if the bot is "
+                   "actually online.")
+    INFO_OR = "or"
+    INFO_HELP = ("lists all available commands and features from all "
+                 "modules to use. Pass the name of a command or feature "
+                 "(e.g. {}) to get the usage of the specific command or "
+                 "feature.")
+    INFO_MODULES = ("lists all built-in and user modules at one place. "
+                    "This command takes arguments to get further "
+                    "information of a module such as the description "
+                    "or usage.")
+    INFO_PKG = ("our package manager allows you to install new modules. "
+                "We made some user modules which can be downloaded with the "
+                "help of this command to allow the user to get new modules "
+                "without waiting for new updates for the bot. FIY there are "
+                "also modules made by the community. So make sure to check "
+                "them out too!")
+    INFO_SUPPORT = ("Questions about HyperUBot? Feel free to chat with us "
+                    "in our {}!")
+    INFO_SUPPORT_LINK = "support group"
+    INFO_FUN = "Have fun!"
 
 
 # Save your eyes from what may become the ugliest part of this userbot.

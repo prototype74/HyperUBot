@@ -1289,6 +1289,29 @@ class FeatureMgrText(object):
         lang, _getframe().f_code.co_name, "ENABLE_FTR_SUCCESS")
 
 
+class WelcomeText(object):
+    WELCOME_TO_HYPERUBOT = getLangString(
+        lang, _getframe().f_code.co_name, "WELCOME_TO_HYPERUBOT")
+    INFO = getLangString(
+        lang, _getframe().f_code.co_name, "INFO")
+    INFO_STATUS = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_STATUS")
+    INFO_OR = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_OR")
+    INFO_HELP = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_HELP")
+    INFO_MODULES = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_MODULES")
+    INFO_PKG = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_PKG")
+    INFO_SUPPORT = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_SUPPORT")
+    INFO_SUPPORT_LINK = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_SUPPORT_LINK")
+    INFO_FUN = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_FUN")
+
+
 class ModuleDescriptions(object):
     ADMIN_DESC = getLangString(
         lang, _getframe().f_code.co_name, "ADMIN_DESC")

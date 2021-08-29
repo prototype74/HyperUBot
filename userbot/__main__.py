@@ -184,6 +184,40 @@ async def check_last_reboot(client):
     return
 
 
+async def send_welcome_msg(client, ownerID: int):
+    from userbot.include.language_processor import WelcomeText as msg
+    log.info("Welcome to HyperUBot! You made it to run HyperUBot on your "
+             "machine. What's next? Get surprised by running the following "
+             "commands in any chat: .status, .help or .modules. Need help "
+             "with your new userbot? Chat with us in our support group "
+             "'https://t.me/HyperUBotSupport'. Have fun!")
+    robo_face = u"\U0001F916"
+    pager_emoji = u"\U0001F4DF"
+    page_emoji = u"\U0001F4C4"
+    disk_emoji = u"\U0001F4BE"
+    pkg_emoji = u"\U0001F4E6"
+    text = f"**{msg.WELCOME_TO_HYPERUBOT}** {robo_face}\n\n"
+    text += (f"{msg.INFO}:\n\n")
+    text += (f"{pager_emoji} `.status` - __{msg.INFO_STATUS}__\n\n")
+    text += (f"{page_emoji} `.listcmds` (__{msg.INFO_OR}__ `.help`) - "
+             f"__{msg.INFO_HELP.format('`.help status`')}__\n\n")
+    text += (f"{disk_emoji} `.modules` - __{msg.INFO_MODULES}__\n\n")
+    text += (f"{pkg_emoji} `.pkg` - __{msg.INFO_PKG}__\n\n")
+    supp_link = f"[{msg.INFO_SUPPORT_LINK}](https://t.me/HyperUBotSupport)"
+    text += (f"{msg.INFO_SUPPORT.format(supp_link)}\n\n")
+    text += msg.INFO_FUN
+    try:
+        await client.send_message(ownerID, text, link_preview=False)
+        try:
+            from telethon.tl.functions.messages import MarkDialogUnreadRequest
+            await client(MarkDialogUnreadRequest(ownerID, True))
+        except:
+            pass
+    except:
+        log.warning("Failed to send welcome message")
+    return
+
+
 def run_client():
     try:
         log.info("Starting Telegram client")
@@ -191,6 +225,10 @@ def run_client():
             me = tgclient.loop.run_until_complete(tgclient.get_me())
             log.info(f"You're running {PROJECT} v{VERSION} as "
                      f"{me.first_name} (ID: {me.id})")
+            if not _getprop("setupcompleted"):
+                asyncio.get_event_loop().run_until_complete(
+                    send_welcome_msg(tgclient, me.id))
+                _setprop("setupcompleted", True)
             asyncio.get_event_loop().run_until_complete(
                 check_last_reboot(tgclient))
             tgclient.run_until_disconnected()

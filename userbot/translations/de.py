@@ -687,6 +687,38 @@ class FeatureMgrText(object):
     ENABLE_FTR_SUCCESS = "Der Befehl oder das Feature '`{}`' wurde aktiviert"
 
 
+class WelcomeText(object):
+    WELCOME_TO_HYPERUBOT = "Willkommen bei HyperUBot!"
+    INFO = ("Sie haben es geschafft, HyperUBot erfolgreich auf ihrem Gerät "
+            "zum laufen zu bringen. Was kommt als nächstes? Die folgenden "
+            "Befehle werden ihnen helfen, ihren neuen Userbot besser zu "
+            "verstehen und welche Optionen, Features usw. HyperUBot ihnen "
+            "bieten kann")
+    INFO_STATUS = ("holt den aktuellen Status von HyperUBot sowie die "
+                   "Version, Laufzeit usw. Sehr nützlich, um zu prüfen, "
+                   "ob ihr Userbot überhaupt online ist")
+    INFO_OR = "oder"
+    INFO_HELP = ("listet alle verfügbaren Befehle und Features von allen "
+                 "nutzbaren Modulen. Übergeben Sie den Namen des Befehls oder "
+                 "des Features (z.B. {}), um die Anwendung des bestimmten "
+                 "Befehls oder Features zu erhalten")
+    INFO_MODULES = ("listet alle bestehenden und User-Module an einen Ort an. "
+                    "Dieses Befehl nimmt auch Argumente an, um auf weitere "
+                    "Informationen zu gelangen, wie die Beschreibung oder "
+                    "Anwendung eines Modules.")
+    INFO_PKG = ("unser Package-Manager bietet ihnen die Möglichkeit an, neue "
+                "Module zu installieren. Wir haben auch einige User-Module "
+                "erstellt, die sie mit diesem Befehl herunterladen können. "
+                "Dies ermöglicht es ihnen auf neue Module zuzugreifen ohne "
+                "auf neue Bot-Updates zu warten. Übrigens, gibt es auch "
+                "Module, die von der Community selbst erstellt wurden. Also "
+                "probieren Sie die auch gerne aus!")
+    INFO_SUPPORT = ("Noch Fragen über HyperUBot? Sie können gerne mit uns in "
+                    "unserer {} chatten!")
+    INFO_SUPPORT_LINK = "Support-Gruppe"
+    INFO_FUN = "Viel Spaß!"
+
+
 # Save your eyes from what may become the ugliest part of this userbot.
 class ModuleDescriptions(object):
     ADMIN_DESC = ("Ein Modul, dass ihr oder eines Freundes Gruppe einfacher "
