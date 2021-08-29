@@ -184,12 +184,11 @@ def modules_listing(error_text: str = None) -> str:
                 else:
                     modules_listed += f"`- {module}`\n"
 
-    if (user_modules and not SAFEMODE) or not all_running:
-        modules_listed += "\n"
-        if user_modules and not SAFEMODE:
-            modules_listed += f"{recycle} __{msgRep.ASTERISK}__\n"
-        if not all_running:
-            modules_listed += f"{warning} __{msgRep.NOT_RUNNING_INFO}__\n"
+    modules_listed += "\n"
+    if user_modules and not SAFEMODE:
+        modules_listed += f"{recycle} __{msgRep.ASTERISK}__\n"
+    if not all_running:
+        modules_listed += f"{warning} __{msgRep.NOT_RUNNING_INFO}__\n"
     return modules_listed
 
 
