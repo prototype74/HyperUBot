@@ -170,22 +170,19 @@ def modules_listing(error_text: str = None) -> str:
             else:
                 modules_listed += (f"`({str(num)}) {module_name}` {warning}\n")
 
-    not_load_modules = getConfig("NOT_LOAD_MODULES")
+    not_load_modules = getConfig("NOT_LOAD_MODULES", [])
 
     if not_load_modules:
         all_modules = getAllModules()
-        for module in not_load_modules:
-            if module in module:
-                modules_listed += "\n"
-                modules_listed += f"{msgRep.DISABLED_MODULES}:\n"
-                break
+        if any(module for module in not_load_modules if module in all_modules):
+            modules_listed += "\n"
+            modules_listed += f"{msgRep.DISABLED_MODULES}:\n"
         for module in sorted(not_load_modules):
-            if module in module:
+            if module in all_modules:
                 if module in user_modules:
                     modules_listed += f"`- {module}` {recycle}\n"
                 else:
                     modules_listed += f"`- {module}`\n"
-                num += 1
 
     if (user_modules and not SAFEMODE) or not all_running:
         modules_listed += "\n"
