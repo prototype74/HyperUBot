@@ -160,18 +160,15 @@ def modules_listing(error_text: str = None) -> str:
         num += 1
         if module in user_modules:
             if isRunning:
-                modules_listed += (f"`({str(num)}) {module_name} "
-                                   f"({module})` {recycle}\n")
+                modules_listed += (f"`({str(num)}) {module_name}` {recycle}\n")
             else:
-                modules_listed += (f"`({str(num)}) {module_name} "
-                                   f"({module})` {recycle} {warning}\n")
+                modules_listed += (f"`({str(num)}) {module_name}` {recycle} "
+                                   f"{warning}\n")
         else:
             if isRunning:
-                modules_listed += (f"`({str(num)}) {module_name} "
-                                   f"({module})`\n")
+                modules_listed += (f"`({str(num)}) {module_name}`\n")
             else:
-                modules_listed += (f"`({str(num)}) {module_name} "
-                                   f"({module})` {warning}\n")
+                modules_listed += (f"`({str(num)}) {module_name}` {warning}\n")
 
     not_load_modules = getConfig("NOT_LOAD_MODULES")
 
