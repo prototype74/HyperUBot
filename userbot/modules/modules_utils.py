@@ -153,24 +153,25 @@ def modules_listing(error_text: str = None) -> str:
                       for ir in [modules[-1] for modules in modules_list])
     num = 0
     warning = u"\u26A0"  # warn emoji
+    recycle = u"\u267B"  # recycling emoji
     user_modules = getUserModules()
 
     for module_name, module, isRunning in modules_list:
         num += 1
         if module in user_modules:
             if isRunning:
-                modules_listed += (f"`({str(num)}) {module_name}* "
-                                   f"({module})`\n")
+                modules_listed += (f"`({str(num)}) {module_name} "
+                                   f"({module})` {recycle}\n")
             else:
-                modules_listed += (f"`({str(num)}) {module_name}* "
-                                   f"({module}) {warning}`\n")
+                modules_listed += (f"`({str(num)}) {module_name} "
+                                   f"({module})` {recycle} {warning}\n")
         else:
             if isRunning:
                 modules_listed += (f"`({str(num)}) {module_name} "
                                    f"({module})`\n")
             else:
                 modules_listed += (f"`({str(num)}) {module_name} "
-                                   f"({module}) {warning}`\n")
+                                   f"({module})` {warning}\n")
 
     not_load_modules = getConfig("NOT_LOAD_MODULES")
 
@@ -184,17 +185,17 @@ def modules_listing(error_text: str = None) -> str:
         for module in sorted(not_load_modules):
             if module in module:
                 if module in user_modules:
-                    modules_listed += f"`- {module}*`\n"
+                    modules_listed += f"`- {module}` {recycle}\n"
                 else:
                     modules_listed += f"`- {module}`\n"
                 num += 1
 
     if (user_modules and not SAFEMODE) or not all_running:
-        modules_listed += "--------------------------------\n"
+        modules_listed += "\n"
         if user_modules and not SAFEMODE:
-            modules_listed += f"__* = {msgRep.ASTERISK}__\n"
+            modules_listed += f"{recycle} __{msgRep.ASTERISK}__\n"
         if not all_running:
-            modules_listed += f"__{warning} = {msgRep.NOT_RUNNING_INFO}__\n"
+            modules_listed += f"{warning} __{msgRep.NOT_RUNNING_INFO}__\n"
     return modules_listed
 
 
