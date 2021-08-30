@@ -1053,26 +1053,26 @@ class ModuleUsages(object):
                                                  "Befehls>]"),
                                         "usage": ("Listet alle verfügbare "
                                                   "und registrierte Befehle")},
-                           "modules": {"args": ("<-option> [number of module "
-                                                "from the list]"),
-                                       "usage": ("\n`.modules -d [number of "
-                                                 "module from the list]`\n"
-                                                 "Shows the description of "
-                                                 "the specific module. "
-                                                 "Maybe some hidden "
-                                                 "information are there, "
-                                                 "who knows?\n\n"
-                                                 "`.modules -i [number of "
-                                                 "module from the list]`\n"
-                                                 "Shows information about "
-                                                 "the specific module like "
-                                                 "the name, author, version "
-                                                 "etc.\n\n"
-                                                 "`.modules -u [number of "
-                                                 "module from the list]`\n"
-                                                 "Reveals the secrets and "
-                                                 "the usage of the specific "
-                                                 "module")}}
+                           "modules": {"args": ("<-Option> [Modulnummer aus "
+                                                "der Liste]"),
+                                       "usage": ("\n`.modules -d [Modulnummer "
+                                                 "aus der Liste]`\n"
+                                                 "Zeigt die Beschreibung des "
+                                                 "jeweiligen Moduls an. Wer "
+                                                 "weiß, vielleicht sind da "
+                                                 "einige Informationen "
+                                                 "versteckt?\n\n"
+                                                 "`.modules -i [Modulnummer "
+                                                 "aus der Liste]`\n"
+                                                 "Zeigt Informationen über "
+                                                 "das jeweilige Modul an z.B. "
+                                                 "der Name, Autor, Version "
+                                                 "usw.\n\n"
+                                                 "`.modules -u [Modulnummer "
+                                                 "aus der Liste]`\n"
+                                                 "Enthüllt die Geheimnisse "
+                                                 "und die Anwendung des "
+                                                 "jeweiligen Moduls")}}
 
     TERMINAL_USAGE = {"shell": {"args": "<Befehl>",
                                 "usage": ("Führt umgehend den gegebenen "
