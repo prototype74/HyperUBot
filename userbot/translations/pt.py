@@ -124,7 +124,7 @@ class SystemToolsText(object):
     STORAGE_USED = "Usado"
     STORAGE_FREE = "Livre"
     USED_BY_HYPERUBOT = "Used by HyperUBot"  # translation needed
-    STORAGE_SYSTEM = "Módulos de sistema"
+    STORAGE_SYSTEM = "Módulos pré-instalados"
     STORAGE_USER = "Módulos de utilizador"
     STORAGE_USERDATA = "User data"  # translation needed
     STORAGE_TEMP_DL = "Temporary downloads"  # translation needed
@@ -433,8 +433,8 @@ class ModulesUtilsText(object):
     ASTERISK = "Módulo de user desinstalável"
     NOT_RUNNING_INFO = "Não carregada"
     UNKNOWN = "Desconhecido"
-    SYSTEM = "Sistema"
-    SYSTEM_MODULES = "Módulos de sistema"
+    SYSTEM = "Pré-instalado"
+    SYSTEM_MODULES = "Módulos pré-instalados"
     USER = "Utilizador"
     USER_MODULES = "Módulos de utilizador"
     PKG_NAME = "Nome do pacote"
