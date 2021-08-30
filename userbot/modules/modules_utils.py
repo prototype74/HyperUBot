@@ -145,7 +145,8 @@ def modules_listing(error_text: str = None) -> str:
     modules_listed += (f"`{msgRep.USER_MODULES}: {user_count}`\n\n"
                        if not SAFEMODE else "\n")
 
-    modules_listed += f"{msgRep.AVAILABLE_MODULES}:\n"
+    check_mark = u"\u2705"
+    modules_listed += f"{check_mark} {msgRep.AVAILABLE_MODULES}:\n"
 
     modules_list = update_list()
     all_running = all(True if ir else False
@@ -175,7 +176,8 @@ def modules_listing(error_text: str = None) -> str:
         all_modules = getAllModules()
         if any(module for module in not_load_modules if module in all_modules):
             modules_listed += "\n"
-            modules_listed += f"{msgRep.DISABLED_MODULES}:\n"
+            no_entry = u"\u26D4"
+            modules_listed += f"{no_entry} {msgRep.DISABLED_MODULES}:\n"
         for module in sorted(not_load_modules):
             if module in all_modules:
                 if module in user_modules:
