@@ -68,7 +68,7 @@ async def list_commands(event):
                            f"{cmd_prefix}{cmd_alt}`{space}{cmd_args}\n"
             else:
                 cmd_info = f"`{cmd_prefix}{command}`{space}{cmd_args}\n"
-
+            cmd_info += "\n"
             cmd_info += f"{msgRep.USAGE}: {cmd_usage}\n\n"
             await event.edit(cmd_info)
             return
