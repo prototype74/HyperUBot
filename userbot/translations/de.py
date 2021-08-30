@@ -434,7 +434,7 @@ class ModulesUtilsText(object):
     MODULE_NOT_AVAILABLE = "`Modulnummer \"{}\" ist nicht verfügbar`"
     MODULE_NO_DESC = "__Keine Beschreibung verfügbar__"
     MODULE_NO_USAGE = "__Keine Anwendungsbeschreibung verfügbar__"
-    ASTERISK = "deinstallierbarer Modul"
+    ASTERISK = "Deinstallierbarer Modul"
     NOT_RUNNING_INFO = "Angehalten"
     UNKNOWN = "Unbekannt"
     SYSTEM = "System"
@@ -453,6 +453,8 @@ class ModulesUtilsText(object):
     ARGS_NOT_REQ = "keine Argumente nötig"
     ARGS_NOT_AVAILABLE = "keine Argumente verfügbar"
     CMD_NOT_FOUND = "Befehl '{}' wurde nicht gefunden!"
+    MOD_HELP = "Hilfe nötig? Führe {} aus"
+    MOD_UTILS = "Module"
 
 
 class WebToolsText(object):

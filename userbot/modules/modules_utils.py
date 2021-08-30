@@ -25,6 +25,7 @@ from time import ctime
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 MODULES_LISTED = {}
+_attempts = 0
 
 
 @ehandler.on(command="listcmds", alt="help", hasArgs=True, outgoing=True)
@@ -129,10 +130,14 @@ def installed_modules() -> tuple:
 
 
 def modules_listing(error_text: str = None) -> str:
-    modules_listed = f"**Modules**\n\n"
+    modules_listed = f"**{msgRep.MOD_UTILS}**\n\n"
 
     if error_text:
-        modules_listed += f"{error_text}\n\n"
+        global _attempts
+        modules_listed += f"{error_text}\n"
+        if _attempts >= 2:
+            modules_listed += f"{msgRep.MOD_HELP.format('`.help modules`')}\n"
+        modules_listed += "\n"
 
     sys_count, user_count = installed_modules()
 
@@ -292,6 +297,8 @@ async def modules(event):
         await event.edit(modules_listing())
         return
 
+    global _attempts
+
     if first_arg.lower() == "-d":
         desc = True
     elif first_arg.lower() == "-i":
@@ -300,10 +307,12 @@ async def modules(event):
         usage = True
     else:
         await event.edit(modules_listing(msgRep.INVALID_ARG.format(first_arg)))
+        _attempts += 1
         return
 
     if not sec_arg:
         await event.edit(modules_listing(msgRep.MISSING_NUMBER_MODULE))
+        _attempts += 1
         return
 
     if sec_arg:
@@ -325,6 +334,8 @@ async def modules(event):
         except IndexError:
             await event.edit(modules_listing(
                 msgRep.MODULE_NOT_AVAILABLE.format(sec_arg)))
+    if _attempts:
+        _attempts = 0
     return
 
 

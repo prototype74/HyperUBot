@@ -926,6 +926,10 @@ class ModulesUtilsText(object):
         lang, _getframe().f_code.co_name, "ARGS_NOT_AVAILABLE")
     CMD_NOT_FOUND = getLangString(
         lang, _getframe().f_code.co_name, "CMD_NOT_FOUND")
+    MOD_HELP = getLangString(
+        lang, _getframe().f_code.co_name, "MOD_HELP")
+    MOD_UTILS = getLangString(
+        lang, _getframe().f_code.co_name, "MOD_UTILS")
 
 
 class WebToolsText(object):

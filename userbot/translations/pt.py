@@ -449,6 +449,8 @@ class ModulesUtilsText(object):
     ARGS_NOT_REQ = "sem argumentos obrigatórios"
     ARGS_NOT_AVAILABLE = "sem argumentos"
     CMD_NOT_FOUND = "O comando '{}' não foi encontrado!"
+    MOD_HELP = "Need help? Type {}"  # translation needed
+    MOD_UTILS = "Módulos"
 
 
 class WebToolsText(object):

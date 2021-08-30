@@ -431,6 +431,8 @@ class ModulesUtilsText(object):
     ARGS_NOT_REQ = "no arguments required"  # lower if possible
     ARGS_NOT_AVAILABLE = "no arguments available"  # lower if possible
     CMD_NOT_FOUND = "Command '{}' not found!"
+    MOD_HELP = "Need help? Type {}"
+    MOD_UTILS = "Modules"
 
 
 class WebToolsText(object):
