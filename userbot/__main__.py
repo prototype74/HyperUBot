@@ -58,7 +58,7 @@ class _Modules:
                     user_modules.append(filename)
                 elif not SAFEMODE:
                     log.warning(f"Module '{filename}' not loaded as "
-                                "present in sys already")
+                                "present as built-in module already")
         return (all_modules, sys_modules, user_modules)
 
     def import_load_modules(self):
@@ -102,7 +102,7 @@ class _Modules:
 
 def start_modules():
     if SAFEMODE:
-        log.info("Starting system modules only")
+        log.info("Starting built-in modules only")
     else:
         log.info("Starting modules")
     modules = _Modules()
