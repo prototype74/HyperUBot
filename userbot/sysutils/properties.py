@@ -175,8 +175,6 @@ class Properties:
         """
         caller = getouterframes(currentframe(), 2)[1].filename
         if not self.__prop_present:
-            log.warning(f"[SETPROP] Prop '{self.__path}' not found "
-                        f"(requested by {os.path.basename(caller)})")
             return False
         self.__parser.read(self.__path)
         target_section = "DEFAULT"
@@ -229,8 +227,6 @@ class Properties:
         """
         caller = getouterframes(currentframe(), 2)[1].filename
         if not self.__prop_present:
-            log.warning(f"[GETPROP] Prop '{self.__path}' not found "
-                        f"(requested by {os.path.basename(caller)})")
             return None
         self.__parser.read(self.__path)
         target_section = "DEFAULT"
