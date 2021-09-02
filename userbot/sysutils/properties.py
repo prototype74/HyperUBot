@@ -86,6 +86,11 @@ class Properties:
         if os.path.exists(self.__path) and os.path.isfile(self.__path):
             self.__parser.read(self.__path)
             source = self.__parser["DEFAULT"].get("source", fallback="")
+            if not source:
+                log.error(f"[INIT] Re-initializing prop '{self.__path}' "
+                          f"(requested by {os.path.basename(caller)})")
+                self.__create_props(caller, sections)
+                return
             # switch slashes if OS changed
             if "/" in source and isWindows():
                 source = source.replace("/", "\\")
