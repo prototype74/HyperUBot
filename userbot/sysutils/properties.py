@@ -261,6 +261,7 @@ class _SysProperties:
         """
         Creates the system properties with default keys and values
         """
+        self.__parser["DEFAULT"] = {"source": "HyperUBot"}
         self.__parser["SYSTEM"] = {}
         try:
             with open(self.__path, "w") as propfile:
