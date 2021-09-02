@@ -217,6 +217,7 @@ class _ConfigLoader:
                         print(setColorText("Invalid input. Try again...",
                                            Color.YELLOW))
             except KeyboardInterrupt:
+                print()
                 log.info("Skipping optional configs")
                 self.__curr_config = "Skipped"
                 return
