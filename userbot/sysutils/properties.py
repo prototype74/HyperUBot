@@ -191,7 +191,10 @@ class Properties:
         elif value.lower() == "true":
             value = "yes"
         try:
-            self.__parser[target_section][key.lower()] = value
+            try:
+                self.__parser[target_section][key.lower()] = value
+            except KeyError:
+                return False
             with open(self.__path, "w") as propfile:
                 self.__parser.write(propfile)
             propfile.close()
@@ -234,7 +237,11 @@ class Properties:
             section = section.upper()
             if section in self.__sections:
                 target_section = section.upper()
-        value = self.__parser[target_section].get(key.lower(), fallback=None)
+        try:
+            value = self.__parser[target_section].get(key.lower(),
+                                                      fallback=None)
+        except KeyError:
+            return None
         if value:
             if value.startswith("[") and value.endswith("]"):
                 value = strlist_to_list(value)
