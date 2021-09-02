@@ -251,6 +251,11 @@ class Properties:
                 value = True
             elif value.isnumeric():
                 value = int(value)
+            else:
+                try:
+                    value = float(value)
+                except:
+                    pass
         return value
 
 
@@ -379,4 +384,9 @@ class _SysProperties:
                 value = True  # bool
             elif value.isnumeric():
                 value = int(value)  # integer
+            else:
+                try:  # float
+                    value = float(value)
+                except:
+                    pass
         return value

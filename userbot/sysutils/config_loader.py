@@ -80,9 +80,14 @@ class _ConfigLoader:
                         addConfig(key, strlist_to_list(value))
                     elif value in ("True", "true", "False", "false"):
                         addConfig(key, str_to_bool(value))
+                    elif value.isnumeric():
+                        addConfig(key, int(value))
                     else:  # default case
-                        addConfig(key, int(value)
-                                  if value.isnumeric() else value)
+                        try:
+                            value = float(value)
+                        except:
+                            pass
+                        addConfig(key, value)
         if getConfig("SAMPLE_CONFIG", None):
             log.warning("Please remove SAMPLE_CONFIG from config.env!")
         if is_safemode:
@@ -114,9 +119,14 @@ class _ConfigLoader:
                             addConfig(key, False)
                         elif value.lower() in ("yes"):
                             addConfig(key, True)
-                        else:
-                            addConfig(key, int(value)
-                                      if value.isnumeric() else value)
+                        elif value.isnumeric():
+                            addConfig(key, int(value))
+                        else:  # default case
+                            try:
+                                value = float(value)
+                            except:
+                                pass
+                            addConfig(key, value)
         if is_safemode:
             addConfig("UBOT_LANG", configs["CONFIGS"].get("UBOT_LANG",
                                                           fallback="en"))
