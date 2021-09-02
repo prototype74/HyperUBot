@@ -128,8 +128,11 @@ class _ConfigLoader:
                                 pass
                             addConfig(key, value)
         if is_safemode:
-            addConfig("UBOT_LANG", configs["CONFIGS"].get("UBOT_LANG",
-                                                          fallback="en"))
+            try:
+                addConfig("UBOT_LANG", configs["CONFIGS"].get("UBOT_LANG",
+                                                              fallback="en"))
+            except:
+                addConfig("UBOT_LANG", "en")
         self.__configs_loaded = True
         return
 
