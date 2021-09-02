@@ -199,7 +199,7 @@ class Properties:
                       exc_info=True)
         return True if prop_set else False
 
-    def getprop(self, key: str, section=None) -> bool:
+    def getprop(self, key: str, section=None):
         """
         Load the value from given key. getprop will always check in DEFAULT
         section if no 'section' is given or doesn't exist.
