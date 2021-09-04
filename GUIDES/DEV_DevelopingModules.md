@@ -204,7 +204,7 @@ async def action(event):
 
 ## I want to explain how my command works! And become famous!!1!1!!!11
 
-HyperUBot allows to register your module and command usage(s) with 3 definitely simply functions which need to be imported from `userbot.sysutils.registrations`:
+HyperUBot allows to register your module and command usage(s) with 3 definitely simply functions which need to be imported from `userbot.sysutils.registration`:
 
 - `register_cmd_usage("name of cmd/feature", "it's arguments", "usage")` -> Register the usage of a command or feature
 - `register_module_desc("description")` -> Register the description of a module
