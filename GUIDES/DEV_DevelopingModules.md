@@ -200,7 +200,7 @@ async def action(event):
     return
 ```
 
-> Uh oh! The docstrings are calling, they want you to read them. For real, you should :)
+> Note: Uh oh! The docstrings are calling, they want you to read them. For real, you should :)
 
 ## I want to explain how my command works! And become famous!!1!1!!!11
 
