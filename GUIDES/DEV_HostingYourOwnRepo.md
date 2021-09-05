@@ -1,22 +1,69 @@
 # HyperUBot Guide - Hosting your own community repo
 
-## 0. Requirements, rules and advices
+## Requirements
 
-### 0.1 - Requirements:
+- GitHub account
+- Repository (public)
+- Your modules you'd like to share with the world
 
-    - GitHub account
-    - Some module(s) you developed.
+## Basic structure of your community repo
 
-### 0.2 - Rules:
+```
+Your repo
+|
++--Licence 
+|     Your license, PEL if based on our code
+|
++--src
+|     module1.py
+|     module2.py
+|     module3.py
+|     module4.py
+|     etc.
+|
++--other stuff
+```
 
-Besides the common sense rules, such as "don't host malware", the modules you make and upload should not share the same name as the modules that are by default distributed with the bot and the modules in modules-universe. You cannot use existing commands in the modules universe and bot. There is already a [taken commands list](https://github.com/nunopenim/module-universe/blob/master/TAKEN_COMMANDS.md) in this repo's root directory (Soon there will be a bot one).
+There is no unique structure how your repository should look like, it's enough if there is a README file, a license if needed (required if your modules are based on our code: falls under **PEL**) and maybe some credits. The only important thing is that your modules are in the `Releases` section of your repository.
 
-### 0.3 - Advices:
+## Rules? I don't think so!
 
-If you create your own repo, you should also create a Telegram channel to release information in how to install, updates and the requirements of such modules (pip dependencies). If your module needs extra pip dependencies, you should tell users to install them via the req_install module, available in the modules-universe. If you want to go more exotic, pip can be imported into your module. You could create some function to check if there is a dependency missing. Be creative :)
-You should also include the licenses under which your modules (or the modules you are redistributing) in a separate "Licenses" folder. The source codes should also be available in a src folder.
-Last but not least, if you want to make an extension of official modules (such as admin.py), you should name them admin_ext.py. You could include commands here such as tban or tmute, that we didn't implement.
+But still do us a favor and follow the basic rules:
+- Don't share harmful modules
+- Try to set names which are **not** used by our modules in HyperUBot and in [module-universe](https://github.com/nunopenim/module-universe) already
+- Avoid duplicate commands, HyperUBot does not load equal commands. We have made a [list of taken commands](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/DEV_TakenCommandsReference.md) to check if a command isn't taken already
+- Don't create modules that do spam too much, don't forget, the more a module does spam on Telegram the higher the chance the user who uses the module get (temporary) banned. A first symptome is a [FloodWaitError](https://docs.telethon.dev/en/latest/concepts/errors.html#avoiding-limits) in terminal.
 
-## 1. How to host, and how hosting system works.
+Well we can't check if you actually did follow the rules, neither we can take down modules from GitHub that does do harmful stuff but take our advice, no one will use hardmful modules, so don't even bother to create some. However you are free to do whatever you want to your community repo. Create nice modules no one did made before, people will surely to use and like them!
 
-The bot gets modules via the "releases" system of GitHub. You should create a new release there. The tag and title should be the name of what you want your repo to be known as (since this is where the bot will get the names). You can write a description if you want, but it is not needed. In the files to be added, you need to exclusively drop .py files. When the release is published, there should be only .py files (and the 2 source code archives made automatically, but bot ignores these!). Any other file could possibly break the bot.
+## Release the kraken... your modules!
+
+To release your modules, locate to `Release` section and hit the `Draft a new releae` button. There you can upload your modules to the footer as assets. This is also how HyperUBot's Package Manager does check for your community repos: it checks for assets in the latest release on GitHub.
+
+> Note: Don't forget to set a proper version (tag of release). It will be visible in Package Manager!
+
+## Adding your community repo to Package Manager
+
+Adding a repo is pretty easy. Just run `.pkg update <owner/repo>` in any chat where `owner` is your GitHub's account name and `repo` the name of your community repository. Check the upper-left corner of this site, you will know what we mean then.
+
+Alternative you can add the <owner/repo>-combo in your `COMMUNITY_REPO` config e.g. `COMMUNITY_REPO = ["example/example_repo"]` and run `.pkg update` in any chat later.
+
+Once the repo is added you can finally install your own modules in HyperUBot using the `.pkg install <your module name>` command. Run `.pkg list` before just to ensure your repo is actually added.
+
+## Tips and Tricks
+
+### 1. Tell us, how your modules work
+
+It might be possible that your modules work different than ours and may need a special requirement or instruction. Let us know about that, as it will surely make it easier to use your creations!
+
+### 2. Let them know there are updates!
+
+Updates are great and people get excited if they know there are updates soon. So let them know that by creating a Telegram update channel for example, and posting a status update there.
+
+### 3. Follow the development
+
+HyperUBot gets improvements, changes and additions which might be possible that some features were removed, you do use in your modules. The consequence is your module may fail to load it. Always follow the current development, to adapt your modules to the changes we made faster. How to follow the development you ask? Check out our [Telegram channel](https://t.me/HyperUBotNews) or check the last [commits](https://github.com/prototype74/HyperUBot/commits/master) we made.
+
+---
+
+> Note: Always keep in mind that you take the full responsibility  about your repo and the modules you offer. We don't give support to users who facing issues with your modules.
