@@ -52,7 +52,7 @@ To set up HyperUBot manually you need to follow the following steps:
 - Installing the required pip packages
 - Generating a String Session using generate_session.py script
 - Create your secured configuration file
-- Creating an optional configuration file (config.env or config.py)
+- Creating an optional configuration file (config.env, config.ini or config.py)
 
 ### 2.2.1 Installing the pip packages
 
@@ -102,7 +102,7 @@ It will ask you for your `API Key`, `API Hash` and your `String session`. Option
 
 ### 2.2.5 Create an optional configuration file (yes this step is optional)
 
-The bot can additionally load a config file, either `.env` or `.py`. You can find the sample configs inside `userbot` directory of HyperUBot. Sample configs are **NOT** to be used and just serves as demonstration files, with descriptions of the supported fields.
+The bot can additionally load a config file, either `.env`, `.ini` or `.py`. You can find the sample configs inside `userbot` directory of HyperUBot. Sample configs are **NOT** to be used and just serves as demonstration files, with descriptions of the supported fields.
 Some modules downloaded from community repos might require you to add extra configuration fields or classes for them to properly work!
 
 ### 2.2.5-1 Setup config using ENV
@@ -121,9 +121,33 @@ LOGGING_CHATID = 0
 TEMP_DL_DIR = "./downloads"
 NOT_LOAD_MODULES = []
 COMMUNITY_REPOS = []
+ALLOW_SIDELOAD = False
+PKG_ENABLE_AUTO_UPDATE = False
+PKG_DISABLE_AUTO_REBOOT = False
 ```
 
-### 2.2.5-2 Setup config using py script
+### 2.2.5-2 Setup config using configuration ini file
+
+To create a new config `.ini` file, run the following command:
+
+`nano userbot/config.ini`
+
+This will open the nano text editor, inside you can copy the following template:
+
+```ini
+[CONFIGS]
+UBOT_LANG = en
+LOGGING = no
+LOGGING_CHATID = 0
+TEMP_DL_DIR = ./downloads
+NOT_LOAD_MODULES = []
+COMMUNITY_REPOS = []
+ALLOW_SIDELOAD = no
+PKG_ENABLE_AUTO_UPDATE = no
+PKG_DISABLE_AUTO_REBOOT = no
+```
+
+### 2.2.5-3 Setup config using py script
 
 To create a new config `.py` file, run the following command:
 
@@ -140,12 +164,16 @@ class ConfigClass(object):
     TEMP_DL_DIR = "./downloads"
     NOT_LOAD_MODULES = []
     COMMUNITY_REPOS = []
+    ALLOW_SIDELOAD = False
+    PKG_ENABLE_AUTO_UPDATE = False
+    PKG_DISABLE_AUTO_REBOOT = False
 ```
+
 
 Save it, by doing **CTRL + S** and then **CTRL + X**, to exit the editor.
 
-> Note: Only one config file, either `config.env` or `config.py`, should be configured in `userbot` directory.
-If both are configured there, then only `config.env` will be loaded.
+
+> Note: HyperUBot will prompt you to select a config file if multiple config files are configured in `userbot` directory.
 
 ### 2.2.5.1 Logging, Language and Community Repos (optional)
 
