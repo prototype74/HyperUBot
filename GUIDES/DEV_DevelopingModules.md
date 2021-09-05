@@ -243,7 +243,203 @@ register_module_info(
 )
 ```
 
-Still not famous? Don't worry, we aren't either. Anyway, hopefully, the mechanic of developing own modules is now simple and understandable.
+Still not famous? Don't worry, we aren't either :)
+
+## My module need extra pip packages!
+
+Does it? Yes, our modules too but if your module require pip packages that are not listed in our [requirements.txt](https://github.com/prototype74/HyperUBot/blob/master/requirements.txt) then you may like our `pip_utils` script, which will help you to install the required pip packages automatically if needed. To do so, you need to import `userbot.include.pip_utils`
+
+Example usage with `checkPkgByDist()` and `installPkg()`:
+
+```python
+import userbot.include.pip_utils as pip  # import pip_utils
+from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
+from logging import getLogger
+
+log = getLogger(__name__)
+ehandler = EventHandler(log)
+
+# START CHECK PART
+# check if requests package does exist
+if not pip.checkPkgByDist("requests"):
+    # if not, install it
+    if not pip.installPkg("requests"):
+        # if installation failed:
+        # this makes your module to crash but the actual idea is to let
+        # the user know it's not possible to use this module
+        # without 'requests' package
+        raise ModuleNotFoundError("requests package not installed")
+# END CHECK PART
+
+import requests  # noqa: E402
+
+
+@ehandler.on(command="example", outgoing=True)
+async def action(event):
+    await event.edit("This is an example!")
+    # Do stuff with requests
+    return
+
+
+register_cmd_usage("example", None, "Very example, wow.")
+register_module_desc("I'm an example module!")
+register_module_info(
+    name="Example",
+    authors="Example",
+    version="1.0"
+)
+```
+
+Example usage with `checkPkgByImport()` and `installPkg()`:
+
+```python
+import userbot.include.pip_utils as pip
+from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
+from logging import getLogger
+
+log = getLogger(__name__)
+ehandler = EventHandler(log)
+
+# START CHECK PART
+# if you don't know the distribution name but the
+# import name use checkPkgByImport
+if not pip.checkPkgByImport("requests"):
+    if not pip.installPkg("requests"):
+        raise ModuleNotFoundError("requests package not installed")
+# END CHECK PART
+
+import requests  # noqa: E402
+
+
+@ehandler.on(command="example", outgoing=True)
+async def action(event):
+    await event.edit("This is an example!")
+    # Do stuff with requests
+    return
+
+
+register_cmd_usage("example", None, "Very example, wow.")
+register_module_desc("I'm an example module!")
+register_module_info(
+    name="Example",
+    authors="Example",
+    version="1.0"
+)
+```
+
+Check if a proper version of a package is installed:
+
+```python
+import userbot.include.pip_utils as pip
+from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
+# to convert string version to tuple
+from userbot.sysutils.sys_funcs import verAsTuple
+from logging import getLogger
+
+log = getLogger(__name__)
+ehandler = EventHandler(log)
+
+# START CHECK PART
+if pip.checkPkgByImport("requests"):
+    requests_version = pip.getVersionFromDist("requests")
+    if verAsTuple(requests_version) < (1, 2, 3):  # requires at least v1.2.3
+        # upgrade the package!
+        pip.installPkg("requests", upgrade=True)
+else:
+    # install the package. automatically installs the latest version
+    pip.installPkg("requests")
+# END CHECK PART
+
+import requests  # noqa: E402
+
+
+@ehandler.on(command="example", outgoing=True)
+async def action(event):
+    await event.edit("This is an example!")
+    # Do stuff with requests
+    return
+
+
+register_cmd_usage("example", None, "Very example, wow.")
+register_module_desc("I'm an example module!")
+register_module_info(
+    name="Example",
+    authors="Example",
+    version="1.0"
+)
+```
+
+If you need more info how pip_utils works, check out it's docstrings [here](https://github.com/prototype74/HyperUBot/blob/master/userbot/include/pip_utils.py)
+
+> Note: Please don't call **installPkg()** unnecessarily as it will spam the terminal logger much. Always check first if it's actually required to install/upgrade a pip package (**checkPkgByDist()** and **checkPkgByImport()**). By this, it will keep the start of HyperUBot fast as it should be.
+
+## I want my commands to support a specific version of HyperUBot only!
+
+There is a cool function which is able to `wrap` your commands or features, and start them only if it matches a certain version of HyperUBot or if the version of HyperUBot is between 2 given versions. You need to import `requiredVersion()` from `userbot.sysutils.sys_funcs`
+
+Example usage:
+
+```python
+from userbot.sysutils.event_handler import EventHandler
+from userbot.sysutils.registration import (register_cmd_usage,
+                                           register_module_desc,
+                                           register_module_info)
+from userbot.sysutils.sys_funcs import (botVerAsTuple,  # import bot version
+                                        requiredVersion, # import requiredVersion
+                                        verAsTuple)  # convert string version to tuple
+from logging import getLogger
+
+log = getLogger(__name__)
+ehandler = EventHandler(log)
+
+# Add to handler if HyperUBot version is between 4.0.0 and 5.0.0
+@ehandler.on(command="example", outgoing=True)
+@requiredVersion("4.0.0", "5.0.0")
+async def example(event):
+    await event.edit("I'm an example function!")
+    return
+
+
+@ehandler.on(command="example2", outgoing=True)
+@requiredVersion("5.0.2", "5.0.2")  # version should match exactly v5.0.2
+async def example2(event):
+    await event.edit("I'm an example2 function!")
+    return
+
+
+# Register usages only if HyperUBot version match required versions
+if verAsTuple("4.0.0") >= botVerAsTuple() and \
+   verAsTuple("5.0.0") <= botVerAsTuple():
+    register_cmd_usage("example", None, "Very example, wow.")
+if verAsTuple("5.0.2") == botVerAsTuple():
+    register_cmd_usage("example2", None, "Very much example, very wow.")
+
+register_module_desc("I'm an example module!")
+register_module_info(
+    name="Example",
+    authors="Example",
+    version="1.1"
+)
+```
+
+If the version of HyperUBot does not meet the required version you expect then EventHandler won't add them
+
+## Can I release my module to finally become famous?
+
+Sure, you can create a community repo and allow people to install your module with Package Manager. Just follow our [How-Can-I-Host-My-Own-Community-Repo guide](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/DEV_HostingYourOwnRepo.md). It shouldn't be a big deal if you follow the steps there carefully.
+
+---
+
+Hopefully, the mechanic of developing own modules is now simple and understandable. Still got some questions? Ask [us](https://t.me/HyperUBotSupport)!
 
 
 Happy coding!
