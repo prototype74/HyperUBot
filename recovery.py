@@ -630,7 +630,6 @@ class _Updater(_Recovery):
                          os.path.join(".", "userbot", "config.ini"),
                          os.path.join(".", "userbot", "config.py"),
                          os.path.join(".", "userbot", "secure_config"),
-                         os.path.join(".", "userbot", "package_lists.hbot"),
                          os.path.join(".", RECOVERY_NAME)]
         for name in self._fix_paths(["__pycache__/*"]):
             always_ignore.append(name)
