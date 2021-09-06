@@ -668,6 +668,8 @@ class FeatureMgrText(object):  # translation needed
     DISABLE_FTR = "Name a command or feature to disable it!"
     DISABLE_FTR_FAIL = "Seems like I can't disable this command or feature"
     DISABLE_FTR_SUCCESS = "Command or feature '`{}`' has been disabled"
+    DISABLED_FTRS = "Disabled features"
+    NO_DISABLED_FTRS = "No features disabled"
     ENABLE_FTR = "Name a command or feature to enable it!"
     ENABLE_FTR_FAIL = "Seems like I can't enable this command or feature"
     ENABLE_FTR_SUCCESS = "Command or feature '`{}`' has been enabled"

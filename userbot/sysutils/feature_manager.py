@@ -93,7 +93,7 @@ class _FeatureManager:
             log.warning("Not a valid caller "
                         f"(requested by {os.path.basename(caller)})")
             return False
-        if feature in ("enable", "disable"):
+        if feature in ("enable", "disable", "disabled"):
             return False
         for key, val in self.__disabled_features.items():
             if feature == key or (val and feature == val):
@@ -114,7 +114,7 @@ class _FeatureManager:
             log.warning("Not a valid caller "
                         f"(requested by {os.path.basename(caller)})")
             return False
-        if feature in ("enable", "disable"):
+        if feature in ("enable", "disable", "disabled"):
             return False
         for key, val in self.__disabled_features.items():
             if feature == key or (val and feature == val):
@@ -123,8 +123,25 @@ class _FeatureManager:
                 return True
         return False
 
+    def _get_disabled_features(self) -> str:
+        df_list = ""
+        caller = getouterframes(currentframe(), 2)[2].filename
+        valid_caller = os.path.join("userbot", "modules",
+                                    "_feature_manager.py")
+        if not caller.endswith(valid_caller):
+            log.warning("Not a valid caller "
+                        f"(requested by {os.path.basename(caller)})")
+            return df_list
+        reg_cmds = getRegisteredCMDs()
+        disabled_features = dict(sorted(self.__disabled_features.items()))
+        for key, val in disabled_features.items():
+            if key in reg_cmds.keys() or val in reg_cmds.values():
+                feature = f"- {key} ({val})\n" if val else f"- {key}\n"
+                df_list += feature
+        return df_list
+
     def _is_active(self, feature) -> bool:
-        if feature in ("enable", "disable"):
+        if feature in ("enable", "disable", "disabled"):
             return True
         for key, val in self.__disabled_features.items():
             if feature == key or (val and feature == val):
@@ -143,6 +160,9 @@ def _disable_feature(feature) -> bool:
 def _enable_feature(feature) -> bool:
     return _featureMgr._enable_feature(feature)
 
+
+def _get_disabled_features() -> str:
+    return _featureMgr._get_disabled_features()
 
 def _is_active(feature) -> bool:
     return _featureMgr._is_active(feature)

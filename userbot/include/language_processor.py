@@ -1285,6 +1285,10 @@ class FeatureMgrText(object):
         lang, _getframe().f_code.co_name, "DISABLE_FTR_FAIL")
     DISABLE_FTR_SUCCESS = getLangString(
         lang, _getframe().f_code.co_name, "DISABLE_FTR_SUCCESS")
+    DISABLED_FTRS = getLangString(
+        lang, _getframe().f_code.co_name, "DISABLED_FTRS")
+    NO_DISABLED_FTRS = getLangString(
+        lang, _getframe().f_code.co_name, "NO_DISABLED_FTRS")
     ENABLE_FTR = getLangString(
         lang, _getframe().f_code.co_name, "ENABLE_FTR")
     ENABLE_FTR_FAIL = getLangString(

@@ -684,6 +684,8 @@ class FeatureMgrText(object):
                         "nicht deaktivieren")
     DISABLE_FTR_SUCCESS = ("Der Befehl oder das Feature '`{}`' wurde "
                            "deaktiviert")
+    DISABLED_FTRS = "Deaktivierte Features"
+    NO_DISABLED_FTRS = "Keine Features deaktiviert"
     ENABLE_FTR = "Nenne einen Befehl oder ein Feature, um sie zu aktiveren!"
     ENABLE_FTR_FAIL = ("Anscheinend kann ich diesen Befehl oder Feature "
                        "nicht aktivieren")

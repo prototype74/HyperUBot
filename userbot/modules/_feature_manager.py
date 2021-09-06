@@ -10,7 +10,9 @@ from userbot.include.language_processor import (FeatureMgrText as msgRep,
                                                 ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
 from userbot.sysutils.event_handler import EventHandler
-from userbot.sysutils.feature_manager import _disable_feature, _enable_feature
+from userbot.sysutils.feature_manager import (_disable_feature,
+                                              _enable_feature,
+                                              _get_disabled_features)
 from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
@@ -32,6 +34,15 @@ async def disable_feature(event):
         await event.edit(msgRep.DISABLE_FTR_FAIL)
         return
     await event.edit(msgRep.DISABLE_FTR_SUCCESS.format(feature))
+    return
+
+
+@ehandler.on(command="disabled", outgoing=True)
+async def disabled_features(event):
+    text = f"**{msgRep.DISABLED_FTRS}**\n\n"
+    result = _get_disabled_features()
+    text += result if result else f"__{msgRep.NO_DISABLED_FTRS}__"
+    await event.edit(text)
     return
 
 
