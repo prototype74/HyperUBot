@@ -16,7 +16,7 @@ If you setup Termux on your Android device successfully, it is required to insta
 
 It is also required to have at least Python 3.8. To install the following packages, run the following command:
 
-`pkg update && pkg install python git rust neofetch ffmpeg flac nano`
+`pkg update && pkg install python git rust neofetch ffmpeg flac nano wget`
 
 ## 1. Download HyperUBot
 
