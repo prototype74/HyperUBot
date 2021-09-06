@@ -56,6 +56,12 @@ __hyper_logger__ = _UserbotLogger(log)
 __hyper_logger__._setup_logger()
 __hyper_logger__._initialize_logfile(PROJECT, SAFEMODE, version_info, version)
 
+try:
+    if not path.exists(path.join(".", "userbot", "userdata")):
+        mkdir(path.join(".", "userbot", "userdata"))
+except Exception:
+    log.error("Failed to initialize user data directory", exc_info=True)
+
 # Initialize system props
 __sysprops__ = _SysProperties()
 __sysprops__._init_props()
@@ -175,12 +181,6 @@ if not getConfig("TEMP_DL_DIR"):
     addConfig("TEMP_DL_DIR", path.join(".", "downloads"))
 
 log.info("Configurations loaded")
-
-try:
-    if getConfig("USERDATA") and not path.exists(getConfig("USERDATA")):
-        mkdir(getConfig("USERDATA"))
-except Exception:
-    log.error("Failed to initialize user data directory")
 
 try:
     if not path.exists(getConfig("TEMP_DL_DIR")):
