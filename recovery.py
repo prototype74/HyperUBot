@@ -424,12 +424,17 @@ class _Restore(_Recovery):
         return bk_dict
 
     def __getListPaths(self, content: bytes) -> list:
+        paths = []
         try:
             byte_to_str = "".join(map(chr, content))
         except:
-            return []
-        return [name for name in byte_to_str.split(
-            "\r\n" if IS_WINDOWS else "\n") if name]
+            return paths
+        split_str = "\r\n" if byte_to_str.endswith("\r\n") else "\n"
+        for name in byte_to_str.split(split_str):
+            if name:
+                paths.append(name.replace("/", "\\")
+                             if IS_WINDOWS else name.replace("\\", "/"))
+        return paths
 
     def __comparePaths(self, zipNamelist: list, list_paths: list) -> bool:
         zipNamelist_fixed = []
