@@ -1142,6 +1142,9 @@ class ModuleUsages(object):
                                      "usage": ("Disable the given command "
                                                "or feature. Works with "
                                                "aliases too")},
+                         "disabled": {"args": None,
+                                      "usage": ("Lists all disabled "
+                                                "features")},
                          "enable": {"args": ("<name of command/alias or "
                                              "feature>"),
                                     "usage": ("Enable the given command "

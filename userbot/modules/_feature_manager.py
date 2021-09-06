@@ -60,12 +60,10 @@ async def enable_feature(event):
     return
 
 
-register_cmd_usage("disable",
-                   usageRep.FEATURE_MGR_USAGE.get("disable", {}).get("args"),
-                   usageRep.FEATURE_MGR_USAGE.get("disable", {}).get("usage"))
-register_cmd_usage("enable",
-                   usageRep.FEATURE_MGR_USAGE.get("enable", {}).get("args"),
-                   usageRep.FEATURE_MGR_USAGE.get("enable", {}).get("usage"))
+for cmd in ("disable", "disabled", "enable"):
+    register_cmd_usage(cmd,
+                       usageRep.FEATURE_MGR_USAGE.get(cmd, {}).get("args"),
+                       usageRep.FEATURE_MGR_USAGE.get(cmd, {}).get("usage"))
 
 
 register_module_desc(descRep.FEATURE_MGR_DESC)

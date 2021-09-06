@@ -1207,6 +1207,9 @@ class ModuleUsages(object):
                                                "Befehl oder Feature. "
                                                "Funktioniert auch mit "
                                                "Aliase")},
+                         "disabled": {"args": None,
+                                      "usage": ("Listet alle deaktiverte "
+                                                "Features auf")},
                          "enable": {"args": ("<Name des Befehls/Alias oder "
                                              "Feature>"),
                                     "usage": ("Akiviert ein gegebenen Befehl "
