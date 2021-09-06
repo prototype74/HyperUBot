@@ -11,6 +11,7 @@ If you setup Termux on your Android device successfully, it is required to insta
 - Neofetch
 - FFmpeg
 - FLAC
+- WGET
 - Nano editor
 
 It is also required to have at least Python 3.8. To install the following packages, run the following command:
