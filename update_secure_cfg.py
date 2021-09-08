@@ -100,7 +100,7 @@ def _getAPIsAndSession() -> tuple:
     try:
         while True:
             try:
-                api_key = input("Please enter your App app_id (API Key): ")
+                api_key = input("Please enter your App api_id (API Key): ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
@@ -113,7 +113,7 @@ def _getAPIsAndSession() -> tuple:
 
         while True:
             try:
-                api_hash = input("Please enter your App app_id (API Hash): ")
+                api_hash = input("Please enter your App api_hash (API Hash): ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
