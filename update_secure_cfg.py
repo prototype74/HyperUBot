@@ -9,7 +9,7 @@
 from sys import version_info
 
 if (version_info.major, version_info.minor) < (3, 8):
-    print("Python v3.8+ is required! Please update "
+    print("Python v3.8+ is required to start this service! Please update "
           "Python to v3.8 or newer "
           "(current version: {}.{}.{}).".format(
               version_info.major, version_info.minor, version_info.micro))
@@ -100,7 +100,7 @@ def _getAPIsAndSession() -> tuple:
     try:
         while True:
             try:
-                api_key = input("Please enter your API Key: ")
+                api_key = input("Please enter your App app_id (API Key): ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
@@ -113,22 +113,23 @@ def _getAPIsAndSession() -> tuple:
 
         while True:
             try:
-                api_hash = input("Please enter your API Hash: ")
+                api_hash = input("Please enter your App app_id (API Hash): ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
             if len(api_hash) == 32:
                 break
             elif len(api_hash) > 0:
-                print(setColorText("Invalid input. API Hash has a length of "
-                                   "32 characters", Colors.YELLOW))
+                print(setColorText("Invalid input. API Hash should have a "
+                                   "length of 32 characters!", Colors.YELLOW))
             else:
                 print(setColorText("Invalid input. Try again...",
                                    Colors.YELLOW))
 
         while True:
             try:
-                string_session = input("Please enter your String Session: ")
+                string_session = input("Please enter your valid "
+                                       "String Session: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
