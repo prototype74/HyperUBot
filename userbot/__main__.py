@@ -189,8 +189,10 @@ async def send_welcome_msg(client, ownerID: int):
     log.info("Welcome to HyperUBot! You made it to run HyperUBot on your "
              "machine. What's next? Get surprised by running the following "
              "commands in any chat: .status, .help or .modules. Need help "
-             "with your new userbot? Chat with us in our support group "
-             "'https://t.me/HyperUBotSupport'. Have fun!")
+             "with your new userbot? Check out our wiki "
+             "'https://github.com/prototype74/HyperUBot/wiki' or chat with "
+             "us in our support group 'https://t.me/HyperUBotSupport'. "
+             "Have fun!")
     robo_face = u"\U0001F916"
     pager_emoji = u"\U0001F4DF"
     page_emoji = u"\U0001F4C4"
@@ -204,7 +206,9 @@ async def send_welcome_msg(client, ownerID: int):
     text += (f"{disk_emoji} `.modules` - __{msg.INFO_MODULES}__\n\n")
     text += (f"{pkg_emoji} `.pkg` - __{msg.INFO_PKG}__\n\n")
     supp_link = f"[{msg.INFO_SUPPORT_LINK}](https://t.me/HyperUBotSupport)"
-    text += (f"{msg.INFO_SUPPORT.format(supp_link)}\n\n")
+    wiki_link = (f"[{msg.INFO_SUPPORT_WIKI}]"
+                 f"(https://github.com/prototype74/HyperUBot/wiki)")
+    text += (f"{msg.INFO_SUPPORT.format(wiki_link, supp_link)}\n\n")
     text += msg.INFO_FUN
     try:
         await client.send_message(ownerID, text, link_preview=False)

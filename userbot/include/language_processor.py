@@ -1316,6 +1316,8 @@ class WelcomeText(object):
         lang, _getframe().f_code.co_name, "INFO_SUPPORT")
     INFO_SUPPORT_LINK = getLangString(
         lang, _getframe().f_code.co_name, "INFO_SUPPORT_LINK")
+    INFO_SUPPORT_WIKI = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_SUPPORT_WIKI")
     INFO_FUN = getLangString(
         lang, _getframe().f_code.co_name, "INFO_FUN")
 

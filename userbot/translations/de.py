@@ -718,9 +718,10 @@ class WelcomeText(object):
                 "auf neue Bot-Updates zu warten. Übrigens, gibt es auch "
                 "Module, die von der Community selbst erstellt wurden. Also "
                 "probieren Sie die auch gerne aus!")
-    INFO_SUPPORT = ("Noch Fragen über HyperUBot? Sie können gerne mit uns in "
-                    "unserer {} chatten!")
+    INFO_SUPPORT = ("Noch Fragen über HyperUBot? Lesen Sie unseren {} oder "
+                    "chatten Sie auch gerne mit uns in unserer {}!")
     INFO_SUPPORT_LINK = "Support-Gruppe"
+    INFO_SUPPORT_WIKI = "Wiki"
     INFO_FUN = "Viel Spaß!"
 
 
