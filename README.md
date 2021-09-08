@@ -24,27 +24,25 @@ HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch
 
 We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
 
-## How to get and configure HyperUBot
+### Supported platforms
 
-| Platforms | Guides |
-| - | - |
-| Android (Termux) | [SETUP_Android.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_Android.md) |
-| Arch Based Distros (Native Linux) | [SETUP_ArchBasedLinux.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_ArchBasedLinux.md) |
-| Debian Based Distros (Native Linux, WSL) | [SETUP_DebianBasedLinux.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_DebianBasedLinux.md) |
-| Red Hat Based Distros (Native Linux) | [SETUP_RHELBasedLinux](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_RHELBasedLinux.md) |
-| macOS | [SETUP_macOS.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_MacOS.md) |
-| Windows (PowerShell) | [SETUP_Windows.md](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_Windows.md) |
-| Unsupported Platforms | [Read this...](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/SETUP_Unsupported.md) |
+- Android (Termux)
+- Debian Based Distros (Native Linux, WSL)
+- Red Hat Based Distros (Native Linux)
+- macOS
+- Windows (PowerShell)
 
-## Getting started with basic commands
+## Install HyperUBot
 
-There are 3 basic commands which users of HyperUBot should know about. These commands can be used in any chat by typing:
+Follow the instructions on our [Setup wiki](https://github.com/prototype74/HyperUBot/wiki/Download-and-setup) to install HyperUBot on your device. Follow the steps meant for your **Operating System** where you want to install HyperUBot.
 
-_.status_ - Get the current status of HyperUBot such as the version, uptime etc. Useful to check if the bot is actually online.\
-_.listcmds_ (or _.help_) - lists all available commands and features from all modules to use. Pass the name of a command or feature (e.g. `.help status`) to get the usage of the certain command or feature.\
-_.modules_ - lists all built-in and user modules at one place. `.modules` takes arguments to get further information of a module such as the description or usage.
+> **Warning**: Do not git clone the repository to download HyperUBot as changes pushed to the repo may not be stable for normal usage. Git clone it only if you want take own changes to the source. Our stable releases are available in our [Releases](https://github.com/prototype74/HyperUBot/releases) of this repository.
 
-## Report a bug
+## Read the wiki
+
+We made a [GitHub wiki](https://github.com/prototype74/HyperUBot/wiki) which should help users to understand more how HyperUBot works and which features it does offer. Feel free to check it out!
+
+## Reporting a bug
 
 ### How to proper report a bug
 
@@ -66,11 +64,7 @@ should be reported in [it's Issues](https://github.com/nunopenim/module-universe
 We only provide support, if the bug or issue was **NOT** caused by third party modules or sources, that means only bugs that are caused from HyperUBot's official sources.
 Bugs caused by non-official sources for example from sideloads are irrelevant and will be ignored (or closed in `Issues` section)
 
-## Developing modules
-
-A small, introductory guide in how to develop your modules can be found [here](https://github.com/prototype74/HyperUBot/blob/master/GUIDES/DEV_DevelopingModules.md). This explains the basics in how to setup your module's .py file, so that HyperUBot can load it and run it when it is called.
-
-## Support Groups and Channels
+## Support
 
 Currently we have a [News Channel](https://t.me/HyperUBotNews) (Click to join). Here you can find news about bot updates, changes in modules and releases in the [module-universe](https://github.com/nunopenim/module-universe).
 
