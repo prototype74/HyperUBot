@@ -61,18 +61,18 @@ print(setColorText("Welcome to HyperUBot's String-Session-Generator!",
                    Colors.CYAN))
 
 print("The String-Session-Generator generates a new String Session "
-      "in combination with your App app_id (API KEY) and App api_hash "
-      "(API HASH) to allow HyperUBot to login into your account to "
+      "in combination with your App api_id (API Key) and App api_hash "
+      "(API Hash) to allow HyperUBot to login into your account to "
       "interact as 'user'bot. Please follow the steps below to obtain "
       "your API KEY and API HASH to finally generate a String Session:")
 print()
 print("1. Login to My Telegram: https://my.telegram.org")
 print("2. Go to 'API development tools' and fill out the form")
-print("3. Get your App app_id and App app_hash. You will need them for the "
+print("3. Get your App api_id and App api_hash. You will need them for the "
       "next step")
 print()
-print(setColorText("Note: Always remember not to share your App app_id and "
-                   "App app_hash!", Colors.YELLOW))
+print(setColorText("Note: Always remember not to share your App api_id and "
+                   "App api_hash!", Colors.YELLOW))
 print()
 try:
     while True:
@@ -107,7 +107,7 @@ try:
 
     print(setColorText("==== TELEGRAM CLIENT ====", Colors.CYAN))
     while True:
-        API_KEY = input("Please enter your App app_id: ")
+        API_KEY = input("Please enter your App api_id: ")
         try:
             API_KEY = int(API_KEY)
             break
@@ -115,7 +115,7 @@ try:
             print(setColorText("Invalid input. Try again...", Colors.YELLOW))
 
     while True:
-        API_HASH = input("Please enter your App app_hash: ")
+        API_HASH = input("Please enter your App api_hash: ")
         if len(API_HASH) == 32:
             break
         elif len(API_HASH) > 0:
