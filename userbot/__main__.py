@@ -237,7 +237,7 @@ def run_client():
                 check_last_reboot(tgclient))
             tgclient.run_until_disconnected()
     except ApiIdInvalidError as ae:
-        log.critical(f"API Key and/or API Hash is/are invalid: {ae}",
+        log.critical(f"App api_id and/or App api_hash is/are invalid: {ae}",
                      exc_info=True)
         log.warning("It may be possible that there is/are a typo in "
                     "your API Key and/or API Hash. If so, just start "

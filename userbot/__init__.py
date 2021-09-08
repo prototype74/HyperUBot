@@ -126,17 +126,17 @@ if not API_KEY and not API_HASH and not STRING_SESSION:
     quit(1)
 
 if not API_KEY:
-    log.error("API Key from your secure config is empty!")
+    log.error("App api_id from your secure config is empty!")
 
 if not API_HASH:
-    log.error("API Hash from your secure config is empty!")
+    log.error("App api_hash from your secure config is empty!")
 
 if not STRING_SESSION:
     log.error("String session from your secure config is empty!")
 
 if not API_KEY or not API_HASH or not STRING_SESSION:
     log.error("Make sure none of your keys in your secure config are empty as "
-              "these keys (Api key, Api hash and/or string session) "
+              "these keys (App api_id, App api_hash and/or string session) "
               "are required in order to use HyperUBot properly")
     log.warning("If you skipped or just forgot to add them "
                 "start 'Secure-Config-Updater' to update your secure "
