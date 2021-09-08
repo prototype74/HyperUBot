@@ -732,7 +732,7 @@ class ModuleDescriptions(object):
                      "can and will make permanent changes to the host "
                      "system. **Bad things will happen if you run the bot "
                      "as sudo/root!**")
-    MISC_DESC = ("The miscelaneous module contains a small set of tools "
+    MISC_DESC = ("The miscellaneous module contains a small set of tools "
                  "that did not quite fit any of the other modules, but "
                  "at the same time were too simple to have their own "
                  "module. Check the help for more details.")
@@ -1069,7 +1069,7 @@ class ModuleUsages(object):
                                                "the chat. Reply to such. "
                                                "You can use the `force` "
                                                "argument to force "
-                                               "instalation, if a user "
+                                               "installation, if a user "
                                                "space module with the same "
                                                "name already exists.\n\n"
                                                "**INFORMATION**: These "
