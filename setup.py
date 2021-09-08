@@ -150,7 +150,7 @@ def _getAPIs() -> tuple:
     try:
         while True:
             try:
-                api_key = input("Please enter your API Key: ")
+                api_key = input("Please enter your App app_id: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
@@ -163,15 +163,15 @@ def _getAPIs() -> tuple:
 
         while True:
             try:
-                api_hash = input("Please enter your API Hash: ")
+                api_hash = input("Please enter your App app_hash: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
             if len(api_hash) == 32:
                 break
             elif len(api_hash) > 0:
-                print(setColorText("Invalid input. API Hash has a length of "
-                                   "32 characters",
+                print(setColorText("Invalid input. API Hash should have a "
+                                   "length of 32 characters!",
                                    Colors.YELLOW))
             else:
                 print(setColorText("Invalid input. Try again...",
@@ -203,7 +203,7 @@ def _generateStringSession() -> tuple:
             return (api_key, api_hash, string_session)
         except ApiIdInvalidError:
             print(setColorText(
-                "API Key and/or API Hash incorrect. Try again...",
+                "App app_id and/or App app_hash incorrect. Try again...",
                 Colors.YELLOW))
         except PhoneNumberInvalidError:
             print(setColorText(
@@ -216,6 +216,7 @@ def _generateStringSession() -> tuple:
                 Colors.YELLOW))
             raise KeyboardInterrupt
         except KeyboardInterrupt:
+            print()
             raise KeyboardInterrupt
         except Exception as e:
             print(setColorText(
@@ -296,21 +297,41 @@ def main():
     from pyAesCrypt import encryptFile
 
     print("HyperUBot requires, like all other Telegram userbots, "
-          "an API Key, an API Hash and a String Session in order "
-          "to run HyperUBot as an user client.\n"
-          "If not done yet, please go to 'https://my.telegram.org' and\n"
-          "1. log in into your Telegram account\n"
-          "2. create a new application (or use an existing one)\n"
-          "3. get your API Key and Hash (do NOT share these values with "
-          "anyone else!)\n\n"
-          "Please keep the following requirements ready to obtain a "
-          "new String Session:\n"
-          "- Your Telegram application's API Key and Hash (from your "
-          "(existing) application (you created before))\n"
-          "- Your Phone Number which you use for your Telegram account "
-          "(required to log in into your account)\n"
-          "- Your Account's password (Two-Step Verification; "
-          "if enabled)\n")
+          "an App app_id (API Key), an App app_id (API Hash) and a "
+          "valid String Session in order to allow HyperUBot to login "
+          "into your account to interact as 'user'bot. Please follow the "
+          "steps below to obtain your API Key, API Hash and to finally "
+          "get a String Session:")
+    print()
+    print("1. Login to My Telegram: https://my.telegram.org")
+    print("2. Go to 'API development tools' and fill out the form")
+    print("3. Get your App app_id and App app_hash. You will need them "
+          "for the ""next step")
+    print()
+    print(setColorText("Note: Always remember not to share your "
+                       "App app_id and App app_hash!", Colors.YELLOW))
+    print()
+
+    while True:
+        try:
+            inp = input("Continue? (y/n): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if inp.lower() in ("y", "yes"):
+            break
+        elif inp.lower() in ("n", "no"):
+            print("Alright, exiting Setup Assistant...")
+            raise KeyboardInterrupt
+        else:
+            print(setColorText("Invalid input. Try again...",
+                               Colors.YELLOW))
+    print()
+    print("As we want to interact as user, the Telegram client will ask for "
+          "your phone number, don't worry it's only required for "
+          "user authorization and will not be send to anyone else. If "
+          "Two-Step Verification is enabled it will also ask for the "
+          "account's password!")
     print()
 
     while True:
@@ -320,6 +341,7 @@ def main():
             print()
             raise KeyboardInterrupt
         if inp.lower() in ("y", "yes"):
+            print()
             break
         elif inp.lower() in ("n", "no"):
             print("Alright, exiting Setup Assistant...")
@@ -333,7 +355,7 @@ def main():
     if not api_key or not api_hash or not string_session:
         print(
             setColorText("Setup Assistant failed to get a new "
-                         "string session from your API Key/Hash",
+                         "string session from your App app_id/app_hash",
                          Colors.RED))
         print(
             setColorText("Feel free to contact us at Telegram "
@@ -344,7 +366,7 @@ def main():
         return
 
     print()
-    print("As the API Key, API Hash and String Session are vaild, it's "
+    print("As the App app_id, App app_hash and String Session are valid, it's "
           "important to store them into a secured configuration file "
           "to avoid unauthorized access to these values. There is also an "
           "option to setup a password to your secured configuration "
