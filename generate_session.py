@@ -9,7 +9,7 @@
 from sys import version_info
 
 if (version_info.major, version_info.minor) < (3, 8):
-    print("Python v3.8+ is required! Please update "
+    print("Python v3.8+ is required to start this service! Please update "
           "Python to v3.8 or newer "
           "(current version: {}.{}.{}).".format(
              version_info.major, version_info.minor, version_info.micro))
@@ -57,22 +57,23 @@ if telethon_version < (1, 23, 0):
         f"(current version: {version.__version__}).", Colors.RED))
     quit(1)
 
-print(setColorText("Welcome to HyperUBot's String Session Generator!",
+print(setColorText("Welcome to HyperUBot's String-Session-Generator!",
                    Colors.CYAN))
-print("Get a new String Session from your Telegram account with the help of "
-      "this script.\n\n"
-      "Important: If not done yet, please go to https://my.telegram.org and\n"
-      "1. log in into your account\n"
-      "2. create a new application\n"
-      "3. get your API Key and Hash (do NOT share these IDs with "
-      "anyone else!)\n\n"
-      "Please keep the following requirements ready to obtain a new "
-      "String Session:\n"
-      "- Your Telegram application's API Key and Hash (to access your "
-      "application)\n"
-      "- Your Phone Number (required to log in into your account)\n"
-      "- Your Account's password (Two-Step Verification; if enabled)\n")
 
+print("The String-Session-Generator generates a new String Session "
+      "in combination with your App app_id (API KEY) and App api_hash "
+      "(API HASH) to allow HyperUBot to login into your account to "
+      "interact as 'user'bot. Please follow the steps below to obtain "
+      "your API KEY and API HASH to finally generate a String Session:")
+print()
+print("1. Login to My Telegram: https://my.telegram.org")
+print("2. Go to 'API development tools' and fill out the form")
+print("3. Get your App app_id and App app_hash. You will need them for the "
+      "next step")
+print()
+print(setColorText("Note: Always remember not to share your App app_id and "
+                   "App app_hash!", Colors.YELLOW))
+print()
 try:
     while True:
         con = input("Continue? (y/n): ")
@@ -82,9 +83,31 @@ try:
             raise KeyboardInterrupt
         else:
             print(setColorText("Invalid input. Try again...", Colors.YELLOW))
+except KeyboardInterrupt:
+    print()
+    print("Exiting...")
+    quit()
+print()
+print("As we want to interact as user, the Telegram client will ask for "
+      "your phone number, don't worry it's only required for "
+      "user authorization and will not be send to anyone else. If "
+      "Two-Step Verification is enabled it will also ask for the password!")
+print()
 
+try:
     while True:
-        API_KEY = input("Please enter your API Key: ")
+        con = input("Ready? (y/n): ")
+        if con.lower() in ("y", "yes"):
+            print()
+            break
+        elif con.lower() in ("n", "no"):
+            raise KeyboardInterrupt
+        else:
+            print(setColorText("Invalid input. Try again...", Colors.YELLOW))
+
+    print(setColorText("==== TELEGRAM CLIENT ====", Colors.CYAN))
+    while True:
+        API_KEY = input("Please enter your App app_id: ")
         try:
             API_KEY = int(API_KEY)
             break
@@ -92,12 +115,12 @@ try:
             print(setColorText("Invalid input. Try again...", Colors.YELLOW))
 
     while True:
-        API_HASH = input("Please enter your API Hash: ")
+        API_HASH = input("Please enter your App app_hash: ")
         if len(API_HASH) == 32:
             break
         elif len(API_HASH) > 0:
-            print(setColorText("Invalid input. API Hash has a length of "
-                               "32 characters", Colors.YELLOW))
+            print(setColorText("Invalid input. API Hash should have a "
+                               "length of 32 characters!", Colors.YELLOW))
         else:
             print(setColorText("Invalid input. Try again...", Colors.YELLOW))
 except KeyboardInterrupt:
@@ -105,39 +128,46 @@ except KeyboardInterrupt:
     print("Exiting...")
     quit()
 
-start_scfg_updater = False
-
 try:
     client = TelegramClient(StringSession(), API_KEY, API_HASH)
     with client:
-        print("This long string below is your new String Session:\n\n")
+        print("Alright there we go! This long string below is your new "
+              "String Session:\n\n")
         print(setColorText(client.session.save(), Colors.GREEN))
         print("\n\nPlease keep this string to a safe place and " +
               setColorText("DON'T SHARE IT WITH ANYONE!!", Colors.RED))
-        print("Next step is to start Secure-Config-Updater to store your new "
-              "string session safe in a secured config file\n")
-        if IS_WINDOWS:
-            print("Run the following command to start the "
-                  "Secure-Config-Updater: " +
-                  setColorText("python update_secure_cfg.py", Colors.CYAN))
-        else:
-            while True:
-                inp = input("Start Secure-Config-Updater? (y/n): ")
-                if inp.lower() in ("y", "yes"):
-                    start_scfg_updater = True
-                    break
-                elif inp.lower() in ("n", "no"):
-                    break
-                else:
-                    print(setColorText("Invalid input. Try again...",
-                                       Colors.YELLOW))
+        print(setColorText("=========================", Colors.CYAN))
 except KeyboardInterrupt:
     print()
     print("Exiting...")
+    quit()
 except Exception as e:
     print(setColorText(f"Unable to obtain a new string session: {e}",
                        Colors.RED))
     quit(1)
+
+start_scfg_updater = False
+print("Next step is to start Secure-Config-Updater to store your new "
+      "String Session safe in a secured config file\n")
+if IS_WINDOWS:
+    print("Run the following command to start the "
+          "Secure-Config-Updater: " +
+          setColorText("python update_secure_cfg.py", Colors.CYAN))
+else:
+    try:
+        while True:
+            inp = input("Start Secure-Config-Updater? (y/n): ")
+            if inp.lower() in ("y", "yes"):
+                start_scfg_updater = True
+                break
+            elif inp.lower() in ("n", "no"):
+                break
+            else:
+                print(setColorText("Invalid input. Try again...",
+                                       Colors.YELLOW))
+    except KeyboardInterrupt:
+        print()
+        print("Exiting...")
 
 if start_scfg_updater:
     try:
