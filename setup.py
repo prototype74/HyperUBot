@@ -150,7 +150,7 @@ def _getAPIs() -> tuple:
     try:
         while True:
             try:
-                api_key = input("Please enter your App app_id: ")
+                api_key = input("Please enter your App api_id: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
@@ -163,7 +163,7 @@ def _getAPIs() -> tuple:
 
         while True:
             try:
-                api_hash = input("Please enter your App app_hash: ")
+                api_hash = input("Please enter your App api_hash: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
@@ -203,7 +203,7 @@ def _generateStringSession() -> tuple:
             return (api_key, api_hash, string_session)
         except ApiIdInvalidError:
             print(setColorText(
-                "App app_id and/or App app_hash incorrect. Try again...",
+                "App api_id and/or App api_hash incorrect. Try again...",
                 Colors.YELLOW))
         except PhoneNumberInvalidError:
             print(setColorText(
@@ -297,7 +297,7 @@ def main():
     from pyAesCrypt import encryptFile
 
     print("HyperUBot requires, like all other Telegram userbots, "
-          "an App app_id (API Key), an App app_id (API Hash) and a "
+          "an App api_id (API Key), an App api_hash (API Hash) and a "
           "valid String Session in order to allow HyperUBot to login "
           "into your account to interact as 'user'bot. Please follow the "
           "steps below to obtain your API Key, API Hash and to finally "
@@ -305,11 +305,11 @@ def main():
     print()
     print("1. Login to My Telegram: https://my.telegram.org")
     print("2. Go to 'API development tools' and fill out the form")
-    print("3. Get your App app_id and App app_hash. You will need them "
+    print("3. Get your App api_id and App api_hash. You will need them "
           "for the ""next step")
     print()
     print(setColorText("Note: Always remember not to share your "
-                       "App app_id and App app_hash!", Colors.YELLOW))
+                       "App api_id and App api_hash!", Colors.YELLOW))
     print()
 
     while True:
@@ -366,7 +366,7 @@ def main():
         return
 
     print()
-    print("As the App app_id, App app_hash and String Session are valid, it's "
+    print("As the App api_id, App api_hash and String Session are valid, it's "
           "important to store them into a secured configuration file "
           "to avoid unauthorized access to these values. There is also an "
           "option to setup a password to your secured configuration "
