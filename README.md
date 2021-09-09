@@ -20,9 +20,11 @@ Instead of coming cluttered with all kinds of packages, it is fully customizable
 
 ## Compatibility
 
-HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch linux etc.)_ and Android. Cloud platforms like Heroku are **not** supported, due to the way how these platforms handle bash processes, something needed for some bash based commands.
+HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch linux etc.)_ and Android.
 
-We recommend using Ubuntu 18.04 or 20.04, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
+> Cloud platforms like Heroku are **not** supported by us, as these platforms can't handle bash commands, some of our shell based commands (`.ping`, `.rtt` etc.) do need to work properly. Also some cloud platforms may reset the environment which will also reset HyperUBot's saved data and settings.
+
+We recommend using `Ubuntu 18.04` or `20.04`, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
 
 ### Supported platforms
 
@@ -38,7 +40,7 @@ Follow the instructions on our [Setup wiki](https://github.com/prototype74/Hyper
 
 > **Warning**: Do not git clone the repository to download HyperUBot as changes pushed to the repo may not be stable for normal usage. Git clone it only if you want take own changes to the source. Our stable releases are available in our [Releases](https://github.com/prototype74/HyperUBot/releases) of this repository.
 
-## Read the wiki
+## Read the wiki!
 
 We made a [GitHub wiki](https://github.com/prototype74/HyperUBot/wiki) which should help users to understand more how HyperUBot works and which features it does offer. Feel free to check it out!
 
@@ -56,13 +58,12 @@ in our Telegram Support Group. In order to solve the bug or issue report from yo
 
 HyperUBot generates a log `hyper.log` in the bot's root directory automatically everytime you run the bot.
 Please provide us this log, as it helps us a lot to figure out the bug or issue faster.\
-Bugs or issues caused in user modules from [HyperUBot's modules universe](https://github.com/nunopenim/module-universe)
+Bugs or issues caused by user modules from [HyperUBot's modules universe](https://github.com/nunopenim/module-universe)
 should be reported in [it's Issues](https://github.com/nunopenim/module-universe/issues) section.
 
 ### What we don't accept as a bug
 
-We only provide support, if the bug or issue was **NOT** caused by third party modules or sources, that means only bugs that are caused from HyperUBot's official sources.
-Bugs caused by non-official sources for example from sideloads are irrelevant and will be ignored (or closed in `Issues` section)
+We **DO NOT** provide support, if the bug or issue was caused by modules from [Community repos](https://github.com/prototype74/HyperUBot/wiki/Community-Repos) or other type of modules e.g. ported modules from other userbots. Expect that we will ignore such bug reports if you report it anyway.
 
 ## Support
 
