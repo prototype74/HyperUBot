@@ -9,7 +9,7 @@
 from sys import version_info
 
 if (version_info.major, version_info.minor) < (3, 8):
-    print("Python v3.8+ is required! Please update "
+    print("Python v3.8+ is required to start Setup Assistant! Please update "
           "Python to v3.8 or newer "
           "(current version: {}.{}.{}).".format(
               version_info.major, version_info.minor, version_info.micro))
