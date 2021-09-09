@@ -268,6 +268,7 @@ class _SecureConfigLoader:
         self.__secure_config = os.path.join(".", "userbot", "secure_config")
         self.__temp = os.path.join(".", "userbot", "userdata", "_temp.py")
         self.__configs_loaded = False
+        self.__too_many_attempts = False
 
     def _check_secure_config(self) -> bool:
         """
@@ -296,21 +297,25 @@ class _SecureConfigLoader:
                             bufferSize=(64 * 1024))
                 break
             except ValueError as e:
-                if "wrong password" in str(e).lower() and \
-                   attempts < 5:
-                    if not pwd_confm:
-                        log.info("Password required for secure config")
+                if "wrong password" in str(e).lower():
+                    if attempts < 5:
+                        if not pwd_confm:
+                            log.info("Password required for secure config")
+                        else:
+                            log.warning("Invalid password. Try again...")
+                        try:
+                            while True:
+                                password = getpass("Please enter your "
+                                                   "password: ")
+                                if not pwd_confm:
+                                    pwd_confm = True
+                                break
+                        except KeyboardInterrupt:
+                            raise KeyboardInterrupt
+                        attempts += 1
                     else:
-                        log.warning("Invalid password. Try again...")
-                    try:
-                        while True:
-                            password = getpass("Please enter your password: ")
-                            if not pwd_confm:
-                                pwd_confm = True
-                            break
-                    except KeyboardInterrupt:
-                        raise KeyboardInterrupt
-                    attempts += 1
+                        self.__too_many_attempts = True
+                        return False
                 else:
                     log.error("Unable to read secure config")
                     return False
@@ -370,3 +375,6 @@ class _SecureConfigLoader:
                         break
         del s_cfg
         return (api_key, api_hash, string_session)
+
+    def _getTooManyAttempts(self) -> bool:
+        return self.__too_many_attempts

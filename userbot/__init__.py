@@ -89,6 +89,26 @@ except KeyboardInterrupt:
     log.info("Exiting...")
     quit()
 
+if __scfg_loader__._getTooManyAttempts():
+    log.error("Too many failed attempts. Please try again later.")
+    log.warning("Forgot your password? Start 'Secure-Config-Updater' to "
+                "create a new secure config file instead.")
+    try:
+        options = ["Start Secure-Config-Updater",
+                   "Quit HyperUBot"]
+        if isWindows():
+            options[0] += " (python update_secure_cfg.py)"
+            options.pop()
+            _services._suggest_options(options)
+        else:
+            option = _services._suggest_options(options)
+            if option == 1:
+                _services._start_scfg_updater()
+    except KeyboardInterrupt:
+        print()
+        log.info("Exiting...")
+    quit(1)
+
 if not API_KEY and not API_HASH and not STRING_SESSION:
     if not __scfg_loader__._check_secure_config():
         log.error("Cannot continue to start HyperUBot as there is no secure "
