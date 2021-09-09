@@ -20,11 +20,7 @@ Instead of coming cluttered with all kinds of packages, it is fully customizable
 
 ## Compatibility
 
-HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch linux etc.)_ and Android.
-
-> Cloud platforms like Heroku are **not** supported by us, as these platforms can't handle bash commands, some of our shell based commands (`.ping`, `.rtt` etc.) do need to work properly. Also some cloud platforms may reset the environment which will also reset HyperUBot's saved data and settings.
-
-We recommend using `Ubuntu 18.04` or `20.04`, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
+HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch linux etc.)_ and Android. We recommend using `Ubuntu 18.04` or `20.04`, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
 
 ### Supported platforms
 
@@ -33,6 +29,8 @@ We recommend using `Ubuntu 18.04` or `20.04`, as it's setup is a lot easier, and
 - Red Hat Based Distros (Native Linux)
 - macOS
 - Windows (PowerShell)
+
+> Cloud platforms like Heroku are **not** supported by us, as these platforms can't handle shell commands, some of our shell based commands (`.ping`, `.rtt` etc.) do need to work properly. Also some cloud platforms may reset the environment which will also reset HyperUBot's saved data and settings.
 
 ## Install HyperUBot
 
