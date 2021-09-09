@@ -1,4 +1,4 @@
-# HyperUBot
+# ![](https://github.com/prototype74/HyperUBot/wiki/resources/hyperanim2021final_KebapciEBY.gif)
 
 A customizable, modular Telegram userbot, with innovative components.
 
@@ -79,7 +79,7 @@ We also have a [Support Group](https://t.me/HyperUBotSupport) (Click to join), w
 
 ### Special thanks
 
-- [KebapciEBY](https://github.com/KebapciEBY), for the support and ideas he gave during development.
+- [KebapciEBY](https://github.com/KebapciEBY), for the amazing banner! Also for the support and ideas he gave during development.
 
 ### Translators
 
