@@ -64,7 +64,7 @@ print("The String-Session-Generator generates a new String Session "
       "in combination with your App api_id (API Key) and App api_hash "
       "(API Hash) to allow HyperUBot to login into your account to "
       "interact as 'user'bot. Please follow the steps below to obtain "
-      "your API KEY and API HASH to finally generate a String Session:")
+      "your API Key and API Hash to finally generate a String Session:")
 print()
 print("1. Login to My Telegram: https://my.telegram.org")
 print("2. Go to 'API development tools' and fill out the form")
