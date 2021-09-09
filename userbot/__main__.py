@@ -240,7 +240,7 @@ def run_client():
         log.critical(f"App api_id and/or App api_hash is/are invalid: {ae}",
                      exc_info=True)
         log.warning("It may be possible that there is/are a typo in "
-                    "your API Key and/or API Hash. If so, just start "
+                    "your App api_id and/or App api_hash. If so, just start "
                     "'Secure-Config-Updater' and update them with your "
                     "correct keys")
         options = ["Start Secure-Config-Updater",

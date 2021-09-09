@@ -754,7 +754,7 @@ class ModuleDescriptions(object):
                        "requiring you to manually delete the bad user "
                        "space module!\n\n"
                        "**CRITICAL WARNING**: Some malicious files could "
-                       "send some of your information (namely API KEY and/or "
+                       "send some of your information (namely API Key and/or "
                        "String Session) to a malicious hacker! Only "
                        "sideload modules if you trust the source!")
     FEATURE_MGR_DESC = ("The Feature Manager module allows the user "
@@ -1084,7 +1084,7 @@ class ModuleUsages(object):
                                                "**CRITICAL WARNING**: Some "
                                                "malicious files could send "
                                                "some of your information "
-                                               "(namely API KEY and/or "
+                                               "(namely API Key and/or "
                                                "String Session) to a "
                                                "malicious hacker! Only "
                                                "sideload modules if you "

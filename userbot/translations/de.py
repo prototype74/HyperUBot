@@ -808,7 +808,7 @@ class ModuleDescriptions(object):
                        "zu löschen!\n\n"
                        "**KRITISCHE WARNUNG**: Bösartige Dateien könnten "
                        "einige ihrer Informationen (beispielsweise das "
-                       "API KEY und/oder String Session) zu einem bösartigen "
+                       "API Key und/oder String Session) zu einem bösartigen "
                        "Hacker weiterleiten! Beziehen Sie Module nur "
                        "aus vertrauenswürdigen Quellen!")
     FEATURE_MGR_DESC = ("Das Feature-Manager-Modul erlaubt es dem Nutzer, "
@@ -1195,7 +1195,7 @@ class ModuleUsages(object):
                                                "**KRITISCHE WARNUNG**: "
                                                "Bösartige Dateien könnten "
                                                "einige ihrer Informationen "
-                                               "(beispielsweise das API KEY "
+                                               "(beispielsweise das API Key "
                                                "und/oder String Session) zu "
                                                "einem bösartigen Hacker "
                                                "weiterleiten! Beziehen Sie "

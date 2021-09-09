@@ -784,7 +784,7 @@ class ModuleDescriptions(object):
                        "utilizador.\n\n"
                        "**AVISO CRITICO**: Alguns ficheiros maliciosos "
                        "podem enviar a tua informação (geralmente a API "
-                       "KEY e String Session, mas não está limitado a "
+                       "Key e String Session, mas não está limitado a "
                        "estes itens) para hackers com propósitos "
                        "maliciosos! Faz apenas sideload de módulos que "
                        "confies na fonte!")
@@ -1130,7 +1130,7 @@ class ModuleUsages(object):
                                                "**AVISO CRITICO**: Alguns "
                                                "ficheiros maliciosos podem "
                                                "enviar a tua informação "
-                                               "(geralmente a API KEY e "
+                                               "(geralmente a API Key e "
                                                "String Session, mas não "
                                                "está limitado a estes itens) "
                                                "para hackers com propósitos "
