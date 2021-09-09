@@ -9,8 +9,8 @@
 from sys import version_info
 
 if (version_info.major, version_info.minor) < (3, 8):
-    print("Python v3.8+ is required to start this service! Please update "
-          "Python to v3.8 or newer "
+    print("Python v3.8+ is required to start Secure-Config-Updater! Please "
+          "update Python to v3.8 or newer "
           "(current version: {}.{}.{}).".format(
               version_info.major, version_info.minor, version_info.micro))
     quit(1)
@@ -159,9 +159,9 @@ def _start_userbot():
 
 def main():
     print(setColorText("Secure-Config-Updater", Colors.CYAN) +
-          " creates a new secured config file with your API Key, "
-          "Hash and String Session stored to protect these sensitive "
-          "data from unauthorized access")
+          " creates a new secured config file with your App api_id (API Key), "
+          "App api_hash (API Hash) and String Session stored to protect these "
+          "sensitive data from unauthorized access")
     print()
 
     while True:
