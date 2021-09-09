@@ -23,7 +23,7 @@ class _PackageManagerJSON:
 
     def _init_json(self, force_init: bool = False):
         special_caller = [os.path.join("userbot", "modules",
-                                       "package_manager.py"),
+                                       "_package_manager.py"),
                           os.path.join("userbot", "sysutils",
                                        "package_manager.py")]
         sys_caller = getouterframes(currentframe(), 2)[1].filename
@@ -55,7 +55,7 @@ class _PackageManagerJSON:
     def _read_json(self):
         caller = getouterframes(currentframe(), 2)[1].filename
         valid_caller = os.path.join("userbot", "modules",
-                                    "package_manager.py")
+                                    "_package_manager.py")
         if not caller.endswith(valid_caller):
             log.warning("Not a valid caller "
                         f"(requested by {os.path.basename(caller)})")
@@ -96,7 +96,7 @@ class _PackageManagerJSON:
 
     def _save_json(self, new_data: dict):
         special_caller = [os.path.join("userbot", "modules",
-                                       "package_manager.py"),
+                                       "_package_manager.py"),
                           os.path.join("userbot", "sysutils",
                                        "package_manager.py")]
         sys_caller = getouterframes(currentframe(), 2)[1].filename
@@ -124,7 +124,7 @@ class _PackageManagerJSON:
     def _check_packages(self, json_data: dict) -> dict:
         caller = getouterframes(currentframe(), 2)[1].filename
         valid_caller = os.path.join("userbot", "modules",
-                                    "package_manager.py")
+                                    "_package_manager.py")
         if not caller.endswith(valid_caller):
             log.warning("Not a valid caller "
                         f"(requested by {os.path.basename(caller)})")

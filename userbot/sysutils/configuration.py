@@ -73,9 +73,9 @@ class _SysConfigurations:
             setConfiguration("EXAMPLE_STR", "Test")
             setConfiguration("EXAMPLE_LIST", [25, "test"])
         """
-        special_caller = [join("userbot", "modules", "systools.py"),
-                          join("userbot", "modules", "updater.py"),
-                          join("userbot", "modules", "package_manager.py"),
+        special_caller = [join("userbot", "modules", "_systools.py"),
+                          join("userbot", "modules", "_updater.py"),
+                          join("userbot", "modules", "_package_manager.py"),
                           join("userbot", "modules", "sideloader.py")]
         module_caller = getouterframes(currentframe(), 2)[2].filename
         valid_caller = False
@@ -88,7 +88,7 @@ class _SysConfigurations:
                               f"(requested by {basename(module_caller)})")
         if config == "UPDATE_COMMIT_ID" and \
            not module_caller.endswith(
-               join("userbot", "modules", "updater.py")):
+               join("userbot", "modules", "_updater.py")):
             raise AccessError(f"Access to '{config}' denied "
                               f"(requested by {basename(module_caller)})")
         if config in self.__botconfigs.keys():
