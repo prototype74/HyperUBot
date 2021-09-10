@@ -53,8 +53,8 @@ from os import path, mkdir  # noqa: E402
 # Start file and terminal logging
 log = getLogger(__name__)
 __hyper_logger__ = _UserbotLogger(log)
-__hyper_logger__._setup_logger()
 __hyper_logger__._initialize_logfile(PROJECT, SAFEMODE, version_info, version)
+__hyper_logger__._setup_logger()
 
 try:
     if not path.exists(path.join(".", "userbot", "userdata")):
