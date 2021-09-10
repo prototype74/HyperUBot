@@ -56,10 +56,8 @@ class _SysServices:
         for cmd in commands:
             tcmd.append(cmd)
         cmds = " ".join(tcmd)
-        #DEBUG
-        log.info(f"[EXEC] Executing programm with command '{cmds}' "
-                 f"(requested by {os.path.basename(caller)})")
         self.__shutdown_logging()
+        print()
         os.execle(py_exec, *tcmd, os.environ)
         return
 
