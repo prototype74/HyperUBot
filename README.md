@@ -34,9 +34,9 @@ HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch
 
 ## Install HyperUBot
 
-Follow the instructions on our [Setup wiki](https://github.com/prototype74/HyperUBot/wiki/Download-and-setup) to install HyperUBot on your device. Follow the steps meant for your **Operating System** where you want to install HyperUBot.
+Follow the instructions on our [Setup wiki](https://github.com/prototype74/HyperUBot/wiki/Installation-and-setup) to install HyperUBot on your device. Follow the steps meant for your **Operating System** where you want to install HyperUBot.
 
-> **Warning**: Do not git clone the repository to download HyperUBot as changes pushed to the repo may not be stable for normal usage. Git clone it only if you want take own changes to the source. Our stable releases are available in our [Releases](https://github.com/prototype74/HyperUBot/releases) of this repository.
+> **Warning**: Do not git clone the repository to install HyperUBot as changes pushed to the repo may not be stable for normal usage. Git clone it only if you want take own changes to the source. Our stable releases are available in our [Releases](https://github.com/prototype74/HyperUBot/releases) of this repository.
 
 ## Read the wiki!
 
