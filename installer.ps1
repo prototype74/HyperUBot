@@ -12,8 +12,8 @@ if ( ( ( Test-Path -Path ".\userbot\__init__.py" -PathType leaf ) -and
      ( ( Test-Path -Path ".\HyperUBot\*" ) -and
        ( Test-Path -Path ".\HyperUBot\userbot\__init__.py" -PathType leaf ) -and
        ( Test-Path -Path ".\HyperUBot\userbot\__main__.py" -PathType leaf ) ) ) {
-	Write-Host -ForegroundColor Green "HyperUBot is installed already"
-	exit 0
+    Write-Host -ForegroundColor Green "HyperUBot is installed already"
+    exit 0
 }
 
 $ProgressPreference = "SilentlyContinue"
@@ -41,42 +41,42 @@ Write-Output ""
 
 # Python --version >=3.8
 try {
-	Write-Output "Checking for Python..."
-	$py_ver_str = python --version
+    Write-Output "Checking for Python..."
+    $py_ver_str = python --version
 }
 catch [System.Management.Automation.CommandNotFoundException] {
-	throw "Python is not installed. Please install Python from 'https://www.python.org' or from Microsoft Store"
+    throw "Python is not installed. Please install Python from 'https://www.python.org' or from Microsoft Store"
 }
 
 if ( -not $py_ver_str ) {
-	throw "Python is not installed. Please install Python from 'https://www.python.org' or from Microsoft Store"
+    throw "Python is not installed. Please install Python from 'https://www.python.org' or from Microsoft Store"
 }
 
 $py_ver_str = $py_ver_str.split(" ")[1]
 $py_ver = [Version]::new($py_ver_str)
 
 if ( $py_ver -lt [Version]::new(3, 8)) {
-	Write-Host -ForegroundColor Yellow "HyperUBot requires at least Python v3.8! Current version is '$py_ver_str'"
-	exit 1
+    Write-Host -ForegroundColor Yellow "HyperUBot requires at least Python v3.8! Current version is '$py_ver_str'"
+    exit 1
 }
 
 Write-Output "Python $py_ver_str is installed!"
 
 # Scoop Package Manager for Windows
 try {
-	Write-Output "Checking for Scoop Package Manager..."
-	scoop | Out-Null
+    Write-Output "Checking for Scoop Package Manager..."
+    scoop | Out-Null
 }
 catch [System.Management.Automation.CommandNotFoundException] {
-	Write-Output "Installing Scoop Package Manager..."
-	try {
-		# From https://scoop.sh/
-		Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-	}
-	catch {
-		Write-Host -ForegroundColor Red "Failed to install the Scoop Package Manager"
-		throw $PSItem.Exception.Message
-	}
+    Write-Output "Installing Scoop Package Manager..."
+    try {
+        # From https://scoop.sh/
+        Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+    }
+    catch {
+        Write-Host -ForegroundColor Red "Failed to install the Scoop Package Manager"
+        throw $PSItem.Exception.Message
+    }
 }
 
 # Install scoop packages
@@ -85,12 +85,12 @@ scoop update
 scoop install git neofetch ffmpeg-shared flac
 
 try {
-	Write-Output "Fetching latest release from HyperUBot's Repository..."
-	$get_release = Invoke-WebRequest -Uri "https://api.github.com/repos/prototype74/HyperUBot/releases/latest"
+    Write-Output "Fetching latest release from HyperUBot's Repository..."
+    $get_release = Invoke-WebRequest -Uri "https://api.github.com/repos/prototype74/HyperUBot/releases/latest"
 }
 catch [System.Net.WebException] {
-	Write-Host -ForegroundColor Yellow "Failed to fetch release from HyperUBot's Repository"
-	throw $PSItem.Exception.Message
+    Write-Host -ForegroundColor Yellow "Failed to fetch release from HyperUBot's Repository"
+    throw $PSItem.Exception.Message
 }
 
 $json_obj = ConvertFrom-Json $([String]::new($get_release.Content))
@@ -100,12 +100,12 @@ $curr_path = (Get-Location).Path
 $dir_name = "HyperUBot"
 
 try {
-	Write-Output "Downloading HyperUBot ($release_ver)..."
-	Invoke-WebRequest $tar_pkg -OutFile .\HyperUBot.tar.gz
+    Write-Output "Downloading HyperUBot ($release_ver)..."
+    Invoke-WebRequest $tar_pkg -OutFile .\HyperUBot.tar.gz
 }
 catch [System.Net.WebException] {
-	Write-Host -ForegroundColor Yellow "Failed to download HyperUBot"
-	throw $PSItem.Exception.Message
+    Write-Host -ForegroundColor Yellow "Failed to download HyperUBot"
+    throw $PSItem.Exception.Message
 }
 
 Write-Output "Creating HyperUBot's directory in '$curr_path'..."
@@ -115,38 +115,38 @@ Write-Output "Installing HyperUBot..."
 tar -xf .\HyperUBot.tar.gz --directory .\$dir_name --strip-components=1
 
 if ( $LASTEXITCODE -ne 0 ) {
-	Write-Host -ForegroundColor Red "Installation failed!"
-	exit 1
+    Write-Host -ForegroundColor Red "Installation failed!"
+    exit 1
 }
 Remove-Item -Path .\HyperUBot.tar.gz -Force
 
 if ( ( Test-Path -Path ".\$dir_name\*" ) -and
      ( Test-Path -Path ".\$dir_name\userbot\__init__.py" ) -and
      ( Test-Path -Path ".\$dir_name\userbot\__main__.py" ) ) {
-	Write-Host -ForegroundColor Green "HyperUBot has been installed successfully!"
+    Write-Host -ForegroundColor Green "HyperUBot has been installed successfully!"
 }
 else {
-	Write-Host -ForegroundColor Red "Installation was not successful!"
-	exit 1
+    Write-Host -ForegroundColor Red "Installation was not successful!"
+    exit 1
 }
 
 Set-Location $dir_name 
 Write-Output ""
 
 while($true) {
-	$user_input = Read-Host -Prompt "Do you wish to start the Setup Assistant now? (y/n)"
-	if ( $user_input.ToLower() -eq "y") {
-		Write-Output "Starting Setup Assistant..."
-		Write-Output ""
-		python setup.py
-		break
-	}
-	elseif ( $user_input.ToLower() -eq "n") {
-		break
-	}
-	else {
-		Write-Host -ForegroundColor Yellow "Invalid input. Try again..."
-	}
+    $user_input = Read-Host -Prompt "Do you wish to start the Setup Assistant now? (y/n)"
+    if ( $user_input.ToLower() -eq "y") {
+        Write-Output "Starting Setup Assistant..."
+        Write-Output ""
+        python setup.py
+        break
+    }
+    elseif ( $user_input.ToLower() -eq "n") {
+        break
+    }
+    else {
+        Write-Host -ForegroundColor Yellow "Invalid input. Try again..."
+    }
 }
 
 exit 0
