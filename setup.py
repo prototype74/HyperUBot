@@ -237,7 +237,12 @@ def _run_userbot():
 def main():
     print(setColorText("Welcome to HyperUBot's Setup Assistant!", Colors.CYAN))
     print("The Setup Assistant will guide you through all required "
-          "processes to run HyperUBot on your device properly")
+          "processes to run HyperUBot on your device properly. It may "
+          "be possible that the Setup Assistant will install some pip "
+          "packages first which are required for the configurations "
+          "of HyperUBot during the setup. All other pip packages "
+          "which are required only while the bot is running will be "
+          "installed at the end of the setup.")
     print()
 
     while True:
@@ -322,7 +327,7 @@ def main():
             break
         elif inp.lower() in ("n", "no"):
             print("Alright, exiting Setup Assistant...")
-            raise KeyboardInterrupt
+            return
         else:
             print(setColorText("Invalid input. Try again...",
                                Colors.YELLOW))
@@ -345,7 +350,7 @@ def main():
             break
         elif inp.lower() in ("n", "no"):
             print("Alright, exiting Setup Assistant...")
-            raise KeyboardInterrupt
+            return
         else:
             print(setColorText("Invalid input. Try again...",
                                Colors.YELLOW))
