@@ -20,7 +20,7 @@ Instead of coming cluttered with all kinds of packages, it is fully customizable
 
 ## Compatibility
 
-HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch linux etc.)_ and Android. We recommend using `Ubuntu 18.04` or `20.04`, as it's setup is a lot easier, and straight forward (there is no need of installing a package manager, such as apt-get, since it comes by default.)
+HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch linux etc.)_ and Android. It doesn't matter on which platform you'll setup HyperUBot, it's setup will be easy on all of them. However, at least [Python](https://www.python.org/) v3.8 will be required regardless on which platform you want to host HyperUBot.
 
 ### Supported platforms
 
