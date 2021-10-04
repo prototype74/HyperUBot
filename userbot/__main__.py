@@ -286,6 +286,13 @@ def run_client():
         raise KeyboardInterrupt
     except KeyboardInterrupt:
         raise KeyboardInterrupt
+    except ConnectionError:
+        log.error("Connection to Telegram servers failed!",
+                  exc_info=True)
+        log.warning("Please check your network connection and try it again. "
+                    "If, however, your network connection works fine, it "
+                    "may be possible that the Telegram servers are down "
+                    "temporary")
     except (BaseException, Exception) as e:
         log.critical(f"Client has stopped: {e}", exc_info=True)
         options = ["Start Recovery",
