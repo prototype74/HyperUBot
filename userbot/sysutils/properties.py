@@ -249,13 +249,14 @@ class Properties:
                 value = False
             elif value.lower() == "yes":
                 value = True
-            elif value.isnumeric():
-                value = int(value)
             else:
                 try:
-                    value = float(value)
+                    value = int(value)
                 except:
-                    pass
+                    try:
+                        value = float(value)
+                    except:
+                        pass
         return value
 
 
@@ -382,11 +383,12 @@ class _SysProperties:
                 value = False  # bool
             elif value.lower() == "yes":
                 value = True  # bool
-            elif value.isnumeric():
-                value = int(value)  # integer
             else:
-                try:  # float
-                    value = float(value)
+                try:  # integer
+                    value = int(value)
                 except:
-                    pass
+                    try:  # float
+                        value = float(value)
+                    except:
+                        pass
         return value
