@@ -270,7 +270,6 @@ def main():
         print(setColorText(f"Failed to secure configs: {e}", Colors.RED))
 
     if cfg_secured:
-        print("Do you wish to start HyperUBot?")
         print()
         if IS_WINDOWS:
             print("Run the following command to start HyperUBot: " +
