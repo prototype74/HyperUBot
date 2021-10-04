@@ -169,7 +169,7 @@ class _RegisterCMD:
         module_name = basename(getfile(func)[:-3])
         if cmd not in self.__registered_cmds.keys():
             if not self.__first_time_register:
-                log.info("Registering commands")
+                log.info("Registering commands...")
                 self.__first_time_register = True
             for key, value in self.__registered_cmds.items():
                 val = value.get("alt_cmd")
