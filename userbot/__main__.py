@@ -293,6 +293,7 @@ def run_client():
                     "If, however, your network connection works fine, it "
                     "may be possible that the Telegram servers are down "
                     "temporary")
+        raise KeyboardInterrupt
     except (BaseException, Exception) as e:
         log.critical(f"Client has stopped: {e}", exc_info=True)
         options = ["Start Recovery",
