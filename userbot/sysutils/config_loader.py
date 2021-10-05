@@ -80,13 +80,14 @@ class _ConfigLoader:
                         addConfig(key, strlist_to_list(value))
                     elif value in ("True", "true", "False", "false"):
                         addConfig(key, str_to_bool(value))
-                    elif value.isnumeric():
-                        addConfig(key, int(value))
                     else:  # default case
                         try:
-                            value = float(value)
+                            value = int(value)
                         except:
-                            pass
+                            try:
+                                value = float(value)
+                            except:
+                                pass
                         addConfig(key, value)
         if getConfig("SAMPLE_CONFIG", None):
             log.warning("Please remove SAMPLE_CONFIG from config.env!")
@@ -119,13 +120,14 @@ class _ConfigLoader:
                             addConfig(key, False)
                         elif value.lower() in ("yes"):
                             addConfig(key, True)
-                        elif value.isnumeric():
-                            addConfig(key, int(value))
                         else:  # default case
                             try:
-                                value = float(value)
+                                value = int(value)
                             except:
-                                pass
+                                try:
+                                    value = float(value)
+                                except:
+                                    pass
                             addConfig(key, value)
         if is_safemode:
             try:
