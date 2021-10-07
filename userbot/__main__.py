@@ -22,7 +22,6 @@ from logging import shutdown
 from importlib import import_module
 from glob import glob
 from os.path import dirname, basename, isfile, join
-import asyncio
 
 
 class _Modules:
@@ -230,10 +229,10 @@ def run_client():
             log.info(f"You're running {PROJECT} v{VERSION} as "
                      f"{me.first_name} (ID: {me.id})")
             if not _getprop("setupcompleted"):
-                asyncio.get_event_loop().run_until_complete(
+                tgclient.loop.run_until_complete(
                     send_welcome_msg(tgclient, me.id))
                 _setprop("setupcompleted", True)
-            asyncio.get_event_loop().run_until_complete(
+            tgclient.loop.run_until_complete(
                 check_last_reboot(tgclient))
             tgclient.run_until_disconnected()
     except ApiIdInvalidError as ae:
