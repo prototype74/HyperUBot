@@ -75,13 +75,14 @@ async def _update_pkg_list(event, repo_names=None):
     else:  # update all repos
         repos = ["nunopenim/module-universe"]
         community_repos = getConfig("COMMUNITY_REPOS", [])
-        for c_repo in community_repos:
-            try:
-                _1, _2 = c_repo.split("/")
-                if c_repo not in repos:
-                    repos.append(c_repo)
-            except:
-                pass  # just ignore
+        if isinstance(community_repos, (list, tuple)):
+            for c_repo in community_repos:
+                try:
+                    _1, _2 = c_repo.split("/")
+                    if c_repo not in repos:
+                        repos.append(c_repo)
+                except:
+                    pass  # just ignore
         for repo in pkg_repos:
             repo_author = repo.get("author", "Unknown")
             repo_name = repo.get("name", "Unknown")
@@ -613,13 +614,14 @@ async def _rm_repo(event, repo_names=None):
     protected_repos = ["nunopenim/module-universe"]
     community_repos = getConfig("COMMUNITY_REPOS", [])
 
-    for c_repo in community_repos:
-        try:
-            _1, _2 = c_repo.split("/")
-            if c_repo not in protected_repos:
-                protected_repos.append(c_repo)
-        except:
-            pass  # just ignore
+    if isinstance(community_repos, (list, tuple)):
+        for c_repo in community_repos:
+            try:
+                _1, _2 = c_repo.split("/")
+                if c_repo not in protected_repos:
+                    protected_repos.append(c_repo)
+            except:
+                pass  # just ignore
 
     for r in repos:
         try:
