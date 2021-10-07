@@ -612,10 +612,11 @@ async def _rm_repo(event, repo_names=None):
 
     protected_repos = ["nunopenim/module-universe"]
     community_repos = getConfig("COMMUNITY_REPOS", [])
+
     for c_repo in community_repos:
         try:
             _1, _2 = c_repo.split("/")
-            if c_repo not in repos:
+            if c_repo not in protected_repos:
                 protected_repos.append(c_repo)
         except:
             pass  # just ignore
