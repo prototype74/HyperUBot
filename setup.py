@@ -17,14 +17,19 @@ if (version_info.major, version_info.minor) < (3, 8):
 
 from platform import system  # noqa: E402
 from subprocess import check_call, check_output, DEVNULL  # noqa: E402
-from sys import executable, platform  # noqa: E402
+from sys import argv, executable, platform  # noqa: E402
 import json  # noqa: E402
 import os  # noqa: E402
 
 IS_WINDOWS = (True if system().lower() == "windows" or
               os.name == "nt" or platform.startswith("win") else False)
 PY_EXEC = executable if " " not in executable else '"' + executable + '"'
+NOPIP = False
 WIN_COLOR_ENABLED = False
+
+if len(argv) >= 2:
+    if argv[1].lower() == "-nopip":
+        NOPIP = True
 
 try:
     if IS_WINDOWS:
@@ -285,8 +290,11 @@ def main():
                 print(setColorText("Invalid input. Try again...",
                                    Colors.YELLOW))
 
-    print()
-    check_setup_req = _check_setup_req()
+    if not NOPIP:
+        print()
+        check_setup_req = _check_setup_req()
+    else:
+        check_setup_req = True
     print()
 
     if not check_setup_req:
@@ -577,8 +585,9 @@ def main():
                          Colors.RED))
         return
 
-    print("Installing required pip packages...")
-    _install_requirements()
+    if not NOPIP:
+        print("Installing required pip packages...")
+        _install_requirements()
 
     print()
     print(setColorText("Yaaaay! Setup completed! :P", Colors.GREEN))
