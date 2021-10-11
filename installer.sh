@@ -60,6 +60,7 @@ function printRelease() {
 }
 
 usr_bin=/usr/bin
+find_type=f
 
 # Install pre-requisites packages
 case "$os_name" in
@@ -69,27 +70,51 @@ case "$os_name" in
         usr_bin=$PREFIX/bin
         printf "Release: %s (API: %s)\n\n" $release $release_sdk
         printf "Installing pre-requisites packages...\n"
-        pkg update && pkg install python git rust neofetch ffmpeg flac
+        pkg update
+        pkg install python git rust neofetch ffmpeg flac libffi
         ;;
     "Debian")
         printRelease
         printf "Installing pre-requisites packages (sudo needed)...\n"
-        sudo apt-get update && sudo apt-get install python3.8 python3-pip git neofetch ffmpeg flac net-tools
+        sudo apt-get update
+        # get latest python version the distro does offer
+        py_apt=$(apt-cache pkgnames | grep -E "^python3.[0-9]{1,4}$" | sort -V | tail -1)
+        if [ -z $py_apt ]; then
+            py_apt=python3
+        fi
+        sudo apt-get install $py_apt python3-pip $py_apt-dev libffi-dev git neofetch ffmpeg flac net-tools
         ;;
     "Arch Linux")
         printf "\n"
         printf "Installing pre-requisites packages (sudo needed)...\n"
-        sudo pacman -Sy python3 python-pip git neofetch ffmpeg flac
+        sudo pacman -Sy python3 python-pip git neofetch ffmpeg flac libffi
         ;;
     "Red Hat")
         printRelease
         printf "Installing pre-requisites packages (sudo needed)...\n"
-        sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-        sudo dnf install python3 git neofetch ffmpeg flac python3-wheel
+        sudo dnf update
+        py_dnf=python3
+        is_fedora=$(cat /etc/redhat-release | grep "Fedora")
+        if [ ! -z "$is_fedora" ]; then
+            sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+        else  # other RHEL 8 systems
+            sudo dnf install epel-release
+            sudo dnf config-manager --enable epel
+            sudo dnf config-manager --set-enabled powertools
+            sudo dnf install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+            sudo dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm
+            py_dnf=$(dnf search python | grep -E "^python3[0-9]{1,4}" | sort -V | tail -1 | cut -d "." -f1)
+            if [ -z $py_dnf ]; then
+                py_dnf=$(dnf search python | grep -E "^python3.[0-9]{1,4}" | sort -V | tail -1 | cut -d "." -f1-2)
+            fi
+        fi
+        sudo dnf install $py_dnf python3-pip git neofetch flac ffmpeg libffi
         ;;
     "macOS")
         release=$(sw_vers -productVersion)
         printf "Release: %s\n\n" $release
+        usr_bin=/usr/local/bin
+        find_type=l
         printf "Checking for Homebrew Package Manager...\n"
         if [ -z $(command -v brew) ]; then
             printf "Installing Homebrew Package Manager (sudo needed)...\n"
@@ -97,7 +122,7 @@ case "$os_name" in
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         fi
         printf "Installing pre-requisites packages...\n"
-        brew install git python3 ffmpeg flac neofetch
+        brew install git python3 ffmpeg flac neofetch libffi
         ;;
     *)
         printf "Current operating system is not supported...\n"
@@ -111,7 +136,7 @@ function ver_lt() {
 
 # Python --version >=3.8
 printf "Checking for Python...\n"
-py_exec=$(find $usr_bin -type f \( -name "python*" -not -name "python*[A-Za-z]" -not -name "python*-config" -not -name "python*[A-Za-z]-config" \) -exec basename {} \; | sort -V | tail -1)
+py_exec=$(find $usr_bin -type $find_type -name "python*" -exec basename {} \; | grep -E "^python[0-9].[0-9]{1,4}$" | sort -V | tail -1)
 
 if [ -z $py_exec ]; then
     printf "$(setColor $RED 'Python is not installed')\n"
@@ -125,7 +150,7 @@ if [ $(ver_lt $py_ver_str "3.7."*) == "3.7."* ]; then
     exit 1
 fi
 
-printf "Python $py_ver_str is installed!\n" 
+printf "Python $py_ver_str is installed!\n"
 
 printf "Fetching latest release from HyperUBot's Repository...\n"
 get_release=$(curl --silent -H "Accept: application/json" "https://api.github.com/repos/prototype74/HyperUBot/releases/latest")
@@ -154,13 +179,43 @@ rm -f ./HyperUBot.tar.gz
 if [ -d $dir_name ] && \
    [ -f $dir_name/userbot/__init__.py ] && \
    [ -f $dir_name/userbot/__main__.py ]; then
-    printf "$(setColor $GREEN 'HyperUBot has been installed successfully!')\n"
+    printf "HyperUBot has been installed successfully!\n"
 else
     printf "$(setColor $RED 'Installation was not successful!')\n"
     exit 1
 fi
 
 cd $dir_name
+
+printf "Upgrading pip and setuptools...\n"
+$py_exec -m pip install --upgrade pip setuptools
+
+printf "Installing required pip packages...\n"
+while true; do
+    $py_exec -m pip install -r requirements.txt
+    if [ $? -ne 0 ]; then
+        printf "\n"
+        printf "$(setColor $YELLOW 'pip installation was not successful. If pip is not installed, install it manually. For all other cases it may be possible that a pre-requisites package is missing. Install the package/lib/app the pip package does require. Finally, try the pip installation again...')\n"
+        printf "\n"
+        while true; do
+            read -p "Re-try pip installation? (y/n): " user_input
+            if [[ $user_input =~ ^[yY]$ ]]; then
+                break
+            elif [[ $user_input =~ ^[nN]$ ]]; then
+                printf "$(setColor $RED 'Installer cancelled...')\n"
+                cd ..
+                rm -rf $dir_name
+                exit 1
+            else
+                printf "$(setColor $YELLOW 'Invalid input. Try again...')\n"
+            fi
+        done
+    else
+        break
+    fi
+done
+
+printf "$(setColor $GREEN 'Installer finished successfully!')\n"
 printf "\n"
 
 while true; do
@@ -168,7 +223,7 @@ while true; do
     if [[ $user_input =~ ^[yY]$ ]]; then
         printf "Starting Setup Assistant...\n"
         printf "\n"
-        $py_exec setup.py
+        $py_exec setup.py -nopip
         break
     elif [[ $user_input =~ ^[nN]$ ]]; then
         break

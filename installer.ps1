@@ -62,6 +62,23 @@ if ( $py_ver -lt [Version]::new(3, 8)) {
 
 Write-Output "Python $py_ver_str is installed!"
 
+# Required for Python >=3.10
+Write-Output "Checking for Visual Studio Build Tools..."
+$vs_buildtools = Get-CimInstance MSFT_VSInstance | Select-Object Name, Version | Where { $_.Name -Match "Build Tools" }
+if ( -not $? -or -not $vs_buildtools) {
+    Write-Host -ForegroundColor Red "Visual Studio Build Tools is not installed. Please install it from 'https://visualstudio.microsoft.com/visual-cpp-build-tools/'. Make sure to select the 'Desktop development with C++' component in visual studio installer"
+    exit 1
+}
+
+$vs_buildtools_name = $vs_buildtools.Name
+$vs_buildtools_ver = [Version]::new($vs_buildtools.Version)
+if ( $vs_buildtools_ver -lt [Version]::new(14, 0)) {
+    Write-Host -ForegroundColor Yellow "Your current Visual C++ Build Tools is outdated ('$vs_buildtools_ver'). Please upgrade to 14.0 or newer"
+    exit 1
+}
+
+Write-Output "$vs_buildtools_name ($vs_buildtools_ver) is installed!"
+
 # Scoop Package Manager for Windows
 try {
     Write-Output "Checking for Scoop Package Manager..."
@@ -123,14 +140,47 @@ Remove-Item -Path .\HyperUBot.tar.gz -Force
 if ( ( Test-Path -Path ".\$dir_name\*" ) -and
      ( Test-Path -Path ".\$dir_name\userbot\__init__.py" ) -and
      ( Test-Path -Path ".\$dir_name\userbot\__main__.py" ) ) {
-    Write-Host -ForegroundColor Green "HyperUBot has been installed successfully!"
+    Write-Output "HyperUBot has been installed successfully!"
 }
 else {
     Write-Host -ForegroundColor Red "Installation was not successful!"
     exit 1
 }
 
-Set-Location $dir_name 
+Set-Location $dir_name
+
+Write-Output "Upgrading pip and setuptools..."
+python -m pip install --upgrade pip setuptools
+
+Write-Output "Installing required pip packages..."
+while($true) {
+    python -m pip install -r requirements.txt
+    if ( $LASTEXITCODE -ne 0 ) {
+        Write-Output ""
+        Write-Host -ForegroundColor Yellow "pip installation was not successful. If pip is not installed, install it manually. For all other cases it may be possible that a pre-requisites package is missing. Install the package/lib/app the pip package does require. Finally, try the pip installation again..."
+        Write-Output ""
+        while($true) {
+            $user_input = Read-Host -Prompt "Re-try pip installation? (y/n)"
+            if ( $user_input.ToLower() -eq "y") {
+                break
+            }
+            elseif ( $user_input.ToLower() -eq "n") {
+                Write-Host -ForegroundColor Red "Installer cancelled"
+                Set-Location ..
+                Remove-Item -Path .\$dir_name -Recurse -Force
+                exit 1
+            }
+            else {
+                Write-Host -ForegroundColor Yellow "Invalid input. Try again..."
+            }
+        }
+    }
+    else {
+        break
+    }
+}
+
+Write-Host -ForegroundColor Green "Installer finished successfully!"
 Write-Output ""
 
 while($true) {
@@ -138,7 +188,7 @@ while($true) {
     if ( $user_input.ToLower() -eq "y") {
         Write-Output "Starting Setup Assistant..."
         Write-Output ""
-        python setup.py
+        python setup.py -nopip
         break
     }
     elseif ( $user_input.ToLower() -eq "n") {
