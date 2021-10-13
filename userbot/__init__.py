@@ -89,6 +89,44 @@ except KeyboardInterrupt:
     log.info("Exiting...")
     quit()
 
+if __scfg_loader__._load_cfg_failed():
+    log.warning("There is an issue to read your secure config. Due to this "
+                "HyperUBot can't continue. If your secure config file got "
+                "corrupted, start 'Secure-Config-Updater' to create a new "
+                "file. If it's not, try the next suggestions")
+    try:
+        options = ["Start Secure-Config-Updater",
+                   "Update your pip packages",
+                   "Contact suppport",
+                   "Quit HyperUBot"]
+        pip_text = ("Outdated pip packages could also cause this issue. "
+                    "To check for outdated pip packages run "
+                    "'{} -m pip list -o' in your terminal and check if the "
+                    "following packages are listed: cffi, pyAesCrypt. "
+                    "If so, update them.")
+        contact_text = ("If none of the suggestions helped, contact us at "
+                        "Telegram 'https://t.me/HyperUBotSupport' and keep "
+                        "your hyper.log file ready!")
+        if isWindows():
+            options[0] += " (python update_secure_cfg.py)"
+            options[1] = pip_text.format("python")
+            options[2] = contact_text
+            options.pop()
+            _services._suggest_options(options)
+        else:
+            option = _services._suggest_options(options)
+            if option == 1:
+                _services._start_scfg_updater()
+            elif option == 2:
+                log.info(pip_text.format(f"python{version_info.major}."
+                                         f"{version_info.minor}"))
+            elif option == 3:
+                log.info(contact_text)
+    except KeyboardInterrupt:
+        print()
+        log.info("Exiting...")
+    quit(1)
+
 if __scfg_loader__._getTooManyAttempts():
     log.error("Too many failed attempts. Please try again later.")
     log.warning("Forgot your password? Start 'Secure-Config-Updater' to "

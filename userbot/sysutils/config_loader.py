@@ -270,6 +270,7 @@ class _SecureConfigLoader:
         self.__secure_config = os.path.join(".", "userbot", "secure_config")
         self.__temp = os.path.join(".", "userbot", "userdata", "_temp.py")
         self.__configs_loaded = False
+        self.__load_cfg_failed = False
         self.__too_many_attempts = False
 
     def _check_secure_config(self) -> bool:
@@ -319,10 +320,12 @@ class _SecureConfigLoader:
                         self.__too_many_attempts = True
                         return False
                 else:
-                    log.error("Unable to read secure config")
+                    self.__load_cfg_failed = True
+                    log.error("Unable to read secure config", exc_info=True)
                     return False
             except Exception:
-                log.error("Unable to read secure config")
+                self.__load_cfg_failed = True
+                log.error("Unable to read secure config", exc_info=True)
                 return False
         return True
 
@@ -380,3 +383,6 @@ class _SecureConfigLoader:
 
     def _getTooManyAttempts(self) -> bool:
         return self.__too_many_attempts
+
+    def _load_cfg_failed(self) -> bool:
+        return self.__load_cfg_failed
