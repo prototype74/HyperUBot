@@ -188,7 +188,7 @@ class _ConfigLoader:
     def __config_selector(self):
         """
         Check if multiple configs have been found and display them to
-        promt the user to select the preferred config file. If only one is
+        prompt the user to select the preferred config file. If only one is
         available, it will be selected automatically.
         """
         arr_size = len(self.__detected_configs)
@@ -232,8 +232,8 @@ class _ConfigLoader:
 
     def _load_configs(self, is_safemode: bool):
         """
-        Searches for config.env, config.ini and config.py (preferred in
-        descending order) and starts to load the target config file
+        Searches for config.env, config.ini and config.py and starts to
+        load the target config file
 
         Args:
             is_safemode (bool): if HyperUBot is currently in safe mode
