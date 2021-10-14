@@ -365,20 +365,24 @@ class _SecureConfigLoader:
             log.error("Unable to parse secure config. Bad format?")
             return (None, None, None)
         finally:
-            if os.path.exists(self.__temp):
-                os.remove(self.__temp)
-            if os.path.exists(os.path.join(".", "userbot",
-                                           "userdata", "__pycache__")) and \
-               os.path.isdir(os.path.join(".", "userbot",
-                                          "userdata", "__pycache__")):
-                for name in os.listdir(
-                     os.path.join(".", "userbot", "userdata", "__pycache__")):
-                    if name.startswith("_temp.cpython-") and \
-                       name.endswith(".pyc"):
-                        os.remove(
-                            os.path.join(".", "userbot", "userdata",
-                                         "__pycache__", name))
-                        break
+            try:
+                if os.path.exists(self.__temp):
+                    os.remove(self.__temp)
+                if os.path.exists(os.path.join(
+                    ".", "userbot", "userdata", "__pycache__")) and \
+                   os.path.isdir(os.path.join(".", "userbot",
+                                              "userdata", "__pycache__")):
+                    for name in os.listdir(
+                         os.path.join(".", "userbot",
+                                      "userdata", "__pycache__")):
+                        if name.startswith("_temp.cpython-") and \
+                           name.endswith(".pyc"):
+                            os.remove(
+                                os.path.join(".", "userbot", "userdata",
+                                             "__pycache__", name))
+                            break
+            except:
+                pass
         del s_cfg
         return (api_key, api_hash, string_session)
 
