@@ -361,7 +361,8 @@ class _SecureConfigLoader:
             string_session = s_cfg.STRING_SESSION
             self.__configs_loaded = True
         except Exception:
-            log.error("Unable to read secure config")
+            self.__load_cfg_failed = True
+            log.error("Unable to parse secure config. Bad format?")
             return (None, None, None)
         finally:
             if os.path.exists(self.__temp):
