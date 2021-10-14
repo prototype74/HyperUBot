@@ -9,9 +9,9 @@
 from .colors import Color, setColorText
 from .configuration import addConfig, getConfig
 from .errors import UnauthorizedAccessError
+from .getpass import getpass
 from .sys_funcs import isWindows
 from configparser import ConfigParser
-from getpass import getpass
 from inspect import currentframe, getouterframes
 from logging import getLogger
 from pyAesCrypt import decryptFile
