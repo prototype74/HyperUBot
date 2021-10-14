@@ -90,10 +90,10 @@ except KeyboardInterrupt:
     quit()
 
 if __scfg_loader__._load_cfg_failed():
-    log.warning("There is an issue to read your secure config. Due to this "
-                "HyperUBot can't continue. If your secure config file got "
-                "corrupted, start 'Secure-Config-Updater' to create a new "
-                "file. If it's not, try the next suggestions")
+    log.warning("There is an issue to parse or read your secure config. "
+                "Due to this HyperUBot can't continue. If your secure config "
+                "file got corrupted, start 'Secure-Config-Updater' to create "
+                "a new file. If it's not, try the next suggestions")
     try:
         options = ["Start Secure-Config-Updater",
                    "Update your pip packages",
