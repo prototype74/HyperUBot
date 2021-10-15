@@ -24,6 +24,7 @@ from sys import argv, executable, platform  # noqa: E402
 from urllib.request import urlopen, urlretrieve  # noqa: E402
 from zipfile import (BadZipFile, LargeZipFile,
                      ZipFile, ZIP_DEFLATED)  # noqa: E402
+import ast  # noqa: E402
 import os  # noqa: E402
 
 RECOVERY_NAME = os.path.basename(__file__)
@@ -178,17 +179,13 @@ class _Recovery:
         ver_py = os.path.join(".", "userbot", "version.py")
         version = setColorText("Unknown", Colors.YELLOW)
         try:
-            with open(ver_py, "r") as script:
-                for line in script.readlines():
-                    if not line.startswith("#") and not line == "\n" and \
-                       line.startswith("VERSION = "):
-                        if line.split(" = ")[1]:
-                            version = line.split(" = ")[1]
-                            version = version.replace("\n", "")
-                        break
-            if '"' in version:
-                version = version.replace('"', "")
-            script.close()
+            if os.path.exists(ver_py) and os.path.isfile(ver_py):
+                ver_attr = {}
+                with open(ver_py, "r") as ver_file:
+                    code = ast.parse(ver_file.read())
+                    exec(compile(code, "", "exec"), ver_attr)
+                    version = ver_attr.get("VERSION", version)
+                ver_file.close()
         except:
             pass
         return version
