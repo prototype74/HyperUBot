@@ -16,7 +16,7 @@ if (version_info.major, version_info.minor) < (3, 8):
     quit(1)
 
 from platform import system  # noqa: E402
-from sys import executable, platform  # noqa: E402
+from sys import executable, platform, stdin  # noqa: E402
 import os  # noqa: E402
 
 IS_WINDOWS = (True if system().lower() == "windows" or
@@ -31,6 +31,12 @@ try:
         WIN_COLOR_ENABLED = True
 except:
     pass
+
+if IS_WINDOWS:
+    import msvcrt
+else:
+    import termios
+    import tty
 
 
 class Colors:
@@ -94,6 +100,45 @@ except:
                            "executing 'python3 -m pip install pyAesCrypt'",
                            Colors.YELLOW))
     quit(1)
+
+
+# from userbot/sysutils/getpass.py
+def _GetwchPOSIX():
+    if IS_WINDOWS:
+        return ""
+    # based on: https://docs.python.org/3/library/termios.html#example
+    fd = stdin.fileno()
+    prev_attr = termios.tcgetattr(fd)
+    try:
+        tty.setraw(fd, termios.TCSAFLUSH)
+        char = stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, prev_attr)
+    return char
+
+
+_getwch = msvcrt.getwch if IS_WINDOWS else _GetwchPOSIX
+
+
+def getpass(prompt):
+    print(prompt, end="", flush=True)
+    password_chars = []
+    while True:
+        char = _getwch()
+        if ord(char) in (10, 13):
+            break
+        elif ord(char) in (8, 127):
+            if len(password_chars) > 0:
+                password_chars.pop()
+                print("\b \b", end="", flush=True)
+        elif ord(char) in (3,):
+            raise KeyboardInterrupt
+        else:
+            password_chars.append(char)
+            print("*", end="", flush=True)
+    print()
+    password = "".join(password_chars)
+    return password
 
 
 def _getAPIsAndSession() -> tuple:
@@ -210,14 +255,12 @@ def main():
     password = ""
     if set_pwd:
         print()
-        from getpass import getpass
         print("Your password must have at least a length of 4 characters. "
-              "Maximum length is 1024 characters. \nNote: Your password is "
-              "hidden while typing.")
+              "Maximum length is 1024 characters.")
         print()
         while True:
             try:
-                password = getpass("Your password: ")
+                password = getpass("Your new password: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
@@ -239,7 +282,7 @@ def main():
             if password == retype_pwd:
                 break
             else:
-                print(setColorText("Invalid input. Try again...",
+                print(setColorText("Passwords did not match. Try again...",
                                    Colors.YELLOW))
 
     print()
@@ -265,7 +308,8 @@ def main():
             print(setColorText("Configs secured", Colors.GREEN))
             cfg_secured = True
         else:
-            print(setColorText("Failed to secure configs", Colors.RED))
+            print(setColorText("Failed to secure configs: file not created",
+                               Colors.RED))
     except Exception as e:
         print(setColorText(f"Failed to secure configs: {e}", Colors.RED))
 
