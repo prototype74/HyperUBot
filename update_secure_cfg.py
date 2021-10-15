@@ -120,7 +120,7 @@ def _GetwchPOSIX():
 _getwch = msvcrt.getwch if IS_WINDOWS else _GetwchPOSIX
 
 
-def getpass(prompt):
+def _getpass(prompt):
     print(prompt, end="", flush=True)
     password_chars = []
     while True:
@@ -260,7 +260,7 @@ def main():
         print()
         while True:
             try:
-                password = getpass("Your new password: ")
+                password = _getpass("Your new password: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
@@ -275,7 +275,7 @@ def main():
                                    Colors.YELLOW))
         while True:
             try:
-                retype_pwd = getpass("Retype your password: ")
+                retype_pwd = _getpass("Retype your password: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
