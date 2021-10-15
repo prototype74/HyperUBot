@@ -135,7 +135,7 @@ def _check_setup_req() -> bool:
                 return False
         else:
             cffi_version = tuple(map(int, setup_req.get("cffi").split(".")))
-            if cffi_version < (1, 14, 6):
+            if cffi_version < (1, 15, 0):
                 if not _install_package("cffi", True):
                     return False
     except Exception as e:
@@ -346,7 +346,7 @@ def main():
         print(setColorText("All or some packages required for Setup Assistant "
                            "are not present. Setup Assistant requires "
                            "'Telethon>=1.23.0', 'pyAesCrypt>=6.0.0' and "
-                           "'cffi>=1.14.6'. Make sure these packages are "
+                           "'cffi>=1.15.0'. Make sure these packages are "
                            "installed in order to continue. "
                            "Exiting Setup Assistant...",
                            Colors.RED))

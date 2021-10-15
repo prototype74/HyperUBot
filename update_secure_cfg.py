@@ -71,8 +71,8 @@ except:
 try:
     # just to ensure proper version is installed (required by pyAesCrypt)
     cffi_ver = tuple(map(int, __version__.split(".")))
-    if cffi_ver < (1, 14, 6):
-        print(setColorText("cffi version 1.14.6 is required. "
+    if cffi_ver < (1, 15, 0):
+        print(setColorText("cffi version 1.15.0 is required. "
                            f"Current version is {__version__}", Colors.RED))
         if IS_WINDOWS:
             print(setColorText("Please upgrade cffi package by "
