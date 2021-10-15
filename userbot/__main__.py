@@ -13,8 +13,8 @@ from userbot.sysutils.registration import (update_all_modules,
                                            update_load_modules,
                                            update_user_modules,
                                            getAllModules)
-from userbot.sysutils.sys_funcs import botVerAsTuple, isWindows, verAsTuple
-from userbot.version import VERSION
+from userbot.sysutils.sys_funcs import isWindows, verAsTuple
+from userbot.version import VERSION, VERSION_TUPLE
 from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
                                           PhoneNumberBannedError,
                                           PhoneNumberInvalidError)
@@ -166,7 +166,7 @@ async def check_last_reboot(client):
         msg_id = _getprop("rebootmsgid")
         msg = _getprop("rebootmsg")
         if _getprop("updateversion"):
-            if not botVerAsTuple() == verAsTuple(_getprop("updateversion")):
+            if not VERSION_TUPLE == verAsTuple(_getprop("updateversion")):
                 msg = _getprop("updatefailedmsg")
             _setprop("updateversion", 0)
             _setprop("updatefailedmsg", 0)

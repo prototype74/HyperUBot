@@ -7,11 +7,15 @@
 # compliance with the PE License
 
 from userbot.version import VERSION
+from inspect import currentframe, getouterframes
+from logging import getLogger
 from subprocess import check_output
 from json import loads
 import platform
 import os
 import sys
+
+log = getLogger(__name__)
 
 
 def strlist_to_list(strlist: str) -> list:
@@ -260,6 +264,11 @@ def botVerAsTuple() -> tuple:
     """
     Returns the version of HyperUBot as tuple
     """
+    caller = getouterframes(currentframe(), 2)[1]
+    caller = f"{os.path.basename(caller.filename)}:{caller.lineno}"
+    log.warning("botVerAsTuple() is deprecated and will be removed in future "
+                "releases, use VERSION_TUPLE from userbot.version instead "
+                f"(requested by {caller})")
     return verAsTuple(VERSION)
 
 

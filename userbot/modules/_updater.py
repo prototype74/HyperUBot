@@ -17,8 +17,8 @@ from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
-from userbot.sysutils.sys_funcs import botVerAsTuple, isWindows, verAsTuple
-from userbot.version import VERSION
+from userbot.sysutils.sys_funcs import isWindows, verAsTuple
+from userbot.version import VERSION, VERSION_TUPLE
 from logging import getLogger
 from urllib.request import urlretrieve
 from zipfile import BadZipFile, LargeZipFile, ZipFile
@@ -169,13 +169,6 @@ async def updater(event):
         return
 
     try:
-        current_version = botVerAsTuple()
-    except Exception:
-        await event.edit(msgRep.UPDATE_FAILED)
-        log.error("Failed to parse bot version", exc_info=True)
-        return
-
-    try:
         release_data = getLatestData("prototype74/HyperUBot")
     except Exception:
         await event.edit(msgRep.UPDATE_FAILED)
@@ -194,7 +187,7 @@ async def updater(event):
         log.error("Failed to parse tag version from release", exc_info=True)
         return
 
-    if current_version > release_version:
+    if VERSION_TUPLE > release_version:
         log.warning(f"Current version newer than on release server "
                     f"({VERSION} > {tag_version})")
         await event.edit(f"{msgRep.UPDATE_FAILED}: "
@@ -203,7 +196,7 @@ async def updater(event):
             _LATEST_VER.clear()
         return
 
-    if current_version == release_version:
+    if VERSION_TUPLE == release_version:
         log.info(f"Already up-to-date ({VERSION} == {tag_version})")
         reply = f"**{msgRep.ALREADY_UP_TO_DATE}**\n\n"
         if git_repo:
@@ -215,7 +208,7 @@ async def updater(event):
         await event.edit(reply)
         return
 
-    if current_version < release_version:
+    if VERSION_TUPLE < release_version:
         _LATEST_VER["version"] = tag_version
         try:
             assets = release_data.get("assets", [])
