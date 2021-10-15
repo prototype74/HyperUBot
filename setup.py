@@ -17,7 +17,7 @@ if (version_info.major, version_info.minor) < (3, 8):
 
 from platform import system  # noqa: E402
 from subprocess import check_call, check_output, DEVNULL  # noqa: E402
-from sys import argv, executable, platform  # noqa: E402
+from sys import argv, executable, platform, stdin  # noqa: E402
 import json  # noqa: E402
 import os  # noqa: E402
 
@@ -38,6 +38,12 @@ try:
         WIN_COLOR_ENABLED = True
 except:
     pass
+
+if IS_WINDOWS:
+    import msvcrt
+else:
+    import termios
+    import tty
 
 
 class Colors:
@@ -230,6 +236,45 @@ def _generateStringSession() -> tuple:
     return (None, None, None)
 
 
+# from userbot/sysutils/getpass.py
+def _GetwchPOSIX():
+    if IS_WINDOWS:
+        return ""
+    # based on: https://docs.python.org/3/library/termios.html#example
+    fd = stdin.fileno()
+    prev_attr = termios.tcgetattr(fd)
+    try:
+        tty.setraw(fd, termios.TCSAFLUSH)
+        char = stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, prev_attr)
+    return char
+
+
+_getwch = msvcrt.getwch if IS_WINDOWS else _GetwchPOSIX
+
+
+def _getpass(prompt):
+    print(prompt, end="", flush=True)
+    password_chars = []
+    while True:
+        char = _getwch()
+        if ord(char) in (10, 13):
+            break
+        elif ord(char) in (8, 127):
+            if len(password_chars) > 0:
+                password_chars.pop()
+                print("\b \b", end="", flush=True)
+        elif ord(char) in (3,):
+            raise KeyboardInterrupt
+        else:
+            password_chars.append(char)
+            print("*", end="", flush=True)
+    print()
+    password = "".join(password_chars)
+    return password
+
+
 def _run_userbot():
     try:
         tcmd = [PY_EXEC, "-m", "userbot"]
@@ -408,14 +453,12 @@ def main():
     password = ""
     if set_pwd:
         print()
-        from getpass import getpass
         print("Your password must have at least a length of 4 characters. "
-              "Maximum length is 1024 characters \nNote: Your password is "
-              "hidden while typing.")
+              "Maximum length is 1024 characters.")
         print()
         while True:
             try:
-                password = getpass("Your password: ")
+                password = _getpass("Your new password: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
@@ -430,14 +473,14 @@ def main():
                                    Colors.YELLOW))
         while True:
             try:
-                retype_pwd = getpass("Retype your password: ")
+                retype_pwd = _getpass("Retype your password: ")
             except KeyboardInterrupt:
                 print()
                 raise KeyboardInterrupt
             if password == retype_pwd:
                 break
             else:
-                print(setColorText("Invalid input. Try again...",
+                print(setColorText("Passwords did not match. Try again...",
                                    Colors.YELLOW))
 
     print()
