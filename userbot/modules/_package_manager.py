@@ -413,10 +413,12 @@ async def _install_pkgs(event, command: str):
                         else:
                             if mod not in unknown_modules:
                                 unknown_modules.append(mod)
-                queued_mod_to_install.append({"repo_author": repo_author,
-                                              "repo_name": repo_name,
-                                              "repo_link": repo.get("link"),
-                                              "modules": list_of_mods})
+                if list_of_mods:
+                    queued_mod_to_install.append(
+                        {"repo_author": repo_author,
+                         "repo_name": repo_name,
+                         "repo_link":repo.get("link"),
+                         "modules": list_of_mods})
                 break
         else:
             text += f"{warning} {msgRep.UNKNOWN_REPO_URL}\n"
@@ -451,30 +453,29 @@ async def _install_pkgs(event, command: str):
                         if mod not in unknown_modules and \
                            mod not in known_modules_found:
                             unknown_modules.append(mod)
-            queued_mod_to_install.append({"repo_author": repo_author,
-                                          "repo_name": repo_name,
-                                          "repo_link": repo.get("link"),
-                                          "modules": list_of_mods})
+            if list_of_mods:
+                queued_mod_to_install.append({"repo_author": repo_author,
+                                              "repo_name": repo_name,
+                                              "repo_link": repo.get("link"),
+                                              "modules": list_of_mods})
     if unknown_modules:
         text += (f"{warning} {msgRep.UNKNOWN_MODULES}: "
                  f"{', '.join(unknown_modules)}\n")
         await event.edit(text)
         return
+    if not queued_mod_to_install:
+        text += f"{warning} {msgRep.NO_INSTALL_QUEUED}\n"
+        text += "\n"
+        text += msgRep.INSTALLER_FINISHED
+        await event.edit(text)
+        return
     pkg_mod_sources = _pkg_list.get("module_sources", [])
-    queue_empty = False
     do_update_mod_list = False
     for queue in queued_mod_to_install:
         repo_author = queue.get("repo_author")
         repo_name = queue.get("repo_name")
         repo_link = queue.get("repo_link")
         list_of_mods = queue.get("modules")
-        if not list_of_mods:
-            # no modules listed, continue with next element
-            if not queue_empty:
-                queue_empty = True
-            continue
-        if queue_empty:  # if queue from previous element was empty
-            queue_empty = False
         for module in list_of_mods:
             curr_module = module[:-3]  # without .py
             text += f"{down} {msgRep.DOWNLOADING.format(curr_module)}\n"
@@ -532,10 +533,6 @@ async def _install_pkgs(event, command: str):
                 text = text.replace(f"{down} {down_text}",
                                     f"{warning} {fail_text}")
             await event.edit(text)
-    if queue_empty:
-        text += f"{warning} {msgRep.NO_INSTALL_QUEUED}\n"
-        await event.edit(text)
-        return
     if do_update_mod_list:
         _pkg_list["module_sources"] = pkg_mod_sources
         _pkg_manager._save_json(_pkg_list)
