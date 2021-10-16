@@ -27,8 +27,7 @@ if len(argv) >= 2:
         SAFEMODE = True
 
 from telethon import TelegramClient, version  # noqa: E402
-from userbot.sysutils.sys_funcs import (isWindows,
-                                        os_name, verAsTuple)  # noqa: E402
+from userbot.sysutils.sys_funcs import isWindows, verAsTuple  # noqa: E402
 
 # Check Telethon version
 if verAsTuple(version.__version__) < (1, 23, 0):
