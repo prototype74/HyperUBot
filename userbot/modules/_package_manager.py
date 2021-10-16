@@ -417,7 +417,7 @@ async def _install_pkgs(event, command: str):
                     queued_mod_to_install.append(
                         {"repo_author": repo_author,
                          "repo_name": repo_name,
-                         "repo_link":repo.get("link"),
+                         "repo_link": repo.get("link"),
                          "modules": list_of_mods})
                 break
         else:
