@@ -512,8 +512,6 @@ async def _install_pkgs(event, command: str):
                     # check if module is already on source list
                     # update it's data if true
                     mod_name = mod_source.get("name", "")
-                    mod_author = mod_source.get("author", "Unknown")
-                    mod_repo = mod_source.get("repo", "Unknown")
                     if mod_name == curr_module:
                         pkg_mod_sources[i] = new_data
                         break
