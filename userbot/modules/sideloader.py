@@ -64,6 +64,21 @@ def _update_module_source(filename: str):
     return
 
 
+def _validate_code(name) -> bool:
+    try:
+        if os.path.exists(name) and os.path.isfile(name):
+            with open(name, "r") as script_file:
+                compile(script_file.read(),
+                        filename=os.path.basename(name),
+                        mode="exec")
+            script_file.close()
+        return True
+    except Exception as e:
+        log.error(f"Validation for '{os.path.basename(name)}' failed",
+                  exc_info=True)
+    return False
+
+
 @ehandler.on(command="sideload", alt="install", hasArgs=True, outgoing=True)
 async def sideload(event):
     if not getConfig("ALLOW_SIDELOAD"):
@@ -85,6 +100,13 @@ async def sideload(event):
             await event.edit(msgRep.MODULE_EXISTS.format(file.name))
             return
         await event.client.download_media(message=msg, file=dest_path)
+        if not _validate_code(dest_path):
+            await event.edit("This py file is not valid!")
+            try:
+                os.remove(dest_path)
+            except:
+                pass
+            return
         _update_module_source(file.name[:-3])
         log.info(f"Module '{file.name[:-3]}' has been installed to userpace")
         if getConfig("LOGGING"):

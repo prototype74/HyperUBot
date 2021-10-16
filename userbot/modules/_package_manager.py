@@ -331,6 +331,21 @@ async def _rebooter(event):
     return
 
 
+def _validate_code(name) -> bool:
+    try:
+        if os.path.exists(name) and os.path.isfile(name):
+            with open(name, "r") as script_file:
+                compile(script_file.read(),
+                        filename=os.path.basename(name),
+                        mode="exec")
+            script_file.close()
+        return True
+    except Exception as e:
+        log.error(f"Validation for '{os.path.basename(name)}' failed",
+                  exc_info=True)
+    return False
+
+
 async def _install_pkgs(event, command: str):
     if not command:
         await event.edit(msgRep.INSTALL_EMPTY)
@@ -464,11 +479,11 @@ async def _install_pkgs(event, command: str):
             curr_module = module[:-3]  # without .py
             text += f"{down} {msgRep.DOWNLOADING.format(curr_module)}\n"
             await event.edit(text)
+            module_path = os.path.join(".", "userbot", "modules_user", module)
             try:
                 log.info(f"[INSTALL] Downloading module '{module}'...")
                 dw_url = f"{repo_link}{module}"
-                urlretrieve(dw_url, os.path.join(".", "userbot",
-                                                 "modules_user", module))
+                urlretrieve(dw_url, module_path)
             except Exception as e:
                 log.error("[INSTALL] Unable to download "
                           f"module '{module}': {e}",
@@ -477,6 +492,17 @@ async def _install_pkgs(event, command: str):
                     f"{down} {msgRep.DOWNLOADING.format(curr_module)}",
                     f"{red_cross} {msgRep.DOWN_FAILED.format(curr_module)}")
                 await event.edit(text)
+                continue
+            if not _validate_code(module_path):
+                _ = "Failed to install '{}'"
+                text = text.replace(
+                    f"{down} {msgRep.DOWNLOADING.format(curr_module)}",
+                    f"{red_cross} {_.format(curr_module)}")
+                await event.edit(text)
+                try:
+                    os.remove(module_path)
+                except:
+                    pass
                 continue
             try:
                 # download was successful so update module source list
