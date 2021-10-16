@@ -461,6 +461,8 @@ async def _install_pkgs(event, command: str):
     if unknown_modules:
         text += (f"{warning} {msgRep.UNKNOWN_MODULES}: "
                  f"{', '.join(unknown_modules)}\n")
+        text += "\n"
+        text += msgRep.INSTALLER_FINISHED
         await event.edit(text)
         return
     if not queued_mod_to_install:
