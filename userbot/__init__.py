@@ -30,8 +30,6 @@ from telethon import TelegramClient, version  # noqa: E402
 from userbot.sysutils.sys_funcs import (isWindows,
                                         os_name, verAsTuple)  # noqa: E402
 
-OS = os_name()  # Current Operating System [DEPRECATED]
-
 # Check Telethon version
 if verAsTuple(version.__version__) < (1, 23, 0):
     print(setColorText("HyperUBot requires at least Telethon version 1.23.0! "
