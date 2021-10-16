@@ -494,10 +494,9 @@ async def _install_pkgs(event, command: str):
                 await event.edit(text)
                 continue
             if not _validate_code(module_path):
-                _ = "Failed to install '{}'"
                 text = text.replace(
                     f"{down} {msgRep.DOWNLOADING.format(curr_module)}",
-                    f"{red_cross} {_.format(curr_module)}")
+                    f"{red_cross} {msgRep.INSTALL_FAILED.format(curr_module)}")
                 await event.edit(text)
                 try:
                     os.remove(module_path)

@@ -1164,6 +1164,8 @@ class PackageManagerText(object):
         lang, _getframe().f_code.co_name, "DOWNLOADING")
     DOWN_FAILED = getLangString(
         lang, _getframe().f_code.co_name, "DOWN_FAILED")
+    INSTALL_FAILED = getLangString(
+        lang, _getframe().f_code.co_name, "INSTALL_FAILED")
     INSTALL_SUCCESS = getLangString(
         lang, _getframe().f_code.co_name, "INSTALL_SUCCESS")
     UPDATE_DATA_FAIL = getLangString(

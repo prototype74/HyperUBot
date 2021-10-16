@@ -101,7 +101,7 @@ async def sideload(event):
             return
         await event.client.download_media(message=msg, file=dest_path)
         if not _validate_code(dest_path):
-            await event.edit("This py file is not valid!")
+            await event.edit(msgRep.NOT_PY_FILE)
             try:
                 os.remove(dest_path)
             except:
