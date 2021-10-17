@@ -59,15 +59,31 @@ function printRelease() {
     printf "\n"
 }
 
-usr_bin=/usr/bin
-find_type=f
+function ver_lt() {
+    printf "$1\n$2\n" | sort -V | tail -1
+}
+
+function getLatestPyBin() {
+    usr_bin=/usr/bin
+    find_type=f
+    case "$os_name" in
+        "Android")
+            usr_bin=$PREFIX/bin
+            ;;
+        "macOS")
+            usr_bin=/usr/local/bin
+            find_type=l
+            ;;
+    esac
+    latest_py_bin=$(find $usr_bin -type $find_type -name "python*" -exec basename {} \; | grep -E "^python[0-9].[0-9]{1,4}$" | sort -V | tail -1)
+    echo "$latest_py_bin"
+}
 
 # Install pre-requisites packages
 case "$os_name" in
     "Android")
         release=$(getprop ro.build.version.release)
         release_sdk=$(getprop ro.build.version.sdk)
-        usr_bin=$PREFIX/bin
         printf "Release: %s (API: %s)\n\n" $release $release_sdk
         printf "Installing pre-requisites packages...\n"
         pkg update
@@ -77,12 +93,18 @@ case "$os_name" in
         printRelease
         printf "Installing pre-requisites packages (sudo needed)...\n"
         sudo apt-get update
-        # get latest python version the distro does offer
-        py_apt=$(apt-cache pkgnames | grep -E "^python3.[0-9]{1,4}$" | sort -V | tail -1)
-        if [ -z $py_apt ]; then
-            py_apt=python3
+        curr_py_bin=$(getLatestPyBin)
+        if [[ -z $curr_py_bin || $(ver_lt $($curr_py_bin --version | cut -d " " -f2) "3.7."*) == "3.7."* ]]; then
+            # check if (outdated) python is (not) installed.
+            # If so, install the latest python version the distro does offer
+            py_apt=$(apt-cache pkgnames | grep -E "^python3.[0-9]{1,4}$" | sort -V | tail -1)
+            if [ -z $py_apt ]; then
+                py_apt=python3
+            fi
+            sudo apt-get install $py_apt python3-pip $py_apt-dev libffi-dev git neofetch ffmpeg flac net-tools
+        else
+            sudo apt-get install python3-pip $curr_py_bin-dev libffi-dev git neofetch ffmpeg flac net-tools
         fi
-        sudo apt-get install $py_apt python3-pip $py_apt-dev libffi-dev git neofetch ffmpeg flac net-tools
         ;;
     "Arch Linux")
         printf "\n"
@@ -93,28 +115,34 @@ case "$os_name" in
         printRelease
         printf "Installing pre-requisites packages (sudo needed)...\n"
         sudo dnf update
-        py_dnf=python3
         is_fedora=$(cat /etc/redhat-release | grep "Fedora")
         if [ ! -z "$is_fedora" ]; then
             sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+            sudo dnf install python3 python3-pip git neofetch flac ffmpeg libffi
         else  # other RHEL 8 systems
             sudo dnf install epel-release
             sudo dnf config-manager --enable epel
             sudo dnf config-manager --set-enabled powertools
             sudo dnf install --nogpgcheck https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
             sudo dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm
-            py_dnf=$(dnf search python | grep -E "^python3[0-9]{1,4}" | sort -V | tail -1 | cut -d "." -f1)
-            if [ -z $py_dnf ]; then
-                py_dnf=$(dnf search python | grep -E "^python3.[0-9]{1,4}" | sort -V | tail -1 | cut -d "." -f1-2)
+            curr_py_bin=$(getLatestPyBin)
+            if [[ -z $curr_py_bin || $(ver_lt $($curr_py_bin --version | cut -d " " -f2) "3.7."*) == "3.7."* ]]; then
+                py_dnf=$(dnf search python | grep -E "^python3[0-9]{1,4}" | sort -V | tail -1 | cut -d "." -f1)
+                if [ -z $py_dnf ]; then
+                    py_dnf=$(dnf search python | grep -E "^python3.[0-9]{1,4}" | sort -V | tail -1 | cut -d "." -f1-2)
+                    if [ -z $py_dnf ]; then
+                        py_dnf=python3
+                    fi
+                fi
+                sudo dnf install $py_dnf python3-pip git neofetch flac ffmpeg libffi
+            else
+                sudo dnf install python3-pip git neofetch flac ffmpeg libffi
             fi
         fi
-        sudo dnf install $py_dnf python3-pip git neofetch flac ffmpeg libffi
         ;;
     "macOS")
         release=$(sw_vers -productVersion)
         printf "Release: %s\n\n" $release
-        usr_bin=/usr/local/bin
-        find_type=l
         printf "Checking for Homebrew Package Manager...\n"
         if [ -z $(command -v brew) ]; then
             printf "Installing Homebrew Package Manager (sudo needed)...\n"
@@ -130,13 +158,9 @@ case "$os_name" in
         ;;
 esac
 
-function ver_lt() {
-    printf "$1\n$2\n" | sort -V | tail -1
-}
-
 # Python --version >=3.8
 printf "Checking for Python...\n"
-py_exec=$(find $usr_bin -type $find_type -name "python*" -exec basename {} \; | grep -E "^python[0-9].[0-9]{1,4}$" | sort -V | tail -1)
+py_exec=$(getLatestPyBin)
 
 if [ -z $py_exec ]; then
     printf "$(setColor $RED 'Python is not installed')\n"
