@@ -1128,10 +1128,12 @@ class PackageManagerText(object):
         lang, _getframe().f_code.co_name, "REPO_NO_MODULES")
     REPOS_NO_DATA = getLangString(
         lang, _getframe().f_code.co_name, "REPOS_NO_DATA")
-    INSTALLED_UPGRADEABLE = getLangString(
-        lang, _getframe().f_code.co_name, "INSTALLED_UPGRADEABLE")
+    INSTALLED = getLangString(
+        lang, _getframe().f_code.co_name, "INSTALLED")
     INSTALLED_NOTLOADED = getLangString(
         lang, _getframe().f_code.co_name, "INSTALLED_NOTLOADED")
+    UPGRADEABLE = getLangString(
+        lang, _getframe().f_code.co_name, "UPGRADEABLE")
     START_FAILED = getLangString(
         lang, _getframe().f_code.co_name, "START_FAILED")
     DISABLED = getLangString(

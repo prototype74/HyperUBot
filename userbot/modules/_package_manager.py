@@ -311,11 +311,11 @@ async def _list_pkgs(command: str) -> str:
         text += "\n"
 
     if installed_already:
-        text += f"{check_mark} __{msgRep.INSTALLED_UPGRADEABLE}__\n"
+        text += f"{check_mark} __{msgRep.INSTALLED}__\n"
     if installed_not_loaded:
         text += f"{negative_cross} __{msgRep.INSTALLED_NOTLOADED}__\n"
     if upgradeable:
-        text += f"{ccw_emoji} __Upgradeable__\n"
+        text += f"{ccw_emoji} __{msgRep.UPGRADEABLE}__\n"
     if mod_not_running:
         text += f"{warning} __{msgRep.START_FAILED}__\n"
     if disabled_module:

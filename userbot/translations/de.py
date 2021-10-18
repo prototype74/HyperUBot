@@ -585,8 +585,9 @@ class PackageManagerText(object):
     REPO_NO_MODULES = "Dieses Repository bietet keine Module an"
     REPOS_NO_DATA = ("Keine Repository-Daten. Möglicherweise hilft {} "
                      "auszuführen")
-    INSTALLED_UPGRADEABLE = "Installiert und aktualisierbar"
+    INSTALLED = "Installiert"
     INSTALLED_NOTLOADED = "Installiert aber nicht gestartet"
+    UPGRADEABLE = "Aktualisierbar"
     START_FAILED = "Starten fehlgeschlagen"
     DISABLED = "Deaktiviert"
     EQUAL_NAME = "Gleicher Name"
