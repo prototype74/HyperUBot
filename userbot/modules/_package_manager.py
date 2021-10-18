@@ -497,7 +497,6 @@ async def _install_pkgs(event, command: str):
         text += msgRep.INSTALLER_FINISHED
         await event.edit(text)
         return
-    print(queued_mod_to_install)
     pkg_mod_sources = _pkg_list.get("module_sources", [])
     do_update_mod_list = False
     for queue in queued_mod_to_install:
