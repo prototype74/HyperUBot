@@ -64,6 +64,13 @@ def _get_release(repo_url: str) -> dict:
     return {}
 
 
+def filerList(list_to_filer: list) -> list:
+    filtered_list = list(dict.fromkeys(list_to_filer))
+    if "" in filtered_list:
+        filtered_list.remove("")
+    return filtered_list
+
+
 async def _update_pkg_list(event, repo_names=None):
     global _pkg_list
     pkg_repos = _pkg_list.get("repos", [])
@@ -71,7 +78,7 @@ async def _update_pkg_list(event, repo_names=None):
     if repo_names:
         # update specific repo(s) only
         # or add a new repo
-        repos = repo_names.split(" ")
+        repos = filerList(repo_names.split(" "))
     else:  # update all repos
         repos = ["nunopenim/module-universe"]
         community_repos = getConfig("COMMUNITY_REPOS", [])
@@ -396,7 +403,7 @@ async def _install_pkgs(event, command: str):
             text += (f"{warning} {msgRep.INSTALL_EMPTY_REPO}\n")
             await event.edit(text)
             return
-        mods = mods.split(" ")
+        mods = filerList(mods.split(" "))
         for repo in pkg_repos:
             repo_author = repo.get("author", "Unknown")
             repo_name = repo.get("name", "Unknown")
@@ -431,6 +438,7 @@ async def _install_pkgs(event, command: str):
             mods_from_sec_arg = sec_arg.split(" ")
             for mod_from_sec_arg in mods_from_sec_arg:
                 mods.append(mod_from_sec_arg)
+        mods = filerList(mods)
         known_modules_found = []
         for repo in pkg_repos:
             list_of_mods = []
@@ -550,7 +558,7 @@ async def _uninstall_pkgs(event, module_names: str):
     if not module_names:
         await event.edit(msgRep.UNINSTALL_EMPTY)
         return
-    modules_from_arg = module_names.split(" ")
+    modules_from_arg = filerList(module_names.split(" "))
     user_modules = _get_all_user_modules()
     if not user_modules:
         await event.edit(msgRep.NO_MODULES_INSTALLED)
@@ -613,7 +621,7 @@ async def _uninstall_pkgs(event, module_names: str):
 
 async def _rm_repo(event, repo_names=None):
     if repo_names:
-        repos = repo_names.split(" ")
+        repos = filerList(repo_names.split(" "))
     else:
         await event.edit(msgRep.NO_REPO_NAMES)
         return
