@@ -43,7 +43,11 @@ def _update_module_source(filename: str):
         return
 
     module_sources = pkg_data.get("module_sources", [])
-    new_data = {"name": filename, "author": "Unknown", "repo": "Unknown"}
+    new_data = {"name": filename,
+                "author": "Unknown",
+                "repo": "Unknown",
+                "version": "Unknown",
+                "size": 0}
     for i, module in enumerate(module_sources):
         mod_name = module.get("name", "")
         if filename == mod_name:
