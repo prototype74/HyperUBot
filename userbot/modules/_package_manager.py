@@ -244,8 +244,10 @@ async def _list_pkgs(command: str) -> str:
     global _pkg_list
     pkg_repos = _pkg_list.get("repos", [])
     installed_already = False
+    upgradeable = False
     equal_module = False
     check_mark = u"\u2705"  # check mark emoji
+    ccw_emoji = u"\U0001F504"  # counterclockwise emoji
     info_emoji = u"\u2139"  # information emoji
     if not installed_only and pkg_repos:
         module_sources = _pkg_list.get("module_sources", [])
@@ -271,12 +273,20 @@ async def _list_pkgs(command: str) -> str:
                             mod_src_name = mod_src.get("name", "")
                             mod_src_author = mod_src.get("author", "Unknown")
                             mod_src_repo = mod_src.get("repo", "Unknown")
+                            mod_src_version = mod_src.get("version", "Unknown")
+                            mod_src_size = mod_src.get("size", 0)
                             if module_name == mod_src_name:
                                 if mod_src_author == repo_author and \
                                    mod_src_repo == repo_name:
                                     info += f" {check_mark}"
                                     if not installed_already:
                                         installed_already = True
+                                    if not mod_src_version == repo_version and\
+                                       not mod_src_size == module_size:
+                                        # assume the module were updated
+                                        info += f" {ccw_emoji}"
+                                        if not upgradeable:
+                                            upgradeable = True
                                     break
                     if len(pkg_repos) >= 2:  # more known repos
                         # check if current module's name exist
@@ -304,6 +314,8 @@ async def _list_pkgs(command: str) -> str:
         text += f"{check_mark} __{msgRep.INSTALLED_UPGRADEABLE}__\n"
     if installed_not_loaded:
         text += f"{negative_cross} __{msgRep.INSTALLED_NOTLOADED}__\n"
+    if upgradeable:
+        text += f"{ccw_emoji} __Upgradeable__\n"
     if mod_not_running:
         text += f"{warning} __{msgRep.START_FAILED}__\n"
     if disabled_module:
@@ -407,15 +419,17 @@ async def _install_pkgs(event, command: str):
         for repo in pkg_repos:
             repo_author = repo.get("author", "Unknown")
             repo_name = repo.get("name", "Unknown")
+            repo_version = repo.get("version", "Unknown")
             if r_author == repo_author and r_name == repo_name:
                 assets = repo.get("assets", [])
-                list_of_mods = []
+                list_of_mods = {}
                 if assets:
                     for mod in mods:
                         for asset in assets:
-                            module_name = asset.get("name")
+                            module_name = asset.get("name", "")
+                            module_size = asset.get("size", 0)
                             if mod == module_name[:-3]:
-                                list_of_mods.append(module_name)
+                                list_of_mods[module_name] = module_size
                                 break
                         else:
                             if mod not in unknown_modules:
@@ -424,6 +438,7 @@ async def _install_pkgs(event, command: str):
                     queued_mod_to_install.append(
                         {"repo_author": repo_author,
                          "repo_name": repo_name,
+                         "repo_version": repo_version,
                          "repo_link": repo.get("link"),
                          "modules": list_of_mods})
                 break
@@ -441,16 +456,18 @@ async def _install_pkgs(event, command: str):
         mods = filerList(mods)
         known_modules_found = []
         for repo in pkg_repos:
-            list_of_mods = []
+            list_of_mods = {}
             repo_author = repo.get("author", "Unknown")
             repo_name = repo.get("name", "Unknown")
+            repo_version = repo.get("version", "Unknown")
             assets = repo.get("assets", [])
             if assets:
                 for mod in mods:
                     for asset in assets:
-                        module_name = asset.get("name")
+                        module_name = asset.get("name", "")
+                        module_size = asset.get("size", 0)
                         if mod == module_name[:-3]:
-                            list_of_mods.append(module_name)
+                            list_of_mods[module_name] = module_size
                             known_modules_found.append(mod)
                             if mod in unknown_modules:
                                 # module found in an another repo
@@ -464,6 +481,7 @@ async def _install_pkgs(event, command: str):
             if list_of_mods:
                 queued_mod_to_install.append({"repo_author": repo_author,
                                               "repo_name": repo_name,
+                                              "repo_version": repo_version,
                                               "repo_link": repo.get("link"),
                                               "modules": list_of_mods})
     if unknown_modules:
@@ -479,14 +497,16 @@ async def _install_pkgs(event, command: str):
         text += msgRep.INSTALLER_FINISHED
         await event.edit(text)
         return
+    print(queued_mod_to_install)
     pkg_mod_sources = _pkg_list.get("module_sources", [])
     do_update_mod_list = False
     for queue in queued_mod_to_install:
         repo_author = queue.get("repo_author")
         repo_name = queue.get("repo_name")
+        repo_version = queue.get("repo_version")
         repo_link = queue.get("repo_link")
         list_of_mods = queue.get("modules")
-        for module in list_of_mods:
+        for module, size in list_of_mods.items():
             curr_module = module[:-3]  # without .py
             text += f"{down} {msgRep.DOWNLOADING.format(curr_module)}\n"
             await event.edit(text)
@@ -518,7 +538,9 @@ async def _install_pkgs(event, command: str):
                 # download was successful so update module source list
                 new_data = {"name": curr_module,
                             "author": repo_author,
-                            "repo": repo_name}
+                            "repo": repo_name,
+                            "version": repo_version,
+                            "size": size}
                 for i, mod_source in enumerate(pkg_mod_sources):
                     # check if module is already on source list
                     # update it's data if true
@@ -720,6 +742,7 @@ async def package_manager(event):
             text = text.replace(u"\u274E", "(x)")
             text = text.replace(u"\u26A0", "/!\\")
             text = text.replace(u"\u2705", "(+)")
+            text = text.replace(u"\U0001F504", "(UP)")
             text = text.replace(u"\u2139", "(i)")
             print(text)
             text_alt = f"**{msgRep.LIST_OF_PACKAGES}**\n\n"

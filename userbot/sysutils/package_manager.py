@@ -166,7 +166,9 @@ class _PackageManagerJSON:
                 # new module installed but from unknown source
                 module_sources.append({"name": module,
                                        "author": "Unknown",
-                                       "repo": "Unknown"})
+                                       "repo": "Unknown",
+                                       "version": "Unknown",
+                                       "size": 0})
                 if not list_modified:
                     list_modified = True
         if list_modified:
