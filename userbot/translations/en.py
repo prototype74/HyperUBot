@@ -57,7 +57,7 @@ class AdminText(object):
     CANNOT_DEMOTE_SELF = "`I can't demote myself`"
     DEMOTED_ALREADY = "`This person is mortal already`"
     DEMOTE_SUCCESS = "{} has been demoted!"  # user name
-    CANNOT_DEMOTE_ADMIN = "`This chat has too many admins already`"
+    CANNOT_DEMOTE_ADMIN = "`I can't demote this admin`"
     DEMOTE_FAILED = "`Failed to demote this person`"
     NO_GROUP_ARGS = "`This chat or given chat isn't a group`"
     NOT_MUTE_SUB_CHAN = "`Unable to mute subscribers in a channel`"

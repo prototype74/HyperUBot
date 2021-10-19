@@ -59,7 +59,7 @@ class AdminText(object):
     CANNOT_DEMOTE_SELF = "`Não posso despromover-me a mim próprio!`"
     DEMOTED_ALREADY = "`Esta pessoa já é um mortal.`"
     DEMOTE_SUCCESS = "{} foi despromovido!"
-    CANNOT_DEMOTE_ADMIN = "`Este chat já tem muitos administradores`"
+    CANNOT_DEMOTE_ADMIN = "`I can't demote this admin`"  # translation needed
     DEMOTE_FAILED = "`Falha ao despromover esta pessoa.`"
     NO_GROUP_ARGS = "`Este chat, ou o chat fornecido, não é um grupo!`"
     NOT_MUTE_SUB_CHAN = "`Impossível silenciar subscritores de um canal!`"
