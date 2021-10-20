@@ -244,10 +244,16 @@ except Exception:
     log.error("Failed to initialize download directory")
 
 try:
-    tgclient = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
-    del API_KEY
-    del API_HASH
-    del STRING_SESSION
+    _connect_retries = getConfig("CLIENT_CONNECT_RETRIES", 5)
+    if not isinstance(_connect_retries, int) or not _connect_retries >= -1:
+        _connect_retries = 5
+    _retry_delay = getConfig("CLIENT_RETRY_DELAY", 1)
+    if not isinstance(_retry_delay, (int, float)) or not _retry_delay >= 0:
+        _retry_delay = 1
+    tgclient = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH,
+                              connection_retries=_connect_retries,
+                              retry_delay=_retry_delay)
+    del API_KEY, API_HASH, STRING_SESSION, _connect_retries, _retry_delay
 except Exception as e:
     log.critical(f"Failed to create Telegram Client: {e}", exc_info=True)
     try:
