@@ -66,3 +66,15 @@ class ConfigClass(object):
     # or uninstalled
     #
     PKG_DISABLE_AUTO_REBOOT = False
+
+    #
+    # How many times the client should try to reconnect to the
+    # Telegram servers. -1 means infinity tries. Integer only.
+    #
+    CLIENT_CONNECT_RETRIES = 5
+
+    #
+    # Delay in seconds between automatic reconnect.
+    # Integer or float.
+    #
+    CLIENT_RETRY_DELAY = 1
