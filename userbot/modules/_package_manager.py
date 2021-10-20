@@ -467,8 +467,12 @@ async def _install_pkgs(event, command: str):
                         module_name = asset.get("name", "")
                         module_size = asset.get("size", 0)
                         if mod == module_name[:-3]:
-                            list_of_mods[module_name] = module_size
-                            known_modules_found.append(mod)
+                            if mod not in known_modules_found:
+                                # it may be possbile that there are modules
+                                # with same name from different repos, so
+                                # pick the first match only
+                                list_of_mods[module_name] = module_size
+                                known_modules_found.append(mod)
                             if mod in unknown_modules:
                                 # module found in an another repo
                                 unknown_modules.remove(mod)
