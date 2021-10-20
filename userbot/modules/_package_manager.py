@@ -353,7 +353,7 @@ async def _rebooter(event):
 def _validate_code(name) -> bool:
     try:
         if os.path.exists(name) and os.path.isfile(name):
-            with open(name, "r") as script_file:
+            with open(name, "rb") as script_file:
                 compile(script_file.read(),
                         filename=os.path.basename(name),
                         mode="exec")
