@@ -26,7 +26,7 @@ if len(argv) >= 2:
     if argv[1].lower() == "-safemode":
         SAFEMODE = True
 
-from telethon import TelegramClient, version  # noqa: E402
+from telethon import version  # noqa: E402
 from userbot.sysutils.sys_funcs import isWindows, verAsTuple  # noqa: E402
 
 # Check Telethon version
@@ -37,6 +37,7 @@ if verAsTuple(version.__version__) < (1, 23, 0):
                        Color.RED))
     quit(1)
 
+from userbot._core.client import HyperClient  # noqa: E402
 from userbot.sysutils.config_loader import (_ConfigLoader,
                                             _SecureConfigLoader)  # noqa: E402
 from userbot.sysutils.configuration import addConfig, getConfig  # noqa: E402
@@ -250,9 +251,9 @@ try:
     _retry_delay = getConfig("CLIENT_RETRY_DELAY", 1)
     if not isinstance(_retry_delay, (int, float)) or not _retry_delay >= 0:
         _retry_delay = 1
-    tgclient = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH,
-                              connection_retries=_connect_retries,
-                              retry_delay=_retry_delay)
+    tgclient = HyperClient(StringSession(STRING_SESSION), API_KEY, API_HASH,
+                           connection_retries=_connect_retries,
+                           retry_delay=_retry_delay)
     del API_KEY, API_HASH, STRING_SESSION, _connect_retries, _retry_delay
 except Exception as e:
     log.critical(f"Failed to create Telegram Client: {e}", exc_info=True)
