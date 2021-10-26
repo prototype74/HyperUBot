@@ -673,7 +673,7 @@ class WelcomeText(object):
     INFO_PKG = ("our package manager allows you to install new modules. "
                 "We made some user modules which can be downloaded with the "
                 "help of this command to allow the user to get new modules "
-                "without waiting for new updates for the bot. FIY there are "
+                "without waiting for new updates for the bot. FYI there are "
                 "also modules made by the community. So make sure to check "
                 "them out too!")
     INFO_SUPPORT = ("Questions about HyperUBot? Read our {} or "
