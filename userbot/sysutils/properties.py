@@ -228,7 +228,6 @@ class Properties:
         Returns:
             the value from key else None if key doesn't exist
         """
-        caller = getouterframes(currentframe(), 2)[1].filename
         if not self.__prop_present:
             return None
         self.__parser.read(self.__path)
