@@ -124,11 +124,10 @@ class _ModuleLoader:
             log.warning(f"Illegal module name '{module}'")
             return
 
-        # TODO: allow to remove modules data that were failed to start 
-        path = f"userbot.modules_user.{module}"
-        if path not in sys.modules:
-            log.error(f"No module named '{module}' found")
+        if module not in getUserModules():
+            log.error(f"Target module '{module}' is not an user module!")
             return
+
         handlers_from_module = getHandlers().get(module)
         if handlers_from_module:
             for handler in handlers_from_module:
@@ -151,8 +150,13 @@ class _ModuleLoader:
         update_load_modules(module, False, True)
         update_user_modules(module, True)
         try:
-            sys.modules.pop(path)
-            log.info(f"Module '{module}' unimported")
+            path = f"userbot.modules_user.{module}"
+            if path in sys.modules:
+                sys.modules.pop(path)
+                log.info(f"Module '{module}' unimported successfully")
+            else:
+                log.info(f"Removed module '{module}' from modules data "
+                         "successfully")
         except KeyError:
             log.error(f"Failed to unimport module '{module}'")
         return
