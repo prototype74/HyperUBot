@@ -9,7 +9,6 @@
 from telethon import TelegramClient
 from inspect import currentframe, getouterframes
 from logging import getLogger
-from traceback import format_exc
 import glob
 import os
 
