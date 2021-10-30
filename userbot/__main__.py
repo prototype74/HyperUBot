@@ -8,7 +8,7 @@
 
 from userbot import (tgclient, log, __hyper_logger__, _services,
                      _getprop, _setprop, PROJECT, SAFEMODE)
-from userbot._core.module_loader import import_module
+from userbot._core.module_loader import import_module, start_language_processor
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import getAllModules, getLoadModules
 from userbot.sysutils.sys_funcs import isWindows, verAsTuple
@@ -43,9 +43,9 @@ def init_load_modules():
 
 def start_modules():
     if SAFEMODE:
-        log.info("Starting built-in modules only")
+        log.info("Starting built-in modules only...")
     else:
-        log.info("Starting modules")
+        log.info("Starting modules...")
     try:
         init_load_modules()
     except KeyboardInterrupt:
@@ -305,6 +305,7 @@ def check_reboot():
 
 
 def main():
+    start_language_processor()
     start_modules()
     log.info("HyperUBot is going online")
     run_client()
