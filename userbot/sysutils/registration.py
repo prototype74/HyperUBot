@@ -245,7 +245,6 @@ class _RegisterCMD:
                                     registered in_register_cmd_usage())}}
         """
         self.__registered_cmds = {}
-        self.__first_time_register = False
 
     def _pre_register_cmd(self, cmd: str, alt_cmd: str,
                           hasArgs: bool, prefix: str,
@@ -283,9 +282,6 @@ class _RegisterCMD:
             return False
         module_name = basename(getfile(func)[:-3])
         if cmd not in self.__registered_cmds.keys():
-            if not self.__first_time_register:
-                log.info("Registering commands...")
-                self.__first_time_register = True
             for key, value in self.__registered_cmds.items():
                 val = value.get("alt_cmd")
                 loc = value.get("module_name")
