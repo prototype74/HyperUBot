@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 from .feature_manager import _is_active
-from .registration import pre_register_cmd
+from .registration import pre_register_cmd, update_handlers
 from inspect import currentframe, getouterframes
 from os.path import basename
 from userbot import tgclient
@@ -95,6 +95,7 @@ class EventHandler:
                 return None
             # get caller in case of failed actions
             caller = getouterframes(currentframe(), 2)[1]
+            caller_name = basename(caller.filename)[:-3]
             # link to file and line number
             caller = f"{basename(caller.filename)[:-3]}:{caller.lineno}"
             if not command:
@@ -161,6 +162,7 @@ class EventHandler:
                                            NewMessage(pattern=cmd_regex,
                                                       *args,
                                                       **kwargs))
+                update_handlers(caller_name, func_callback)
             except Exception as e:
                 self.log.error(f"Failed to add command '{command}' to client "
                                f"(in function '{function.__name__}' "
@@ -219,6 +221,8 @@ class EventHandler:
             ChatAction.Event
         """
         def decorator(function):
+            caller_name = basename(
+                getouterframes(currentframe(), 2)[1].filename)[:-3]
             async def func_callback(event):
                 try:
                     await function(event)
@@ -229,6 +233,7 @@ class EventHandler:
             try:
                 tgclient.add_event_handler(func_callback,
                                            ChatAction(*args, **kwargs))
+                update_handlers(caller_name, func_callback)
             except Exception as e:
                 self.log.error(f"Failed to add a chat action feature to "
                                f"client (in function '{function.__name__}')",
@@ -305,6 +310,7 @@ class EventHandler:
             if not callable(function):
                 return None
             caller = getouterframes(currentframe(), 2)[1]
+            caller_name = basename(caller.filename)[:-3]
             caller = f"{basename(caller.filename)[:-3]}:{caller.lineno}"
             if not name:
                 self.log.error(f"Name of command/feature in function "
@@ -355,6 +361,7 @@ class EventHandler:
                                                events(pattern=pattern,
                                                       *args,
                                                       **kwargs))
+                update_handlers(caller_name, func_callback)
             except Exception as e:
                 self.log.error(f"Failed to add command/feature '{name}' "
                                f"to client (in function "
