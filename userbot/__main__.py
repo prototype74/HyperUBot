@@ -8,95 +8,37 @@
 
 from userbot import (tgclient, log, __hyper_logger__, _services,
                      _getprop, _setprop, PROJECT, SAFEMODE)
+from userbot._core.module_loader import import_module
 from userbot.sysutils.configuration import getConfig
-from userbot.sysutils.registration import (update_all_modules,
-                                           update_load_modules,
-                                           update_user_modules,
-                                           getAllModules)
+from userbot.sysutils.registration import getAllModules, getLoadModules
 from userbot.sysutils.sys_funcs import isWindows, verAsTuple
 from userbot.version import VERSION, VERSION_TUPLE
 from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
                                           PhoneNumberBannedError,
                                           PhoneNumberInvalidError)
 from logging import shutdown
-from importlib import import_module
 from glob import glob
-from os.path import dirname, basename, isfile, join
+import os
 
 
-class _Modules:
-    def __init__(self):
-        self.__imported_module = None
-        self.__load_modules_count = 0
-        self.__not_load_modules = getConfig("NOT_LOAD_MODULES", [])
-
-    def __load_modules(self) -> tuple:
-        all_modules = []
-        sys_modules = []
-        user_modules = []
-        sys_module_paths = sorted(
-            glob(join(dirname(__file__), "modules", "*.py")))
-        user_module_paths = sorted(
-            glob(join(dirname(__file__), "modules_user", "*.py")))
-        for module in sys_module_paths:
-            if isfile(module) and not basename(module).startswith("__") and \
-               module.endswith(".py"):
-                filename = basename(module)[:-3]
-                all_modules.append(filename)
-                try:
-                    if filename not in self.__not_load_modules:
-                        sys_modules.append(filename)
-                except:
-                    sys_modules.append(filename)
-        for module in user_module_paths:
-            if isfile(module) and not basename(module).startswith("__") and \
-               module.endswith(".py"):
-                filename = basename(module)[:-3]
-                all_modules.append(filename)
-                if filename not in sys_modules:
-                    user_modules.append(filename)
-                elif not SAFEMODE:
-                    log.warning(f"Module '{filename}' not loaded as "
-                                "present as built-in module already")
-        return (all_modules, sys_modules, user_modules)
-
-    def import_load_modules(self):
-        def tryImportModule(path, module) -> bool:
-            try:
-                self.__imported_module = import_module(path + module)
-                return True
-            except KeyboardInterrupt:
-                raise KeyboardInterrupt
-            except (BaseException, Exception):
-                log.error(f"Unable to start module '{module}' due "
-                          "to an unhandled exception",
-                          exc_info=True)
-            return False
-        try:
-            all_modules, sys_modules, user_modules = self.__load_modules()
-            for module in sorted(all_modules):
-                update_all_modules(module)
-            for module in sys_modules:
-                if tryImportModule("userbot.modules.", module):
-                    update_load_modules(module, True)
-                    self.__load_modules_count += 1
-                else:
-                    update_load_modules(module, False)
-            for module in user_modules:
-                if not SAFEMODE:
-                    if module not in self.__not_load_modules:
-                        if tryImportModule("userbot.modules_user.", module):
-                            update_load_modules(module, True)
-                            self.__load_modules_count += 1
-                        else:
-                            update_load_modules(module, False)
-                update_user_modules(module)
-        except:
-            raise
-        return
-
-    def loaded_modules(self) -> int:
-        return self.__load_modules_count
+def init_load_modules():
+    built_in_modules_path = sorted(
+        glob(os.path.join(os.path.dirname(__file__), "modules", "*.py")))
+    user_modules_path = sorted(
+        glob(os.path.join(os.path.dirname(__file__), "modules_user", "*.py")))
+    for module in built_in_modules_path:
+        if os.path.isfile(module) and \
+           not os.path.basename(module).startswith("__") and \
+           module.endswith(".py"):
+            filename = os.path.basename(module)[:-3]
+            import_module(filename, False)
+    for module in user_modules_path:
+        if os.path.isfile(module) and \
+           not os.path.basename(module).startswith("__") and \
+           module.endswith(".py"):
+            filename = os.path.basename(module)[:-3]
+            import_module(filename, True)
+    return
 
 
 def start_modules():
@@ -104,9 +46,8 @@ def start_modules():
         log.info("Starting built-in modules only")
     else:
         log.info("Starting modules")
-    modules = _Modules()
     try:
-        modules.import_load_modules()
+        init_load_modules()
     except KeyboardInterrupt:
         raise KeyboardInterrupt
     except (BaseException, Exception) as e:
@@ -150,7 +91,10 @@ def start_modules():
                 raise KeyboardInterrupt
             elif option == 4:
                 raise KeyboardInterrupt
-    load_modules_count = modules.loaded_modules()
+    load_modules_count = 0
+    for is_running in getLoadModules().values():
+        if is_running:
+            load_modules_count += 1
     sum_modules = len(getAllModules())
     if not load_modules_count:
         log.warning("No modules started!")
