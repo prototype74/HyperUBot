@@ -180,7 +180,7 @@ class _RegisterModules:
         try:
             self.__module_desc.pop(module)
         except KeyError:
-            log.warning(f"Module description from '{module}' not found")
+            pass
         return
 
     def _unregister_module_info(self, module: str):
@@ -195,7 +195,7 @@ class _RegisterModules:
         try:
             self.__module_info.pop(module)
         except KeyError:
-            log.warning(f"Module info from '{module}' not found")
+            pass
         return
 
     def _getHandlers(self) -> dict:
@@ -380,7 +380,7 @@ class _RegisterCMD:
         try:
             self.__registered_cmds.pop(cmd)
         except KeyError:
-            log.warning(f"Command/feature '{cmd}' not registered")
+            pass
         return
 
     def _getRegisteredCMDs(self) -> dict:
