@@ -16,43 +16,116 @@ log = getLogger(__name__)
 class _RegisterModules:
     def __init__(self):
         self.__all_modules = []
+        self.__built_in_modules = []
         self.__load_modules = {}
         self.__user_modules = []
         self.__module_desc = {}
         self.__module_info = {}
+        self.__handlers = {}
 
-    def _update_all_modules(self, name_of_module: str):
+    def _update_all_modules(self, name_of_module: str, remove: bool = False):
         caller = (True
                   if getouterframes(currentframe(), 2)[2].filename.endswith(
-                      join("userbot", "__main__.py")) else False)
+                      join("userbot", "_core", "module_loader.py")) else False)
         if not caller:
             caller = getouterframes(currentframe(), 2)[2]
-            log.error("update_all_modules only callable in main "
-                      f"({basename(caller.filename)}:{caller.lineno})")
+            log.warning("Not a valid caller "
+                        f"({basename(caller.filename)}:{caller.lineno})")
             return
-        self.__all_modules.append(name_of_module)
+        if remove:
+            if name_of_module in self.__all_modules:
+                self.__all_modules.remove(name_of_module)
+        else:
+            if name_of_module not in self.__all_modules:
+                self.__all_modules.append(name_of_module)
+        return
 
-    def _update_load_modules(self, name_of_module: str, is_running: bool):
+    def _update_built_in_modules(self, name_of_module: str,
+                                 remove: bool = False):
         caller = (True
                   if getouterframes(currentframe(), 2)[2].filename.endswith(
-                      join("userbot", "__main__.py")) else False)
+                      join("userbot", "_core", "module_loader.py")) else False)
         if not caller:
             caller = getouterframes(currentframe(), 2)[2]
-            log.error("update_load_modules only callable in main "
-                      f"({basename(caller.filename)}:{caller.lineno})")
+            log.warning("Not a valid caller "
+                        f"({basename(caller.filename)}:{caller.lineno})")
             return
-        self.__load_modules[name_of_module] = is_running
+        if remove:
+            if name_of_module in self.__built_in_modules:
+                self.__built_in_modules.remove(name_of_module)
+        else:
+            if name_of_module not in self.__built_in_modules:
+                self.__built_in_modules.append(name_of_module)
+        return
 
-    def _update_user_modules(self, name_of_module: str):
+    def _update_load_modules(self, name_of_module: str,
+                             is_running: bool, remove: bool = False):
         caller = (True
                   if getouterframes(currentframe(), 2)[2].filename.endswith(
-                      join("userbot", "__main__.py")) else False)
+                      join("userbot", "_core", "module_loader.py")) else False)
         if not caller:
             caller = getouterframes(currentframe(), 2)[2]
-            log.error("update_user_modules only callable in main "
-                      f"({basename(caller.filename)}:{caller.lineno})")
+            log.warning("Not a valid caller "
+                        f"({basename(caller.filename)}:{caller.lineno})")
             return
-        self.__user_modules.append(name_of_module)
+        if remove:
+            if name_of_module in self.__load_modules:
+                try:
+                    self.__load_modules.pop(name_of_module)
+                except KeyError:
+                    pass
+        else:
+            if name_of_module not in self.__load_modules.keys():
+                self.__load_modules[name_of_module] = is_running
+        return
+
+    def _update_handlers(self, name_of_module: str,
+                         handler, remove: bool = False):
+        special_caller = [join("userbot", "_core", "module_loader.py"),
+                          join("userbot", "sysutils", "event_handler.py")]
+        sys_caller = getouterframes(currentframe(), 2)[2].filename
+        valid_caller = False
+        for caller in special_caller:
+            if sys_caller.endswith(caller):
+                valid_caller = True
+                break
+        if not valid_caller:
+            caller = getouterframes(currentframe(), 2)[2]
+            log.warning("Not a valid caller "
+                        f"({basename(caller.filename)}:{caller.lineno})")
+        if remove:
+            if name_of_module in self.__handlers.keys():
+                try:
+                    self.__handlers.pop(name_of_module)
+                except KeyError:
+                    pass
+            return
+        if name_of_module in self.__handlers.keys():
+            for module, handlers in self.__handlers.items():
+                if name_of_module == module and handler not in handlers:
+                    handlers.append(handler)
+                    self.__handlers[module] = handlers
+                    break
+        else:
+            self.__handlers[name_of_module] = [handler]
+        return
+
+    def _update_user_modules(self, name_of_module: str, remove: bool = False):
+        caller = (True
+                  if getouterframes(currentframe(), 2)[2].filename.endswith(
+                      join("userbot", "_core", "module_loader.py")) else False)
+        if not caller:
+            caller = getouterframes(currentframe(), 2)[2]
+            log.warning("Not a valid caller "
+                        f"({basename(caller.filename)}:{caller.lineno})")
+            return
+        if remove:
+            if name_of_module in self.__user_modules:
+                self.__user_modules.remove(name_of_module)
+        else:
+            if name_of_module not in self.__built_in_modules:
+                self.__user_modules.append(name_of_module)
+        return
 
     def _register_module_desc(self, description: str):
         caller = basename(getouterframes(currentframe(), 2)[2].filename)[:-3]
@@ -65,7 +138,8 @@ class _RegisterModules:
         if caller not in self.__module_desc.keys():
             self.__module_desc[caller] = description
         else:
-            log.warning(f"Module description for {caller} registered already")
+            log.warning(f"Module description for '{caller}' "
+                        "registered already")
         return
 
     def _register_module_info(self, name: str,
@@ -91,11 +165,52 @@ class _RegisterModules:
             self.__module_info[caller] = {"name": name, "authors": authors,
                                           "version": version}
         else:
-            log.warning(f"Module info for {caller} registered already")
+            log.warning(f"Module info for '{caller}' registered already")
         return
+
+    def _unregister_module_desc(self, module: str):
+        caller = (True
+                  if getouterframes(currentframe(), 2)[2].filename.endswith(
+                      join("userbot", "_core", "module_loader.py")) else False)
+        if not caller:
+            caller = getouterframes(currentframe(), 2)[2]
+            log.warning("Not a valid caller "
+                        f"({basename(caller.filename)}:{caller.lineno})")
+            return
+        try:
+            self.__module_desc.pop(module)
+        except KeyError:
+            log.warning(f"Module description from '{module}' not found")
+        return
+
+    def _unregister_module_info(self, module: str):
+        caller = (True
+                  if getouterframes(currentframe(), 2)[2].filename.endswith(
+                      join("userbot", "_core", "module_loader.py")) else False)
+        if not caller:
+            caller = getouterframes(currentframe(), 2)[2]
+            log.warning("Not a valid caller "
+                        f"({basename(caller.filename)}:{caller.lineno})")
+            return
+        try:
+            self.__module_info.pop(module)
+        except KeyError:
+            log.warning(f"Module info from '{module}' not found")
+        return
+
+    def _getHandlers(self) -> dict:
+        caller = (True
+                  if getouterframes(currentframe(), 2)[2].filename.endswith(
+                      join("userbot", "_core", "module_loader.py")) else False)
+        if not caller:
+            return {}
+        return self.__handlers
 
     def _getAllModules(self) -> list:
         return self.__all_modules
+
+    def _getBuiltInModules(self) -> list:
+        return self.__built_in_modules
 
     def _getLoadModules(self) -> dict:
         return self.__load_modules
@@ -113,9 +228,9 @@ class _RegisterModules:
 class _RegisterCMD:
     def __init__(self):
         """
-        Initialize the dictionary for registered commands.
+        Initialize the dictionary for registered commands/features.
         This class avoids any duplicated commands/patterns.
-        Scheme: {"cmd", {"alt_cmd": "alternative way to trigger the cmd",
+        Scheme: {"cmd": {"alt_cmd": "alternative way to trigger the cmd",
                          "hasArgs": "whether the command takes arguments",
                          "prefix": "the prefix used at the beginning of
                                     cmd (pattern)",
@@ -163,8 +278,8 @@ class _RegisterCMD:
                   else False)
         if not caller:
             caller = getouterframes(currentframe(), 2)[2]
-            log.error("pre_register_cmd only callable in EventHandler "
-                      f"({basename(caller.filename)}:{caller.lineno})")
+            log.warning("Not a valid caller "
+                        f"({basename(caller.filename)}:{caller.lineno})")
             return False
         module_name = basename(getfile(func)[:-3])
         if cmd not in self.__registered_cmds.keys():
@@ -202,7 +317,7 @@ class _RegisterCMD:
                                            "module_name": module_name}
             return True
         loc = self.__registered_cmds.get(cmd, {}).get("module_name")
-        log.warning(f"Command '{cmd}' in module '{module_name}' "
+        log.warning(f"Command/feature '{cmd}' in module '{module_name}' "
                     f"registered in module '{loc}' already")
         return False
 
@@ -249,13 +364,28 @@ class _RegisterCMD:
             val["success"] = True
             self.__registered_cmds[cmd] = val
             return
-        log.warning("Register command usage failed as command "
+        log.warning("Register command usage failed as command/feature "
                     f"'{cmd}' is not pre-registered ({caller})")
+        return
+
+    def _unregister_cmd(self, cmd: str):
+        caller = (True
+                  if getouterframes(currentframe(), 2)[2].filename.endswith(
+                      join("userbot", "_core", "module_loader.py")) else False)
+        if not caller:
+            caller = getouterframes(currentframe(), 2)[2]
+            log.warning("Not a valid caller "
+                        f"({basename(caller.filename)}:{caller.lineno})")
+            return
+        try:
+            self.__registered_cmds.pop(cmd)
+        except KeyError:
+            log.warning(f"Command/feature '{cmd}' not registered")
         return
 
     def _getRegisteredCMDs(self) -> dict:
         """
-        Returns all registered commands in a sorted dictionary
+        Returns all registered commands/features in a sorted dictionary
         """
         return dict(sorted(self.__registered_cmds.items()))
 
@@ -263,18 +393,29 @@ class _RegisterCMD:
 _reg_mod = _RegisterModules()
 
 
-def update_all_modules(name_of_module: str):
-    _reg_mod._update_all_modules(name_of_module)
+def update_all_modules(name_of_module: str, remove: bool = False):
+    _reg_mod._update_all_modules(name_of_module, remove)
     return
 
 
-def update_load_modules(name_of_module: str, is_running: bool):
-    _reg_mod._update_load_modules(name_of_module, is_running)
+def update_built_in_modules(name_of_module: str, remove: bool = False):
+    _reg_mod._update_built_in_modules(name_of_module, remove)
     return
 
 
-def update_user_modules(name_of_module: str):
-    _reg_mod._update_user_modules(name_of_module)
+def update_load_modules(name_of_module: str,
+                        is_running: bool, remove: bool = False):
+    _reg_mod._update_load_modules(name_of_module, is_running, remove)
+    return
+
+
+def update_user_modules(name_of_module: str, remove: bool = False):
+    _reg_mod._update_user_modules(name_of_module, remove)
+    return
+
+
+def update_handlers(name_of_module: str, handler, remove: bool = False):
+    _reg_mod._update_handlers(name_of_module, handler, remove)
     return
 
 
@@ -302,8 +443,26 @@ def register_module_info(name: str, authors=None, version=None):
     return
 
 
+def unregister_module_desc(module: str):
+    _reg_mod._unregister_module_desc(module)
+    return
+
+
+def unregister_module_info(module: str):
+    _reg_mod._unregister_module_info(module)
+    return
+
+
+def getHandlers() -> dict:
+    return _reg_mod._getHandlers()
+
+
 def getAllModules() -> list:
     return _reg_mod._getAllModules()
+
+
+def getBuiltInModules() -> list:
+    return _reg_mod._getBuiltInModules()
 
 
 def getLoadModules() -> dict:
@@ -363,6 +522,11 @@ def register_cmd_usage(cmd: str, args=None, usage=None):
                            "Gets the ID of an user")
     """
     _reg_cmd._register_cmd_usage(cmd, args, usage)
+    return
+
+
+def unregister_cmd(cmd: str):
+    _reg_cmd._unregister_cmd(cmd)
     return
 
 
