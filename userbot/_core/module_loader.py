@@ -39,6 +39,26 @@ class _ModuleLoader:
         # TODO:
         # self.__not_load_modules = getConfig("NOT_LOAD_MODULES", [])
 
+    def _start_language_processor(self):
+        """
+        Starts the bot's language processor
+        """
+        caller = getouterframes(currentframe(), 2)[2].filename
+        if not caller.endswith(os.path.join("userbot", "__main__.py")):
+            log.warning("Not a valid caller "
+                        f"(requested by {os.path.basename(caller)})")
+            return
+        try:
+            self.__imported_module = importlib.import_module(
+                "userbot.include.language_processor")
+        except KeyboardInterrupt:
+            raise KeyboardInterrupt
+        except (BaseException, Exception):
+            log.error("Failed to start the language processor", exc_info=True)
+        finally:
+            self.__imported_module = None
+        return
+
     def _import_module(self, module: str, is_usermodule: bool):
         """
         Import a module and straight start it
@@ -163,6 +183,11 @@ class _ModuleLoader:
 
 
 _moduleloader = _ModuleLoader()
+
+
+def start_language_processor():
+    _moduleloader._start_language_processor()
+    return
 
 
 def import_module(module: str, is_usermodule: bool):
