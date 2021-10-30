@@ -56,24 +56,27 @@ class _ModuleLoader:
                 break
         if not valid_caller:
             caller = getouterframes(currentframe(), 2)[2]
-            log.warning("Not a valid caller "
-                        f"({basename(caller.filename)}:{caller.lineno})")
+            caller = f"{os.path.basename(caller.filename)}:{caller.lineno}"
+            log.warning(f"Not a valid caller (requested by {caller})")
             return
 
         if module.startswith("__"):
             log.warning(f"Illegal module name '{module}'")
             return
 
+        path = f"userbot.modules_user.{module}" \
+               if is_usermodule else f"userbot.modules.{module}"
+        reinstall = False
+
         if is_usermodule:
             if module in getBuiltInModules():
                 log.warning(f"Module '{module}' present as "
                             "built-in module already")
                 return
+            if path in sys.modules or module in getAllModules():
+                self._unimport_module(module)
+                reinstall = True
 
-        path = f"userbot.modules_user.{module}" \
-               if is_usermodule else f"userbot.modules.{module}"
-
-        # TODO: check if module isn't imported already
         update_all_modules(module)
         if is_usermodule:
             update_user_modules(module)
@@ -83,6 +86,8 @@ class _ModuleLoader:
         try:
             self.__imported_module = importlib.import_module(path)
             update_load_modules(module, True)
+            if reinstall:
+                log.info(f"[REINSTALL] Module '{module}' imported")
         except KeyboardInterrupt:
             raise KeyboardInterrupt
         except (BaseException, Exception):
@@ -99,12 +104,20 @@ class _ModuleLoader:
         Tries to remove all data from the target module and finally to
         unimport it from runtime
         """
-        caller = getouterframes(currentframe(), 2)[2].filename
-        valid_caller = os.path.join("userbot", "modules",
-                                    "_package_manager.py")
-        if not caller.endswith(valid_caller):
-            log.warning("Not a valid caller "
-                        f"(requested by {os.path.basename(caller)})")
+        special_caller = [os.path.join("userbot", "_core",
+                                       os.path.basename(__file__)),
+                          os.path.join("userbot", "modules",
+                                       "_package_manager.py")]
+        sys_caller = getouterframes(currentframe(), 2)[2].filename
+        valid_caller = False
+        for caller in special_caller:
+            if sys_caller.endswith(caller):
+                valid_caller = True
+                break
+        if not valid_caller:
+            caller = getouterframes(currentframe(), 2)[2]
+            caller = f"{os.path.basename(caller.filename)}:{caller.lineno}"
+            log.warning(f"Not a valid caller (requested by {caller})")
             return
 
         if module.startswith("__"):
