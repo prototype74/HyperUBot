@@ -137,7 +137,7 @@ class EventHandler:
                     except:
                         curr_cmd = command
                     self.log.error(f"Command '{curr_cmd}' stopped due to an "
-                                   "unhandled exceptionin function "
+                                   "unhandled exception in function "
                                    f"'{function.__name__}'",
                                    exc_info=True if self.traceback else False)
                     try:  # in case editing messages isn't allowed (channels)
