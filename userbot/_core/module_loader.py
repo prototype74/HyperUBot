@@ -59,7 +59,9 @@ class _ModuleLoader:
             self.__imported_module = None
         return
 
-    def _import_module(self, module: str, is_usermodule: bool):
+    def _import_module(self, module: str,
+                       is_usermodule: bool,
+                       display_info: bool):
         """
         Import a module and straight start it
         """
@@ -86,7 +88,6 @@ class _ModuleLoader:
 
         path = f"userbot.modules_user.{module}" \
                if is_usermodule else f"userbot.modules.{module}"
-        reinstall = False
 
         if is_usermodule:
             if module in getBuiltInModules():
@@ -95,7 +96,6 @@ class _ModuleLoader:
                 return
             if path in sys.modules or module in getAllModules():
                 self._unimport_module(module)
-                reinstall = True
 
         update_all_modules(module)
         if is_usermodule:
@@ -109,8 +109,8 @@ class _ModuleLoader:
         try:
             self.__imported_module = importlib.import_module(path)
             update_load_modules(module, True)
-            if reinstall:
-                log.info(f"[REINSTALL] Module '{module}' imported")
+            if display_info:
+                log.info(f"Module '{module}' imported successfully")
         except KeyboardInterrupt:
             raise KeyboardInterrupt
         except (BaseException, Exception):
@@ -193,8 +193,8 @@ def start_language_processor():
     return
 
 
-def import_module(module: str, is_usermodule: bool):
-    _moduleloader._import_module(module, is_usermodule)
+def import_module(module: str, is_usermodule: bool, display_info: bool = True):
+    _moduleloader._import_module(module, is_usermodule, display_info)
     return
 
 def unimport_module(module: str):
