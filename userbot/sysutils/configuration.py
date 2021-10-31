@@ -75,7 +75,6 @@ class _SysConfigurations:
         """
         special_caller = [join("userbot", "modules", "_systools.py"),
                           join("userbot", "modules", "_updater.py"),
-                          join("userbot", "modules", "_package_manager.py"),
                           join("userbot", "modules", "sideloader.py")]
         module_caller = getouterframes(currentframe(), 2)[2].filename
         valid_caller = False
