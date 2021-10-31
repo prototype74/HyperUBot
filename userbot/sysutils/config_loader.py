@@ -242,7 +242,7 @@ class _ConfigLoader:
         valid_caller = os.path.join("userbot", "__init__.py")
         if not caller.endswith(valid_caller):
             log.warning("Not a valid caller "
-                        f"(requested by {os.path.basename(caller)}")
+                        f"(requested by {os.path.basename(caller)})")
             return
         self.__config_selector()
         if not self.__config_available():
