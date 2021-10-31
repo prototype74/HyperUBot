@@ -86,8 +86,8 @@ class _ModuleLoader:
             log.warning(f"Illegal module name '{module}'")
             return
 
-        path = f"userbot.modules_user.{module}" \
-               if is_usermodule else f"userbot.modules.{module}"
+        path = (f"userbot.modules_user.{module}"
+                if is_usermodule else f"userbot.modules.{module}")
 
         if is_usermodule:
             if module in getBuiltInModules():
@@ -197,7 +197,7 @@ def import_module(module: str, is_usermodule: bool, display_info: bool = True):
     _moduleloader._import_module(module, is_usermodule, display_info)
     return
 
+
 def unimport_module(module: str):
     _moduleloader._unimport_module(module)
     return
-
