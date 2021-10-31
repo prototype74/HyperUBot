@@ -7,6 +7,7 @@
 # compliance with the PE License
 
 from userbot import tgclient
+from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (getAllModules,
                                            getBuiltInModules,
                                            getHandlers,
@@ -36,8 +37,7 @@ class _ModuleLoader:
         Initialize the module loader
         """
         self.__imported_module = None
-        # TODO:
-        # self.__not_load_modules = getConfig("NOT_LOAD_MODULES", [])
+        self.__not_load_modules = getConfig("NOT_LOAD_MODULES", [])
 
     def _start_language_processor(self):
         """
@@ -102,6 +102,9 @@ class _ModuleLoader:
             update_user_modules(module)
         else:
             update_built_in_modules(module)
+
+        if module in self.__not_load_modules:
+            return
 
         try:
             self.__imported_module = importlib.import_module(path)
