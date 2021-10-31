@@ -7,12 +7,13 @@
 # compliance with the PE License
 
 from userbot import _setprop, SAFEMODE
+from userbot._core.module_loader import import_module, unimport_module
 from userbot.include.git_api import getLatestData
 from userbot.include.aux_funcs import sizeStrMaker
 from userbot.include.language_processor import (PackageManagerText as msgRep,
                                                 ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
-from userbot.sysutils.configuration import getConfig, setConfig
+from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.package_manager import _PackageManagerJSON
 from userbot.sysutils.registration import (getUserModules,
@@ -335,18 +336,12 @@ async def _list_pkgs(command: str) -> str:
     return text
 
 
-async def _rebooter(event):
-    if isWindows() or SAFEMODE or getConfig("PKG_DISABLE_AUTO_REBOOT"):
-        log.info("Manual reboot required to apply recent changes")
-        await event.client.send_message(event.chat_id, msgRep.REBOOT_INFO)
-    else:
-        msg = await event.client.send_message(event.chat_id, msgRep.REBOOT)
-        _setprop("reboot", True)
-        _setprop("rebootchatid", msg.chat_id)
-        _setprop("rebootmsgid", msg.id)
-        _setprop("rebootmsg", msgRep.REBOOT_DONE)
-        setConfig("REBOOT", True)
-        await event.client.disconnect()
+def ctrl_modules(modules: list, remove: bool):
+    for module in modules:
+        if remove:
+            unimport_module(module)
+        else:
+            import_module(module, True)
     return
 
 
@@ -503,6 +498,7 @@ async def _install_pkgs(event, command: str):
         return
     pkg_mod_sources = _pkg_list.get("module_sources", [])
     do_update_mod_list = False
+    installed_modules = []
     for queue in queued_mod_to_install:
         repo_author = queue.get("repo_author")
         repo_name = queue.get("repo_name")
@@ -537,6 +533,8 @@ async def _install_pkgs(event, command: str):
                 except:
                     pass
                 continue
+            if curr_module not in installed_modules:
+                installed_modules.append(curr_module)
             try:
                 # download was successful so update module source list
                 new_data = {"name": curr_module,
@@ -574,8 +572,8 @@ async def _install_pkgs(event, command: str):
     text += "\n"
     text += msgRep.INSTALLER_FINISHED
     await event.edit(text)
-    if do_update_mod_list:
-        await _rebooter(event)
+    if installed_modules:
+        ctrl_modules(installed_modules, False)
     return
 
 
@@ -597,6 +595,7 @@ async def _uninstall_pkgs(event, module_names: str):
     check_mark = u"\u2705"  # check mark emoji
     warning = u"\u26A0"  # warning emoji
     unkwn = u"\u2754"  # grey question mark emoji
+    uninstalled_modules = []
     for module in modules_from_arg:
         if module in user_modules:
             try:
@@ -610,6 +609,8 @@ async def _uninstall_pkgs(event, module_names: str):
                          f"{msgRep.UNINSTALL_FAILED.format(module)}\n")
                 await event.edit(text)
                 continue
+            if module not in uninstalled_modules:
+                uninstalled_modules.append(module)
             try:
                 # remove deleted module from module source list
                 for i, mod_source in enumerate(pkg_mod_sources):
@@ -639,8 +640,8 @@ async def _uninstall_pkgs(event, module_names: str):
     text += "\n"
     text += msgRep.UNINSTALLER_FINISHED
     await event.edit(text)
-    if do_update_mod_list:
-        await _rebooter(event)
+    if uninstalled_modules:
+        ctrl_modules(uninstalled_modules, True)
     return
 
 
