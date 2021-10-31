@@ -31,13 +31,13 @@ def init_load_modules():
            not os.path.basename(module).startswith("__") and \
            module.endswith(".py"):
             filename = os.path.basename(module)[:-3]
-            import_module(filename, False)
+            import_module(filename, False, False)
     for module in user_modules_path:
         if os.path.isfile(module) and \
            not os.path.basename(module).startswith("__") and \
            module.endswith(".py"):
             filename = os.path.basename(module)[:-3]
-            import_module(filename, True)
+            import_module(filename, True, False)
     return
 
 
