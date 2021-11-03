@@ -147,6 +147,9 @@ class _ModuleLoader:
             log.warning(f"Illegal module name '{module}'")
             return
 
+        if module not in getAllModules():
+            return
+
         if module not in getUserModules():
             log.error(f"Target module '{module}' is not an user module!")
             return
