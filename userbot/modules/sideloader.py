@@ -6,21 +6,22 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import _setprop
 from userbot.include.aux_funcs import event_log
 from userbot.include.language_processor import (SideloaderText as msgRep,
                                                 ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
-from userbot.sysutils.configuration import getConfig, setConfig
+from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
-from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
 from logging import getLogger
 import json
 import os
+
+if getConfig("SIDELOAD_NO_REBOOT"):
+    from userbot._core.module_loader import import_module
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
@@ -116,17 +117,11 @@ async def sideload(event):
         if getConfig("LOGGING"):
             await event_log(event, "SIDELOAD",
                             custom_text=msgRep.LOG.format(file.name))
-        if isWindows():
-            log.info("Manual reboot required to load sideloaded module")
-            await event.edit(msgRep.REBOOT_WIN)
-        else:
-            _setprop("reboot", True)
-            _setprop("rebootchatid", event.chat_id)
-            _setprop("rebootmsgid", event.message.id)
-            _setprop("rebootmsg", msgRep.RBT_CPLT)
-            setConfig("REBOOT", True)
+        if getConfig("SIDELOAD_NO_REBOOT"):
             await event.edit(msgRep.SUCCESS.format(file.name))
-            await event.client.disconnect()
+            import_module(file.name[:-3], True)
+        else:
+            await event.edit(msgRep.REBOOT_INFO)
     else:
         await event.edit(msgRep.INVALID_FILE)
     return
