@@ -532,6 +532,7 @@ async def _install_pkgs(event, command: str):
                 except:
                     pass
                 continue
+            log.info(f"[INSTALL] Module '{curr_module}' has been installed")
             if curr_module not in installed_modules:
                 installed_modules.append(curr_module)
             try:
