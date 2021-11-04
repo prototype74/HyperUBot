@@ -99,9 +99,10 @@ async def sideload(event):
             await event.edit(msgRep.NOT_PY_FILE)
             return
         dest_path = os.path.join(USER_MODULES_DIR, file.name)
+        file_name = file.name[:-3]
         await event.edit(msgRep.DLOADING)
         if os.path.isfile(dest_path) and OVR_WRT_CAUT:
-            log.info(f"Module '{file.name[:-3]}' installed already")
+            log.info(f"Module '{file_name}' installed already")
             await event.edit(msgRep.MODULE_EXISTS.format(file.name))
             return
         await event.client.download_media(message=msg, file=dest_path)
@@ -112,14 +113,14 @@ async def sideload(event):
             except:
                 pass
             return
-        _update_module_source(file.name[:-3])
-        log.info(f"Module '{file.name[:-3]}' has been installed to userpace")
+        _update_module_source(file_name)
+        log.info(f"Module '{file_name}' has been installed to userpace")
         if getConfig("LOGGING"):
             await event_log(event, "SIDELOAD",
                             custom_text=msgRep.LOG.format(file.name))
         if getConfig("SIDELOAD_NO_REBOOT"):
             await event.edit(msgRep.SUCCESS.format(file.name))
-            import_module(file.name[:-3], True)
+            import_module(file_name, True)
         else:
             await event.edit(msgRep.REBOOT_INFO)
     else:
