@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import _setprop, SAFEMODE
+from userbot import SAFEMODE
 from userbot._core.module_loader import import_module, unimport_module
 from userbot.include.git_api import getLatestData
 from userbot.include.aux_funcs import sizeStrMaker
@@ -21,7 +21,6 @@ from userbot.sysutils.registration import (getUserModules,
                                            register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
-from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
 from telethon.errors import MessageTooLongError
 from datetime import datetime, timedelta
