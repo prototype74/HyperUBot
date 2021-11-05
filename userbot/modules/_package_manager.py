@@ -237,7 +237,7 @@ async def _list_pkgs(command: str) -> str:
                             if not mod_not_running:
                                 mod_not_running = True
                             break
-                text += f"- {module}{info}\n"
+                text += f"- `{module}`{info}\n"
         else:
             text += f"__{msgRep.NO_MODULES_INSTALLED}__\n"
         text += "\n"
@@ -302,7 +302,7 @@ async def _list_pkgs(command: str) -> str:
                                             if not equal_module:
                                                 equal_module = True
                                             break
-                    text += f"- {module_name} ({module_size}){info}\n"
+                    text += f"- `{module_name}` ({module_size}){info}\n"
             else:
                 text += f"__{msgRep.REPO_NO_MODULES}__\n"
             text += "\n"
