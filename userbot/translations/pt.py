@@ -582,9 +582,6 @@ class PackageManagerText(object):  # translation needed
     EQUAL_NAME = "Equal name"
     NEVER = "Never"
     LAST_UPDATED = "Last updated"
-    REBOOT_INFO = "Please reboot HyperUBot now to apply the recent changes"
-    REBOOT = "Rebooting..."
-    REBOOT_DONE = "Reboot complete!"
     INSTALL_EMPTY = "No module names given to install"
     PACKAGE_INSTALLER = "Package installer"
     NO_REPO_URL = "No repo URL given to install from!"
@@ -658,11 +655,10 @@ class SideloaderText(object):
     MODULE_EXISTS = ("Já existe um módulo de utilizador chamado `{}`. "
                      "Se desejares prosseguir assim mesmo, por favor "
                      "executa o comando com o argumento `force` !")
-    SUCCESS = "Instalado `{}` com sucesso! A reiniciar..."
+    SUCCESS = "Instalado `{}` com sucesso!"
     LOG = "O módulo `{}` foi carregado sideload com sucesso!"
     # translation needed
-    REBOOT_WIN = "Please reboot HyperUBot now to load the sideloaded module"
-    RBT_CPLT = "Reinicio completo!"
+    REBOOT_INFO = "Please reboot HyperUBot now to load the sideloaded module"
     INVALID_FILE = "Por favor responde a um ficheiro válido!"
 
 

@@ -561,9 +561,6 @@ class PackageManagerText(object):
     EQUAL_NAME = "Equal name"
     NEVER = "Never"
     LAST_UPDATED = "Last updated"
-    REBOOT_INFO = "Please reboot HyperUBot now to apply the recent changes"
-    REBOOT = "Rebooting..."
-    REBOOT_DONE = "Reboot complete!"
     INSTALL_EMPTY = "No module names given to install"
     PACKAGE_INSTALLER = "Package installer"
     NO_REPO_URL = "No repo URL given to install from!"
@@ -634,10 +631,9 @@ class SideloaderText(object):
     MODULE_EXISTS = ("There is already a userspace module named `{}`. "
                      "If you wish to overwrite this, please run the "
                      "command with the `force` argument!")
-    SUCCESS = "Successfully installed `{}`! Rebooting..."
+    SUCCESS = "Successfully installed `{}`!"
     LOG = "The module `{}` was sideloaded successfully!"
-    REBOOT_WIN = "Please reboot HyperUBot now to load the sideloaded module"
-    RBT_CPLT = "Reboot complete!"
+    REBOOT_INFO = "Please reboot HyperUBot now to load the sideloaded module"
     INVALID_FILE = "Please reply to a valid file!"
 
 

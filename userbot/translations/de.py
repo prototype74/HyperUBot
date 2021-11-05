@@ -593,10 +593,6 @@ class PackageManagerText(object):
     EQUAL_NAME = "Gleicher Name"
     NEVER = "Nie"
     LAST_UPDATED = "Zuletzt aktualisiert"
-    REBOOT_INFO = ("Bitte starten Sie HyperUBot jetzt neu, "
-                   "um die kürzlichen Änderungen zu übernehmen")
-    REBOOT = "Wird neugestartet..."
-    REBOOT_DONE = "Neustart abgeschlossen!"
     INSTALL_EMPTY = "Keine Modulnamen für die Installation gegeben"
     PACKAGE_INSTALLER = "Paketen-Installer"
     NO_REPO_URL = "Keine Repository-URL für die Installation gegeben!"
@@ -672,11 +668,10 @@ class SideloaderText(object):
                      "vorhanden. Bitte führe diesen Befehl mit dem "
                      "Argument `force` aus, wenn Sie sie überschreiben "
                      "möchten!")
-    SUCCESS = "`{}` erfolgreich installiert! Wird neugestartet..."
+    SUCCESS = "`{}` wurde erfolgreich installiert!"
     LOG = "Das Modul `{}` wurde erfolgrech aus dem Sideload installiert!"
-    REBOOT_WIN = ("Bitte starte HyperUBot jetzt neu, um das geladene "
-                  "Sideload-Modul zu starten")
-    RBT_CPLT = "Neustart abgeschlossen!"
+    REBOOT_INFO = ("Bitte starte HyperUBot jetzt neu, um das geladene "
+                   "Sideload-Modul zu starten")
     INVALID_FILE = "Bitte antworte auf eine gültige Datei!"
 
 

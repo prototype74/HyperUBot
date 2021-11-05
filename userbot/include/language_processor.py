@@ -1144,12 +1144,6 @@ class PackageManagerText(object):
         lang, _getframe().f_code.co_name, "NEVER")
     LAST_UPDATED = getLangString(
         lang, _getframe().f_code.co_name, "LAST_UPDATED")
-    REBOOT_INFO = getLangString(
-        lang, _getframe().f_code.co_name, "REBOOT_INFO")
-    REBOOT = getLangString(
-        lang, _getframe().f_code.co_name, "REBOOT")
-    REBOOT_DONE = getLangString(
-        lang, _getframe().f_code.co_name, "REBOOT_DONE")
     INSTALL_EMPTY = getLangString(
         lang, _getframe().f_code.co_name, "INSTALL_EMPTY")
     PACKAGE_INSTALLER = getLangString(
@@ -1274,10 +1268,8 @@ class SideloaderText(object):
         lang, _getframe().f_code.co_name, "SUCCESS")
     LOG = getLangString(
         lang, _getframe().f_code.co_name, "LOG")
-    REBOOT_WIN = getLangString(
-        lang, _getframe().f_code.co_name, "REBOOT_WIN")
-    RBT_CPLT = getLangString(
-        lang, _getframe().f_code.co_name, "RBT_CPLT")
+    REBOOT_INFO = getLangString(
+        lang, _getframe().f_code.co_name, "REBOOT_INFO")
     INVALID_FILE = getLangString(
         lang, _getframe().f_code.co_name, "INVALID_FILE")
 
