@@ -62,12 +62,6 @@ class ConfigClass(object):
     PKG_ENABLE_AUTO_UPDATE = False
 
     #
-    # Don't reboot automatically if new user modules are installed
-    # or uninstalled
-    #
-    PKG_DISABLE_AUTO_REBOOT = False
-
-    #
     # How many times the client should try to reconnect to the
     # Telegram servers. -1 means infinity tries. Integer only.
     #
@@ -78,3 +72,9 @@ class ConfigClass(object):
     # Integer or float.
     #
     CLIENT_RETRY_DELAY = 1
+
+    #
+    # Start the sideloaded module right after it's
+    # installed which does not prompt a reboot
+    #
+    SIDELOAD_NO_REBOOT = False
