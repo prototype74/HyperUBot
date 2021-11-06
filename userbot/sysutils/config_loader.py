@@ -89,8 +89,6 @@ class _ConfigLoader:
                             except:
                                 pass
                         addConfig(key, value)
-        if getConfig("SAMPLE_CONFIG", None):
-            log.warning("Please remove SAMPLE_CONFIG from config.env!")
         if is_safemode:
             addConfig("UBOT_LANG", loaded_env.get("UBOT_LANG", "en"))
         os.environ["API_KEY"] = "0"

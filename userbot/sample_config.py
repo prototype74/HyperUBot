@@ -6,17 +6,6 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import log
-from os.path import basename
-
-if basename(__file__).startswith("config") or \
-   basename(__file__).startswith("sample_config"):
-    log.error("Please do not just use this sample config as "
-              "your main config. Create a new config.py in the same "
-              "directory with a proper ConfigClass.")
-    quit(1)
-
-
 class ConfigClass(object):
     # Optional configurations
     #
