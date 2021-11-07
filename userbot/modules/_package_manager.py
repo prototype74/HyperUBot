@@ -231,12 +231,11 @@ async def _list_pkgs(command: str) -> str:
                     if not installed_not_loaded:
                         installed_not_loaded = True
                 else:
-                    for mod, isrun in loaded_modules.items():
-                        if module == mod and not isrun:
-                            info += f" {warning}"
-                            if not mod_not_running:
-                                mod_not_running = True
-                            break
+                    isrun = loaded_modules.get(module)
+                    if not isrun:
+                        info += f" {warning}"
+                        if not mod_not_running:
+                            mod_not_running = True
                 text += f"- `{module}`{info}\n"
         else:
             text += f"__{msgRep.NO_MODULES_INSTALLED}__\n"

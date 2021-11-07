@@ -56,7 +56,7 @@ class _SysConfigurations:
         if config in self.__protect_configs:
             raise AccessError(f"Access to '{config}' denied "
                               f"(requested by {basename(sys_caller)})")
-        if config not in self.__botconfigs.keys():
+        if config not in self.__botconfigs:
             self.__botconfigs[config] = value
         return
 
@@ -89,7 +89,7 @@ class _SysConfigurations:
                join("userbot", "modules", "_updater.py")):
             raise AccessError(f"Access to '{config}' denied "
                               f"(requested by {basename(module_caller)})")
-        if config in self.__botconfigs.keys():
+        if config in self.__botconfigs:
             self.__botconfigs[config] = value
         return
 
@@ -115,10 +115,8 @@ class _SysConfigurations:
         if config in self.__protect_configs:
             raise AccessError(f"Access to '{config}' denied "
                               f"(requested by {basename(module_caller)})")
-        if config in self.__botconfigs.keys():
-            for key, value in self.__botconfigs.items():
-                if config == key:
-                    return value
+        if config in self.__botconfigs:
+            return self.__botconfigs.get(config)
         return default
 
 _sysconfigs = _SysConfigurations()

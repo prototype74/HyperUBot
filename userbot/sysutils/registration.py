@@ -75,7 +75,7 @@ class _RegisterModules:
                 except KeyError:
                     pass
         else:
-            if name_of_module not in self.__load_modules.keys():
+            if name_of_module not in self.__load_modules:
                 self.__load_modules[name_of_module] = is_running
         return
 
@@ -94,18 +94,17 @@ class _RegisterModules:
             log.warning("Not a valid caller "
                         f"({basename(caller.filename)}:{caller.lineno})")
         if remove:
-            if name_of_module in self.__handlers.keys():
+            if name_of_module in self.__handlers:
                 try:
                     self.__handlers.pop(name_of_module)
                 except KeyError:
                     pass
             return
-        if name_of_module in self.__handlers.keys():
-            for module, handlers in self.__handlers.items():
-                if name_of_module == module and handler not in handlers:
-                    handlers.append(handler)
-                    self.__handlers[module] = handlers
-                    break
+        if name_of_module in self.__handlers:
+            handlers = self.__handlers.get(name_of_module)
+            if handler not in handlers:
+                handlers.append(handler)
+                self.__handlers[name_of_module] = handlers
         else:
             self.__handlers[name_of_module] = [handler]
         return
@@ -135,7 +134,7 @@ class _RegisterModules:
                         f"Module description for '{caller}' not registered")
             return
 
-        if caller not in self.__module_desc.keys():
+        if caller not in self.__module_desc:
             self.__module_desc[caller] = description
         else:
             log.warning(f"Module description for '{caller}' "
@@ -161,7 +160,7 @@ class _RegisterModules:
                         f"Module info for '{caller}' not registered")
             return
 
-        if caller not in self.__module_info.keys():
+        if caller not in self.__module_info:
             self.__module_info[caller] = {"name": name, "authors": authors,
                                           "version": version}
         else:
@@ -281,7 +280,7 @@ class _RegisterCMD:
                         f"({basename(caller.filename)}:{caller.lineno})")
             return False
         module_name = basename(getfile(func)[:-3])
-        if cmd not in self.__registered_cmds.keys():
+        if cmd not in self.__registered_cmds:
             for key, value in self.__registered_cmds.items():
                 val = value.get("alt_cmd")
                 loc = value.get("module_name")
@@ -349,7 +348,7 @@ class _RegisterCMD:
                         "Instance should be type of str. "
                         f"CMD usage of '{cmd}' not registered ({caller})")
             return
-        if cmd in self.__registered_cmds.keys():
+        if cmd in self.__registered_cmds:
             val = self.__registered_cmds.get(cmd)
             if val.get("success"):
                 log.warning(f"Register usage of command '{cmd}' is "

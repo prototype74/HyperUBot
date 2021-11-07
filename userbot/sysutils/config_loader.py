@@ -205,7 +205,7 @@ class _ConfigLoader:
                 while True:
                     inp = input(f"Your input [1-{arr_size}] "
                                 "(or 'X' to skip): ")
-                    if inp in temp_dict.keys():
+                    if inp in temp_dict:
                         for key, value in temp_dict.items():
                             if inp == key:
                                 self.__curr_config = value

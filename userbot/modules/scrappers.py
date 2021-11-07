@@ -42,7 +42,7 @@ DEST_LANG = getBotLangCode()
 
 def build_supported_langs():
     ret_val = ""
-    for i in LANGUAGES.keys():
+    for i in LANGUAGES:
         ret_val += "`{}`: {}\n".format(i, LANGUAGES[i])
     return ret_val
 
@@ -61,7 +61,7 @@ async def set_lang(event):
         await event.edit(msgRep.MULT_ARGS)
         return
     args = args[0]
-    if args not in LANGUAGES.keys():
+    if args not in LANGUAGES:
         await event.edit(msgRep.INV_CT_CODE.format(build_supported_langs()))
         return
     DEST_LANG = args

@@ -122,7 +122,7 @@ async def memberinfo(event):
         admin_rights = member_info.admin_rights
         for right in vars(admin_rights):
             if getattr(admin_rights, right) is True:
-                if str(right) in admin_permissions.keys():
+                if str(right) in admin_permissions:
                     admin_permissions[str(right)] = check_mark
         change_info = admin_permissions.get("change_info")
         delete_messages = admin_permissions.get("delete_messages")
@@ -143,7 +143,7 @@ async def memberinfo(event):
         is_admin = True
         for right in vars(admin_rights):
             if getattr(admin_rights, right) is True:
-                if str(right) in admin_permissions.keys():
+                if str(right) in admin_permissions:
                     admin_permissions[str(right)] = check_mark
                 # these attributes are for channels, so we don't need them
                 if not str(right) in ["post_messages", "edit_messages",
@@ -188,14 +188,14 @@ async def memberinfo(event):
         for right in vars(default_chat_permissions):
             # False means perm not restricted
             if getattr(default_chat_permissions, right) is False:
-                if str(right) in member_permissions.keys():
+                if str(right) in member_permissions:
                     if not am_i_admeme and not member_is_self:
                         # Can't access member's non-default permission
                         member_permissions[str(right)] = warning
                     else:
                         member_permissions[str(right)] = check_mark
             else:
-                if str(right) in member_permissions.keys():
+                if str(right) in member_permissions:
                     member_permissions[str(right)] = negative_cross
         send_messages = member_permissions.get("send_messages")
         send_media = member_permissions.get("send_media")
@@ -249,12 +249,12 @@ async def memberinfo(event):
         for key, key2 in zip(default_perms_dict, member_perms_dict):
             if (default_perms_dict.get(str(key)) is False and
                     member_perms_dict.get(str(key2)) is False):
-                if str(key2) in member_permissions.keys():
+                if str(key2) in member_permissions:
                     member_permissions[str(key2)] = check_mark
             elif (default_perms_dict.get(str(key)) is True and
                   member_perms_dict.get(str(key2)) is True):
                 # default chat restriction
-                if str(key2) in member_permissions.keys():
+                if str(key2) in member_permissions:
                     member_permissions[str(key2)] = negative_cross
 
         send_messages = member_permissions.get("send_messages")

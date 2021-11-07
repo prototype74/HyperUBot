@@ -135,7 +135,7 @@ class _FeatureManager:
         reg_cmds = getRegisteredCMDs()
         disabled_features = dict(sorted(self.__disabled_features.items()))
         for key, val in disabled_features.items():
-            if key in reg_cmds.keys() or val in reg_cmds.values():
+            if key in reg_cmds or val in reg_cmds.values():
                 feature = f"- {key} ({val})\n" if val else f"- {key}\n"
                 df_list += feature
         return df_list

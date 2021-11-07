@@ -93,7 +93,7 @@ def update_list() -> list:
     modules_list = []
     for module, isRunning in getLoadModules().items():
         if not module == basename(__file__)[:-3]:  # exclude this module
-            if module in getModuleInfo().keys():
+            if module in getModuleInfo():
                 # Append [Name of module, filename of module, running] -> []
                 modules_list.append(
                     [getModuleInfo().get(module, {}).get("name",
@@ -194,8 +194,8 @@ def modules_listing(error_text: str = None) -> str:
 
 
 def module_desc(name_of_module: str, module: str) -> str:
-    if module in getLoadModules().keys():
-        if module in getModuleDesc().keys():
+    if module in getLoadModules():
+        if module in getModuleDesc():
             return (msgRep.NAME_MODULE.format(name_of_module) +
                     "\n\n" + getModuleDesc().get(module))
         else:
@@ -206,7 +206,7 @@ def module_desc(name_of_module: str, module: str) -> str:
 
 
 def module_info(name_of_module: str, module: str) -> str:
-    if module in getLoadModules().keys():
+    if module in getLoadModules():
         package_name, moduletype, installation_date = (msgRep.UNKNOWN,)*3
         size = 0
         authors = getModuleInfo().get(module, {}).get("authors",
@@ -246,7 +246,7 @@ def module_info(name_of_module: str, module: str) -> str:
 
 
 def module_usage(name_of_module: str, module: str) -> str:
-    if module in getLoadModules().keys():
+    if module in getLoadModules():
         usage = msgRep.NAME_MODULE.format(name_of_module) + "\n\n"
         cmds_usage_registered = False
         for cmd, value in getRegisteredCMDs().items():
