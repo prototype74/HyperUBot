@@ -30,21 +30,21 @@ def getBotLangCode() -> str:
         the bot language code e.g. 'en'
     """
     ubot_lang = getConfig("UBOT_LANG", "en")
-    if not ubot_lang:
+    if not ubot_lang or not isinstance(ubot_lang, str):
         ubot_lang = "en"
     return ubot_lang
 
+__botlangcode__ = getBotLangCode()
+__botlangname__ = "Unknown"
+
 try:
-    lang = import_module("userbot.translations." + getBotLangCode())
-    log.info("Loading {} language".format(lang.NAME
-                                          if hasattr(lang, "NAME") else
-                                          "Unknown"))
+    lang = import_module("userbot.translations." + __botlangcode__)
 except ModuleNotFoundError:  # Language file not found
-    if not getBotLangCode() == "en":
-        log.warning("'{}' language file not found. Make sure it exists! "
-                    "Should have the same name as the UBOT_LANG config in "
-                    "your config file. Attempting to load default "
-                    "language...".format(getBotLangCode()))
+    if not __botlangcode__ == "en":
+        log.warning(f"'{__botlangcode__}' language file not found. Make sure "
+                    "it exists! Should have the same name as the UBOT_LANG "
+                    "config in your config file. Attempting to load default "
+                    "language...")
         try:
             lang = import_module("userbot.translations.en")
         except ModuleNotFoundError:
@@ -58,10 +58,10 @@ except ModuleNotFoundError:  # Language file not found
         log.error("Default language file not found, bot quitting!")
         quit(1)
 except:  # Unhandled exception in language file
-    if not getBotLangCode() == "en":
-        log.warning("There was a problem loading the '{}' language file. "
-                    "Attempting to load default "
-                    "language...".format(getBotLangCode()), exc_info=True)
+    if not __botlangcode__ == "en":
+        log.warning(f"There was a problem loading the '{__botlangcode__}' "
+                    "language file. Attempting to load default "
+                    "language...", exc_info=True)
         try:
             lang = import_module("userbot.translations.en")
         except ModuleNotFoundError:
@@ -75,6 +75,10 @@ except:  # Unhandled exception in language file
         log.error("Unable to load default language file, bot quitting!",
                   exc_info=True)
         quit(1)
+
+if hasattr(lang, "NAME"):
+    __botlangname__ = lang.NAME
+log.info(f"Loading {__botlangname__} language")
 
 try:
     if lang.__name__ == "userbot.translations.en":
@@ -99,20 +103,17 @@ def getLangString(obj: object, name_of_class: str, attribute: str) -> str:
             try:
                 class_name = getattr(obj, name_of_class)
             except AttributeError:
-                log.error("Class '{}' not found in default "
-                          "language resource".format(name_of_class),
-                          exc_info=True)
+                log.error(f"Class '{name_of_class}' not found in default "
+                          "language resource", exc_info=True)
                 quit(1)
             return getattr(class_name, attribute)
         except AttributeError:
-            log.error("Attribute '{}' not found in class '{}' of "
-                      "default language resource".format(attribute,
-                                                         name_of_class),
+            log.error(f"Attribute '{attribute}' not found in class "
+                      f"'{name_of_class}' of default language resource",
                       exc_info=True)
             quit(1)
         except Exception as e:
-            log.error("Unable to load language string: {}".format(e),
-                      exc_info=True)
+            log.error(f"Unable to load language string: {e}", exc_info=True)
             quit(1)
     else:
         try:
@@ -122,34 +123,24 @@ def getLangString(obj: object, name_of_class: str, attribute: str) -> str:
             try:
                 class_name = getattr(dlang, name_of_class)
             except:
-                log.error("Class '{}' not found in {} and default "
-                          "language resources".format(
-                              name_of_class,
-                              lang.NAME if hasattr(lang, "NAME") else
-                              "Unknown"),
+                log.error(f"Class '{name_of_class}' not found in "
+                          f"{__botlangname__} and default language resources",
                           exc_info=True)
                 quit(1)
             try:
                 def_attr = getattr(class_name, attribute)
-                log.warning("Attribute '{}' not found in class '{}' of {} "
-                            "language resource or class doesn't exist. "
-                            "Using default attribute".format(
-                                attribute, name_of_class,
-                                lang.NAME if hasattr(lang, "NAME") else
-                                "Unknown"))
+                log.warning(f"Attribute '{attribute}' not found in class "
+                            f"'{name_of_class}' of {__botlangname__} language "
+                            "resource or class doesn't exist. Using default "
+                            "attribute")
                 return def_attr
             except AttributeError:
-                log.error("Attribute '{}' not found in classes '{}' of "
-                          "{} and default language "
-                          "resources".format(
-                              attribute, name_of_class,
-                              lang.NAME if hasattr(lang, "NAME") else
-                              "Unknown"),
-                          exc_info=True)
+                log.error(f"Attribute '{attribute}' not found in classes "
+                          f"'{name_of_class}' of {__botlangname__} and "
+                          "default language resources", exc_info=True)
                 quit(1)
         except Exception as e:
-            log.error("Unable to load language string: {}".format(e),
-                      exc_info=True)
+            log.error("Unable to load language string: {e}", exc_info=True)
             quit(1)
 
 
@@ -1396,19 +1387,21 @@ class ModuleUsages(object):
 
 def getBotLang() -> str:
     """
-    Get the current bot language if language pack has 'NAME' attribute
+    Get the current bot language name
 
     Example:
         from userbot.include.language_processor import getBotLang
 
-        print(f"Current bot language is '{getBotLangCode()}'")
+        print(f"Current bot language is '{getBotLang()}'")
 
     Returns:
         the bot language e.g. 'English' else 'Unknown'
     """
-    return "{}".format(
-        lang.NAME if hasattr(lang, "NAME") else GeneralMessages.UNKNOWN)
+    language_name = __botlangname__
+    if language_name == "Unknown":
+        language_name = GeneralMessages.UNKNOWN
+    return language_name
 
-
+del lang, dlang  # clean up
 log.info("{} language loaded successfully".format(
     getBotLang().replace(GeneralMessages.UNKNOWN, "Unknown")))
