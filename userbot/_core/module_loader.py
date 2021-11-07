@@ -53,8 +53,16 @@ class _ModuleLoader:
                 "userbot.include.language_processor")
         except KeyboardInterrupt:
             raise KeyboardInterrupt
+        except ModuleNotFoundError:
+            log.critical("Unable to find the language processor",
+                         exc_info=True)
+            raise
+        except SystemExit:
+            raise
         except (BaseException, Exception):
-            log.error("Failed to start the language processor", exc_info=True)
+            log.critical("Failed to start the language processor "
+                         "due to an unhandled exception", exc_info=True)
+            raise
         finally:
             self.__imported_module = None
         return

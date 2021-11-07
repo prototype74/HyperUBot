@@ -305,7 +305,13 @@ def check_reboot():
 
 
 def main():
-    start_language_processor()
+    try:
+        start_language_processor()
+    except SystemExit:
+        log.error("Language processor stopped the process")
+        return
+    except (ModuleNotFoundError, BaseException, Exception):
+        return
     start_modules()
     log.info("HyperUBot is going online")
     run_client()
