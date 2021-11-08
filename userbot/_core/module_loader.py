@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import tgclient
+from userbot import _tgclient
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (getAllModules,
                                            getBuiltInModules,
@@ -165,7 +165,7 @@ class _ModuleLoader:
         handlers_from_module = getHandlers().get(module)
         if handlers_from_module:
             for handler in handlers_from_module:
-                tgclient.remove_event_handler(handler)
+                _tgclient.remove_event_handler(handler)
             log.info(f"Event handlers from '{module}' removed")
         else:
             log.info(f"Module '{module}' has no registered event handlers")

@@ -10,7 +10,7 @@ from .feature_manager import _is_active
 from .registration import pre_register_cmd, update_handlers
 from inspect import currentframe, getouterframes
 from os.path import basename
-from userbot import tgclient
+from userbot import _tgclient
 from userbot.include.language_processor import SystemUtilitiesText as msgResp
 from telethon.events import ChatAction, MessageEdited, NewMessage
 from logging import getLogger, Logger
@@ -154,14 +154,10 @@ class EventHandler:
                              if hasArgs else fr"^\.{command}$")
             try:
                 if not ignore_edits:
-                    tgclient.add_event_handler(func_callback,
-                                               MessageEdited(pattern=cmd_regex,
-                                                             *args,
-                                                             **kwargs))
-                tgclient.add_event_handler(func_callback,
-                                           NewMessage(pattern=cmd_regex,
-                                                      *args,
-                                                      **kwargs))
+                    _tgclient.add_event_handler(func_callback, MessageEdited(
+                        pattern=cmd_regex, *args, **kwargs))
+                _tgclient.add_event_handler(func_callback, NewMessage(
+                    pattern=cmd_regex, *args, **kwargs))
                 update_handlers(caller_name, func_callback)
             except Exception as e:
                 self.log.error(f"Failed to add command '{command}' to client "
@@ -231,8 +227,8 @@ class EventHandler:
                                    "due to an unhandled exception",
                                    exc_info=True if self.traceback else False)
             try:
-                tgclient.add_event_handler(func_callback,
-                                           ChatAction(*args, **kwargs))
+                _tgclient.add_event_handler(func_callback,
+                                            ChatAction(*args, **kwargs))
                 update_handlers(caller_name, func_callback)
             except Exception as e:
                 self.log.error(f"Failed to add a chat action feature to "
@@ -352,15 +348,15 @@ class EventHandler:
             try:
                 if isinstance(events, (list, tuple)):
                     for event in events:
-                        tgclient.add_event_handler(func_callback,
-                                                   event(pattern=pattern,
-                                                         *args,
-                                                         **kwargs))
+                        _tgclient.add_event_handler(func_callback,
+                                                    event(pattern=pattern,
+                                                          *args,
+                                                          **kwargs))
                 else:
-                    tgclient.add_event_handler(func_callback,
-                                               events(pattern=pattern,
-                                                      *args,
-                                                      **kwargs))
+                    _tgclient.add_event_handler(func_callback,
+                                                events(pattern=pattern,
+                                                       *args,
+                                                       **kwargs))
                 update_handlers(caller_name, func_callback)
             except Exception as e:
                 self.log.error(f"Failed to add command/feature '{name}' "

@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import (tgclient, log, __hyper_logger__, _services,
+from userbot import (_tgclient, log, __hyper_logger__, _services,
                      _getprop, _setprop, PROJECT, SAFEMODE)
 from userbot._core.module_loader import import_module, start_language_processor
 from userbot.sysutils.configuration import getConfig
@@ -168,17 +168,17 @@ async def send_welcome_msg(client, ownerID: int):
 def run_client():
     try:
         log.info("Starting Telegram client")
-        with tgclient:
-            me = tgclient.loop.run_until_complete(tgclient.get_me())
+        with _tgclient:
+            me = _tgclient.loop.run_until_complete(_tgclient.get_me())
             log.info(f"You're running {PROJECT} v{VERSION} as "
                      f"{me.first_name} (ID: {me.id})")
             if not _getprop("setupcompleted"):
-                tgclient.loop.run_until_complete(
-                    send_welcome_msg(tgclient, me.id))
+                _tgclient.loop.run_until_complete(
+                    send_welcome_msg(_tgclient, me.id))
                 _setprop("setupcompleted", True)
-            tgclient.loop.run_until_complete(
-                check_last_reboot(tgclient))
-            tgclient.run_until_disconnected()
+            _tgclient.loop.run_until_complete(
+                check_last_reboot(_tgclient))
+            _tgclient.run_until_disconnected()
     except ApiIdInvalidError as ae:
         log.critical(f"App api_id and/or App api_hash is/are invalid: {ae}",
                      exc_info=True)
