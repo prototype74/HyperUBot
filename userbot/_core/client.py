@@ -23,14 +23,26 @@ class HyperClient(TelegramClient):
         super().__init__(*args, **kwargs)
 
     def __getattribute__(self, attr):
-        """
-        Filter unwanted requests from the userbot. HyperUBot doesn't need
-        these attributes in any way from the client after initialization.
-        So if a program or module calls them after initialization then it
-        could be for bad purposes. So block the access to these attributes.
-        """
-        if attr in ("session", "api_id", "api_hash", "_init_request",
-                    "_sender"):
+        if attr == "on":
+            mod_pys = tuple(glob.glob(os.path.join("userbot", "modules*",
+                                                   "*.py")))
+            caller = getouterframes(currentframe(), 2)[1]
+            c_name = caller.filename
+            c_line = caller.lineno
+            if c_name.endswith(mod_pys):
+                log.warning("Default event listener from telethon "
+                            "(client.on()) should no longer be used. Consider "
+                            "using the EventHandler from sysutils instead "
+                            "(requested by "
+                            f"{os.path.basename(c_name)}:{c_line})")
+                return None
+        elif attr in ("session", "api_id", "api_hash", "_init_request",
+                      "_sender"):
+            # Filter unwanted requests from the userbot. HyperUBot doesn't
+            # need these attributes in any way from the client after
+            # initialization. So if a program or module calls them after
+            # initialization then it could be for bad purposes. So block the
+            # access to these attributes.
             all_pys = tuple(glob.glob(os.path.join("userbot", "*.py")) +
                             glob.glob(os.path.join("userbot", "*", "*.py")))
             caller = getouterframes(currentframe(), 2)[1]
