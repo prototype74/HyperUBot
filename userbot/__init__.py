@@ -26,14 +26,14 @@ if len(argv) >= 2:
     if argv[1].lower() == "-safemode":
         SAFEMODE = True
 
-from telethon import version  # noqa: E402
+from telethon import version as tl_version  # noqa: E402
 from userbot.sysutils.sys_funcs import isWindows, verAsTuple  # noqa: E402
 
 # Check Telethon version
-if verAsTuple(version.__version__) < (1, 23, 0):
+if verAsTuple(tl_version.__version__) < (1, 23, 0):
     print(setColorText("HyperUBot requires at least Telethon version 1.23.0! "
                        "Please update Telethon to v1.23.0 or newer "
-                       f"(current version is {version.__version__})",
+                       f"(current version is {tl_version.__version__})",
                        Color.RED))
     quit(1)
 
@@ -51,7 +51,8 @@ from os import path, mkdir  # noqa: E402
 # Start file and terminal logging
 log = getLogger(__name__)
 __hyper_logger__ = _UserbotLogger(log)
-__hyper_logger__._initialize_logfile(PROJECT, SAFEMODE, version_info, version)
+__hyper_logger__._initialize_logfile(PROJECT, SAFEMODE, version_info,
+                                     tl_version)
 __hyper_logger__._setup_logger()
 
 try:
