@@ -846,54 +846,11 @@ def _apply_update(auto: bool, commit_id=None):
     return
 
 
-def _clear_caches():
-    try:
-        while True:
-            temp = input("Do you want to clear all caches? (y/n): ")
-            if temp.lower() in ("yes", "y"):
-                break
-            elif temp.lower() in ("no", "n"):
-                raise KeyboardInterrupt
-            else:
-                print(
-                    setColorText("Invalid input. Try again",
-                                 Colors.YELLOW))
-    except KeyboardInterrupt:
-        print()
-        return
-    cache = _Cache()
-    cache.clear()
-    return
-
-
-def _create_backup():
-    backup = _Backup()
-    if not backup.userbot_installed():
-        print(setColorText("Failed to backup current version: "
-                           "HyperUBot not installed", Colors.RED))
-        return
-
-    temp = None
-    try:
-        while True:
-            temp = input("Do you want to backup the current version? (y/n): ")
-            if temp.lower() in ("yes", "y"):
-                break
-            elif temp.lower() in ("no", "n"):
-                raise KeyboardInterrupt
-            else:
-                print(
-                    setColorText("Invalid input. Try again",
-                                 Colors.YELLOW))
-    except KeyboardInterrupt:
-        print()
-        return
-    bkName = "HyperUBot-" + backup.userbot_version()
-    if backup.backup_exists(bkName):
+def _clear_caches(is_cli: bool = False):
+    if not is_cli:
         try:
             while True:
-                temp = input(f"A backup of '{bkName}' exists already.\n"
-                             "Overwrite? (y/n): ")
+                temp = input("Do you want to clear all caches? (y/n): ")
                 if temp.lower() in ("yes", "y"):
                     break
                 elif temp.lower() in ("no", "n"):
@@ -905,61 +862,126 @@ def _create_backup():
         except KeyboardInterrupt:
             print()
             return
+    cache = _Cache()
+    cache.clear()
+    return
+
+
+def _create_backup(is_cli: bool = False, option: str = ""):
+    backup = _Backup()
+    if not backup.userbot_installed():
+        print(setColorText("Failed to backup current version: "
+                           "HyperUBot not installed", Colors.RED))
+        return
+
+    if not is_cli:
+        temp = None
+        try:
+            while True:
+                temp = input("Do you want to backup the current version? "
+                             "(y/n): ")
+                if temp.lower() in ("yes", "y"):
+                    break
+                elif temp.lower() in ("no", "n"):
+                    raise KeyboardInterrupt
+                else:
+                    print(
+                        setColorText("Invalid input. Try again",
+                                     Colors.YELLOW))
+        except KeyboardInterrupt:
+            print()
+            return
+    bkName = "HyperUBot-" + backup.userbot_version()
+    if backup.backup_exists(bkName):
+        if not is_cli:
+            try:
+                while True:
+                    temp = input(f"A backup of '{bkName}' exists already.\n"
+                                 "Overwrite? (y/n): ")
+                    if temp.lower() in ("yes", "y"):
+                        break
+                    elif temp.lower() in ("no", "n"):
+                        raise KeyboardInterrupt
+                    else:
+                        print(
+                            setColorText("Invalid input. Try again",
+                                         Colors.YELLOW))
+            except KeyboardInterrupt:
+                print()
+                return
+        elif not option.lower() == "-f":
+            print(setColorText(f"A backup of '{bkName}' exists already. "
+                               "Add option '-f' to force overwrite it",
+                               Colors.YELLOW))
+            return
     backup.generate_backup(bkName)
     return
 
 
-def _restore_backup():
+def _restore_backup(is_cli: bool = False, bk_name: str = ""):
     restore = _Restore()
     backups = restore.list_backups()
     if not backups:
         print(setColorText("No backups found!", Colors.YELLOW))
         return
-    listed_backups = "Select a backup to restore\n\n"
-    for key, value in backups.items():
-        bkName = value.get("bkname")
-        listed_backups += f"[{key}] {bkName}\n"
-    print(listed_backups)
-    temp = None
-    try:
-        while True:
-            temp = input("Your input (or 'X' to cancel): ")
-            if temp.lower() == "x":
-                raise KeyboardInterrupt
-            elif temp.isnumeric():
-                if temp in backups.keys():
-                    break
-            print(
-                setColorText("Invalid input. Try again",
-                             Colors.YELLOW))
-    except KeyboardInterrupt:
-        print()
-        return
-    selected_backup = None
-    for key, value in backups.items():
-        if temp == key:
-            selected_backup = value
-            break
-    bkName = selected_backup.get("bkname")
-    print(f"Are you sure you want to restore '{bkName}'?\n" +
-          setColorText("THIS PROCESS CANNOT BE UNDONE!", Colors.RED))
-    try:
-        while True:
-            temp = input("Your input (y/n): ")
-            if temp.lower() in ("yes", "y"):
-                break
-            elif temp.lower() in ("no", "n"):
-                raise KeyboardInterrupt
-            else:
+    if not is_cli:
+        listed_backups = "Select a backup to restore\n\n"
+        for key, value in backups.items():
+            bkName = value.get("bkname")
+            listed_backups += f"[{key}] {bkName}\n"
+        print(listed_backups)
+        temp = None
+        try:
+            while True:
+                temp = input("Your input (or 'X' to cancel): ")
+                if temp.lower() == "x":
+                    raise KeyboardInterrupt
+                elif temp.isnumeric():
+                    if temp in backups.keys():
+                        break
                 print(
                     setColorText("Invalid input. Try again",
                                  Colors.YELLOW))
-    except KeyboardInterrupt:
-        print()
-        return
+        except KeyboardInterrupt:
+            print()
+            return
+        selected_backup = None
+        for key, value in backups.items():
+            if temp == key:
+                selected_backup = value
+                break
+        bkName = selected_backup.get("bkname")
+        print(f"Are you sure you want to restore '{bkName}'?\n" +
+              setColorText("THIS PROCESS CANNOT BE UNDONE!", Colors.RED))
+        try:
+            while True:
+                temp = input("Your input (y/n): ")
+                if temp.lower() in ("yes", "y"):
+                    break
+                elif temp.lower() in ("no", "n"):
+                    raise KeyboardInterrupt
+                else:
+                    print(
+                        setColorText("Invalid input. Try again",
+                                     Colors.YELLOW))
+        except KeyboardInterrupt:
+            print()
+            return
+    else:
+        if not bk_name:
+            print(setColorText("Backup filename is not given", Colors.YELLOW))
+            return
+        for val in backups.values():
+            if bk_name.split(".hbotbk")[0] == val.get("bkname"):
+                selected_backup = val
+                break
+        else:
+            print(setColorText(f"Backup '{bk_name}' not found", Colors.YELLOW))
+            return
     restore.restore(selected_backup)
-    global _modified
-    _modified = True
+    if not is_cli:
+        global _modified
+        _modified = True
     return
 
 
@@ -1059,11 +1081,29 @@ def _menues(recovery: _Recovery):
 def main():
     # INIT
     args = argv
+    if len(args) > 1:  # CLI
+        if args[1].lower() == "-clearcache":
+            _clear_caches(True)
+            return
+        elif args[1].lower() == "-backup":
+            try:
+                _cli_option = args[2]
+            except:
+                _cli_option = ""
+            _create_backup(True, _cli_option)
+            return
+        elif args[1].lower() == "-restore":
+            try:
+                _cli_bk_name = args[2]
+            except:
+                _cli_bk_name = ""
+            _restore_backup(True, _cli_bk_name)
+            return
     auto_updater = False
     print(setColorText("HyperUBot Recovery System", Colors.CYAN))
     print(f"Recovery version: {VERSION}")
     recovery = _Recovery()
-    if len(args) > 1:
+    if len(args) > 1:  # CLI
         if args[1].lower() == "-autoupdate":
             auto_updater = True
             recovery.recovery_mode = setColorText("AUTO UPDATE", Colors.CYAN)
