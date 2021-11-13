@@ -25,7 +25,6 @@ if getConfig("SIDELOAD_NO_REBOOT"):
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
-USER_MODULES_DIR = os.path.join(".", "userbot", "modules_user")
 
 
 def _update_module_source(filename: str):
@@ -98,7 +97,7 @@ async def sideload(event):
         if not file.name.endswith(".py"):
             await event.edit(msgRep.NOT_PY_FILE)
             return
-        dest_path = os.path.join(USER_MODULES_DIR, file.name)
+        dest_path = os.path.join(".", "userbot", "modules_user", file.name)
         file_name = file.name[:-3]
         await event.edit(msgRep.DLOADING)
         if os.path.isfile(dest_path) and OVR_WRT_CAUT:

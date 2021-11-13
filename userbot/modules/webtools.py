@@ -25,12 +25,11 @@ from urllib.request import urlretrieve
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
-DEFAULT_ADD = "1.0.0.1"
 
 
 @ehandler.on(command="rtt", outgoing=True)
 async def rtt(message):
-    rtt = pinger(DEFAULT_ADD)
+    rtt = pinger("1.0.0.1")
     await message.edit(msgRep.PING_SPEED + rtt)
     return
 
