@@ -28,7 +28,7 @@ import ast  # noqa: E402
 import os  # noqa: E402
 
 RECOVERY_NAME = os.path.basename(__file__)
-VERSION = "2.2.3"
+VERSION = "2.3.0"
 BACKUP_DIR = os.path.join(".", "backup")
 GIT = os.path.join(".", ".git")
 GITIGNORE = os.path.join(".", ".gitignore")
