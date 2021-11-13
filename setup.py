@@ -595,9 +595,9 @@ def main():
                        'COMMUNITY_REPOS = []\n'
                        'ALLOW_SIDELOAD = False\n'
                        'PKG_ENABLE_AUTO_UPDATE = False\n'
-                       'PKG_DISABLE_AUTO_REBOOT = False\n'
                        'CLIENT_CONNECT_RETRIES = 5\n'
-                       'CLIENT_RETRY_DELAY = 1\n')
+                       'CLIENT_RETRY_DELAY = 1\n'
+                       'SIDELOAD_NO_REBOOT = False\n')
         elif config_file.endswith(".ini"):
             configs = ('[CONFIGS]\n'
                        f'UBOT_LANG = {lang_code}\n'
@@ -608,9 +608,9 @@ def main():
                        'COMMUNITY_REPOS = []\n'
                        'ALLOW_SIDELOAD = no\n'
                        'PKG_ENABLE_AUTO_UPDATE = no\n'
-                       'PKG_DISABLE_AUTO_REBOOT = no\n'
                        'CLIENT_CONNECT_RETRIES = 5\n'
-                       'CLIENT_RETRY_DELAY = 1\n')
+                       'CLIENT_RETRY_DELAY = 1\n'
+                       'SIDELOAD_NO_REBOOT = no\n')
         else:  # py script
             configs = ('class ConfigClass(object):\n'
                        f'{"":4}UBOT_LANG = "{lang_code}"\n'
@@ -621,9 +621,9 @@ def main():
                        f'{"":4}COMMUNITY_REPOS = []\n'
                        f'{"":4}ALLOW_SIDELOAD = False\n'
                        f'{"":4}PKG_ENABLE_AUTO_UPDATE = False\n'
-                       f'{"":4}PKG_DISABLE_AUTO_REBOOT = False\n'
                        f'{"":4}CLIENT_CONNECT_RETRIES = 5\n'
-                       f'{"":4}CLIENT_RETRY_DELAY = 1\n')
+                       f'{"":4}CLIENT_RETRY_DELAY = 1\n'
+                       f'{"":4}SIDELOAD_NO_REBOOT = False\n')
         with open(config_file, "w") as cfg_file:
             print(f"Writing optional configuration file in {config_file}")
             cfg_file.write(configs)
