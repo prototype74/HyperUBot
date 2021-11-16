@@ -31,15 +31,19 @@ os_name=$(setColor $RED "Unsupported")
 if [ "$OSTYPE" == "linux-android" ]; then
     os_name="Android"
 elif [ "$OSTYPE" == "linux-gnu" ]; then
-     if [ -f "/etc/debian_version" ]; then
-         os_name="Debian"
-     elif [ -f "/etc/arch-release" ]; then
-         os_name="Arch Linux"
-     elif [ -f "/etc/redhat-release" ]; then
-         os_name="Red Hat"
-     fi
+    if [ -f "/etc/debian_version" ]; then
+        os_name="Debian"
+    elif [ -f "/etc/arch-release" ]; then
+        os_name="Arch Linux"
+    elif [ -f "/etc/redhat-release" ]; then
+        os_name="Red Hat"
+    fi
 elif [[ "$OSTYPE" =~ "darwin"* ]]; then
     os_name="macOS"
+elif [ "$OSTYPE" == "linux-musl" ]; then
+    if [ -f "/etc/alpine-release" ]; then
+        os_name="Alpine Linux"
+    fi
 fi
 
 # Generated with ASCII Art Generator: http://patorjk.com/software/taag/
@@ -151,6 +155,12 @@ case "$os_name" in
         fi
         printf "Installing pre-requisites packages...\n"
         brew install git python3 ffmpeg flac neofetch libffi
+        ;;
+    "Alpine Linux")
+        printRelease
+        printf "Installing pre-requisites packages (sudo needed)...\n"
+        sudo apk update
+        sudo apk add git gcc python3 py3-pip python3-dev libffi-dev musl-dev openssl-dev cargo libressl-dev ffmpeg flac neofetch
         ;;
     *)
         printf "Current operating system is not supported...\n"
