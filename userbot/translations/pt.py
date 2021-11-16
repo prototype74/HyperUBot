@@ -101,7 +101,6 @@ class SystemToolsText(object):
     TELETON_VER = "Versão do Telethon: "
     PYTHON_VER = "Versão do Python: "
     GITAPI_VER = "Versão do GitHub API: "
-    CASAPI_VER = "Versão do CAS API: "
     COMMIT_NUM = "Revisão: "
     ERROR = "ERRO!"
     DAYS = "dias"
@@ -479,47 +478,6 @@ class WebToolsText(object):
     SPD_HOSTED_BY = "Hospedado por"
 
 
-class CasIntText(object):
-    TOO_MANY_CAS = ("`Muitos utilizadores banidos no CAS. A fazer upload "
-                    "da lista como ficheiro...`")
-    FAIL_UPLOAD_LIST = "`Falha ao efetuar upload da lista`"
-    SEND_MEDIA_FORBIDDEN = "`O envio de média neste chat não é permitido`"
-    UPDATER_CONNECTING = "`Conectando ao servidor CAS...`"
-    UPDATER_DOWNLOADING = "`A fazer Download da última informação CAS...`"
-    FAIL_APPEND_CAS = "`Falha ao adicionar dados do CAS`"
-    UPDATE_SUCCESS = "`Atualizado o CSV dos dados do CAS`"
-    NO_CONNECTION = "`Falha na conecção com o servidor do CAS`"
-    TIMEOUT = ("`Impossivel atualizar o CSV dado que o tempo de ligação "
-               "excedeu o limite`")
-    UPDATE_FAILED = "`Falha ao atualizar os dados do CSV do CAS`"
-    GIVEN_ENT_INVALID = "`O ID, nome ou link dado é inváldio`"
-    CAS_CHECK_FAIL_ND = ("`Verificação CAS falhou, visto que o CSV tem um "
-                         "formato inválido`")
-    CAS_CHECK_ND = ("`Dados CAS não encontrados. Por favor usa o comando "
-                    ".casupdate para obter os últimos dados CAS`")
-    CHECK_USER = "Verificando o estado CAS de {}..."
-    CHECK_CHAT = "À procura de utilizadores banidos por CAS..."
-    CHECK_USER_ID = "A verificar o estado CAS do ID `{}`..."
-    DELETED_ACCOUNT = "Conta Excluída"
-    USER_HEADER = "Dados do user"
-    USER_ID = "ID"
-    FIRST_NAME = "Primeiro nome"
-    LAST_NAME = "Último nome"
-    USERNAME = "Nome de utilizador"
-    CAS_DATA = "Dados do CAS"
-    RESULT = "Resultado"
-    OFFENSES = "Total de Ofensas"
-    BANNED = "Banido"
-    BANNED_SINCE = "Banido desde"
-    NOT_BANNED = "Não banido"
-    USER_DETECTED = "Aviso! `{}` membro está banido no CAS em **{}**"
-    USERS_DETECTED = "Aviso! `{}` membros estão banidos no CAS em **{}**"
-    NO_USERS = "Nenhum utilizador banido no CAS encontrado em **{}**"
-    NO_ADMIN = ("`São necessários privilégios de administração para "
-                "realizar esta ação`")
-    CAS_CHECK_FAIL = "`Verificação CAS falhou`"
-
-
 class GitHubText(object):
     INVALID_URL = "Combinação user/repo inválida"
     NO_RELEASE = "A release especificada não foi encontrada"
@@ -743,10 +701,6 @@ class ModuleDescriptions(object):
                      "ferramentas web do bot como ping, speedtest, "
                      "calculadora RTT, e um método para mostrar o "
                      "Datacenter atual.")
-    CAS_INTERFACE_DESC = ("O interface para a API Combot Anti-Spam "
-                          "System. Permite verificar apenas um utilizador, "
-                          "ou procurar um grupo inteiro, por CAS bans, "
-                          "através dos comandos.")
     GITHUB_DESC = ("Um módulo que usa a API do GitHub. Este módulo permite "
                    "ver releases de um repositório, de um utilizador do "
                    "GitHub.")
@@ -979,23 +933,6 @@ class ModuleUsages(object):
                                               "Usando \"pic\" como "
                                               "argumento irá apresentar "
                                               "o resultado como uma imagem.")}}
-
-    CAS_INTERFACE_USAGE = {"casupdate": {"args": None,
-                                         "usage": ("Atualiza os dados do "
-                                                   "CSV do CAS.")},
-                           "cascheck": {"args": ("[opcional: <username/id/"
-                                                 "link>] ou resposta"),
-                                        "usage": ("Verifica se um "
-                                                  "utilizador está banido "
-                                                  "no CAS, ou se um grupo "
-                                                  "inteiro tem utilizadores "
-                                                  "banidos.\n"
-                                                  "Nota: o comando cascheck "
-                                                  "apenas consegue ver "
-                                                  "grupos no máximo de "
-                                                  "10.000 membros, devido "
-                                                  "a uma limitação nos "
-                                                  "servidores do Telegram.")}}
 
     GITHUB_USAGE = {"git": {"args": "<user>/<repo>",
                             "usage": ("Obtém a release mais recente de "

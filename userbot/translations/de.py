@@ -104,7 +104,6 @@ class SystemToolsText(object):
     TELETON_VER = "Telethon-Version: "
     PYTHON_VER = "Python-Version: "
     GITAPI_VER = "GitHub API-Version: "
-    CASAPI_VER = "CAS API-Version: "
     COMMIT_NUM = "Revision: "
     ERROR = "FEHLER!"
     DAYS = "Tag(e)"
@@ -483,49 +482,6 @@ class WebToolsText(object):
     SPD_HOSTED_BY = "Gehostet von"
 
 
-class CasIntText(object):
-    TOO_MANY_CAS = ("`Zu viele CAS-Banned User. Lade eine Liste als Datei "
-                    "hoch...`")
-    FAIL_UPLOAD_LIST = "`Das Hochladen der Liste ist fehlgeschlagen`"
-    SEND_MEDIA_FORBIDDEN = ("`Medien hochladen ist in diesem Chat nicht "
-                            "erlaubt`")
-    UPDATER_CONNECTING = ("`Eine Verbindung zu den CAS Server wird"
-                          "hergestellt...`")
-    UPDATER_DOWNLOADING = "`Lade die neusten CAS-Daten herunter...`"
-    FAIL_APPEND_CAS = "`Fehler beim verarbeiten der CAS-Daten`"
-    UPDATE_SUCCESS = "`Die CAS CSV-Daten wurden erfolgreich aktualisiert`"
-    NO_CONNECTION = ("`Fehler beim herstellen einer Verbindung zu den "
-                     "CAS Server`")
-    TIMEOUT = ("`CSV konnte nicht aktualisiert werden, aufgrund von "
-               "Zeitüberschreitungen der Anfragen an den Server`")
-    UPDATE_FAILED = "`Fehler beim aktualisieren der CAS CSV-Daten`"
-    GIVEN_ENT_INVALID = "`Angegebene Benutzername/ID/Link ist nicht gültig`"
-    CAS_CHECK_FAIL_ND = ("`CAS-Check fehlgeschlagen, da der Format des CSV "
-                         "nicht gültig ist`")
-    CAS_CHECK_ND = ("`CAS-Daten nicht vorhanden. Bitte führe den Befehl "
-                    ".casupdate aus um die neusten CAS-Daten zu erhalten`")
-    CHECK_USER = "Prüfe den CAS-Status von {}..."
-    CHECK_CHAT = "Suche nach CAS-Banned User..."
-    CHECK_USER_ID = "Prüfe den CAS-Status von der ID `{}`..."
-    DELETED_ACCOUNT = "Gelöschtes Konto"
-    USER_HEADER = "User-Daten"
-    USER_ID = "ID"
-    FIRST_NAME = "Vorname"
-    LAST_NAME = "Nachname"
-    USERNAME = "Benutzername"
-    CAS_DATA = "CAS-Daten"
-    RESULT = "Ergebnis"
-    OFFENSES = "Verstöße insgesamt"
-    BANNED = "Gebannt"
-    BANNED_SINCE = "Gebannt seit"
-    NOT_BANNED = "Nicht gebannt"
-    USER_DETECTED = "Achtung! `{}` Mitglied ist CAS-Banned in **{}**"
-    USERS_DETECTED = "Achtung! `{}` Mitglieder sind CAS-Banned in **{}**"
-    NO_USERS = "Keine CAS-Banned User in **{}** gefunden"
-    NO_ADMIN = "`Adminrechte sind erforderlich, um diese Aktion auszuführen`"
-    CAS_CHECK_FAIL = "`CAS-Check fehlgeschlagen`"
-
-
 class GitHubText(object):
     INVALID_URL = "user/repo Kombination ist ungültig"
     NO_RELEASE = "Das angegebene Release konnte nicht gefunden werden"
@@ -763,10 +719,6 @@ class ModuleDescriptions(object):
     WEBTOOLS_DESC = ("Dieses Modul enthält, wenn auch nicht alle, "
                      "Web-Tools des Bots, solche wie Ping, Speedtest, "
                      "RTT-Rechner und den aktuellen Rechenzentrum.")
-    CAS_INTERFACE_DESC = ("Die Schnittstelle für das Combot "
-                          "Anti-Spam-System-API. Die vorgesehenen Befehle "
-                          "erlauben es Ihnen einen bestimmen User oder "
-                          "eine ganze Gruppe auf CAS-Bans zu prüfen.")
     GITHUB_DESC = ("Ein Modul, dass den GitHub-API zum Gebrauch macht. "
                    "Dieses Modul ermöglicht es Ihnen nach einem Release "
                    "von einem bestimmten User und Repository zu prüfen.")
@@ -1026,24 +978,6 @@ class ModuleUsages(object):
                                               "von \"pic\" als Argument "
                                               "ändert das Ergebnis zu einem "
                                               "Bild.")}}
-
-    CAS_INTERFACE_USAGE = {"casupdate": {"args": None,
-                                         "usage": ("Aktualisiert die "
-                                                   "CSV-Daten für das "
-                                                   "CAS-Check-Befehl.")},
-                           "cascheck": {"args": ("[optional: <Benutzername/"
-                                                 "ID/Link>] oder als Antwort"),
-                                        "usage": ("Prüft nach, ob ein User "
-                                                  "CAS-Banned ist oder eine "
-                                                  "ganze Gruppe nach "
-                                                  "CAS-Banned User.\n"
-                                                  "Hinweis: cascheck kann "
-                                                  "nur bis zu 10.000 "
-                                                  "Mitglieder in eine "
-                                                  "Gruppe, aufgrund von "
-                                                  "Einschränkungen aus "
-                                                  "Severseite von Telegram, "
-                                                  "prüfen.")}}
 
     GITHUB_USAGE = {"git": {"args": "<User>/<Repo>",
                             "usage": ("Prüft nach Releases aus dem "

@@ -298,8 +298,6 @@ class SystemToolsText(object):
         lang, _getframe().f_code.co_name, "PYTHON_VER")
     GITAPI_VER = getLangString(
         lang, _getframe().f_code.co_name, "GITAPI_VER")
-    CASAPI_VER = getLangString(
-        lang, _getframe().f_code.co_name, "CASAPI_VER")
     COMMIT_NUM = getLangString(
         lang, _getframe().f_code.co_name, "COMMIT_NUM")
     ERROR = getLangString(
@@ -968,75 +966,6 @@ class WebToolsText(object):
         lang, _getframe().f_code.co_name, "SPD_HOSTED_BY")
 
 
-class CasIntText(object):
-    TOO_MANY_CAS = getLangString(
-        lang, _getframe().f_code.co_name, "TOO_MANY_CAS")
-    FAIL_UPLOAD_LIST = getLangString(
-        lang, _getframe().f_code.co_name, "FAIL_UPLOAD_LIST")
-    SEND_MEDIA_FORBIDDEN = getLangString(
-        lang, _getframe().f_code.co_name, "SEND_MEDIA_FORBIDDEN")
-    UPDATER_CONNECTING = getLangString(
-        lang, _getframe().f_code.co_name, "UPDATER_CONNECTING")
-    UPDATER_DOWNLOADING = getLangString(
-        lang, _getframe().f_code.co_name, "UPDATER_DOWNLOADING")
-    FAIL_APPEND_CAS = getLangString(
-        lang, _getframe().f_code.co_name, "FAIL_APPEND_CAS")
-    UPDATE_SUCCESS = getLangString(
-        lang, _getframe().f_code.co_name, "UPDATE_SUCCESS")
-    NO_CONNECTION = getLangString(
-        lang, _getframe().f_code.co_name, "NO_CONNECTION")
-    TIMEOUT = getLangString(
-        lang, _getframe().f_code.co_name, "TIMEOUT")
-    UPDATE_FAILED = getLangString(
-        lang, _getframe().f_code.co_name, "UPDATE_FAILED")
-    GIVEN_ENT_INVALID = getLangString(
-        lang, _getframe().f_code.co_name, "GIVEN_ENT_INVALID")
-    CAS_CHECK_FAIL_ND = getLangString(
-        lang, _getframe().f_code.co_name, "CAS_CHECK_FAIL_ND")
-    CAS_CHECK_ND = getLangString(
-        lang, _getframe().f_code.co_name, "CAS_CHECK_ND")
-    CHECK_USER = getLangString(
-        lang, _getframe().f_code.co_name, "CHECK_USER")
-    CHECK_CHAT = getLangString(
-        lang, _getframe().f_code.co_name, "CHECK_CHAT")
-    CHECK_USER_ID = getLangString(
-        lang, _getframe().f_code.co_name, "CHECK_USER_ID")
-    DELETED_ACCOUNT = getLangString(
-        lang, _getframe().f_code.co_name, "DELETED_ACCOUNT")
-    USER_HEADER = getLangString(
-        lang, _getframe().f_code.co_name, "USER_HEADER")
-    USER_ID = getLangString(
-        lang, _getframe().f_code.co_name, "USER_ID")
-    FIRST_NAME = getLangString(
-        lang, _getframe().f_code.co_name, "FIRST_NAME")
-    LAST_NAME = getLangString(
-        lang, _getframe().f_code.co_name, "LAST_NAME")
-    USERNAME = getLangString(
-        lang, _getframe().f_code.co_name, "USERNAME")
-    CAS_DATA = getLangString(
-        lang, _getframe().f_code.co_name, "CAS_DATA")
-    RESULT = getLangString(
-        lang, _getframe().f_code.co_name, "RESULT")
-    OFFENSES = getLangString(
-        lang, _getframe().f_code.co_name, "OFFENSES")
-    BANNED = getLangString(
-        lang, _getframe().f_code.co_name, "BANNED")
-    BANNED_SINCE = getLangString(
-        lang, _getframe().f_code.co_name, "BANNED_SINCE")
-    NOT_BANNED = getLangString(
-        lang, _getframe().f_code.co_name, "NOT_BANNED")
-    USER_DETECTED = getLangString(
-        lang, _getframe().f_code.co_name, "USER_DETECTED")
-    USERS_DETECTED = getLangString(
-        lang, _getframe().f_code.co_name, "USERS_DETECTED")
-    NO_USERS = getLangString(
-        lang, _getframe().f_code.co_name, "NO_USERS")
-    NO_ADMIN = getLangString(
-        lang, _getframe().f_code.co_name, "NO_ADMIN")
-    CAS_CHECK_FAIL = getLangString(
-        lang, _getframe().f_code.co_name, "CAS_CHECK_FAIL")
-
-
 class GitHubText(object):
     INVALID_URL = getLangString(
         lang, _getframe().f_code.co_name, "INVALID_URL")
@@ -1328,8 +1257,6 @@ class ModuleDescriptions(object):
         lang, _getframe().f_code.co_name, "USER_DESC")
     WEBTOOLS_DESC = getLangString(
         lang, _getframe().f_code.co_name, "WEBTOOLS_DESC")
-    CAS_INTERFACE_DESC = getLangString(
-        lang, _getframe().f_code.co_name, "CAS_INTERFACE_DESC")
     GITHUB_DESC = getLangString(
         lang, _getframe().f_code.co_name, "GITHUB_DESC")
     TERMINAL_DESC = getLangString(
@@ -1365,8 +1292,6 @@ class ModuleUsages(object):
         lang, _getframe().f_code.co_name, "USER_USAGE")
     WEBTOOLS_USAGE = getLangString(
         lang, _getframe().f_code.co_name, "WEBTOOLS_USAGE")
-    CAS_INTERFACE_USAGE = getLangString(
-        lang, _getframe().f_code.co_name, "CAS_INTERFACE_USAGE")
     GITHUB_USAGE = getLangString(
         lang, _getframe().f_code.co_name, "GITHUB_USAGE")
     TERMINAL_USAGE = getLangString(

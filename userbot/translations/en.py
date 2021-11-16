@@ -96,7 +96,6 @@ class SystemToolsText(object):
     TELETON_VER = "Telethon version: "
     PYTHON_VER = "Python version: "
     GITAPI_VER = "GitHub API Version: "
-    CASAPI_VER = "CAS API Version: "
     COMMIT_NUM = "Revision: "
     ERROR = "ERROR!"
     DAYS = "day(s)"
@@ -461,45 +460,6 @@ class WebToolsText(object):
     SPD_HOSTED_BY = "Hosted by"
 
 
-class CasIntText(object):
-    TOO_MANY_CAS = "`Too many CAS Banned users. Uploading list as a file...`"
-    FAIL_UPLOAD_LIST = "`Failed to upload list`"
-    SEND_MEDIA_FORBIDDEN = "`Send media isn't allowed in this chat`"
-    UPDATER_CONNECTING = "`Connecting to CAS server...`"
-    UPDATER_DOWNLOADING = "`Downloading latest CAS data...`"
-    FAIL_APPEND_CAS = "`Failed to append CAS data`"
-    UPDATE_SUCCESS = "`Successfully updated to latest CAS CSV data`"
-    NO_CONNECTION = "`Unable to connect to CAS server`"
-    TIMEOUT = "`Unable to update CSV as requests to server timed out`"
-    UPDATE_FAILED = "`Failed to update CAS CSV data`"
-    GIVEN_ENT_INVALID = "`Given username/id/link isn't valid`"
-    CAS_CHECK_FAIL_ND = "`CAS check failed as CSV format is not valid`"
-    CAS_CHECK_ND = ("`CAS data not found. Please use .casupdate command "
-                    "to get the lastest CAS data`")
-    CHECK_USER = "Checking CAS status of {}..."
-    CHECK_CHAT = "Searching for CAS Banned users..."
-    CHECK_USER_ID = "Checking CAS status of ID `{}`..."
-    DELETED_ACCOUNT = "Deleted Account"
-    USER_HEADER = "User data"
-    USER_ID = "ID"
-    FIRST_NAME = "First name"
-    LAST_NAME = "Last name"
-    USERNAME = "Username"
-    CAS_DATA = "CAS data"
-    RESULT = "Result"
-    OFFENSES = "Total of Offenses"
-    BANNED = "Banned"
-    BANNED_SINCE = "Banned since"
-    NOT_BANNED = "Not Banned"
-    # count, chat title
-    USER_DETECTED = "Warning! `{}` member is CAS Banned in **{}**"
-    # count, chat title
-    USERS_DETECTED = "Warning! `{}` members are CAS Banned in **{}**"
-    NO_USERS = "No CAS Banned users found in **{}**"
-    NO_ADMIN = "`Admin privileges are required to perform this action`"
-    CAS_CHECK_FAIL = "`CAS check failed`"
-
-
 class GitHubText(object):
     INVALID_URL = "Invalid user/repo combo"
     NO_RELEASE = "The specified release could not be found"
@@ -717,10 +677,6 @@ class ModuleDescriptions(object):
     WEBTOOLS_DESC = ("This module contains most, if not all, of the bot's "
                      "webtools, such as ping, speedtest, RTT calculator "
                      "and the current datacenter.")
-    CAS_INTERFACE_DESC = ("The interface for the Combot Anti-Spam "
-                          "System API. It allows you to check a specific "
-                          "user for CAS bans or an entire group, via "
-                          "the designated commands.")
     GITHUB_DESC = ("A module that takes use of the GitHub API. This "
                    "module allows you to check for releases from a "
                    "specific user and repository.")
@@ -936,21 +892,6 @@ class ModuleUsages(object):
                                               "Passing \"pic\" as argument "
                                               "will change the result to a "
                                               "picture.")}}
-
-    CAS_INTERFACE_USAGE = {"casupdate": {"args": None,
-                                         "usage": ("Downloads/updates the "
-                                                   "CSV data for CAS check "
-                                                   "cmd.")},
-                           "cascheck": {"args": ("[optional: <username/id/"
-                                                 "link>] or reply"),
-                                        "usage": ("Checks if an user is CAS "
-                                                  "Banned or a whole group "
-                                                  "for CAS Banned users.\n"
-                                                  "Note: cascheck can just "
-                                                  "check up to 10.000 members "
-                                                  "in a group due to "
-                                                  "Telegram's server-side "
-                                                  "limitation.")}}
 
     GITHUB_USAGE = {"git": {"args": "<user>/<repo>",
                             "usage": ("Checks for releases on the "

@@ -20,7 +20,6 @@ from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_info)
 from userbot.sysutils.sys_funcs import isWindows
 from userbot.version import VERSION
-import userbot.include.cas_api as cas
 import userbot.include.git_api as git
 from telethon import version
 from platform import python_version
@@ -105,7 +104,6 @@ async def statuschecker(stat):
     reply += msgRep.TELETON_VER + "`" + str(version.__version__) + "`" + "\n"
     reply += msgRep.PYTHON_VER + "`" + str(python_version()) + "`" + "\n"
     reply += msgRep.GITAPI_VER + "`" + git.vercheck() + "`" + "\n"
-    reply += msgRep.CASAPI_VER + "`" + cas.vercheck() + "`" + "\n"
     await stat.edit(reply)
     return
 
