@@ -24,11 +24,13 @@ HyperUBot works with Windows _(PowerShell and WSL)_, macOS, Linux _(Ubuntu, Arch
 
 ### Supported platforms
 
-- Android (Termux)
-- Debian Based Distros (Native Linux, WSL)
-- Red Hat Based Distros (Native Linux)
-- macOS
-- Windows (PowerShell)
+- Alpine Linux
+- Android (with Termux)
+- Arch Linux Based Distros (Arch Linux, Manjaro, etc.)
+- Debian Based Distros (Linux Mint, Ubuntu, etc.)
+- macOS (Catalina (10.15) or newer)
+- Red Hat Based Distros (AlmaLinux, Fedora, etc.)
+- Windows 10/11 (with PowerShell (5.0 or newer) or WSL)
 
 > Cloud platforms like Heroku are **not** supported by us, as these platforms can't handle shell commands, some of our shell based commands (`.ping`, `.rtt` etc.) do need to work properly. Also some cloud platforms may reset the environment which will also reset HyperUBot's saved data and settings.
 
