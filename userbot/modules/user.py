@@ -21,7 +21,6 @@ from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
 from logging import getLogger
 
-MAXINT = 2147483647  # I sure do love hammering down shit
 log = getLogger(__name__)
 ehandler = EventHandler(log)
 
@@ -115,7 +114,7 @@ async def stats(event):
 
     try:
         block_obj = await event.client(GetBlockedRequest(offset=0,
-                                                         limit=MAXINT))
+                                                         limit=2147483647))
         if block_obj.blocked:
             for user in block_obj.blocked:
                 blocked_ids.append(user.peer_id.user_id)
