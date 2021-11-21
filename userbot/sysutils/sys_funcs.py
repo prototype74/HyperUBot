@@ -6,6 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot.version import VERSION_TUPLE
 from logging import getLogger
 from subprocess import check_output
 from json import loads
@@ -307,7 +308,7 @@ def requiredVersion(min_ver: str, max_ver: str, empty_func: bool = False):
         else:
             efunc = None
         try:
-            ver_tuple = botVerAsTuple()
+            ver_tuple = VERSION_TUPLE
             min_tuple = verAsTuple(min_ver)
             max_tuple = verAsTuple(max_ver)
         except:

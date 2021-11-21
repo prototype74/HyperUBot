@@ -85,7 +85,7 @@ def start_modules():
                 print()
                 raise KeyboardInterrupt
             if option == 1:
-                vices._reboot_recovery(False)
+                _services._reboot_recovery(False)
             elif option == 2:
                 log.info(contact_text)
                 raise KeyboardInterrupt

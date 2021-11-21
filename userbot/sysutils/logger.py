@@ -80,8 +80,8 @@ class _UserbotLogger:
         caller = getouterframes(currentframe(), 2)[1].filename
         valid_caller = os.path.join("userbot", "__init__.py")
         if not caller.endswith(valid_caller):
-            log.warning("Not a valid caller "
-                        f"(requested by {os.path.basename(caller)})")
+            self.__log.warning("Not a valid caller "
+                               f"(requested by {os.path.basename(caller)})")
             return
         try:
             if os.path.exists(self.__logfile):
@@ -113,8 +113,8 @@ class _UserbotLogger:
         return
 
     def _stop_logging(self):
-        special_caller = [join("userbot", "__main__.py"),
-                          join("userbot", "sysutils", "_services.py")]
+        special_caller = [os.path.join("userbot", "__main__.py"),
+                          os.path.join("userbot", "sysutils", "_services.py")]
         sys_caller = getouterframes(currentframe(), 2)[1].filename
         valid_caller = False
         for caller in special_caller:

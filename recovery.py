@@ -337,8 +337,7 @@ class _Installer(_Recovery):
             print("Download completed.")
         else:
             print(
-                setColorText(f"Unable to find update package: {e}",
-                             Colors.RED))
+                setColorText("Unable to find update package", Colors.RED))
         return
 
     def install_update_package(self):

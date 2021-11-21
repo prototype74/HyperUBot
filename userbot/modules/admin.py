@@ -179,7 +179,7 @@ async def unban(event):
         await event.edit(msgRep.NO_ADMIN)
     except Exception as e:
         log.warning(e)
-        await event.edit(fmsgRep.UNBAN_FAILED)
+        await event.edit(msgRep.UNBAN_FAILED)
 
     return
 
