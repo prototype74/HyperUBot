@@ -21,16 +21,18 @@ import os  # noqa: E402
 
 IS_WINDOWS = (True if system().lower() == "windows" or
               os.name == "nt" or platform.startswith("win") else False)
-WIN_COLOR_ENABLED = False
 SECURE_CONFIG = os.path.join(".", "userbot", "secure_config")
 
-try:
-    if IS_WINDOWS:
+if IS_WINDOWS:
+    try:
         import colorama
         colorama.init()
         WIN_COLOR_ENABLED = True
-except:
-    pass
+    except (ImportError, ModuleNotFoundError):
+        WIN_COLOR_ENABLED = False
+    except Exception as e:
+        WIN_COLOR_ENABLED = False
+        print(f"Exception: {e}")
 
 if IS_WINDOWS:
     import msvcrt
@@ -56,7 +58,7 @@ def setColorText(text: str, color: Colors) -> str:
 
 try:
     from cffi import __version__
-except:
+except (ImportError, ModuleNotFoundError):
     print(setColorText("cffi is not installed!", Colors.RED))
     if IS_WINDOWS:
         print(setColorText("Please install cffi package by "
@@ -89,7 +91,7 @@ except Exception as e:
 
 try:
     import pyAesCrypt
-except:
+except (ImportError, ModuleNotFoundError):
     print(setColorText("pyAesCrypt is not installed!", Colors.RED))
     if IS_WINDOWS:
         print(setColorText("Please install pyAesCrypt package by "
@@ -142,53 +144,110 @@ def _getpass(prompt):
 
 
 def _getAPIsAndSession() -> tuple:
-    try:
-        while True:
-            try:
-                api_key = input("Please enter your App api_id (API Key): ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            try:
-                api_key = int(api_key)
-                break
-            except:
-                print(setColorText("Invalid input. Try again...",
-                                   Colors.YELLOW))
+    while True:
+        try:
+            api_key = input("Please enter your App api_id (API Key): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        try:
+            api_key = int(api_key)
+            break
+        except ValueError:
+            print(setColorText("Invalid input. Try again...",
+                               Colors.YELLOW))
 
-        while True:
-            try:
-                api_hash = input("Please enter your App api_hash (API Hash): ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if len(api_hash) == 32:
-                break
-            elif len(api_hash) > 0:
-                print(setColorText("Invalid input. API Hash should have a "
+    while True:
+        try:
+            api_hash = input("Please enter your App api_hash (API Hash): ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if len(api_hash) == 32:
+            break
+        elif len(api_hash) > 0:
+            print(setColorText("Invalid input. API Hash should have a "
                                    "length of 32 characters!", Colors.YELLOW))
-            else:
-                print(setColorText("Invalid input. Try again...",
-                                   Colors.YELLOW))
+        else:
+            print(setColorText("Invalid input. Try again...",
+                               Colors.YELLOW))
 
-        while True:
-            try:
-                string_session = input("Please enter your valid "
-                                       "String Session: ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if string_session:
-                break
-            else:
-                print(setColorText("Invalid input. Try again...",
-                                   Colors.YELLOW))
-        return (api_key, api_hash, string_session)
-    except KeyboardInterrupt:
-        raise KeyboardInterrupt
-    except:
-        pass
-    return (None, None, None)
+    while True:
+        try:
+            string_session = input("Please enter your valid "
+                                   "String Session: ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if string_session:
+            break
+        else:
+            print(setColorText("Invalid input. Try again...",
+                               Colors.YELLOW))
+    return (api_key, api_hash, string_session)
+
+
+def _setup_password() -> str:
+    print("Your password must have at least a length of 4 characters. "
+              "Maximum length is 1024 characters.")
+    print()
+    while True:
+        try:
+            password = _getpass("Your new password: ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if len(password) >= 4 and len(password) <= 1024:
+            break
+        elif len(password) < 4:
+            print(setColorText("Password too short.", Colors.YELLOW))
+        elif len(password) > 1024:
+            print(setColorText("Password too long.", Colors.YELLOW))
+        else:
+            print(setColorText("Invalid input. Try again...",
+                               Colors.YELLOW))
+    while True:
+        try:
+            retype_pwd = _getpass("Retype your password: ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if password == retype_pwd:
+            break
+        else:
+            print(setColorText("Passwords did not match. Try again...",
+                               Colors.YELLOW))
+    return password
+
+
+def _secure_configs(api_key: int, api_hash: str,
+                    string_session: str, password: str) -> bool:
+    try:
+        print("Securing configs...")
+        if os.path.exists(SECURE_CONFIG):
+            os.remove(SECURE_CONFIG)
+        if os.path.exists("_temp.py"):
+            os.remove("_temp.py")
+        secure_configs = (f'API_KEY = "{api_key}"\n'
+                          f'API_HASH = "{api_hash}"\n'
+                          f'STRING_SESSION = "{string_session}"')
+        with open("_temp.py", "w") as cfg_file:
+            cfg_file.write(secure_configs)
+        cfg_file.close()
+        pyAesCrypt.encryptFile(infile="_temp.py",
+                               outfile=SECURE_CONFIG,
+                               passw=password,
+                               bufferSize=(64 * 1024))
+        os.remove("_temp.py")
+        if os.path.exists(SECURE_CONFIG):
+            print(setColorText("Configs secured", Colors.GREEN))
+            return True
+        else:
+            print(setColorText("Failed to secure configs: file not created",
+                               Colors.RED))
+    except Exception as e:
+        print(setColorText(f"Failed to secure configs: {e}", Colors.RED))
+    return False
 
 
 def _start_userbot():
@@ -255,63 +314,10 @@ def main():
     password = ""
     if set_pwd:
         print()
-        print("Your password must have at least a length of 4 characters. "
-              "Maximum length is 1024 characters.")
-        print()
-        while True:
-            try:
-                password = _getpass("Your new password: ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if len(password) >= 4 and len(password) <= 1024:
-                break
-            elif len(password) < 4:
-                print(setColorText("Password too short.", Colors.YELLOW))
-            elif len(password) > 1024:
-                print(setColorText("Password too long.", Colors.YELLOW))
-            else:
-                print(setColorText("Invalid input. Try again...",
-                                   Colors.YELLOW))
-        while True:
-            try:
-                retype_pwd = _getpass("Retype your password: ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if password == retype_pwd:
-                break
-            else:
-                print(setColorText("Passwords did not match. Try again...",
-                                   Colors.YELLOW))
+        password = _setup_password()
 
     print()
-    cfg_secured = False
-    try:
-        print("Securing configs...")
-        if os.path.exists(SECURE_CONFIG):
-            os.remove(SECURE_CONFIG)
-        if os.path.exists("_temp.py"):
-            os.remove("_temp.py")
-        secure_configs = (f'API_KEY = "{api_key}"\n'
-                          f'API_HASH = "{api_hash}"\n'
-                          f'STRING_SESSION = "{string_session}"')
-        with open("_temp.py", "w") as cfg_file:
-            cfg_file.write(secure_configs)
-        cfg_file.close()
-        pyAesCrypt.encryptFile(infile="_temp.py",
-                               outfile=SECURE_CONFIG,
-                               passw=password,
-                               bufferSize=(64 * 1024))
-        os.remove("_temp.py")
-        if os.path.exists(SECURE_CONFIG):
-            print(setColorText("Configs secured", Colors.GREEN))
-            cfg_secured = True
-        else:
-            print(setColorText("Failed to secure configs: file not created",
-                               Colors.RED))
-    except Exception as e:
-        print(setColorText(f"Failed to secure configs: {e}", Colors.RED))
+    cfg_secured = _secure_configs(api_key, api_hash, string_session, password)
 
     if cfg_secured:
         print()
