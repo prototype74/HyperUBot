@@ -242,9 +242,8 @@ def _secure_configs(api_key: int, api_hash: str,
         if os.path.exists(SECURE_CONFIG):
             print(setColorText("Configs secured", Colors.GREEN))
             return True
-        else:
-            print(setColorText("Failed to secure configs: file not created",
-                               Colors.RED))
+        print(setColorText("Failed to secure configs: file not created",
+                           Colors.RED))
     except Exception as e:
         print(setColorText(f"Failed to secure configs: {e}", Colors.RED))
     return False
