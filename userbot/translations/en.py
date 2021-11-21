@@ -860,9 +860,12 @@ class ModuleUsages(object):
                       "storage": {"args": None,
                                   "usage": ("Shows info on bot server "
                                             "HDD storage.")},
-                      "sysd": {"args": None,
-                               "usage": ("Type .sysd to get system details. "
-                                         "(Requires neofetch installed)")},
+                      "neofetch": {"args": None,
+                                   "usage": ("Show all relevant system "
+                                             "information (hardware and "
+                                             "software) from host. Requires "
+                                             "Neofetch package to be "
+                                             "installed.")},
                       "sendlog": {"args": None,
                                   "usage": ("Uploads the log file to the "
                                             "current chat.")}}

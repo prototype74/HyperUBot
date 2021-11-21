@@ -936,12 +936,12 @@ class ModuleUsages(object):
                       "storage": {"args": None,
                                   "usage": ("Zeigt Informationen über den "
                                             "Bot's Serverspeicher an.")},
-                      "sysd": {"args": None,
-                               "usage": ("Geben Sie .sysd ein, um "
-                                         "Systemrelevante Informationen "
-                                         "anzeigen zu lassen. "
-                                         "(neofetch muss "
-                                         "vorinstalliert sein)")},
+                      "neofetch": {"args": None,
+                                   "usage": ("Zeigt alle relevanten "
+                                             "Systeminformationen (sowohl "
+                                             "Hardware als auch Software) "
+                                             "vom Host an. Neofetch muss "
+                                             "zuvor installiert sein.")},
                       "sendlog": {"args": None,
                                   "usage": ("Ladet die Log-Datei im "
                                             "aktuellen Chat hoch.")}}

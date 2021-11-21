@@ -901,9 +901,12 @@ class ModuleUsages(object):
                       "storage": {"args": None,
                                   "usage": ("Apresenta informação sobre "
                                             "o armazenamento do servidor")},
-                      "sysd": {"args": None,
-                               "usage": ("Apresenta detalhes de sistema "
-                                         "(Requer neofetch)")},
+                      "neofetch": {"args": None,  # translation required
+                                   "usage": ("Show all relevant system "
+                                             "information (hardware and "
+                                             "software) from host. Requires "
+                                             "Neofetch package to be "
+                                             "installed.")},
                       "sendlog": {"args": None,
                                   "usage": ("Faz upload do log do bot "
                                             "para o chat atual")}}
