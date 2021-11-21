@@ -65,7 +65,6 @@ async def fetch_user(event=None, full_user=False,
         if not user:
             await event.edit(msgsLang.PERSON_ANONYMOUS)
             return (None, None) if get_chat else None
-            return
     else:
         try:
             # args_from_event becomes a list. it takes maximum of 2 arguments,
