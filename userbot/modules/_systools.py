@@ -179,15 +179,32 @@ async def restart(power_off):  # Totally not a shutdown kang *sips whiskey*
     await power_off.client.disconnect()
 
 
-@ehandler.on(command="sysd", outgoing=True)
-async def sysd(event):
+@ehandler.on(command="neofetch", alt="sysd", outgoing=True)
+async def neofetch(event):
+    await event.edit(msgRep.SYSD_GATHER_INFO)
     try:
-        await event.edit(msgRep.SYSD_GATHER_INFO)
         result = check_output("neofetch --stdout", shell=True).decode()
-        await event.edit(f"`{result}`")
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.SYSD_NEOFETCH_REQ)
+        return
+    # format output
+    temp = result.split("\n")
+    new_result = ""
+    for i, string in enumerate(temp):
+        if i == 0:
+            new_result += f"**{string}**\n"  # username@host
+        elif i == 1:
+            new_result += f"`{string}`\n"  # ----------------------
+        else:
+            if not string:
+                continue
+            try:
+                name, text = string.split(":", 1)
+                new_result += f"**{name}**:`{text}`\n"
+            except Exception:
+                new_result += f"`{string}`\n"
+    await event.edit(new_result)
     return
 
 
@@ -205,7 +222,7 @@ async def send_log(event):
     return
 
 
-for cmd in ("status", "storage", "shutdown", "reboot", "sysd", "sendlog"):
+for cmd in ("status", "storage", "shutdown", "reboot", "neofetch", "sendlog"):
     register_cmd_usage(cmd,
                        usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("args"),
                        usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("usage"))
