@@ -150,6 +150,7 @@ async def storage(event):
     result += (f"`{msgRep.STORAGE_HDD} "
                f"{textProgressBar(22, hdd.total, hdd.used)}`")
     await event.edit(result)
+    return
 
 
 @ehandler.on(command="shutdown", outgoing=True)
@@ -158,6 +159,7 @@ async def shutdown(power_off):
     if getConfig("LOGGING"):
         await event_log(power_off, "SHUTDOWN", custom_text=msgRep.SHUTDOWN_LOG)
     await power_off.client.disconnect()
+    return
 
 
 @ehandler.on(command="reboot", hasArgs=True, outgoing=True)
@@ -177,6 +179,7 @@ async def restart(power_off):  # Totally not a shutdown kang *sips whiskey*
     _setprop("rebootmsgid", power_off.message.id)
     _setprop("rebootmsg", msgRep.RESTARTED)
     await power_off.client.disconnect()
+    return
 
 
 @ehandler.on(command="neofetch", alt="sysd", outgoing=True)
