@@ -167,7 +167,7 @@ def _getAPIsAndSession() -> tuple:
             break
         elif len(api_hash) > 0:
             print(setColorText("Invalid input. API Hash should have a "
-                                   "length of 32 characters!", Colors.YELLOW))
+                               "length of 32 characters!", Colors.YELLOW))
         else:
             print(setColorText("Invalid input. Try again...",
                                Colors.YELLOW))
@@ -189,7 +189,7 @@ def _getAPIsAndSession() -> tuple:
 
 def _setup_password() -> str:
     print("Your password must have at least a length of 4 characters. "
-              "Maximum length is 1024 characters.")
+          "Maximum length is 1024 characters.")
     print()
     while True:
         try:
