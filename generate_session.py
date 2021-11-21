@@ -25,15 +25,17 @@ from telethon.sessions import StringSession  # noqa: E402
 IS_WINDOWS = (True if system().lower() == "windows" or
               name == "nt" or platform.startswith("win") else False)
 PY_EXEC = executable if " " not in executable else '"' + executable + '"'
-WIN_COLOR_ENABLED = False
 
-try:
-    if IS_WINDOWS:
+if IS_WINDOWS:
+    try:
         import colorama
         colorama.init()
         WIN_COLOR_ENABLED = True
-except:
-    pass
+    except (ImportError, ModuleNotFoundError):
+        WIN_COLOR_ENABLED = False
+    except Exception as e:
+        WIN_COLOR_ENABLED = False
+        print(f"Exception: {e}")
 
 
 class Colors:
@@ -111,7 +113,7 @@ try:
         try:
             API_KEY = int(API_KEY)
             break
-        except:
+        except ValueError:
             print(setColorText("Invalid input. Try again...", Colors.YELLOW))
 
     while True:
