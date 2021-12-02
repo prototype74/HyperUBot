@@ -24,20 +24,23 @@ import os  # noqa: E402
 IS_WINDOWS = (True if system().lower() == "windows" or
               os.name == "nt" or platform.startswith("win") else False)
 PY_EXEC = executable if " " not in executable else '"' + executable + '"'
+SECURE_CONFIG = os.path.join(".", "userbot", "secure_config")
 NOPIP = False
-WIN_COLOR_ENABLED = False
 
 if len(argv) >= 2:
     if argv[1].lower() == "-nopip":
         NOPIP = True
 
-try:
-    if IS_WINDOWS:
+if IS_WINDOWS:
+    try:
         import colorama
         colorama.init()
         WIN_COLOR_ENABLED = True
-except:
-    pass
+    except (ImportError, ModuleNotFoundError):
+        WIN_COLOR_ENABLED = False
+    except Exception as e:
+        WIN_COLOR_ENABLED = False
+        print(f"Exception: {e}")
 
 if IS_WINDOWS:
     import msvcrt
@@ -90,9 +93,9 @@ def _install_package(name: str, upgrade: bool = False) -> bool:
     return False
 
 
-def _check_setup_req() -> bool:
-    print("Checking for required packages...")
+def _get_pip_packages() -> dict:
     setup_req = {}
+    req_pip_names = ("Telethon", "pyAesCrypt", "cffi")
     try:
         out = check_output([PY_EXEC, "-m", "pip", "list", "--format", "json"],
                            stderr=DEVNULL)
@@ -100,44 +103,36 @@ def _check_setup_req() -> bool:
         for elem in out_json:
             name = elem.get("name")
             ver = elem.get("version")
-            if ((name == "Telethon" or name == "pyAesCrypt" or
-                 name == "cffi") and len(setup_req) < 3):
+            if ((name in req_pip_names) and len(setup_req) < 3):
                 setup_req[name] = ver
     except Exception as e:
         print(setColorText(f"Unable to get installed packages: {e}",
                            Colors.RED))
+        return {}
+    return setup_req
+
+
+def _check_setup_req() -> bool:
+    print("Checking for required packages...")
+    setup_req = _get_pip_packages()
+    if not setup_req:
         return False
 
+    req_pip_names = {
+        "Telethon": (1, 23, 0),
+        "pyAesCrypt": (6, 0, 0),
+        "cffi": (1, 15, 0)
+    }
     try:
-        # Telethon
-        if not setup_req.get("Telethon"):
-            if not _install_package("Telethon"):
-                return False
-        else:
-            telethon_version = tuple(
-                map(int, setup_req.get("Telethon").split(".")))
-            if telethon_version < (1, 23, 0):
-                if not _install_package("Telethon", True):
+        for name, ver in req_pip_names.items():
+            if not setup_req.get(name):
+                if not _install_package(name):
                     return False
-        # pyAesCrypt
-        if not setup_req.get("pyAesCrypt"):
-            if not _install_package("pyAesCrypt"):
-                return False
-        else:
-            pyAesCrypt_vesion = tuple(
-                map(int, setup_req.get("pyAesCrypt").split(".")))
-            if pyAesCrypt_vesion < (6, 0, 0):
-                if not _install_package("pyAesCrypt", True):
-                    return False
-        # cffi
-        if not setup_req.get("cffi"):
-            if not _install_package("cffi"):
-                return False
-        else:
-            cffi_version = tuple(map(int, setup_req.get("cffi").split(".")))
-            if cffi_version < (1, 15, 0):
-                if not _install_package("cffi", True):
-                    return False
+            else:
+                pkg_version = tuple(map(int, setup_req.get(name).split(".")))
+                if pkg_version < ver:
+                    if not _install_package(name, True):
+                        return False
     except Exception as e:
         print(setColorText(f"Failed to check requirements: {e}",
                            Colors.RED))
@@ -157,42 +152,34 @@ def _install_requirements():
 
 
 def _getAPIs() -> tuple:
-    api_key, api_hash = (None,)*2
-    try:
-        while True:
-            try:
-                api_key = input("Please enter your App api_id: ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            try:
-                api_key = int(api_key)
-                break
-            except:
-                print(setColorText("Invalid input. Try again...",
-                                   Colors.YELLOW))
+    while True:
+        try:
+            api_key = input("Please enter your App api_id: ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        try:
+            api_key = int(api_key)
+            break
+        except ValueError:
+            print(setColorText("Invalid input. Try again...",
+                               Colors.YELLOW))
 
-        while True:
-            try:
-                api_hash = input("Please enter your App api_hash: ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if len(api_hash) == 32:
-                break
-            elif len(api_hash) > 0:
-                print(setColorText("Invalid input. API Hash should have a "
-                                   "length of 32 characters!",
-                                   Colors.YELLOW))
-            else:
-                print(setColorText("Invalid input. Try again...",
-                                   Colors.YELLOW))
-        return (api_key, api_hash)
-    except KeyboardInterrupt:
-        raise KeyboardInterrupt
-    except:
-        pass
-    return (None, None)
+    while True:
+        try:
+            api_hash = input("Please enter your App api_hash: ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if len(api_hash) == 32:
+            break
+        elif len(api_hash) > 0:
+            print(setColorText("Invalid input. API Hash should have a "
+                               "length of 32 characters!",
+                               Colors.YELLOW))
+        else:
+            print(setColorText("Invalid input. Try again...", Colors.YELLOW))
+    return (api_key, api_hash)
 
 
 def _generateStringSession() -> tuple:
@@ -275,7 +262,7 @@ def _getpass(prompt):
     return password
 
 
-def _run_userbot():
+def _start_userbot():
     try:
         tcmd = [PY_EXEC, "-m", "userbot"]
         os.execle(PY_EXEC, *tcmd, os.environ)
@@ -284,7 +271,7 @@ def _run_userbot():
     return
 
 
-def main():
+def _greetings():
     print(setColorText("Welcome to HyperUBot's Setup Assistant!", Colors.CYAN))
     print("The Setup Assistant will guide you through all required "
           "processes to run HyperUBot on your device properly. It may "
@@ -304,20 +291,15 @@ def main():
         if con.lower() in ("y", "yes"):
             break
         elif con.lower() in ("n", "no"):
-            # not actually a keyboard interruption but same result
-            # as in KeyboardInterrupt exception block
             raise KeyboardInterrupt
         else:
             print(setColorText("Invalid input. Try again...",
                                Colors.YELLOW))
+    return
 
-    if not _userbot_installed():
-        print(setColorText("HyperUBot not installed", Colors.RED_BG))
-        return
 
-    secure_config = os.path.join(".", "userbot", "secure_config")
-
-    if os.path.exists(secure_config) and os.path.isfile(secure_config):
+def _check_setup_completed_already():
+    if os.path.exists(SECURE_CONFIG) and os.path.isfile(SECURE_CONFIG):
         print(setColorText("Seems like the setup is completed already "
                            "or done manually", Colors.GREEN))
         while True:
@@ -329,31 +311,14 @@ def main():
             if inp.lower() in ("y", "yes"):
                 break
             elif inp.lower() in ("n", "no"):
-                print("Alright, exiting Setup Assistant...")
-                return
+                raise KeyboardInterrupt
             else:
                 print(setColorText("Invalid input. Try again...",
                                    Colors.YELLOW))
+    return
 
-    if not NOPIP:
-        print()
-        check_setup_req = _check_setup_req()
-    else:
-        check_setup_req = True
-    print()
 
-    if not check_setup_req:
-        print(setColorText("All or some packages required for Setup Assistant "
-                           "are not present. Setup Assistant requires "
-                           "'Telethon>=1.23.0', 'pyAesCrypt>=6.0.0' and "
-                           "'cffi>=1.15.0'. Make sure these packages are "
-                           "installed in order to continue. "
-                           "Exiting Setup Assistant...",
-                           Colors.RED))
-        return
-
-    from pyAesCrypt import encryptFile
-
+def _pre_procedure():
     print("HyperUBot requires, like all other Telegram userbots, "
           "an App api_id (API Key), an App api_hash (API Hash) and a "
           "valid String Session in order to allow HyperUBot to login "
@@ -379,8 +344,7 @@ def main():
         if inp.lower() in ("y", "yes"):
             break
         elif inp.lower() in ("n", "no"):
-            print("Alright, exiting Setup Assistant...")
-            return
+            raise KeyboardInterrupt
         else:
             print(setColorText("Invalid input. Try again...",
                                Colors.YELLOW))
@@ -402,28 +366,14 @@ def main():
             print()
             break
         elif inp.lower() in ("n", "no"):
-            print("Alright, exiting Setup Assistant...")
-            return
+            raise KeyboardInterrupt
         else:
             print(setColorText("Invalid input. Try again...",
                                Colors.YELLOW))
+    return
 
-    api_key, api_hash, string_session = _generateStringSession()
 
-    if not api_key or not api_hash or not string_session:
-        print(
-            setColorText("Setup Assistant failed to get a new "
-                         "string session from your App app_id/app_hash",
-                         Colors.RED))
-        print(
-            setColorText("Feel free to contact us at Telegram "
-                         "'https://t.me/HyperUBotSupport' if you need help "
-                         "to handle this issue. Please keep a copy of the "
-                         "error above ready or take a screenshot of it",
-                         Colors.YELLOW))
-        return
-
-    print()
+def _post_procedure() -> bool:
     print("As the App api_id, App api_hash and String Session are valid, it's "
           "important to store them into a secured configuration file "
           "to avoid unauthorized access to these values. There is also an "
@@ -435,7 +385,6 @@ def main():
                        Colors.YELLOW))
     print()
 
-    set_pwd = False
     while True:
         try:
             inp = input("Set password? (y/n): ")
@@ -446,44 +395,47 @@ def main():
             set_pwd = True
             break
         elif inp.lower() in ("n", "no"):
+            set_pwd = False
             break
         else:
             print(setColorText("Invalid input. Try again...", Colors.YELLOW))
+    return set_pwd
 
-    password = ""
-    if set_pwd:
-        print()
-        print("Your password must have at least a length of 4 characters. "
-              "Maximum length is 1024 characters.")
-        print()
-        while True:
-            try:
-                password = _getpass("Your new password: ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if len(password) >= 4 and len(password) <= 1024:
-                break
-            elif len(password) < 4:
-                print(setColorText("Password too short.", Colors.YELLOW))
-            elif len(password) > 1024:
-                print(setColorText("Password too long.", Colors.YELLOW))
-            else:
-                print(setColorText("Invalid input. Try again...",
-                                   Colors.YELLOW))
-        while True:
-            try:
-                retype_pwd = _getpass("Retype your password: ")
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if password == retype_pwd:
-                break
-            else:
-                print(setColorText("Passwords did not match. Try again...",
-                                   Colors.YELLOW))
 
+def _setup_password() -> str:
+    print("Your password must have at least a length of 4 characters. "
+          "Maximum length is 1024 characters.")
     print()
+    while True:
+        try:
+            password = _getpass("Your new password: ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if len(password) >= 4 and len(password) <= 1024:
+            break
+        elif len(password) < 4:
+            print(setColorText("Password too short.", Colors.YELLOW))
+        elif len(password) > 1024:
+            print(setColorText("Password too long.", Colors.YELLOW))
+        else:
+            print(setColorText("Invalid input. Try again...",
+                               Colors.YELLOW))
+    while True:
+        try:
+            retype_pwd = _getpass("Retype your password: ")
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if password == retype_pwd:
+            break
+        else:
+            print(setColorText("Passwords did not match. Try again...",
+                               Colors.YELLOW))
+    return password
+
+
+def _select_config_type() -> str:
     print("HyperUBot supports additional configurations such as logging, "
           "download path for temporary downloads etc.\n"
           "There are 3 types: Environment (config.env), configuration file "
@@ -515,7 +467,10 @@ def main():
         else:
             print(setColorText("Invalid input. Try again...",
                                Colors.YELLOW))
+    return config_file
 
+
+def _select_language() -> str:
     langs = {"1": {"text": "English/English", "code": "en"},
              "2": {"text": "German/Deutsch", "code": "de"},
              "3": {"text": "Portuguese/Português", "code": "pt"}}
@@ -556,13 +511,17 @@ def main():
         else:
             print(setColorText("Invalid input. Try again...",
                                Colors.YELLOW))
+    return lang_code
 
-    print(f"Writing configuration files...")
+
+def _secure_configs(api_key: int, api_hash: str,
+                    string_session: str, password: str) -> bool:
+    from pyAesCrypt import encryptFile
     try:
         if os.path.exists("_temp.py"):
             os.remove("_temp.py")
-        if os.path.exists(secure_config) and os.path.isfile(secure_config):
-            os.remove(secure_config)
+        if os.path.exists(SECURE_CONFIG) and os.path.isfile(SECURE_CONFIG):
+            os.remove(SECURE_CONFIG)
         secure_configs = (f'API_KEY = "{api_key}"\n'
                           f'API_HASH = "{api_hash}"\n'
                           f'STRING_SESSION = "{string_session}"')
@@ -571,19 +530,22 @@ def main():
         temp_file.close()
         print(f"Securing API configurations...")
         encryptFile(infile="_temp.py",
-                    outfile=secure_config,
+                    outfile=SECURE_CONFIG,
                     passw=password,
                     bufferSize=(64 * 1024))
         os.remove("_temp.py")
-        if not os.path.exists(secure_config):
+        if not os.path.exists(SECURE_CONFIG):
             print(setColorText("Failed to secure configurations", Colors.RED))
-            return
+            return False
     except Exception as e:
         print(
             setColorText(f"Failed to secure configurations: {e}",
                          Colors.RED))
-        return
+        return False
+    return True
 
+
+def _optional_configs(config_file: str, lang_code: str) -> bool:
     try:
         dl_path = os.path.join(".", "downloads")  # default path
         if config_file.endswith(".env"):
@@ -628,19 +590,15 @@ def main():
             print(f"Writing optional configuration file in {config_file}")
             cfg_file.write(configs)
         cfg_file.close()
+        return True
     except Exception as e:
         print(
             setColorText(f"Failed to write optional configuration file: {e}",
                          Colors.RED))
-        return
+    return False
 
-    if not NOPIP:
-        print("Installing required pip packages...")
-        _install_requirements()
 
-    print()
-    print(setColorText("Yaaaay! Setup completed! :P", Colors.GREEN))
-    print()
+def _suggest_start_option():
     start_bot_text = ("Do you wish to start HyperUBot now? You can always "
                       "start it by executing 'python3 -m userbot' in "
                       "HyperUBot's directory.")
@@ -658,7 +616,7 @@ def main():
                 print()
                 raise KeyboardInterrupt
             if inp.lower() in ("y", "yes"):
-                _run_userbot()
+                _start_userbot()
                 break
             elif inp.lower() in ("n", "no"):
                 break
@@ -668,11 +626,86 @@ def main():
     return
 
 
+def main():
+    _greetings()
+    _check_setup_completed_already()
+
+    if not _userbot_installed():
+        print(setColorText("HyperUBot is not installed", Colors.RED_BG))
+        return
+
+    if not NOPIP:
+        print()
+        check_setup_req = _check_setup_req()
+    else:
+        check_setup_req = True
+    print()
+
+    if not check_setup_req:
+        print(setColorText("All or some packages required for Setup Assistant "
+                           "are not present. Setup Assistant requires "
+                           "'Telethon>=1.23.0', 'pyAesCrypt>=6.0.0' and "
+                           "'cffi>=1.15.0'. Make sure these packages are "
+                           "installed in order to continue. "
+                           "Exiting Setup Assistant...",
+                           Colors.RED))
+        return
+
+    _pre_procedure()
+
+    api_key, api_hash, string_session = _generateStringSession()
+
+    if not api_key or not api_hash or not string_session:
+        print(
+            setColorText("Setup Assistant failed to get a new "
+                         "string session from your App app_id/app_hash",
+                         Colors.RED))
+        print(
+            setColorText("Feel free to contact us at Telegram "
+                         "'https://t.me/HyperUBotSupport' if you need help "
+                         "to handle this issue. Please keep a copy of the "
+                         "error above ready or take a screenshot of it",
+                         Colors.YELLOW))
+        return
+
+    print()
+
+    set_pwd = _post_procedure()
+
+    password = ""
+    if set_pwd:
+        print()
+        password = _setup_password()
+
+    print()
+    config_file = _select_config_type()
+    lang_code = _select_language()
+
+    print(f"Writing configuration files...")
+    cfg_secured = _secure_configs(api_key, api_hash, string_session, password)
+    if not cfg_secured:
+        return
+
+    opt_created = _optional_configs(config_file, lang_code)
+    if not opt_created:
+        return
+
+    if not NOPIP:
+        print("Installing required pip packages...")
+        _install_requirements()
+
+    print()
+    print(setColorText("Yaaaay! Setup completed! :P", Colors.GREEN))
+    print()
+    _suggest_start_option()
+    return
+
+
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("Exiting...")
+        print("Alright, exiting Setup Assistant...")
     except (BaseException, Exception) as e:
         print(setColorText(f"Setup Assistant stopped: {e}",
                            Colors.RED_BG))
