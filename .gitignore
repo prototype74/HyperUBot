@@ -1,5 +1,4 @@
 # HyperUBot stuff
-.vscode/*
 hyper.log
 backup/*
 releases/*
@@ -17,4 +16,5 @@ userbot/__pycache__/*
 userbot/*/__pycache__/*
 
 # misc
+.vscode/*
 downloads/*
