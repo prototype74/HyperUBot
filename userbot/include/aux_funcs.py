@@ -259,7 +259,7 @@ def shell_runner(commands: list):
 
 
 # Systools/Webtools
-def pinger(address) -> str:
+def pinger(address: str) -> str:
     """
     Ping an IP or DNS server from given address
 
@@ -276,20 +276,19 @@ def pinger(address) -> str:
         result = ping(address, count=1, interval=0.1,
                       timeout=2, privileged=False)
         return f"{result.avg_rtt} ms"
-    except:
+    except Exception:
         try:
-            out = check_output(
-                f"ping -c 1 {address} | grep time=", shell=True).decode()
-            splitOut = out.split(" ")
-            stringtocut = ""
-            for line in splitOut:
-                if line.startswith("time="):
-                    stringtocut = line
+            out = check_output(["ping", "-c", "1", address]).decode()
+            out = out.split("\n")
+            rtt_line = ""
+            for elem in out:
+                if "min/avg/max" in elem:
+                    rtt_line = elem
                     break
-            newstra = stringtocut.split("=")
-            newstr = newstra[1].split(" ")
-            ping_time = float(newstr[0])
-            return f"{ping_time} ms"
+            rtt_line = rtt_line.replace(" ", "")
+            rtt_line = rtt_line.split("=")[-1]
+            rtt_line = rtt_line.split("/")[0]
+            return f"{rtt_line} ms"
         except Exception as e:
             log.warning(f"pinger: {e}")
     return "-- ms"
