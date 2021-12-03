@@ -1,4 +1,5 @@
 # HyperUBot stuff
+.vscode/*
 hyper.log
 backup/*
 releases/*
