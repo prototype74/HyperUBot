@@ -11,7 +11,7 @@ from userbot.sysutils.configuration import getConfig
 from telethon.tl.types import PeerUser, PeerChannel, User
 from telethon.tl.functions.users import GetFullUserRequest
 from logging import getLogger
-from subprocess import check_output, CalledProcessError
+from subprocess import check_output
 from asyncio import create_subprocess_exec as asyncr
 from asyncio.subprocess import PIPE as asyncPIPE
 from shutil import which
@@ -233,29 +233,6 @@ def format_chat_id(chat) -> int:
     except Exception as e:
         log.error(f"Failed to format chat id")
     return chat_id
-
-
-def shell_runner(commands: list):
-    """
-    Execute shell commands from given list with strings
-
-    Args:
-        commands (list): list of a shell command (with options)
-
-    Example:
-        output = shell_runner(["ls", "-l"])
-        print(output)
-
-    Returns:
-        The output as a string
-    """
-    full_cmd = ""
-    for cmd in commands:
-        full_cmd += cmd + " "
-    try:
-        return check_output(full_cmd, shell=True).decode()
-    except CalledProcessError:
-        return None
 
 
 # Systools/Webtools
