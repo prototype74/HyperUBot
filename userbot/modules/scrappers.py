@@ -27,11 +27,12 @@ from gtts.tts import gTTSError
 from logging import getLogger
 from pydub import AudioSegment
 from os import remove, rename
-from os.path import exists, getmtime, join
+from os.path import exists, getmtime, join, dirname
 from speech_recognition import (AudioFile, Recognizer, UnknownValueError,
                                 RequestError)
-from urllib.request import urlretrieve
+from urllib.request import urlopen
 from zipfile import BadZipFile, ZipFile
+from certifi import where as ca_where
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
@@ -233,8 +234,11 @@ def update_currency_data():
     try:
         zipfile = join(userdata_dir, "currency.zip")
         # get latest data from the European Central Bank
-        data_history = urlretrieve(
-            "http://www.ecb.int/stats/eurofxref/eurofxref-hist.zip", zipfile)
+        z = urlopen("https://www.ecb.int/stats/eurofxref/eurofxref-hist.zip",
+                    cafile=ca_where(), capath=dirname(ca_where()))
+        with open(zipfile, "wb") as cur_zip:
+            cur_zip.write(z.read())
+        cur_zip.close()
     except Exception as e:
         log.warning(f"Unable to download updated data history: {e}")
         return
@@ -250,7 +254,7 @@ def update_currency_data():
                     break
             zipObject.close()
         try:
-            rename(join(userdata_dir, filename), CC_CSV_PATH)
+            rename(join(userdata_dir, csv_filename), CC_CSV_PATH)
             log.info("[CURRENCY] data history successfully updated")
         except Exception as e:
             log.warning(f"Unable to rename csv file: {e}")
