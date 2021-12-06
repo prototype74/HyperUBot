@@ -254,6 +254,12 @@ def update_currency_data():
                     break
             zipObject.close()
         try:
+            if exists(CC_CSV_PATH):
+                remove(CC_CSV_PATH)
+        except Exception as e:
+            log.warning(f"Unable to delete old csv file: {e}")
+            return
+        try:
             rename(join(userdata_dir, csv_filename), CC_CSV_PATH)
             log.info("[CURRENCY] data history successfully updated")
         except Exception as e:
