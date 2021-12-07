@@ -19,6 +19,7 @@ from icmplib import ping
 
 log = getLogger(__name__)
 
+
 async def fetch_user(event=None, full_user=False,
                      get_chat=False, org_author=False):
     """
@@ -74,7 +75,7 @@ async def fetch_user(event=None, full_user=False,
                 user, chat = args_from_event
                 try:
                     chat = int(chat)  # chat ID given
-                except:
+                except ValueError:
                     pass
 
                 try:
@@ -96,7 +97,7 @@ async def fetch_user(event=None, full_user=False,
 
         try:
             user = int(user)
-        except:
+        except ValueError:
             pass
 
         if not user:
@@ -311,7 +312,6 @@ def sizeStrMaker(size: float, value: int = 0):
     if size < 1024:
         size_units = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
         return str(round(size, 2)) + " " + size_units[value]
-    else:
-        size /= 1024
-        value += 1
-        return sizeStrMaker(size, value)
+    size /= 1024
+    value += 1
+    return sizeStrMaker(size, value)

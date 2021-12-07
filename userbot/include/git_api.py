@@ -17,7 +17,7 @@ def getData(repoURL):
         with url.urlopen(APIURL + repoURL + "/releases") as data_raw:
             repoData = json.loads(data_raw.read().decode())
             return repoData
-    except:
+    except Exception:
         return None
 
 
@@ -30,8 +30,7 @@ def getLatestData(repoURL):
 def getReleaseData(repoData, index):
     if index < len(repoData):
         return repoData[index]
-    else:
-        return None
+    return None
 
 
 # Release-wise stuff

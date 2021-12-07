@@ -50,7 +50,7 @@ async def get_chatinfo(event):
     else:
         try:
             chat = int(chat)
-        except:
+        except ValueError:
             pass
 
     if not chat:
@@ -59,7 +59,7 @@ async def get_chatinfo(event):
     try:
         chat_info = await event.client(GetFullChatRequest(chat))
         return chat_info
-    except:
+    except Exception:
         try:
             chat_info = await event.client(GetFullChannelRequest(chat))
             return chat_info
@@ -72,7 +72,6 @@ async def get_chatinfo(event):
         except Exception as e:
             log.warning(e)
             await event.edit(msgRep.CANNOT_GET_CHATINFO.format(chat))
-
     return None
 
 
@@ -93,7 +92,7 @@ async def fetch_info(chat, event):
                               max_id=0,
                               min_id=0,
                               hash=0))
-    except:
+    except Exception:
         msg_info = None
     first_msg_valid = (True if msg_info and msg_info.messages and
                        msg_info.messages[0].id == 1 else False)
@@ -107,7 +106,6 @@ async def fetch_info(chat, event):
     dc_id = (chat.full_chat.chat_photo.dc_id
              if hasattr(chat.full_chat.chat_photo, "dc_id") else
              msgRep.UNKNOWN)
-    # Prototype's spaghetti, although already salted by me
     description = chat.full_chat.about
     members = (chat.full_chat.participants_count
                if hasattr(chat.full_chat, "participants_count") else
@@ -169,7 +167,6 @@ async def fetch_info(chat, event):
                 if c.username is not None:
                     linked_chat_username = "@" + c.username
                 break
-    # End of spaghetti block
 
     try:
         is_channel_obj = True if isinstance(chat_obj_info, Channel) else False
@@ -187,7 +184,7 @@ async def fetch_info(chat, event):
                     break
             if is_channel_obj:
                 admins += 1
-    except:
+    except Exception:
         pass
 
     caption = msgRep.CHATINFO
@@ -279,7 +276,6 @@ async def fetch_info(chat, event):
         caption += msgRep.VERFIED.format(verified)
     if description:
         caption += msgRep.DESCRIPTION.format(description)
-
     return caption
 
 
@@ -298,7 +294,6 @@ async def chatinfo(event):
     except Exception as e:
         log.error(e, exc_info=True)
         await event.edit(msgRep.EXCEPTION)
-
     return
 
 
@@ -318,12 +313,12 @@ async def chatid(event):
     if arg:
         try:
             arg = int(arg)
-        except:
+        except ValueError:
             pass
 
         try:
             chat = await event.client.get_entity(arg)
-        except:
+        except Exception:
             await event.edit(msgRep.LINK_INVALID_ID)
             return
     else:
@@ -353,7 +348,6 @@ async def chatid(event):
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.UNABLE_GET_LINK)
-
     return
 
 

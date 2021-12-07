@@ -108,19 +108,20 @@ async def stats(event):
      group_owner, group_admin, super_group_owner, super_group_admin,
      bot_blocked, user_blocked, total_blocks, channel_owner,
      channel_admin) = (0,)*16
-    blocked_ids = []
 
     await event.edit(msgRep.STATS_PROCESSING)
 
     try:
+        blocked_ids = []
         block_obj = await event.client(GetBlockedRequest(offset=0,
                                                          limit=2147483647))
         if block_obj.blocked:
             for user in block_obj.blocked:
                 blocked_ids.append(user.peer_id.user_id)
             total_blocks = len(blocked_ids)
-    except:
-        pass
+    except Exception:
+        log.error("Failed to list blocked accounts", exc_info=True)
+        blocked_ids = []
 
     async for dialog in event.client.iter_dialogs(ignore_migrated=True):
         total += 1
@@ -208,7 +209,7 @@ async def fetch_info(user_obj, event):
                                  limit=80))
         user_pfps_count = (user_pfps.count
                            if hasattr(user_pfps, "count") else 0)
-    except:
+    except Exception:
         user_pfps_count = 0
     user_id = user_obj.user.id
     user_deleted = user_obj.user.deleted

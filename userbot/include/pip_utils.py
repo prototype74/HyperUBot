@@ -38,10 +38,8 @@ def checkPkgByDist(dist_name: str) -> bool:
     try:
         get_distribution(dist_name)
         return True
-    except:
-        pass
-    return False
-
+    except Exception:
+        return False
 
 def checkPkgByImport(import_name: str) -> bool:
     """
@@ -89,8 +87,9 @@ def getVersionFromDist(dist_name):
         for elem in out_json:
             if elem.get("name").lower() == dist_name.lower():
                 return elem.get("version")
-    except:
-        pass
+    except Exception:
+        log.error(f"Failed to get version of the distribution '{dist_name}'",
+                  exc_info=True)
     return
 
 

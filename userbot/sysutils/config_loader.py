@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 from .colors import Color, setColorText
-from .configuration import addConfig, getConfig
+from .configuration import addConfig
 from .errors import UnauthorizedAccessError
 from .getpass import getpass
 from .sys_funcs import isWindows
@@ -83,10 +83,10 @@ class _ConfigLoader:
                     else:  # default case
                         try:
                             value = int(value)
-                        except:
+                        except ValueError:
                             try:
                                 value = float(value)
-                            except:
+                            except ValueError:
                                 pass
                         addConfig(key, value)
         if is_safemode:
@@ -121,17 +121,17 @@ class _ConfigLoader:
                         else:  # default case
                             try:
                                 value = int(value)
-                            except:
+                            except ValueError:
                                 try:
                                     value = float(value)
-                                except:
+                                except ValueError:
                                     pass
                             addConfig(key, value)
         if is_safemode:
             try:
                 addConfig("UBOT_LANG", configs["CONFIGS"].get("UBOT_LANG",
                                                               fallback="en"))
-            except:
+            except KeyError:
                 addConfig("UBOT_LANG", "en")
         self.__configs_loaded = True
         return
@@ -163,7 +163,7 @@ class _ConfigLoader:
             if cfg_loadable:
                 cfg_loadable = False
         if not is_safemode and cfg_loadable:
-            for name, cfgclass in getmembers(cfg, isclass):
+            for _, cfgclass in getmembers(cfg, isclass):
                 for attr_name in vars(cfgclass):
                     attr_val = getattr(cfgclass, attr_name)
                     if not attr_name.startswith("__") and \
@@ -178,7 +178,7 @@ class _ConfigLoader:
                        if hasattr(cfg.ConfigClass, "UBOT_LANG") else "en"))
         try:
             del cfg
-        except:
+        except Exception:
             pass
         self.__configs_loaded = True
         return
@@ -379,7 +379,7 @@ class _SecureConfigLoader:
                                 os.path.join(".", "userbot", "userdata",
                                              "__pycache__", name))
                             break
-            except:
+            except Exception:
                 pass
         del s_cfg
         return (api_key, api_hash, string_session)

@@ -37,7 +37,7 @@ async def adminlist(event):
     if arg:
         try:
             arg = int(arg)
-        except:
+        except ValueError:
             pass
 
         try:
@@ -128,7 +128,6 @@ async def ban(event):
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.BAN_FAILED)
-
     return
 
 
@@ -180,7 +179,6 @@ async def unban(event):
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.UNBAN_FAILED)
-
     return
 
 
@@ -231,7 +229,6 @@ async def kick(event):
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.KICK_FAILED)
-
     return
 
 
@@ -296,7 +293,7 @@ async def promote(event):
                 else:
                     await event.edit(msgRep.ADMIN_ALREADY)
                 return
-    except:
+    except Exception:
         pass
 
     try:
@@ -343,7 +340,6 @@ async def promote(event):
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.PROMOTE_FAILED)
-
     return
 
 
@@ -401,7 +397,7 @@ async def demote(event):
             await event.edit(msgRep.DEMOTED_ALREADY)
             return
         user_is_admin = True if user.id in admins else False
-    except:
+    except Exception:
         pass
 
     try:
@@ -434,7 +430,6 @@ async def demote(event):
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.DEMOTE_FAILED)
-
     return
 
 
@@ -494,7 +489,6 @@ async def mute(event):
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.MUTE_FAILED)
-
     return
 
 
@@ -550,7 +544,6 @@ async def unmute(event):
     except Exception as e:
         log.warning(e)
         await event.edit(msgRep.UNMUTE_FAILED)
-
     return
 
 
@@ -558,15 +551,14 @@ async def unmute(event):
 async def delaccs(event):
     arg_from_event = event.pattern_match.group(1)
     if arg_from_event:
-        is_id = False
         try:
             arg_from_event = int(arg_from_event)
             is_id = True
-        except:
-            pass
+        except ValueError:
+            is_id = False
         try:
             chat = await event.client.get_entity(arg_from_event)
-        except:
+        except Exception:
             if is_id:
                 await event.edit(msgRep.INVALID_ID)
             else:
@@ -590,7 +582,7 @@ async def delaccs(event):
                     await event.client.kick_participant(chat.id, member.id)
                     await sleep(0.2)
                     rem_del_accounts += 1
-                except:
+                except Exception:
                     pass
 
     remote = isRemoteCMD(event, chat.id)

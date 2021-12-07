@@ -55,11 +55,7 @@ class EventHandler:
         Returns:
             True if command string is valid else False
         """
-        try:
-            return True if match("^[A-Za-z0-9]*$", command) else False
-        except:
-            pass
-        return False
+        return True if match("^[A-Za-z0-9]*$", command) else False
 
     def on(self, command: str, alt: str = None,
            hasArgs: bool = False, ignore_edits: bool = False, *args, **kwargs):
@@ -134,7 +130,7 @@ class EventHandler:
                         # get current executed command
                         curr_cmd = (
                             event.pattern_match.group(0).split(" ")[0][1:])
-                    except:
+                    except Exception:
                         curr_cmd = command
                     self.log.error(f"Command '{curr_cmd}' stopped due to an "
                                    "unhandled exception in function "
@@ -144,7 +140,7 @@ class EventHandler:
                         cmd_stopped = (
                             msgResp.CMD_STOPPED.format(f"{curr_cmd}.exe"))
                         await event.edit(f"`{cmd_stopped}`")
-                    except:
+                    except Exception:
                         pass
             if alt:
                 cmd_regex = (fr"^\.(?:{command}|{alt})(?: |$)(.*)"
@@ -337,7 +333,7 @@ class EventHandler:
                             cmd_stopped = (
                                 msgResp.CMD_STOPPED.format(f'{name}.exe'))
                             await event.edit(f"`{cmd_stopped}`")
-                        except:
+                        except Exception:
                             pass
                     else:
                         self.log.error(f"Feature '{name}' stopped due to "

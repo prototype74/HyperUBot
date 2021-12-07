@@ -290,7 +290,7 @@ async def cc(event):
 
     try:
         amount = "{:.2f}".format(float(amount.replace(",", ".")))
-    except:
+    except Exception:
         await event.edit(msgRep.INVALID_AMOUNT_FORMAT)
         return
 

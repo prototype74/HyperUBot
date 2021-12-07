@@ -98,11 +98,7 @@ def _set_autoupdate(chat_id: int, msg_id: int,
 
 
 async def _is_git_repo() -> bool:
-    try:
-        return True if await getGitReview() else False
-    except:
-        pass
-    return False
+    return True if await getGitReview() else False
 
 
 def _parse_datetime(date) -> str:
@@ -110,7 +106,7 @@ def _parse_datetime(date) -> str:
         dt = parse(date)
         date_format = f"`{dt.strftime('%b %d, %Y')}`"
         return date_format
-    except:
+    except Exception:
         log.warning("Failed to parse publish date")
     return date
 

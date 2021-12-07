@@ -38,7 +38,7 @@ def _update_module_source(filename: str):
         with open(pkg_lists, "r") as pkg_json:
             pkg_data = json.load(pkg_json)
         pkg_json.close()
-    except:
+    except Exception:
         log.error("Failed to read JSON", exc_info=True)
         return
 
@@ -63,7 +63,7 @@ def _update_module_source(filename: str):
             json.dump(pkg_data, pkg_json, indent=4)
         pkg_json.close()
         log.info("Module sources list updated")
-    except:
+    except Exception:
         log.error("Failed to write JSON", exc_info=True)
     return
 
@@ -109,7 +109,7 @@ async def sideload(event):
             await event.edit(msgRep.NOT_PY_FILE)
             try:
                 os.remove(dest_path)
-            except:
+            except OSError:
                 pass
             return
         _update_module_source(file_name)

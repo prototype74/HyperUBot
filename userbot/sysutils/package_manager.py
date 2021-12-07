@@ -66,7 +66,7 @@ class _PackageManagerJSON:
             with open(self.__filename, "r") as js:
                 try:
                     data = json.load(js)
-                except:
+                except Exception:
                     log.error("JSON file is invalid. Resetting...")
                     if not self.__init_failed:
                         self._init_json(True)
@@ -88,7 +88,7 @@ class _PackageManagerJSON:
             with open(self.__filename, "r") as js:
                 try:
                     data = json.load(js)
-                except:
+                except Exception:
                     pass
             js.close()
             return data

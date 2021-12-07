@@ -72,8 +72,7 @@ async def list_commands(event):
             cmd_info += f"{msgRep.USAGE}: {cmd_usage}\n\n"
             await event.edit(cmd_info)
             return
-        else:
-            cmd_not_found = True
+        cmd_not_found = True
 
     cmds_amount = len(cmds_dict)
     all_cmds = f"**{msgRep.LISTCMDS_TITLE} ({cmds_amount})**\n\n"
@@ -87,6 +86,7 @@ async def list_commands(event):
         else:
             all_cmds += f"`{cmd}`\t\t\t\t"
     await event.edit(all_cmds)
+    return
 
 
 def update_list() -> list:
@@ -198,11 +198,9 @@ def module_desc(name_of_module: str, module: str) -> str:
         if module in getModuleDesc():
             return (msgRep.NAME_MODULE.format(name_of_module) +
                     "\n\n" + getModuleDesc().get(module))
-        else:
-            return (msgRep.NAME_MODULE.format(name_of_module) +
-                    "\n\n" + msgRep.MODULE_NO_DESC)
-    else:
-        raise IndexError
+        return (msgRep.NAME_MODULE.format(name_of_module) +
+                "\n\n" + msgRep.MODULE_NO_DESC)
+    raise IndexError
 
 
 def module_info(name_of_module: str, module: str) -> str:
@@ -241,8 +239,7 @@ def module_info(name_of_module: str, module: str) -> str:
         result += f"{msgRep.SIZE}: {size}\n"
         result += f"{msgRep.INSTALL_DATE}: {ctime(installation_date)}"
         return msgRep.NAME_MODULE.format(name_of_module) + "\n\n" + result
-    else:
-        raise IndexError
+    raise IndexError
 
 
 def module_usage(name_of_module: str, module: str) -> str:
@@ -281,8 +278,7 @@ def module_usage(name_of_module: str, module: str) -> str:
         if not cmds_usage_registered:
             usage += msgRep.MODULE_NO_USAGE
         return usage
-    else:
-        raise IndexError
+    raise IndexError
 
 
 @ehandler.on(command="modules", alt="module", hasArgs=True, outgoing=True)

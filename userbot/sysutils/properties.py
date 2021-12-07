@@ -251,10 +251,10 @@ class Properties:
             else:
                 try:
                     value = int(value)
-                except:
+                except ValueError:
                     try:
                         value = float(value)
-                    except:
+                    except ValueError:
                         pass
         return value
 
@@ -371,7 +371,6 @@ class _SysProperties:
         value = None
         for section in self.__parser.sections():
             if section == "SYSTEM":
-                section_found = True
                 value = self.__parser["SYSTEM"].get(key.lower())
                 break
         if value:
@@ -385,9 +384,9 @@ class _SysProperties:
             else:
                 try:  # integer
                     value = int(value)
-                except:
+                except ValueError:
                     try:  # float
                         value = float(value)
-                    except:
+                    except ValueError:
                         pass
         return value

@@ -30,7 +30,7 @@ class _SysServices:
         try:
             self.__hyper_logger._stop_logging()
             shutdown()
-        except:
+        except Exception:
             pass
         return
 
@@ -55,7 +55,6 @@ class _SysServices:
         tcmd = [py_exec]
         for cmd in commands:
             tcmd.append(cmd)
-        cmds = " ".join(tcmd)
         self.__shutdown_logging()
         print()
         os.execle(py_exec, *tcmd, os.environ)

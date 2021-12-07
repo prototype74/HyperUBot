@@ -158,10 +158,10 @@ async def send_welcome_msg(client, ownerID: int):
         try:
             from telethon.tl.functions.messages import MarkDialogUnreadRequest
             await client(MarkDialogUnreadRequest(ownerID, True))
-        except:
-            pass
-    except:
-        log.warning("Failed to send welcome message")
+        except Exception as e:
+            log.warning(f"Failed to set saved messages as unread: {e}")
+    except Exception as e:
+        log.warning(f"Failed to send welcome message: {e}")
     return
 
 
@@ -193,16 +193,15 @@ def run_client():
             options.pop()
             _services._suggest_options(options)
             raise KeyboardInterrupt
-        else:
-            try:
-                option = _services._suggest_options(options)
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if option == 1:
-                _services._start_scfg_updater()
-            elif option == 2:
-                KeyboardInterrupt
+        try:
+            option = _services._suggest_options(options)
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if option == 1:
+            _services._start_scfg_updater()
+        elif option == 2:
+            raise KeyboardInterrupt
     except PhoneNumberInvalidError:
         log.critical("Phone number is not valid", exc_info=True)
         options = ["Start String Session Generator",
@@ -212,16 +211,15 @@ def run_client():
             options.pop()
             _services._suggest_options(options)
             raise KeyboardInterrupt
-        else:
-            try:
-                option = _services._suggest_options(options)
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if option == 1:
-                _services._start_session_gen()
-            if option == 2:
-                raise KeyboardInterrupt
+        try:
+            option = _services._suggest_options(options)
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if option == 1:
+            _services._start_session_gen()
+        if option == 2:
+            raise KeyboardInterrupt
     except PhoneNumberBannedError as pbe:
         log.critical(f"Phone number banned: {pbe}", exc_info=True)
         log.warning("The phone number is banned, something HyperUBot can't "
@@ -251,19 +249,18 @@ def run_client():
             options.pop()
             _services._suggest_options(options)
             raise KeyboardInterrupt
-        else:
-            try:
-                option = _services._suggest_options(options)
-            except KeyboardInterrupt:
-                print()
-                raise KeyboardInterrupt
-            if option == 1:
-                _services._reboot_recovery(False)
-            elif option == 2:
-                log.info(contact_text)
-                raise KeyboardInterrupt
-            elif option == 3:
-                raise KeyboardInterrupt
+        try:
+            option = _services._suggest_options(options)
+        except KeyboardInterrupt:
+            print()
+            raise KeyboardInterrupt
+        if option == 1:
+            _services._reboot_recovery(False)
+        elif option == 2:
+            log.info(contact_text)
+            raise KeyboardInterrupt
+        elif option == 3:
+            raise KeyboardInterrupt
     return
 
 
@@ -271,8 +268,8 @@ def shutdown_logging():
     try:
         __hyper_logger__._stop_logging()
         shutdown()
-    except:
-        pass
+    except Exception:
+        print("Exception: Failed to close logger")
     return
 
 

@@ -88,7 +88,7 @@ async def _update_pkg_list(event, repo_names=None):
                     _1, _2 = c_repo.split("/")
                     if c_repo not in repos:
                         repos.append(c_repo)
-                except:
+                except Exception:
                     pass  # just ignore
         for repo in pkg_repos:
             repo_author = repo.get("author", "Unknown")
@@ -115,7 +115,7 @@ async def _update_pkg_list(event, repo_names=None):
     for r in repos:
         try:
             r_author, r_name = r.split("/")
-        except:
+        except Exception:
             log.warning(f"[UPDATE] Invalid repo URL format: {r}")
             text += f"{warning} {msgRep.INVALID_REPO_URL}: {r}\n"
             if event:
@@ -176,8 +176,8 @@ def _update_needed() -> bool:
         date_diff = datetime.now() - datetime.fromisoformat(
             _pkg_list.get("last_updated"))
         return date_diff > timedelta(hours=1)
-    except:
-        pass
+    except Exception:
+        log.warning("Unable to check required update", exc_info=True)
     return False
 
 
@@ -328,7 +328,7 @@ async def _list_pkgs(command: str) -> str:
     try:
         time = datetime.fromisoformat(time)
         time = time.strftime("%Y-%m-%d %H:%M:%S")
-    except:
+    except Exception:
         time = msgRep.NEVER
     text += f"__{msgRep.LAST_UPDATED}: {time}__"
     return text
@@ -400,7 +400,7 @@ async def _install_pkgs(event, command: str):
             repo_url, mods = sec_arg[0], None
         try:
             r_author, r_name = repo_url.split("/")
-        except:
+        except Exception:
             text += ("f{warning} {msgRep.INVALID_REPO_URL}: {repo_url}\n")
             await event.edit(text)
             return
@@ -528,7 +528,7 @@ async def _install_pkgs(event, command: str):
                 await event.edit(text)
                 try:
                     os.remove(module_path)
-                except:
+                except Exception:
                     pass
                 continue
             log.info(f"[INSTALL] Module '{curr_module}' has been installed")
@@ -600,7 +600,7 @@ async def _uninstall_pkgs(event, module_names: str):
             try:
                 os.remove(os.path.join(".", "userbot", "modules_user",
                                        f"{module}.py"))
-            except:
+            except Exception:
                 log.error("[UNINSTALL] Failed to uninstall "
                           f"module '{module}'",
                           exc_info=True)
@@ -675,13 +675,13 @@ async def _rm_repo(event, repo_names=None):
                 _1, _2 = c_repo.split("/")
                 if c_repo not in protected_repos:
                     protected_repos.append(c_repo)
-            except:
+            except Exception:
                 pass  # just ignore
 
     for r in repos:
         try:
             r_author, r_name = r.split("/")
-        except:
+        except Exception:
             log.warning(f"[RMREPO] Invalid repo URL format: {r}")
             text += f"{warning} {msgRep.INVALID_REPO_URL}: {r}\n"
             await event.edit(text)
@@ -702,7 +702,7 @@ async def _rm_repo(event, repo_names=None):
                         f"{check_mark} {msgRep.REMOVE_SUCCESS.format(r_name)}")
                     if not list_modified:
                         list_modified = True
-                except:
+                except Exception:
                     log.error(f"[RMREPO] Failed to remove {r_name} from list")
                     text = text.replace(
                         f"{recycle} {msgRep.REMOVING.format(r_name)}",
@@ -771,9 +771,8 @@ async def package_manager(event):
                 _attempts += 1
             await event.edit(text)
             return
-        else:
-            text += (f"{msgRep.NO_OPTION}. "
-                     f"{msgRep.PKG_HELP.format('`.help pkg`')}\n")
+        text += (f"{msgRep.NO_OPTION}. "
+                 f"{msgRep.PKG_HELP.format('`.help pkg`')}\n")
         await event.edit(text)
     if _attempts:
         _attempts = 0

@@ -247,10 +247,10 @@ except Exception:
 
 try:
     _connect_retries = getConfig("CLIENT_CONNECT_RETRIES", 5)
-    if not isinstance(_connect_retries, int) or not _connect_retries >= -1:
+    if not isinstance(_connect_retries, int) or _connect_retries < -1:
         _connect_retries = 5
     _retry_delay = getConfig("CLIENT_RETRY_DELAY", 1)
-    if not isinstance(_retry_delay, (int, float)) or not _retry_delay >= 0:
+    if not isinstance(_retry_delay, (int, float)) or _retry_delay < 0:
         _retry_delay = 1
     _tgclient = HyperClient(StringSession(STRING_SESSION), API_KEY, API_HASH,
                             connection_retries=_connect_retries,
@@ -279,6 +279,4 @@ except Exception as e:
     except KeyboardInterrupt:
         print()
         log.info("Exiting...")
-    except:
-        pass
     quit(1)

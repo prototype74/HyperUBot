@@ -50,14 +50,14 @@ except ModuleNotFoundError:  # Language file not found
         except ModuleNotFoundError:
             log.error("Default language file not found, bot quitting!")
             quit(1)
-        except:
+        except Exception:
             log.error("Unable to load default language file, bot quitting!",
                       exc_info=True)
             quit(1)
     else:
         log.error("Default language file not found, bot quitting!")
         quit(1)
-except:  # Unhandled exception in language file
+except Exception:  # Unhandled exception in language file
     if not __botlangcode__ == "en":
         log.warning(f"There was a problem loading the '{__botlangcode__}' "
                     "language file. Attempting to load default "
@@ -67,7 +67,7 @@ except:  # Unhandled exception in language file
         except ModuleNotFoundError:
             log.error("Default language file not found, bot quitting!")
             quit(1)
-        except:
+        except Exception:
             log.error("Unable to load default language file, bot quitting!",
                       exc_info=True)
             quit(1)
@@ -88,7 +88,7 @@ try:
 except ModuleNotFoundError:
     log.error("Default language file not found, bot quitting!")
     quit(1)
-except:
+except Exception:
     log.error("Unable to load default language file, bot quitting!",
               exc_info=True)
     quit(1)
@@ -122,7 +122,7 @@ def getLangString(obj: object, name_of_class: str, attribute: str) -> str:
         except AttributeError:
             try:
                 class_name = getattr(dlang, name_of_class)
-            except:
+            except Exception:
                 log.error(f"Class '{name_of_class}' not found in "
                           f"{__botlangname__} and default language resources",
                           exc_info=True)

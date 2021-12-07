@@ -146,7 +146,7 @@ async def memberinfo(event):
                 if str(right) in admin_permissions:
                     admin_permissions[str(right)] = check_mark
                 # these attributes are for channels, so we don't need them
-                if not str(right) in ["post_messages", "edit_messages",
+                if str(right) not in ["post_messages", "edit_messages",
                                       "anonymous"]:
                     enabled_rights_count += 1
         change_info = admin_permissions.get("change_info")
@@ -182,8 +182,8 @@ async def memberinfo(event):
                            if promoter.username is not None else
                            (f"<a href=\"tg://user?id={promoter.id}\">"
                             f"{promoter.first_name}</a>"))
-    elif (isinstance(member_info, ChannelParticipant) or
-          isinstance(member_info, ChannelParticipantSelf)):  # Member
+    elif isinstance(member_info, (ChannelParticipant,
+                                  ChannelParticipantSelf)):  # Member
         member_status = msgRep.STATUS_MEMBER
         for right in vars(default_chat_permissions):
             # False means perm not restricted

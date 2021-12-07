@@ -27,7 +27,7 @@ from datetime import datetime, timedelta
 from uptime import uptime
 from subprocess import check_output
 from logging import getLogger
-from os.path import getsize, isdir, isfile, join
+from os.path import getsize, isdir, join
 from shutil import disk_usage
 import time
 from os import listdir
@@ -53,7 +53,6 @@ def textProgressBar(barLength: int, totalVal, usedVal) -> str:
 
 @ehandler.on(command="status", outgoing=True)
 async def statuschecker(stat):
-    global STARTTIME
     uptimebot = datetime.now() - STARTTIME
     uptime_hours = uptimebot.seconds // 3600  # (60 * 60)
     uptime_mins = uptimebot.seconds // 60 % 60
@@ -81,11 +80,10 @@ async def statuschecker(stat):
     uptimeMacSTR = (f"{uptime_machine_days} " + msgRep.DAYS +
                     f", {uptime_machine_hours}:{uptime_machine_minutes}:"
                     f"{uptime_machine_seconds}")
-    commit = None
     try:
         commit = await getGitReview()
-    except:
-        pass
+    except Exception:
+        commit = None
     rtt = pinger("1.1.1.1")  # cloudfare's
     reply = f"**{msgRep.SYSTEM_STATUS}**\n\n"
     reply += msgRep.UBOT + "`" + PROJECT + "`" + "\n"
@@ -132,7 +130,7 @@ async def storage(event):
     userdata_size = getSizeFromPath(getConfig("USERDATA"))
     try:
         tmpdl_size = getSizeFromPath(getConfig("TEMP_DL_DIR"))
-    except:
+    except Exception:
         tmpdl_size = 0
 
     hdd = disk_usage("./")

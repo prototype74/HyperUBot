@@ -60,7 +60,7 @@ class _FeatureManager:
                 try:
                     self.__disabled_features = json.load(js)
                     self.__check_json()
-                except:
+                except Exception:
                     log.error("JSON file is invalid. Resetting...")
                     if not self.__init_failed:
                         self.__init_json()

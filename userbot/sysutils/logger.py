@@ -86,7 +86,7 @@ class _UserbotLogger:
         try:
             if os.path.exists(self.__logfile):
                 os.remove(self.__logfile)
-        except:
+        except OSError:
             pass
         try:
             sys_string = "======= SYS INFO\n\n"

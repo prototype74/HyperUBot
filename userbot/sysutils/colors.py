@@ -8,15 +8,13 @@
 
 from .sys_funcs import isWindows
 
-_WIN_COLOR_ENABLED = False
-
-try:
-    if isWindows():
+if isWindows():
+    try:
         import colorama
         colorama.init()
         _WIN_COLOR_ENABLED = True
-except:
-    pass
+    except Exception as e:
+        _WIN_COLOR_ENABLED = False
 
 
 class Color:

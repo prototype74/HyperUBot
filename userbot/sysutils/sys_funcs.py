@@ -8,7 +8,7 @@
 
 from userbot.version import VERSION_TUPLE
 from logging import getLogger
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 from json import loads
 import platform
 import os
@@ -35,7 +35,7 @@ def strlist_to_list(strlist: str) -> list:
     """
     try:
         list_obj = loads(strlist)
-    except:
+    except Exception:
         list_obj = []
     return list_obj
 
@@ -60,7 +60,7 @@ def str_to_bool(strbool: str) -> bool:
     """
     if strbool in ("True", "true"):
         return True
-    elif strbool in ("False", "false"):
+    if strbool in ("False", "false"):
         return False
     raise ValueError(f"{strbool} is not a bool")
 
@@ -106,7 +106,7 @@ def isAndroid() -> bool:
 
         if android_sdk or android_ver:
             return True
-    except:
+    except CalledProcessError:
         pass
     return False
 
@@ -149,7 +149,7 @@ def getDistro() -> str:
             if '"' in name:
                 name = name.replace('"', "")
             release.close()
-        except:
+        except Exception:
             return ""  # in case 'name' got modified but unfinished
     return name
 
@@ -161,14 +161,14 @@ def os_name() -> str:
     """
     if isAndroid():
         return "Android"
-    elif isMacOS():
+    if isMacOS():
         return "macOS"
-    elif isWSL():
+    if isWSL():
         dist_name = getDistro()
         if dist_name:
             return f"{dist_name} (WSL)"
         return "Windows Subsystem for Linux"
-    elif isLinux():
+    if isLinux():
         dist_name = getDistro()
         if dist_name:
             return dist_name
@@ -223,14 +223,14 @@ def verAsTuple(version: str) -> tuple:
             if int(version):
                 # assume it's just a digit
                 return tuple(map(int, f"{version}.0".split(".")))
-        except:
+        except ValueError:
             pass
         return ()
 
     try:
         # version only includes integers
         return tuple(map(int, version.split(".")))
-    except:
+    except ValueError:
         pass
 
     ver_list = version.split(".")
@@ -242,7 +242,7 @@ def verAsTuple(version: str) -> tuple:
             elem = int(elem)
             first_elem_int = True  # first element is a digit
             new_list.append(elem)
-        except:  # word (with integer) cases
+        except Exception:  # word (with integer) cases
             if not first_elem_int:
                 # first element was not a digit (not well-formed)
                 break
@@ -251,7 +251,7 @@ def verAsTuple(version: str) -> tuple:
                 for new_elem in temp:
                     try:
                         new_elem = int(new_elem)
-                    except:
+                    except ValueError:
                         pass
                     new_list.append(new_elem)
             else:
@@ -311,7 +311,7 @@ def requiredVersion(min_ver: str, max_ver: str, empty_func: bool = False):
             ver_tuple = VERSION_TUPLE
             min_tuple = verAsTuple(min_ver)
             max_tuple = verAsTuple(max_ver)
-        except:
+        except Exception:
             return efunc
         if not min_ver <= max_ver:  # min should be lower or equal to max
             return efunc
