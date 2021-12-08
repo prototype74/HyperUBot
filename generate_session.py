@@ -93,7 +93,8 @@ print()
 print("As we want to interact as user, the Telegram client will ask for "
       "your phone number, don't worry it's only required for "
       "user authorization and will not be send to anyone else. If "
-      "Two-Step Verification is enabled it will also ask for the password!")
+      "Two-factor authentication (2FA) is enabled it will also ask for the "
+      "password!")
 print()
 
 try:

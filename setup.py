@@ -329,7 +329,7 @@ def _pre_procedure():
     print("1. Login to My Telegram: https://my.telegram.org")
     print("2. Go to 'API development tools' and fill out the form")
     print("3. Get your App api_id and App api_hash. You will need them "
-          "for the ""next step")
+          "for the next step")
     print()
     print(setColorText("Note: Always remember not to share your "
                        "App api_id and App api_hash!", Colors.YELLOW))
@@ -352,8 +352,8 @@ def _pre_procedure():
     print("As we want to interact as user, the Telegram client will ask for "
           "your phone number, don't worry it's only required for "
           "user authorization and will not be send to anyone else. If "
-          "Two-Step Verification is enabled it will also ask for the "
-          "account's password!")
+          "Two-factor authentication (2FA) is enabled it will also ask for "
+          "the account's password!")
     print()
 
     while True:
