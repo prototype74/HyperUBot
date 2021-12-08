@@ -57,6 +57,10 @@ async def get_chatinfo(event):
         chat = event.chat_id
 
     try:
+        if not isinstance(chat, int):
+            # if input is not an ID, skip GetFullChatRequest as it
+            # accepts only integers
+            raise Exception("'chat' is not an integer")
         chat_info = await event.client(GetFullChatRequest(chat))
         return chat_info
     except Exception:
