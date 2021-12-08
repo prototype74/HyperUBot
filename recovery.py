@@ -469,15 +469,15 @@ class _Restore(_Recovery):
             bkZIP = ZipFile(bkSource, "r")
             contents = bkZIP.namelist()
             lpfile = None
-            for name in contents:
-                if name == "list.paths":
-                    lpfile = bkZIP.read(name)
+            for x in contents:
+                if x == "list.paths":
+                    lpfile = bkZIP.read(x)
                     break
             list_paths = self.__getListPaths(lpfile)
             result = 0
-            for name in contents:
+            for y in contents:
                 for uname in userbot:
-                    if uname == name:
+                    if uname == y:
                         result += 1
             if not self.__comparePaths(contents, list_paths) or \
                not result == len(userbot):
@@ -496,8 +496,8 @@ class _Restore(_Recovery):
                 return
 
             print("Restoring backup archive...")
-            bkZIP.extractall(path=".", members=[name for name in contents
-                                                if not name == "list.paths"])
+            bkZIP.extractall(path=".", members=[z for z in contents
+                                                if not z == "list.paths"])
             bkZIP.close()
             print(setColorText("Restore completed.", Colors.GREEN))
         except BadZipFile as bze:
@@ -793,7 +793,8 @@ def _update_option_table(recovery: _Recovery):
 def _update_info(recovery: _Recovery, show_version: bool = True):
     bot_installed = recovery.userbot_installed()
     git_type = recovery.detect_git()
-    print() if show_version or not bot_installed or git_type else None
+    if show_version or not bot_installed or git_type:
+        print()
     if show_version:
         print(f"HyperUBot version: {recovery.userbot_version()}")
     if not bot_installed:
@@ -911,7 +912,7 @@ def _create_backup(is_cli: bool = False, option: str = ""):
             except KeyboardInterrupt:
                 print()
                 return
-        elif not option.lower() == "-f":
+        elif option.lower() != "-f":
             print(setColorText(f"A backup of '{bkName}' exists already. "
                                "Add option '-f' to force overwrite it",
                                Colors.YELLOW))
@@ -938,7 +939,7 @@ def _restore_backup(is_cli: bool = False, bk_name: str = ""):
                 temp = input("Your input (or 'X' to cancel): ")
                 if temp.lower() == "x":
                     raise KeyboardInterrupt
-                elif temp.isnumeric():
+                if temp.isnumeric():
                     if temp in backups.keys():
                         break
                 print(
@@ -1087,14 +1088,14 @@ def main():
         if args[1].lower() == "-clearcache":
             _clear_caches(True)
             return
-        elif args[1].lower() == "-backup":
+        if args[1].lower() == "-backup":
             try:
                 _cli_option = args[2]
             except IndexError:
                 _cli_option = ""
             _create_backup(True, _cli_option)
             return
-        elif args[1].lower() == "-restore":
+        if args[1].lower() == "-restore":
             try:
                 _cli_bk_name = args[2]
             except IndexError:
