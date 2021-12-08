@@ -37,15 +37,17 @@ UPDATE_PACKAGE = os.path.join(RELEASE_DIR, "update.zip")
 PY_EXEC = executable if " " not in executable else '"' + executable + '"'
 IS_WINDOWS = (True if system().lower() == "windows" or
               os.name == "nt" or platform.startswith("win") else False)
-WIN_COLOR_ENABLED = False
 
-try:
-    if IS_WINDOWS:
+if IS_WINDOWS:
+    try:
         import colorama
         colorama.init()
         WIN_COLOR_ENABLED = True
-except:
-    pass
+    except (ImportError, ModuleNotFoundError):
+        WIN_COLOR_ENABLED = False
+    except Exception as e:
+        WIN_COLOR_ENABLED = False
+        print(f"Exception: {e}")
 
 
 class Colors:
@@ -171,23 +173,24 @@ class _Recovery:
             rmtree(package_path)
         except Exception as e:
             print(
-                setColorText("Failed to remove extracted update package",
+                setColorText(f"Failed to remove extracted update package: {e}",
                              Colors.RED))
         return
 
     def userbot_version(self) -> str:
         ver_py = os.path.join(".", "userbot", "version.py")
-        version = setColorText("Unknown", Colors.YELLOW)
+        version = None
         try:
             if os.path.exists(ver_py) and os.path.isfile(ver_py):
                 ver_attr = {}
                 with open(ver_py, "r") as ver_file:
                     code = ast.parse(ver_file.read())
                     exec(compile(code, "", "exec"), ver_attr)
-                    version = ver_attr.get("VERSION", version)
+                    version = ver_attr.get(
+                        "VERSION", setColorText("Unknown", Colors.YELLOW))
                 ver_file.close()
-        except:
-            pass
+        except Exception:
+            version = setColorText("Unknown", Colors.YELLOW)
         return version
 
     def detect_git(self) -> int:
@@ -195,10 +198,9 @@ class _Recovery:
             check_call(["git", "rev-parse", "--git-dir"],
                        stderr=DEVNULL, stdout=DEVNULL)
             return 2
-        except:
-            pass
-        if os.path.exists(GIT) and os.path.isdir(GIT):
-            return 1
+        except Exception:
+            if os.path.exists(GIT) and os.path.isdir(GIT):
+                return 1
         return 0
 
 
@@ -423,7 +425,7 @@ class _Restore(_Recovery):
         paths = []
         try:
             byte_to_str = "".join(map(chr, content))
-        except:
+        except Exception:
             return paths
         split_str = "\r\n" if byte_to_str.endswith("\r\n") else "\n"
         for name in byte_to_str.split(split_str):
@@ -536,8 +538,9 @@ class _Updater(_Recovery):
                         root_dir = contents[0][:-1]
                         self.__package_path = os.path.join(RELEASE_DIR,
                                                            root_dir)
-                    except:
-                        pass
+                    except Exception:
+                        print(setColorText(
+                            "Failed to extract package path", Colors.RED))
                 if not root_dir or \
                    not root_dir.split("-")[-1] == self.__commit_id:
                     self.__id_mismatch = True
@@ -1087,14 +1090,14 @@ def main():
         elif args[1].lower() == "-backup":
             try:
                 _cli_option = args[2]
-            except:
+            except IndexError:
                 _cli_option = ""
             _create_backup(True, _cli_option)
             return
         elif args[1].lower() == "-restore":
             try:
                 _cli_bk_name = args[2]
-            except:
+            except IndexError:
                 _cli_bk_name = ""
             _restore_backup(True, _cli_bk_name)
             return
@@ -1111,7 +1114,7 @@ def main():
     if auto_updater:
         try:
             commit_id = args[2]
-        except:
+        except IndexError:
             print(setColorText("Commit ID required!", Colors.YELLOW))
             return
         if not recovery.userbot_installed():
