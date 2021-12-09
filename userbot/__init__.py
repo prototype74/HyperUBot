@@ -30,9 +30,9 @@ from telethon import version as tl_version  # noqa: E402
 from userbot.sysutils.sys_funcs import isWindows, verAsTuple  # noqa: E402
 
 # Check Telethon version
-if verAsTuple(tl_version.__version__) < (1, 23, 0):
-    print(setColorText("HyperUBot requires at least Telethon version 1.23.0! "
-                       "Please update Telethon to v1.23.0 or newer "
+if verAsTuple(tl_version.__version__) < (1, 24, 0):
+    print(setColorText("HyperUBot requires at least Telethon version 1.24.0! "
+                       "Please update Telethon to v1.24.0 or newer "
                        f"(current version is {tl_version.__version__})",
                        Color.RED))
     quit(1)

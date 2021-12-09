@@ -119,7 +119,7 @@ def _check_setup_req() -> bool:
         return False
 
     req_pip_names = {
-        "Telethon": (1, 23, 0),
+        "Telethon": (1, 24, 0),
         "pyAesCrypt": (6, 0, 0),
         "cffi": (1, 15, 0)
     }
@@ -644,7 +644,7 @@ def main():
     if not check_setup_req:
         print(setColorText("All or some packages required for Setup Assistant "
                            "are not present. Setup Assistant requires "
-                           "'Telethon>=1.23.0', 'pyAesCrypt>=6.0.0' and "
+                           "'Telethon>=1.24.0', 'pyAesCrypt>=6.0.0' and "
                            "'cffi>=1.15.0'. Make sure these packages are "
                            "installed in order to continue. "
                            "Exiting Setup Assistant...",

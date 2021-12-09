@@ -52,10 +52,10 @@ def setColorText(text: str, color: Colors) -> str:
     return f"{color}{text}{Colors.END}"
 
 telethon_version = tuple(map(int, version.__version__.split(".")))
-if telethon_version < (1, 23, 0):
+if telethon_version < (1, 24, 0):
     print(setColorText(
-        "Telethon version 1.23.0+ is required! Please update "
-        "Telethon to v1.23.0 or newer "
+        "Telethon version 1.24.0+ is required! Please update "
+        "Telethon to v1.24.0 or newer "
         f"(current version: {version.__version__}).", Colors.RED))
     quit(1)
 
