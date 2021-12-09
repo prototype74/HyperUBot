@@ -8,7 +8,7 @@
 
 from userbot.version import VERSION_TUPLE
 from logging import getLogger
-from subprocess import check_output, CalledProcessError
+from subprocess import check_output
 from json import loads
 import platform
 import os
@@ -106,7 +106,7 @@ def isAndroid() -> bool:
 
         if android_sdk or android_ver:
             return True
-    except CalledProcessError:
+    except Exception:
         pass
     return False
 
