@@ -559,7 +559,8 @@ def _optional_configs(config_file: str, lang_code: str) -> bool:
                        'PKG_ENABLE_AUTO_UPDATE = False\n'
                        'CLIENT_CONNECT_RETRIES = 5\n'
                        'CLIENT_RETRY_DELAY = 1\n'
-                       'SIDELOAD_NO_REBOOT = False\n')
+                       'SIDELOAD_NO_REBOOT = False\n'
+                       'TERMINAL_USE_BIN_BASH = False\n')
         elif config_file.endswith(".ini"):
             configs = ('[CONFIGS]\n'
                        f'UBOT_LANG = {lang_code}\n'
@@ -572,7 +573,8 @@ def _optional_configs(config_file: str, lang_code: str) -> bool:
                        'PKG_ENABLE_AUTO_UPDATE = no\n'
                        'CLIENT_CONNECT_RETRIES = 5\n'
                        'CLIENT_RETRY_DELAY = 1\n'
-                       'SIDELOAD_NO_REBOOT = no\n')
+                       'SIDELOAD_NO_REBOOT = no\n'
+                       'TERMINAL_USE_BIN_BASH = no\n')
         else:  # py script
             configs = ('class ConfigClass(object):\n'
                        f'{"":4}UBOT_LANG = "{lang_code}"\n'
@@ -585,7 +587,8 @@ def _optional_configs(config_file: str, lang_code: str) -> bool:
                        f'{"":4}PKG_ENABLE_AUTO_UPDATE = False\n'
                        f'{"":4}CLIENT_CONNECT_RETRIES = 5\n'
                        f'{"":4}CLIENT_RETRY_DELAY = 1\n'
-                       f'{"":4}SIDELOAD_NO_REBOOT = False\n')
+                       f'{"":4}SIDELOAD_NO_REBOOT = False\n'
+                       f'{"":4}TERMINAL_USE_BIN_BASH = False\n')
         with open(config_file, "w") as cfg_file:
             print(f"Writing optional configuration file in {config_file}")
             cfg_file.write(configs)
