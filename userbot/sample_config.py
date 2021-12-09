@@ -67,3 +67,10 @@ class ConfigClass(object):
     # installed which does not prompt a reboot
     #
     SIDELOAD_NO_REBOOT = False
+
+    #
+    # POSIX only: use Bash (/bin/bash) as shell executor instead of sh 
+    # (/bin/sh) in terminal module. This config has no effect on
+    # Windows (PowerShell)
+    #
+    TERMINAL_USE_BIN_BASH = False
