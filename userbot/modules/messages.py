@@ -61,7 +61,7 @@ async def countmessages(event):
         return
     except SearchQueryEmptyError as sqee:
         log.warning(sqee)
-        await event.edit(msgRep.CANNOT_COUNT_FWD)
+        await event.edit(msgRep.CANNOT_QUERY_FWD)
         return
     except Exception as e:
         log.warning(e)
