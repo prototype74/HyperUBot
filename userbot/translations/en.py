@@ -388,10 +388,10 @@ class SystemUtilitiesText(object):
 class GeneralMessages(object):
     ERROR = "ERROR!"
     CHAT_NOT_USER = "`Channels are not User objects`"
-    FAIL_FETCH_USER = "`Failed to fetch user`"
-    ENTITY_NOT_USER = "`Entity is not an User object`"
+    FAIL_FETCH_ENTITY = "`Failed to fetch channel or user`"
+    UNSUPPORTED_ENTITY = "`Entity is not a Channel or an User`"
     PERSON_ANONYMOUS = "Person is anonymous"
-    CANT_FETCH_REQ_AS_USER = "`Couldn't fetch entity '{}' as an user`"
+    CANT_FETCH_REQ = "`Couldn't fetch entity '{}'`"
     LOG_USER = "User"
     LOG_USERNAME = "Username"
     LOG_USER_ID = "User ID"

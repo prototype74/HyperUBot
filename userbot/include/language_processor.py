@@ -836,14 +836,14 @@ class GeneralMessages(object):
         lang, _getframe().f_code.co_name, "ERROR")
     CHAT_NOT_USER = getLangString(
         lang, _getframe().f_code.co_name, "CHAT_NOT_USER")
-    FAIL_FETCH_USER = getLangString(
-        lang, _getframe().f_code.co_name, "FAIL_FETCH_USER")
-    ENTITY_NOT_USER = getLangString(
-        lang, _getframe().f_code.co_name, "ENTITY_NOT_USER")
+    FAIL_FETCH_ENTITY = getLangString(
+        lang, _getframe().f_code.co_name, "FAIL_FETCH_ENTITY")
+    UNSUPPORTED_ENTITY = getLangString(
+        lang, _getframe().f_code.co_name, "UNSUPPORTED_ENTITY")
     PERSON_ANONYMOUS = getLangString(
         lang, _getframe().f_code.co_name, "PERSON_ANONYMOUS")
-    CANT_FETCH_REQ_AS_USER = getLangString(
-        lang, _getframe().f_code.co_name, "CANT_FETCH_REQ_AS_USER")
+    CANT_FETCH_REQ = getLangString(
+        lang, _getframe().f_code.co_name, "CANT_FETCH_REQ")
     LOG_USER = getLangString(
         lang, _getframe().f_code.co_name, "LOG_USER")
     LOG_USERNAME = getLangString(
