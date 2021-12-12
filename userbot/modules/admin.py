@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot.include.aux_funcs import (event_log, fetch_user, format_chat_id,
+from userbot.include.aux_funcs import (event_log, fetch_entity, format_chat_id,
                                        isRemoteCMD)
 from userbot.include.language_processor import (AdminText as msgRep,
                                                 ModuleDescriptions as descRep,
@@ -20,9 +20,10 @@ from userbot.version import VERSION
 from telethon.errors import (UserAdminInvalidError, ChatAdminRequiredError,
                              AdminsTooMuchError, AdminRankEmojiNotAllowedError)
 from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
+from telethon.tl.types.messages import ChatFull
 from telethon.tl.types import (ChatAdminRights, ChatBannedRights,
                                ChannelParticipantsAdmins, User, Channel,
-                               PeerUser, PeerChannel)
+                               PeerUser, PeerChannel, UserFull)
 from asyncio import sleep
 from logging import getLogger
 
@@ -78,21 +79,17 @@ async def adminlist(event):
 
 @ehandler.on(command="ban", hasArgs=True, outgoing=True)
 async def ban(event):
-    user, chat = await fetch_user(event, get_chat=True)
+    entity, chat = await fetch_entity(event, full_obj=True, get_chat=True)
 
-    if not user:
+    if not entity:
         return
 
     if not chat:
         await event.edit(msgRep.FAIL_CHAT)
         return
 
-    if type(chat) is User:
+    if isinstance(chat, User):
         await event.edit(msgRep.NO_GROUP_CHAN_ARGS)
-        return
-
-    if user.is_self:
-        await event.edit(msgRep.CANNOT_BAN_SELF)
         return
 
     remote = isRemoteCMD(event, chat.id)
@@ -102,21 +99,52 @@ async def ban(event):
         await event.edit(msgRep.NO_BAN_PRIV)
         return
 
+    if isinstance(entity, ChatFull):
+        if entity.full_chat.linked_chat_id:
+            if entity.full_chat.linked_chat_id == chat.id:
+                await event.edit("Can't ban this channel as it is linked to "
+                                 f"**{chat.title}**")
+                return
+        entity_id = entity.full_chat.id
+        chatinfo = None
+        for c in entity.chats:
+            if c.id == entity_id:
+                chatinfo = c
+                break
+        if chatinfo.creator:  # careful, you can expose yourself ;)
+            await event.edit("I can't ban my own channel")
+            return
+        if entity_id == chat.id:
+            await event.edit("I can't ban a channel in it's own channel!?")
+            return
+        name = (f"[{chatinfo.title}](https://t.me/{chatinfo.username})"
+                if chatinfo.username else chatinfo.title)
+    elif isinstance(entity, UserFull):
+        if entity.user.is_self:
+            await event.edit(msgRep.CANNOT_BAN_SELF)
+            return
+        entity_id = entity.user.id
+        name = (f"[{entity.user.first_name}](tg://user?id={entity_id})"
+                if entity.user.first_name else msgRep.DELETED_ACCOUNT)
+    else:
+        await event.edit("I don't know what 'thing' this is!")
+        log.warning("Ban failed: target is not a channel or an user")
+        return
+
     try:
         # if view_messages is True then all ban permissions will
         # be set to True too
         ban_perms = ChatBannedRights(until_date=None, view_messages=True)
-        await event.client(EditBannedRequest(chat.id, user.id, ban_perms))
-        name = (f"[{user.first_name}](tg://user?id={user.id})"
-                if user.first_name else msgRep.DELETED_ACCOUNT)
+        await event.client(EditBannedRequest(chat.id, entity_id, ban_perms))
         if remote:
             await event.edit(msgRep.BAN_SUCCESS_REMOTE.format(name,
                                                               chat.title))
         else:
             await event.edit(msgRep.BAN_SUCCESS.format(name))
         if LOGGING:
-            await event_log(event, "BAN", user_name=user.first_name,
-                            username=user.username, user_id=user.id,
+            # TODO: user_name
+            await event_log(event, "BAN", user_name=entity.first_name,
+                            username=entity.username, user_id=entity_id,
                             chat_title=chat.title, chat_link=chat.username
                             if hasattr(chat, "username") else None,
                             chat_id=format_chat_id(chat)
@@ -133,21 +161,17 @@ async def ban(event):
 
 @ehandler.on(command="unban", hasArgs=True, outgoing=True)
 async def unban(event):
-    user, chat = await fetch_user(event, get_chat=True)
+    entity, chat = await fetch_entity(event, full_obj=True, get_chat=True)
 
-    if not user:
+    if not entity:
         return
 
     if not chat:
         await event.edit(msgRep.FAIL_CHAT)
         return
 
-    if type(chat) is User:
+    if isinstance(chat, User):
         await event.edit(msgRep.NO_GROUP_CHAN_ARGS)
-        return
-
-    if user.is_self:
-        await event.edit(msgRep.CANNOT_UNBAN_SELF)
         return
 
     remote = isRemoteCMD(event, chat.id)
@@ -157,19 +181,42 @@ async def unban(event):
         await event.edit(msgRep.NO_BAN_PRIV)
         return
 
+    if isinstance(entity, ChatFull):
+        entity_id = entity.full_chat.id
+        chatinfo = None
+        for c in entity.chats:
+            if c.id == entity_id:
+                chatinfo = c
+                break
+        if entity_id == chat.id:
+            await event.edit("I can't unban a channel in it's own channel!?")
+            return
+        name = (f"[{chatinfo.title}](https://t.me/{chatinfo.username})"
+                if chatinfo.username else chatinfo.title)
+    elif isinstance(entity, UserFull):
+        if entity.user.is_self:
+            await event.edit(msgRep.CANNOT_BAN_SELF)
+            return
+        entity_id = entity.user.id
+        name = (f"[{entity.user.first_name}](tg://user?id={entity_id})"
+                if entity.user.first_name else msgRep.DELETED_ACCOUNT)
+    else:
+        await event.edit("I don't know what 'thing' this is!")
+        log.warning("Unban failed: target is not a channel or an user")
+        return
+
     try:
         unban_perms = ChatBannedRights(until_date=None, view_messages=False)
-        await event.client(EditBannedRequest(chat.id, user.id, unban_perms))
-        name = (f"[{user.first_name}](tg://user?id={user.id})"
-                if user.first_name else msgRep.DELETED_ACCOUNT)
+        await event.client(EditBannedRequest(chat.id, entity_id, unban_perms))
         if remote:
             await event.edit(msgRep.UNBAN_SUCCESS_REMOTE.format(name,
                                                                 chat.title))
         else:
             await event.edit(msgRep.UNBAN_SUCCESS.format(name))
         if LOGGING:
-            await event_log(event, "UNBAN", user_name=user.first_name,
-                            username=user.username, user_id=user.id,
+            # TODO: user_name
+            await event_log(event, "UNBAN", user_name=entity.first_name,
+                            username=entity.username, user_id=entity_id,
                             chat_title=chat.title, chat_link=chat.username
                             if hasattr(chat, "username") else None,
                             chat_id=format_chat_id(chat)
@@ -184,7 +231,7 @@ async def unban(event):
 
 @ehandler.on(command="kick", hasArgs=True, outgoing=True)
 async def kick(event):
-    user, chat = await fetch_user(event, get_chat=True)
+    user, chat = await fetch_entity(event, get_chat=True)
 
     if not user:
         return
@@ -193,12 +240,8 @@ async def kick(event):
         await event.edit(msgRep.FAIL_CHAT)
         return
 
-    if type(chat) is User:
+    if isinstance(chat, User):
         await event.edit(msgRep.NO_GROUP_CHAN_ARGS)
-        return
-
-    if user.is_self:
-        await event.edit(msgRep.CANNOT_KICK_SELF)
         return
 
     remote = isRemoteCMD(event, chat.id)
@@ -206,6 +249,14 @@ async def kick(event):
 
     if admin_perms and not admin_perms.ban_users:
         await event.edit(msgRep.NO_BAN_PRIV)
+        return
+
+    if not isinstance(user, User):
+        await event.edit("I can only kick persons")
+        return
+
+    if user.is_self:
+        await event.edit(msgRep.CANNOT_KICK_SELF)
         return
 
     try:
@@ -270,7 +321,7 @@ async def promote(event):
         await event.edit(msgRep.NO_ONE_TO_PROMOTE)
         return
 
-    if not type(user) is User:
+    if not isinstance(user, User):
         await event.edit(msgRep.NOT_USER)
         return
 
@@ -279,7 +330,7 @@ async def promote(event):
         return
 
     chat = await event.get_chat()
-    if type(chat) is User:
+    if isinstance(chat, User):
         await event.edit(msgRep.NO_GROUP_CHAN)
         return
 
@@ -374,17 +425,17 @@ async def demote(event):
         await event.edit(msgRep.NO_ONE_TO_DEMOTE)
         return
 
-    if not type(user) is User:
+    if not isinstance(user, User):
         await event.edit(msgRep.NOT_USER)
+        return
+
+    chat = await event.get_chat()
+    if isinstance(chat, User):
+        await event.edit(msgRep.NO_GROUP_CHAN)
         return
 
     if user.is_self:
         await event.edit(msgRep.CANNOT_DEMOTE_SELF)
-        return
-
-    chat = await event.get_chat()
-    if type(chat) is User:
-        await event.edit(msgRep.NO_GROUP_CHAN)
         return
 
     try:
@@ -435,7 +486,7 @@ async def demote(event):
 
 @ehandler.on(command="mute", hasArgs=True, outgoing=True)
 async def mute(event):
-    user, chat = await fetch_user(event, get_chat=True)
+    user, chat = await fetch_entity(event, get_chat=True)
 
     if not user:
         return
@@ -444,8 +495,19 @@ async def mute(event):
         await event.edit(msgRep.FAIL_CHAT)
         return
 
-    if type(chat) is User:
+    if isinstance(chat, User):
         await event.edit(msgRep.NO_GROUP_ARGS)
+        return
+
+    remote = isRemoteCMD(event, chat.id)
+    admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
+
+    if admin_perms and not admin_perms.ban_users:
+        await event.edit(msgRep.NO_BAN_PRIV)
+        return
+
+    if not isinstance(user, User):
+        await event.edit("I can mute persons only")
         return
 
     if hasattr(chat, "broadcast") and chat.broadcast:
@@ -454,13 +516,6 @@ async def mute(event):
 
     if user.is_self:
         await event.edit(msgRep.CANNOT_MUTE_SELF)
-        return
-
-    remote = isRemoteCMD(event, chat.id)
-    admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
-
-    if admin_perms and not admin_perms.ban_users:
-        await event.edit(msgRep.NO_BAN_PRIV)
         return
 
     try:
@@ -494,7 +549,7 @@ async def mute(event):
 
 @ehandler.on(command="unmute", hasArgs=True, outgoing=True)
 async def unmute(event):
-    user, chat = await fetch_user(event, get_chat=True)
+    user, chat = await fetch_entity(event, get_chat=True)
 
     if not user:
         return
@@ -503,8 +558,19 @@ async def unmute(event):
         await event.edit(msgRep.FAIL_CHAT)
         return
 
-    if type(chat) is User:
+    if isinstance(chat, User):
         await event.edit(msgRep.NO_GROUP_ARGS)
+        return
+
+    remote = isRemoteCMD(event, chat.id)
+    admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
+
+    if admin_perms and not admin_perms.ban_users:
+        await event.edit(msgRep.NO_BAN_PRIV)
+        return
+
+    if not isinstance(user, User):
+        await event.edit("I can mute persons only")
         return
 
     if hasattr(chat, "broadcast") and chat.broadcast:
@@ -513,13 +579,6 @@ async def unmute(event):
 
     if user.is_self:
         await event.edit(msgRep.CANNOT_UNMUTE_SELF)
-        return
-
-    remote = isRemoteCMD(event, chat.id)
-    admin_perms = chat.admin_rights if hasattr(chat, "admin_rights") else None
-
-    if admin_perms and not admin_perms.ban_users:
-        await event.edit(msgRep.NO_BAN_PRIV)
         return
 
     try:
@@ -567,7 +626,7 @@ async def delaccs(event):
     else:
         chat = await event.get_chat()
 
-    if type(chat) is User:
+    if isinstance(chat, User):
         await event.edit(msgRep.NO_GROUP_CHAN)
         return
 
