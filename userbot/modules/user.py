@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot.include.aux_funcs import event_log, fetch_user
+from userbot.include.aux_funcs import event_log, fetch_entity
 from userbot.include.language_processor import (UserText as msgRep,
                                                 ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
@@ -16,7 +16,8 @@ from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
 from userbot.version import VERSION
-from telethon.tl.types import User, Chat, Channel, PeerChannel, PeerChat
+from telethon.tl.types import (User, Chat, Channel, PeerChannel, PeerChat,
+                               UserFull)
 from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
 from logging import getLogger
@@ -73,7 +74,7 @@ async def userid(event):
         elif not sender and org_author:
             text = msgRep.ORG_HAS_ID_OF.format(org_author_link, org_author.id)
     else:
-        user_obj = await fetch_user(event)
+        user_obj = await fetch_entity(event)
 
         if not user_obj:
             return
@@ -181,13 +182,18 @@ async def stats(event):
 
 
 @ehandler.on(command="info", hasArgs=True, outgoing=True)
-async def info(event):  # .info command
+async def info(event):
     await event.edit(msgRep.FETCH_INFO)
 
-    full_user_obj = await fetch_user(event=event, full_user=True,
-                                     org_author=True)
-    # fetch_user() will return an error msg if something failed
+    full_user_obj = await fetch_entity(event=event, full_obj=True,
+                                       org_author=True)
+    # fetch_entity() will return an error msg if something failed
     if not full_user_obj:
+        return
+
+    if not isinstance(full_user_obj, UserFull):
+        await event.edit("`This is not a person or a bot. Consider using "
+                         ".chatinfo if the target is a channel or a group`")
         return
 
     try:
