@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot.include.aux_funcs import event_log, fetch_user, isRemoteCMD
+from userbot.include.aux_funcs import event_log, fetch_entity, isRemoteCMD
 from userbot.include.language_processor import (MessagesText as msgRep,
                                                 ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
@@ -19,7 +19,7 @@ from userbot.version import VERSION
 from telethon.errors import (ChatAdminRequiredError, InputUserDeactivatedError,
                              SearchQueryEmptyError)
 from telethon.tl.functions.messages import SearchRequest
-from telethon.tl.types import InputMessagesFilterEmpty, User
+from telethon.tl.types import InputMessagesFilterEmpty, User, Channel
 from logging import getLogger
 
 log = getLogger(__name__)
@@ -29,13 +29,18 @@ LOGGING = getConfig("LOGGING")
 
 @ehandler.on(command="msgs", hasArgs=True, outgoing=True)
 async def countmessages(event):
-    user, chat = await fetch_user(event, get_chat=True)
+    user, chat = await fetch_entity(event, get_chat=True)
 
     if not user:
         return
 
     if not chat:
         await event.edit(msgRep.FAIL_CHAT)
+        return
+
+    if not isinstance(user, (Channel, User)):
+        await event.edit("I can count messages from bots, channels "
+                         "and users only")
         return
 
     remote = isRemoteCMD(event, chat.id)
@@ -63,9 +68,13 @@ async def countmessages(event):
         await event.edit(msgRep.FAIL_COUNT_MSG)
         return
 
-    user_link = ("@" + user.username
-                 if user.username else
-                 f"[{user.first_name}](tg://user?id={user.id})")
+    if isinstance(user, Channel):
+        name = user.title
+    else:
+        name = (f"[{user.first_name}](tg://user?id={user.id})"
+                if user.first_name else "Deleted Account")
+
+    user_link = "@" + user.username if user.username else name
 
     if hasattr(msg_info, "count"):
         if remote:
