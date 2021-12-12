@@ -8,7 +8,8 @@
 
 from userbot.include.language_processor import GeneralMessages as msgsLang
 from userbot.sysutils.configuration import getConfig
-from telethon.tl.types import PeerUser, PeerChannel, User
+from telethon.tl.types import PeerChannel, Channel, User
+from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.tl.functions.users import GetFullUserRequest
 from logging import getLogger
 from subprocess import check_output
@@ -22,48 +23,53 @@ log = getLogger(__name__)
 
 async def fetch_user(event=None, full_user=False,
                      get_chat=False, org_author=False):
+    return await fetch_entity(event, full_user, get_chat, org_author)
+
+
+async def fetch_entity(event=None, full_obj=False,
+                       get_chat=False, org_author=False):
     """
-    Fetch the user (and chat) information from event
+    Fetch an user or channel (and a target chat) information from event
 
     Args:
         event (Event): any event e.g. NewMessage
-        full_user (bool): fetch FullUser object instead
-        get_chat (bool): fetches Chat/Channel object to.
+        full_obj (bool): fetch ChatFull/UserFull object instead.
+                         Does not work with groups.
+        get_chat (bool): fetches Chat/Channel object too.
                          This changes the return to a tuple
         org_author (bool): focus to original author of a replied message
 
     Example:
         @ehandler.on(command="example", outgoing=True)
         async def example_handler(event):
-            user, chat = fetch_user(event, full_user=True, get_chat=True)
+            user, chat = fetch_entity(event, get_chat=True)
             await event.edit(f"hi {user.first_name}, welcome in {chat.title}!")
 
     Returns:
-        - User object (default) or
-        - FullUser object if full_user is set to True or
-        - A tuple ((User, Chat/Channel) or (FullUser, Chat/Channel))
-          if get_chat is set to True
+        - Channel/User object (default) or
+        - ChatFull/UserFull object if full_obj is set to True or
+        - A tuple ((Channel/User, Chat/Channel) or
+          (ChatFull/UserFull, Chat/Channel)) if get_chat is set to True
     """
     if not event:
         return (None, None) if get_chat else None
     if event.reply_to_msg_id:
         message = await event.get_reply_message()
-        if message.fwd_from and isinstance(message.fwd_from.from_id,
-                                           PeerChannel):
-            # focus to forwarder if forwarded message is from a channel
-            if message.from_id and isinstance(message.from_id, PeerUser):
-                user = message.from_id.user_id
+        if message.fwd_from and message.fwd_from.from_id and org_author:
+            # focus to original author from forwarded messages
+            if isinstance(message.fwd_from.from_id, PeerChannel):
+                entity = f"-100{message.fwd_from.from_id.channel_id}"
+                entity = int(entity)
             else:
-                await event.edit(msgsLang.CHAT_NOT_USER)
-                return (None, None) if get_chat else None
-        # focus to original author and skip forwarder
-        elif message.fwd_from and message.fwd_from.from_id and org_author:
-            user = message.fwd_from.from_id.user_id
+                entity = message.fwd_from.from_id.user_id
+        elif isinstance(message.from_id, PeerChannel):
+            entity = f"-100{message.from_id.channel_id}"
+            entity = int(entity)
         else:
-            user = (message.from_id.user_id
+            entity = (message.from_id.user_id
                     if message.from_id else message.sender_id)
         chat_obj = await event.get_chat() if get_chat else None  # current chat
-        if not user:
+        if not entity:
             await event.edit(msgsLang.PERSON_ANONYMOUS)
             return (None, None) if get_chat else None
     else:
@@ -72,7 +78,7 @@ async def fetch_user(event=None, full_user=False,
             # more than 2 will be appended to second element.
             args_from_event = event.pattern_match.group(1).split(" ", 1)
             if len(args_from_event) == 2:
-                user, chat = args_from_event
+                entity, chat = args_from_event
                 try:
                     chat = int(chat)  # chat ID given
                 except ValueError:
@@ -82,40 +88,50 @@ async def fetch_user(event=None, full_user=False,
                     chat_obj = (await event.client.get_entity(chat)
                                 if get_chat else None)
                     # entity is not a chat or channel object
-                    if type(chat_obj) is User:
+                    if isinstance(chat_obj, User):
                         chat_obj = None
                 except Exception as e:
                     log.warning(e)
                     chat_obj = None
             else:
-                user = args_from_event[0]
+                entity = args_from_event[0]
                 chat_obj = await event.get_chat() if get_chat else None
         except Exception as e:
             log.warning(e)
-            await event.edit(msgsLang.FAIL_FETCH_USER)
+            await event.edit(msgsLang.FAIL_FETCH_ENTITY)
             return (None, None) if get_chat else None
 
         try:
-            user = int(user)
+            entity = int(entity)
         except ValueError:
             pass
 
-        if not user:
+        if not entity:
             oh_look_its_me = await event.client.get_me()
-            user = oh_look_its_me.id
+            entity = oh_look_its_me.id
 
     try:
-        if full_user:
-            user_obj = await event.client(GetFullUserRequest(user))
+        if full_obj:
+            try:
+                if str(entity).startswith("-100"):
+                    raise Exception(
+                        "Forcefully triggered channel check")
+                entity_obj = await event.client(GetFullUserRequest(entity))
+            except Exception:
+                entity_obj = await event.client(GetFullChannelRequest(entity))
+                for c in entity_obj.chats:
+                    if (entity_obj.full_chat.id == c.id) and not c.broadcast:
+                       raise Exception(f"Entity '{entity}' is not a channel")
         else:
-            user_obj = await event.client.get_entity(user)
-            if not type(user_obj) is User:
-                await event.edit(msgsLang.ENTITY_NOT_USER)
-                user_obj = None
-        return (user_obj, chat_obj) if get_chat else user_obj
+            entity_obj = await event.client.get_entity(entity)
+            if not isinstance(entity_obj, (Channel, User)) or \
+               (isinstance(entity_obj, Channel) and not entity_obj.broadcast):
+                await event.edit(msgsLang.UNSUPPORTED_ENTITY)
+                entity_obj = None
+        return (entity_obj, chat_obj) if get_chat else entity_obj
     except Exception as e:
         log.warning(e)
-        await event.edit(msgsLang.CANT_FETCH_REQ_AS_USER.format(user))
+        await event.edit(msgsLang.CANT_FETCH_REQ.format(entity))
     return (None, chat_obj) if get_chat else None
 
 
