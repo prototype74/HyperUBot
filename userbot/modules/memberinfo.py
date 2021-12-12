@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot.include.aux_funcs import fetch_user
+from userbot.include.aux_funcs import fetch_entity
 from userbot.include.language_processor import (MemberInfoText as msgRep,
                                                 ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
@@ -19,7 +19,8 @@ from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.types import (ChannelParticipantCreator,
                                ChannelParticipantAdmin,
                                ChannelParticipantBanned,
-                               ChannelParticipantSelf, ChannelParticipant)
+                               ChannelParticipantSelf, ChannelParticipant,
+                               UserFull)
 from telethon.errors import ChannelInvalidError, UserNotParticipantError
 from datetime import datetime
 from logging import getLogger
@@ -32,15 +33,19 @@ ehandler = EventHandler(log)
 async def memberinfo(event):
     await event.edit(msgRep.SCAN)
 
-    member_info, chat_info = await fetch_user(event=event,
-                                              full_user=True,
-                                              get_chat=True)
+    member_info, chat_info = await fetch_entity(event=event,
+                                                full_obj=True,
+                                                get_chat=True)
 
     if not member_info:
         return
 
     if not chat_info:
         await event.edit(msgRep.FAIL_GET_MEMBER_CHAT)
+        return
+
+    if not isinstance(member_info, UserFull):
+        await event.edit("This is not a person or a bot")
         return
 
     try:
