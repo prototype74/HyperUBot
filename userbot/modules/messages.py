@@ -71,8 +71,7 @@ async def countmessages(event):
     if isinstance(user, Channel):
         name = user.title
     else:
-        name = (f"[{user.first_name}](tg://user?id={user.id})"
-                if user.first_name else "Deleted Account")
+        name = f"[{user.first_name}](tg://user?id={user.id})"
 
     user_link = "@" + user.username if user.username else name
 
