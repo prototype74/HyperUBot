@@ -80,7 +80,11 @@ async def get_chatinfo(event):
 
 
 async def fetch_info(chat, event):
-    chat_obj_info = await event.client.get_entity(chat.full_chat.id)
+    chat_obj_info = None
+    for c in chat.chats:
+        if c.id == chat.full_chat.id:
+            chat_obj_info = c
+            break
     broadcast = (chat_obj_info.broadcast
                  if hasattr(chat_obj_info, "broadcast") else False)
     chat_type = msgRep.CHANNEL if broadcast else msgRep.GROUP
