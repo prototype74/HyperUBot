@@ -26,7 +26,7 @@ log = getLogger(__name__)
 ehandler = EventHandler(log)
 
 
-@ehandler.on(command="userid", hasArgs=True, outgoing=True)
+@ehandler.on(command="id", alt="userid", hasArgs=True, outgoing=True)
 async def userid(event):
     if event.reply_to_msg_id:
         msg = await event.get_reply_message()
@@ -37,11 +37,25 @@ async def userid(event):
             return
 
         if sender:
-            sender_link = f"[{sender.first_name}](tg://user?id={sender.id})"
+            if isinstance(sender, Channel):
+                sender_link = (f"[{sender.title}]"
+                               f"(https://t.me/{sender.username})"
+                               if sender.username else sender.title)
+                sender.id = int(f"-100{sender.id}")
+            else:
+                sender_link = (f"[{sender.first_name}]"
+                               f"(tg://user?id={sender.id})")
 
         if org_author:
-            org_author_link = (f"[{org_author.first_name}]"
-                               f"(tg://user?id={org_author.id})")
+            if isinstance(org_author, Channel):
+                org_author_link = (f"[{org_author.title}]"
+                                   f"(https://t.me/{sender.username})"
+                                   if org_author.username
+                                   else org_author.title)
+                org_author.id = int(f"-100{org_author.id}")
+            else:
+                org_author_link = (f"[{org_author.first_name}]"
+                                   f"(tg://user?id={sender.id})")
 
         if sender and org_author:
             if not sender == org_author:
@@ -51,9 +65,9 @@ async def userid(event):
                 text += (f"**{msgRep.FORWARDER}**:\n" +
                          msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id))
             else:
-                if sender.deleted:
+                if hasattr(sender, "deleted") and sender.deleted:
                     text = msgRep.DEL_HAS_ID_OF.format(sender.id)
-                elif sender.is_self:
+                elif hasattr(sender, "is_self") and sender.is_self:
                     text = msgRep.MY_ID.format(sender.id)
                 else:
                     text = msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id)
@@ -65,27 +79,34 @@ async def userid(event):
                 text += (f"**{msgRep.FORWARDER}**:\n" +
                          msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id))
             else:
-                if sender.deleted:
+                if hasattr(sender, "deleted") and sender.deleted:
                     text = msgRep.DEL_HAS_ID_OF.format(sender.id)
-                elif sender.is_self:
+                elif hasattr(sender, "is_self") and sender.is_self:
                     text = msgRep.MY_ID.format(sender.id)
                 else:
                     text = msgRep.DUAL_HAS_ID_OF.format(sender_link, sender.id)
         elif not sender and org_author:
             text = msgRep.ORG_HAS_ID_OF.format(org_author_link, org_author.id)
     else:
-        user_obj = await fetch_entity(event)
+        entity_obj = await fetch_entity(event)
 
-        if not user_obj:
+        if not entity_obj:
             return
 
-        if user_obj.deleted:
-            text = msgRep.DEL_HAS_ID_OF.format(user_obj.id)
-        elif user_obj.is_self:
-            text = msgRep.MY_ID.format(user_obj.id)
+        if hasattr(entity_obj, "deleted") and entity_obj.deleted:
+            text = msgRep.DEL_HAS_ID_OF.format(entity_obj.id)
+        elif hasattr(entity_obj, "is_self") and  entity_obj.is_self:
+            text = msgRep.MY_ID.format(entity_obj.id)
         else:
-            user_link = f"[{user_obj.first_name}](tg://user?id={user_obj.id})"
-            text = msgRep.DUAL_HAS_ID_OF.format(user_link, user_obj.id)
+            if isinstance(entity_obj, Channel):
+                entity_link = (f"[{entity_obj.title}]"
+                               f"(https://t.me/{entity_obj.username})"
+                               if entity_obj.username else entity_obj.title)
+                entity_obj.id = int(f"-100{entity_obj.id}")
+            else:
+                entity_link = (f"[{entity_obj.first_name}]"
+                             "(tg://user?id={entity_obj.id})")
+            text = msgRep.DUAL_HAS_ID_OF.format(entity_link, entity_obj.id)
     await event.edit(text)
     return
 
@@ -264,7 +285,7 @@ async def fetch_info(user_obj, event):
     return caption
 
 
-for cmd in ("info", "kickme", "stats", "userid"):
+for cmd in ("id", "info", "kickme", "stats"):
     register_cmd_usage(cmd,
                        usageRep.USER_USAGE.get(cmd, {}).get("args"),
                        usageRep.USER_USAGE.get(cmd, {}).get("usage"))
