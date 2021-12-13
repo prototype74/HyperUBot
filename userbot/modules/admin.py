@@ -119,6 +119,8 @@ async def ban(event):
             return
         name = (f"[{chatinfo.title}](https://t.me/{chatinfo.username})"
                 if chatinfo.username else chatinfo.title)
+        entity_id = f"-100{entity_id}"
+        entity_id = int(entity_id)
     elif isinstance(entity, UserFull):
         if entity.user.is_self:
             await event.edit(msgRep.CANNOT_BAN_SELF)
@@ -142,9 +144,12 @@ async def ban(event):
         else:
             await event.edit(msgRep.BAN_SUCCESS.format(name))
         if LOGGING:
-            # TODO: user_name
-            await event_log(event, "BAN", user_name=entity.first_name,
-                            username=entity.username, user_id=entity_id,
+            if isinstance(entity, UserFull):
+                entity_username = entity.user.username
+            else:
+                entity_username = chatinfo.username
+            await event_log(event, "BAN", user_name=name,
+                            username=entity_username, user_id=entity_id,
                             chat_title=chat.title, chat_link=chat.username
                             if hasattr(chat, "username") else None,
                             chat_id=format_chat_id(chat)
@@ -193,6 +198,8 @@ async def unban(event):
             return
         name = (f"[{chatinfo.title}](https://t.me/{chatinfo.username})"
                 if chatinfo.username else chatinfo.title)
+        entity_id = f"-100{entity_id}"
+        entity_id = int(entity_id)
     elif isinstance(entity, UserFull):
         if entity.user.is_self:
             await event.edit(msgRep.CANNOT_BAN_SELF)
@@ -214,9 +221,12 @@ async def unban(event):
         else:
             await event.edit(msgRep.UNBAN_SUCCESS.format(name))
         if LOGGING:
-            # TODO: user_name
-            await event_log(event, "UNBAN", user_name=entity.first_name,
-                            username=entity.username, user_id=entity_id,
+            if isinstance(entity, UserFull):
+                entity_username = entity.user.username
+            else:
+                entity_username = chatinfo.username
+            await event_log(event, "UNBAN", user_name=name,
+                            username=entity_username, user_id=entity_id,
                             chat_title=chat.title, chat_link=chat.username
                             if hasattr(chat, "username") else None,
                             chat_id=format_chat_id(chat)
