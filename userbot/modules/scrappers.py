@@ -204,8 +204,8 @@ async def speech_to_text(event):
         await event.edit(text)
     except UnknownValueError:
         await event.edit(msgRep.STT_NOT_RECOGNIZED)
-    except RequestError as re:
-        await event.edit("`{msgRep.STT_REQ_FAILED} {re}`")
+    except RequestError:
+        await event.edit(msgRep.STT_REQ_FAILED)
     except MessageTooLongError:
         await event.edit(msgRep.STT_OUTPUT_TOO_LONG)
     except Exception as e:

@@ -20,17 +20,24 @@ class AdminText(object):
     NO_ADMIN = "`Admin privileges are required to perform this action`"
     NO_BAN_PRIV = "`Ban permission is required to perform this action`"
     DELETED_ACCOUNT = "Deleted Account"
+    CANNOT_BAN_LINKED = "`I can't ban this channel as it is linked to '{}'`"
+    CANNOT_BAN_CHANNEL_SELF = "`I can't ban my own channel`"
+    CANNOT_BAN_CHANNEL_ITSELF = "`I can't ban a channel in its own channel!?`"
     CANNOT_BAN_SELF = "`I can't ban myself`"
     CANNOT_BAN_ADMIN = "`I can't ban this admin`"
     # user name, chat tile
     BAN_SUCCESS_REMOTE = "{} has been banned from **{}**"
     BAN_SUCCESS = "{} has been banned!"  # user name
     BAN_FAILED = "`Failed to ban this person`"
+    CANNOT_UNBAN_CHANNEL_ITSELF = ("`I can't unban a channel in it's own "
+                                   "channel!?`")
     CANNOT_UNBAN_SELF = "`I can't unban myself`"
     # user name, chat tile
     UNBAN_SUCCESS_REMOTE = "{} has been unbanned from **{}**"
     UNBAN_SUCCESS = "{} has been unbanned!"  # user name
     UNBAN_FAILED = "`Failed to unban this person`"
+    UNKNOWN_THING = "`I don't know what 'thing' this is!`"
+    KICK_PERSONS_ONLY = "`I can kick bots and persons only`"
     CANNOT_KICK_SELF = "`I can't kick myself`"
     # user name, chat tile
     KICK_SUCCESS_REMOTE = "{} has been kicked from **{}**"
@@ -60,11 +67,13 @@ class AdminText(object):
     CANNOT_DEMOTE_ADMIN = "`I can't demote this admin`"
     DEMOTE_FAILED = "`Failed to demote this person`"
     NO_GROUP_ARGS = "`This chat or given chat isn't a group`"
+    MUTE_PERSONS_ONLY = "`I can mute bots and persons only`"
     NOT_MUTE_SUB_CHAN = "`Unable to mute subscribers in a channel`"
     CANNOT_MUTE_SELF = "`I can't mute myself`"
     MUTE_SUCCESS_REMOTE = "{} has been muted in **{}**"  # user name, chat tile
     MUTE_SUCCESS = "Muted {}"  # user name
     MUTE_FAILED = "`Failed to mute this person`"
+    UNMUTE_PERSONS_ONLY = "`I can unmute bots and persons only`"
     NOT_UNMUTE_SUB_CHAN = "`Unable to unmute subscribers in a channel`"
     CANNOT_UNMUTE_SELF = "`I can't unmute myself`"
     # user name, chat tile
@@ -208,6 +217,7 @@ class ChatInfoText(object):
 class MemberInfoText(object):
     SCAN = "`Scanning this member's information...`"
     FAIL_GET_MEMBER_CHAT = "`Failed to get member info: couldn't fetch chat`"
+    PERSONS_ONLY = "`This is not a bot or a person`"
     FAIL_GET_MEMBER = "`Failed to get member info`"
     NOT_SUPERGROUP = "`This chat or given chat ID isn't a supergroup!`"
     INVALID_CHAT_ID = "`Invalid chat ID!`"
@@ -265,6 +275,8 @@ class MemberInfoText(object):
 
 class MessagesText(object):
     NO_ADMIN = "`Admin privileges are required to perform this action`"
+    CHANNEL_PERSONS_ONLY = ("`I can count messages from bots, channels "
+                            "and users only`")
     FAIL_CHAT = "`Failed to fetch chat`"
     CANNOT_COUNT_DEL = "`Can't count messages from a deleted user`"
     CANNOT_QUERY_FWD = "`Can't query forwarded messages from a channel`"
@@ -319,7 +331,7 @@ class ScrappersText(object):
     STT = "Speech-to-text"
     STT_TEXT = "Text"
     STT_NOT_RECOGNIZED = "`Couldn't recognize speech from audio`"
-    STT_REQ_FAILED = "Request result from server failed"
+    STT_REQ_FAILED = "`Request result from server failed`"
     STT_OUTPUT_TOO_LONG = "`Speech-to-text output is too long!`"
     UNABLE_TO_STT = "`Unable to speech-to-text`"
     SCRLANG = "HyperUBot Scrappers module language is currently set to: `{}`"
@@ -348,6 +360,8 @@ class UserText(object):
     STATS_UNKNOWN = "**{}** unknown chats"
     STATS_TOTAL = "Total chats"
     FETCH_INFO = "`Getting user info...`"
+    INFO_PERSONS_ONLY = ("`This is not a bot or a person. Consider using "
+                         ".chatinfo if the target is a channel or a group`")
     FAILED_FETCH_INFO = "`Failed to fetch user info`"
     UNKNOWN = "Unknown"
     DELETED_ACCOUNT = "Deleted Account"
@@ -387,7 +401,6 @@ class SystemUtilitiesText(object):
 
 class GeneralMessages(object):
     ERROR = "ERROR!"
-    CHAT_NOT_USER = "`Channels are not User objects`"
     FAIL_FETCH_ENTITY = "`Failed to fetch channel or user`"
     UNSUPPORTED_ENTITY = "`Entity is not a Channel or an User`"
     PERSON_ANONYMOUS = "Person is anonymous"
@@ -876,11 +889,11 @@ class ModuleUsages(object):
                             "usage": "Gets your stats."},
                   "kickme": {"args": None,
                              "usage": "Makes you leave the group."},
-                  "userid": {"args": "[optional: <username>] or reply",
-                             "usage": ("Get the ID from an user. If "
-                                       "replied to a forwarded message, "
-                                       "it gets the IDs from both, "
-                                       "forwarder and original author.")}}
+                  "id": {"args": "[optional: <username>] or reply",
+                         "usage": ("Get the ID from a channel or an user. If "
+                                   "replied to a forwarded message, "
+                                   "it gets the IDs from both, "
+                                   "forwarder and original author.")}}
 
     WEBTOOLS_USAGE = {"dc": {"args": None,
                              "usage": ("Finds the near datacenter to "

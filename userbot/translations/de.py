@@ -20,18 +20,27 @@ class AdminText(object):
     NO_GROUP_CHAN_ARGS = ("`Dieser oder der gegebene Chat ist keine Gruppe "
                           "oder ein Kanal`")
     NO_ADMIN = "`Adminrechte sind erforderlich, um diese Aktion auszuführen`"
-    NO_BAN_PRIV = ("`Ban-Berechtigung ist erforderlich, um diese Aktion "
+    NO_BAN_PRIV = ("`Die Ban-Berechtigung ist erforderlich, um diese Aktion "
                    "auszuführen`")
     DELETED_ACCOUNT = "Gelöschtes Konto"
+    CANNOT_BAN_LINKED = ("`Ich kann diesen Kanal nicht bannen, da es mit '{}' "
+                         "verlinkt ist`")
+    CANNOT_BAN_CHANNEL_SELF = "`Ich kann meinen eigenen Kanal nicht bannen`"
+    CANNOT_BAN_CHANNEL_ITSELF = ("`Ich kann einen Kanal in seinem eigenen "
+                                 "Kanal nicht bannen!?`")
     CANNOT_BAN_SELF = "`Ich kann mich selbst nicht bannen`"
     CANNOT_BAN_ADMIN = "`Ich kann diesen Admin nicht bannen`"
     BAN_SUCCESS_REMOTE = "{} wurde aus **{}** gebannt"
     BAN_SUCCESS = "{} wurde gebannt!"
     BAN_FAILED = "`Diese Person konnte nicht gebannt werden`"
+    CANNOT_UNBAN_CHANNEL_ITSELF = ("`Ich kann einen Kanal in seinem eigenen "
+                                   "Kanal nicht entbannen!?`")
     CANNOT_UNBAN_SELF = "`Ich kann mich selbst nicht entbannen`"
     UNBAN_SUCCESS_REMOTE = "{} wurde aus **{}** entbannt"
     UNBAN_SUCCESS = "{} wurde entbannt!"
     UNBAN_FAILED = "`Diese Person konnte nicht entbannt werden`"
+    UNKNOWN_THING = "`Ich weiß nicht, was für ein 'ding' das ist!`"
+    KICK_PERSONS_ONLY = "`Ich kann nur Bots und Personen kicken`"
     CANNOT_KICK_SELF = "`Ich kann mich selbst nicht kicken`"
     KICK_SUCCESS_REMOTE = "{} wurde aus **{}** gekickt"
     KICK_SUCCESS = "{} wurde gekickt!"
@@ -47,8 +56,8 @@ class AdminText(object):
     ADMIN_NOT_ENOUGH_PERMS = ("`Ich hab nicht genung an "
                               "Administratoren-Rechte, um diese Person "
                               "zu befördern`")
-    ADD_ADMINS_REQUIRED = ("`Die Berechtigung um neue Admins zuzufügen ist "
-                           "erforderlich, um diese Aktion auzuführen`")
+    ADD_ADMINS_REQUIRED = ("`Die Berechtigung, um neue Admins hinzuzufügen, "
+                           "ist erforderlich, um diese Aktion auzuführen`")
     PROMOTE_SUCCESS = "{} wurde mit unsterblicher Macht befördert!"
     TOO_MANY_ADMINS = "`Dieser Chat hat bereits zu viele Admins`"
     EMOJI_NOT_ALLOWED = "`Emoji sind in Admin-Bezeichnungen nicht erlaubt`"
@@ -62,12 +71,15 @@ class AdminText(object):
     CANNOT_DEMOTE_ADMIN = "`Ich kann diesen Admin nicht degradieren`"
     DEMOTE_FAILED = "`Diese Person konnte nicht degradieren werden`"
     NO_GROUP_ARGS = "`Dieser oder der gegebene Chat ist keine Gruppe`"
+    MUTE_PERSONS_ONLY = "`Ich kann nur Bots und Personen stummgeschalten`"
     NOT_MUTE_SUB_CHAN = ("`Abonnenten aus diesem Kanal können nicht "
                          "stummgeschaltet werden`")
     CANNOT_MUTE_SELF = "`Ich kann mich selbst nicht stummschalten`"
     MUTE_SUCCESS_REMOTE = "{} wurde in **{}** stummgeschaltet"
     MUTE_SUCCESS = "{} wurde stummgeschaltet"
     MUTE_FAILED = "`Diese Person konnte nicht stummgeschaltet werden`"
+    UNMUTE_PERSONS_ONLY = ("`Ich kann die Stummschaltung nur von Bots und "
+                           "Personen aufheben`")
     NOT_UNMUTE_SUB_CHAN = ("`Stummschaltung von Abonnenten aus diesem "
                            "Kanal können nicht aufgehoben werden`")
     CANNOT_UNMUTE_SELF = ("`Ich kann meine eigene Stummschaltung nicht "
@@ -85,7 +97,7 @@ class AdminText(object):
     REM_DEL_ACCS_COUNT = "`{} gelöschte(s) Konto/Konten wurden entfernt`"
     REM_DEL_ACCS_COUNT_REMOTE = ("`{} gelöschte(s) Konto/Konten wurde(n) "
                                  "aus {} entfernt`")
-    REM_DEL_ACCS_COUNT_EXCP = ("`{} gelöschte(s) (Admin-) Konto/Konten "
+    REM_DEL_ACCS_COUNT_EXCP = ("`{} gelöschte(s) (Admin-)Konto/Konten "
                                "konnte(n) nicht entfernt werden`")
     NO_DEL_ACCOUNTS = "`Keine gelöschte Konten in diesem Chat gefunden`"
     NO_DEL_ACCOUNTS_REMOTE = "`Keine gelöschte Konten in {} gefunden`"
@@ -226,6 +238,8 @@ class MemberInfoText(object):
     SCAN = "`Scanne die Informationen dieses Mitglieds`"
     FAIL_GET_MEMBER_CHAT = ("`Fehler beim aufrufen der Mitglieds-Info: "
                             "Konnte nicht den Chat aufrufen`")
+    PERSONS_ONLY = ("`Hierbei handelt es sich nicht um einen Bot oder einer "
+                    "Person`")
     FAIL_GET_MEMBER = "`Fehler beim aufrufen der Mitglieds-Info`"
     NOT_SUPERGROUP = "`Dieser oder der gegebene Chat ist keine Supergruppe!`"
     INVALID_CHAT_ID = "`Ungültiges Chat ID!`"
@@ -283,6 +297,8 @@ class MemberInfoText(object):
 
 class MessagesText(object):
     NO_ADMIN = "`Adminrechte sind erforderlich, um diese Aktion auszuführen`"
+    CHANNEL_PERSONS_ONLY = ("`Ich kann die Nachrichten nur von Bots, Kanälen "
+                            "und Usern zählen`")
     FAIL_CHAT = "`Fehler beim aufrufen des Chats`"
     CANNOT_COUNT_DEL = ("`Kann nicht die Nachrichten von gelöschte Konten "
                         "zählen`")
@@ -341,7 +357,7 @@ class ScrappersText(object):
     STT = "Speech-to-Text"
     STT_TEXT = "Text"
     STT_NOT_RECOGNIZED = "`Das Gesprochene aus dem Audio wurde nicht erkannt`"
-    STT_REQ_FAILED = "Die Ergebnis-Anfrage vom Server ist fehlgeschalgen"
+    STT_REQ_FAILED = "`Die Ergebnis-Anfrage vom Server ist fehlgeschalgen`"
     STT_OUTPUT_TOO_LONG = "`Speech-to-text-Ausgabe ist zu groß!`"
     UNABLE_TO_STT = "`Fehler beim Speech-to-Text`"
     SCRLANG = "HyperUBot Scrappers-Modul-Sprache ist derzeit auf `{}` gesetzt"
@@ -370,6 +386,10 @@ class UserText(object):
     STATS_UNKNOWN = "**{}** unbekannte Chats"
     STATS_TOTAL = "Chats insgesamt"
     FETCH_INFO = "`Hole User-Info...`"
+    INFO_PERSONS_ONLY = ("`Hierbei handelt es sich nicht um einen Bot oder "
+                         "einer Person. Ziehe in betracht .chatinfo zu "
+                         "nutzen, falls es sich hierbei um einen Kanal oder "
+                         "einer Gruppe handeln sollte`")
     FAILED_FETCH_INFO = "`Fehler beim aufrufen der User-Info`"
     UNKNOWN = "Unbekannt"
     DELETED_ACCOUNT = "Gelöschtes Konto"
@@ -408,7 +428,6 @@ class SystemUtilitiesText(object):
 
 class GeneralMessages(object):
     ERROR = "FEHLER!"
-    CHAT_NOT_USER = "`Kanäle sind keine User-Objekte`"
     FAIL_FETCH_ENTITY = "`Fehler bei Aufrufen eines Kanals oder Users`"
     UNSUPPORTED_ENTITY = "`Die Entität ist kein Kanal oder User`"
     PERSON_ANONYMOUS = "Person ist anonym"
@@ -952,14 +971,14 @@ class ModuleUsages(object):
                             "usage": "Holt Ihre eigenen Statistiken."},
                   "kickme": {"args": None,
                              "usage": "Entfernt Sie selbst aus einer Gruppe."},
-                  "userid": {"args": ("[optional: <Benutzername>] oder als "
-                                      "Antwort"),
-                             "usage": ("Holt die ID eines Users. Falls auf "
-                                       "eine weitergeleitete Nachricht "
-                                       "geantwortet wurde, holt es die ID "
-                                       "der Person, die die Nachricht "
-                                       "weitergeleitet hat und vom "
-                                       "Originalautor.")}}
+                  "id": {"args": ("[optional: <Benutzername>] oder als "
+                                  "Antwort"),
+                         "usage": ("Holt die ID eines Kanals oder eines "
+                                  "Users. Falls auf eine weitergeleitete "
+                                  "Nachricht geantwortet wurde, holt es die "
+                                  "ID des Kanals oder der Person, der die "
+                                  "Nachricht weitergeleitet hat und vom "
+                                  "Originalautor.")}}
 
     WEBTOOLS_USAGE = {"rtt": {"args": None,
                               "usage": ("Ruft den aktuellen "

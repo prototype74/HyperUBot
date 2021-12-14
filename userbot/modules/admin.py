@@ -102,8 +102,7 @@ async def ban(event):
     if isinstance(entity, ChatFull):
         if entity.full_chat.linked_chat_id:
             if entity.full_chat.linked_chat_id == chat.id:
-                await event.edit("Can't ban this channel as it is linked to "
-                                 f"**{chat.title}**")
+                await event.edit(msgRep.CANNOT_BAN_LINKED.format(chat.title))
                 return
         entity_id = entity.full_chat.id
         chatinfo = None
@@ -112,10 +111,10 @@ async def ban(event):
                 chatinfo = c
                 break
         if chatinfo.creator:  # careful, you can expose yourself ;)
-            await event.edit("I can't ban my own channel")
+            await event.edit(msgRep.CANNOT_BAN_CHANNEL_SELF)
             return
         if entity_id == chat.id:
-            await event.edit("I can't ban a channel in it's own channel!?")
+            await event.edit(msgRep.CANNOT_BAN_CHANNEL_ITSELF)
             return
         name = (f"[{chatinfo.title}](https://t.me/{chatinfo.username})"
                 if chatinfo.username else chatinfo.title)
@@ -129,7 +128,7 @@ async def ban(event):
         name = (f"[{entity.user.first_name}](tg://user?id={entity_id})"
                 if entity.user.first_name else msgRep.DELETED_ACCOUNT)
     else:
-        await event.edit("I don't know what 'thing' this is!")
+        await event.edit(msgRep.UNKNOWN_THING)
         log.warning("Ban failed: target is not a channel or an user")
         return
 
@@ -194,7 +193,7 @@ async def unban(event):
                 chatinfo = c
                 break
         if entity_id == chat.id:
-            await event.edit("I can't unban a channel in it's own channel!?")
+            await event.edit(msgRep.CANNOT_UNBAN_CHANNEL_ITSELF)
             return
         name = (f"[{chatinfo.title}](https://t.me/{chatinfo.username})"
                 if chatinfo.username else chatinfo.title)
@@ -208,7 +207,7 @@ async def unban(event):
         name = (f"[{entity.user.first_name}](tg://user?id={entity_id})"
                 if entity.user.first_name else msgRep.DELETED_ACCOUNT)
     else:
-        await event.edit("I don't know what 'thing' this is!")
+        await event.edit(msgRep.UNKNOWN_THING)
         log.warning("Unban failed: target is not a channel or an user")
         return
 
@@ -262,7 +261,7 @@ async def kick(event):
         return
 
     if not isinstance(user, User):
-        await event.edit("I can only kick persons")
+        await event.edit(msgRep.KICK_PERSONS_ONLY)
         return
 
     if user.is_self:
@@ -517,7 +516,7 @@ async def mute(event):
         return
 
     if not isinstance(user, User):
-        await event.edit("I can mute persons only")
+        await event.edit(msgRep.MUTE_PERSONS_ONLY)
         return
 
     if hasattr(chat, "broadcast") and chat.broadcast:
@@ -580,7 +579,7 @@ async def unmute(event):
         return
 
     if not isinstance(user, User):
-        await event.edit("I can mute persons only")
+        await event.edit(msgRep.UNMUTE_PERSONS_ONLY)
         return
 
     if hasattr(chat, "broadcast") and chat.broadcast:

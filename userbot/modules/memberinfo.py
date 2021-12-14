@@ -45,7 +45,7 @@ async def memberinfo(event):
         return
 
     if not isinstance(member_info, UserFull):
-        await event.edit("This is not a person or a bot")
+        await event.edit(msgRep.PERSONS_ONLY)
         return
 
     try:

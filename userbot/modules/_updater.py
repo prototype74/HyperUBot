@@ -141,7 +141,7 @@ async def updater(event):
         await event.edit(msgRep.DOWNLOADING_RELEASE)
         if not _get_latest_release(_LATEST_VER.get("rules"),
                                    _LATEST_VER.get("zip")):
-            await event.edit("Update failed")
+            await event.edit(msgRep.UPDATE_FAILED)
             log.error("Failed to download latest release. Aborting process",
                       exc_info=True)
             _LATEST_VER.clear()

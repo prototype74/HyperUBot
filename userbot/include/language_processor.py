@@ -161,6 +161,12 @@ class AdminText(object):
         lang, _getframe().f_code.co_name, "NO_BAN_PRIV")
     DELETED_ACCOUNT = getLangString(
         lang, _getframe().f_code.co_name, "DELETED_ACCOUNT")
+    CANNOT_BAN_LINKED = getLangString(
+        lang, _getframe().f_code.co_name, "CANNOT_BAN_LINKED")
+    CANNOT_BAN_CHANNEL_SELF = getLangString(
+        lang, _getframe().f_code.co_name, "CANNOT_BAN_CHANNEL_SELF")
+    CANNOT_BAN_CHANNEL_ITSELF = getLangString(
+        lang, _getframe().f_code.co_name, "CANNOT_BAN_CHANNEL_ITSELF")
     CANNOT_BAN_SELF = getLangString(
         lang, _getframe().f_code.co_name, "CANNOT_BAN_SELF")
     CANNOT_BAN_ADMIN = getLangString(
@@ -171,6 +177,8 @@ class AdminText(object):
         lang, _getframe().f_code.co_name, "BAN_SUCCESS")
     BAN_FAILED = getLangString(
         lang, _getframe().f_code.co_name, "BAN_FAILED")
+    CANNOT_UNBAN_CHANNEL_ITSELF = getLangString(
+        lang, _getframe().f_code.co_name, "CANNOT_UNBAN_CHANNEL_ITSELF")
     CANNOT_UNBAN_SELF = getLangString(
         lang, _getframe().f_code.co_name, "CANNOT_UNBAN_SELF")
     UNBAN_SUCCESS_REMOTE = getLangString(
@@ -179,6 +187,10 @@ class AdminText(object):
         lang, _getframe().f_code.co_name, "UNBAN_SUCCESS")
     UNBAN_FAILED = getLangString(
         lang, _getframe().f_code.co_name, "UNBAN_FAILED")
+    UNKNOWN_THING = getLangString(
+        lang, _getframe().f_code.co_name, "UNKNOWN_THING")
+    KICK_PERSONS_ONLY = getLangString(
+        lang, _getframe().f_code.co_name, "KICK_PERSONS_ONLY")
     CANNOT_KICK_SELF = getLangString(
         lang, _getframe().f_code.co_name, "CANNOT_KICK_SELF")
     KICK_SUCCESS_REMOTE = getLangString(
@@ -231,6 +243,8 @@ class AdminText(object):
         lang, _getframe().f_code.co_name, "DEMOTE_FAILED")
     NO_GROUP_ARGS = getLangString(
         lang, _getframe().f_code.co_name, "NO_GROUP_ARGS")
+    MUTE_PERSONS_ONLY = getLangString(
+        lang, _getframe().f_code.co_name, "MUTE_PERSONS_ONLY")
     NOT_MUTE_SUB_CHAN = getLangString(
         lang, _getframe().f_code.co_name, "NOT_MUTE_SUB_CHAN")
     CANNOT_MUTE_SELF = getLangString(
@@ -241,6 +255,8 @@ class AdminText(object):
         lang, _getframe().f_code.co_name, "MUTE_SUCCESS")
     MUTE_FAILED = getLangString(
         lang, _getframe().f_code.co_name, "MUTE_FAILED")
+    UNMUTE_PERSONS_ONLY = getLangString(
+        lang, _getframe().f_code.co_name, "UNMUTE_PERSONS_ONLY")
     NOT_UNMUTE_SUB_CHAN = getLangString(
         lang, _getframe().f_code.co_name, "NOT_UNMUTE_SUB_CHAN")
     CANNOT_UNMUTE_SELF = getLangString(
@@ -507,6 +523,8 @@ class MemberInfoText(object):
         lang, _getframe().f_code.co_name, "SCAN")
     FAIL_GET_MEMBER_CHAT = getLangString(
         lang, _getframe().f_code.co_name, "FAIL_GET_MEMBER_CHAT")
+    PERSONS_ONLY = getLangString(
+        lang, _getframe().f_code.co_name, "PERSONS_ONLY")
     FAIL_GET_MEMBER = getLangString(
         lang, _getframe().f_code.co_name, "FAIL_GET_MEMBER")
     NOT_SUPERGROUP = getLangString(
@@ -616,6 +634,8 @@ class MemberInfoText(object):
 class MessagesText(object):
     NO_ADMIN = getLangString(
         lang, _getframe().f_code.co_name, "NO_ADMIN")
+    CHANNEL_PERSONS_ONLY = getLangString(
+        lang, _getframe().f_code.co_name, "CHANNEL_PERSONS_ONLY")
     FAIL_CHAT = getLangString(
         lang, _getframe().f_code.co_name, "FAIL_CHAT")
     CANNOT_COUNT_DEL = getLangString(
@@ -766,6 +786,8 @@ class UserText(object):
         lang, _getframe().f_code.co_name, "STATS_TOTAL")
     FETCH_INFO = getLangString(
         lang, _getframe().f_code.co_name, "FETCH_INFO")
+    INFO_PERSONS_ONLY = getLangString(
+        lang, _getframe().f_code.co_name, "INFO_PERSONS_ONLY")
     FAILED_FETCH_INFO = getLangString(
         lang, _getframe().f_code.co_name, "FAILED_FETCH_INFO")
     UNKNOWN = getLangString(
@@ -834,8 +856,6 @@ class SystemUtilitiesText(object):
 class GeneralMessages(object):
     ERROR = getLangString(
         lang, _getframe().f_code.co_name, "ERROR")
-    CHAT_NOT_USER = getLangString(
-        lang, _getframe().f_code.co_name, "CHAT_NOT_USER")
     FAIL_FETCH_ENTITY = getLangString(
         lang, _getframe().f_code.co_name, "FAIL_FETCH_ENTITY")
     UNSUPPORTED_ENTITY = getLangString(

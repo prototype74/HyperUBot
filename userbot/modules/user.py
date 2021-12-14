@@ -213,8 +213,7 @@ async def info(event):
         return
 
     if not isinstance(full_user_obj, UserFull):
-        await event.edit("`This is not a person or a bot. Consider using "
-                         ".chatinfo if the target is a channel or a group`")
+        await event.edit(msgRep.INFO_PERSONS_ONLY)
         return
 
     try:

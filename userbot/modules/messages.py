@@ -39,8 +39,7 @@ async def countmessages(event):
         return
 
     if not isinstance(user, (Channel, User)):
-        await event.edit("I can count messages from bots, channels "
-                         "and users only")
+        await event.edit(msgRep.CHANNEL_PERSONS_ONLY)
         return
 
     remote = isRemoteCMD(event, chat.id)

@@ -24,15 +24,27 @@ class AdminText(object):
     NO_BAN_PRIV = ("`É necessária permissão para Banir utilizadores para "
                    "executar esta ação!`")
     DELETED_ACCOUNT = "Conta excluída"
+    # translation needed
+    CANNOT_BAN_LINKED = "`I can't ban this channel as it is linked to '{}'`"
+    # translation needed
+    CANNOT_BAN_CHANNEL_SELF = "`I can't ban my own channel`"
+    # translation needed
+    CANNOT_BAN_CHANNEL_ITSELF = "`I can't ban a channel in its own channel!?`"
     CANNOT_BAN_SELF = "`Não posso banir-me a mim próprio!`"
     CANNOT_BAN_ADMIN = "`Não posso banir este admin`"
     BAN_SUCCESS_REMOTE = "{} foi banido de **{}**"
     BAN_SUCCESS = "{} foi banido!"
     BAN_FAILED = "`Falha ao banir esta pessoa!`"
+    CANNOT_UNBAN_CHANNEL_ITSELF = ("`I can't unban a channel in it's own "
+                                   "channel!?`")  # translation needed
     CANNOT_UNBAN_SELF = "`Não posso desbanir-me a mim próprio`"
     UNBAN_SUCCESS_REMOTE = "{} foi desbanido de **{}**"
     UNBAN_SUCCESS = "{} foi desbanido!"
     UNBAN_FAILED = "`Falha ao desbanir esta pessoa!`"
+    # translation needed
+    UNKNOWN_THING = "`I don't know what 'thing' this is!`"
+    # translation needed
+    KICK_PERSONS_ONLY = "`I can kick bots and persons only`"
     CANNOT_KICK_SELF = "`Não me posso kickar a mim mesmo`"
     KICK_SUCCESS_REMOTE = "{} foi kickado de **{}**"
     KICK_SUCCESS = "{} foi kickado!"
@@ -62,11 +74,15 @@ class AdminText(object):
     CANNOT_DEMOTE_ADMIN = "`I can't demote this admin`"  # translation needed
     DEMOTE_FAILED = "`Falha ao despromover esta pessoa.`"
     NO_GROUP_ARGS = "`Este chat, ou o chat fornecido, não é um grupo!`"
+    # translation needed
+    MUTE_PERSONS_ONLY = "`I can mute bots and persons only`"
     NOT_MUTE_SUB_CHAN = "`Impossível silenciar subscritores de um canal!`"
     CANNOT_MUTE_SELF = "`Não consigo silenciar-me a mim próprio`"
     MUTE_SUCCESS_REMOTE = "{} foi silenciado em **{}**"
     MUTE_SUCCESS = "{} foi silenciado"
     MUTE_FAILED = "`Falha ao silenciar esta pessoa`"
+    # translation needed
+    UNMUTE_PERSONS_ONLY = "`I can unmute bots and persons only`"
     NOT_UNMUTE_SUB_CHAN = "`Falha na remoção do silenciamento desta pessoa.`"
     CANNOT_UNMUTE_SELF = "`Não posso remover o meu próprio silenciamento`"
     UNMUTE_SUCCESS_REMOTE = "Foi removido o silenciamento de {} em **{}**"
@@ -217,8 +233,10 @@ class ChatInfoText(object):
 
 class MemberInfoText(object):
     SCAN = "`A examinar a informação deste membro...`"
+    # translation needed
     FAIL_GET_MEMBER_CHAT = ("`Falha ao obter informação sobre o membro: "
                             "impossível encontrar o chat!`")
+    PERSONS_ONLY = "`This is not a bot or a person`"
     FAIL_GET_MEMBER = "`Falha ao obter informação sobre o membro!`"
     NOT_SUPERGROUP = "`Este chat, ou o ID fornecido, não é um Supergrupo!`"
     INVALID_CHAT_ID = "`ID de Chat inválido!`"
@@ -277,6 +295,8 @@ class MemberInfoText(object):
 class MessagesText(object):
     NO_ADMIN = ("`Privilégios de administrador são necessários para "
                 "executar esta ação`")
+    CHANNEL_PERSONS_ONLY = ("`I can count messages from bots, channels "
+                            "and users only`")  # translation needed
     FAIL_CHAT = "`Falha ao obter o chat.`"
     CANNOT_COUNT_DEL = "`Não posso contar mensagens de uma conta excluída`"
     CANNOT_QUERY_FWD = ("`Não posso fazer query de mensagens encaminhadas "
@@ -335,7 +355,7 @@ class ScrappersText(object):
     STT_TEXT = "Texto"
     STT_NOT_RECOGNIZED = ("`Não foi possível reconhecer texto da "
                           "mensagem por voz enviada`")
-    STT_REQ_FAILED = "Resultado do pedido inválido!"
+    STT_REQ_FAILED = "`Resultado do pedido inválido!`"
     STT_OUTPUT_TOO_LONG = "`O output do Speech-to-text é demasiado longo!`"
     UNABLE_TO_STT = "`Impossível realizar speech-to-text`"
     SCRLANG = ("A linguagem do módulo de Scrappers do HyperUBot está "
@@ -366,6 +386,9 @@ class UserText(object):
     STATS_UNKNOWN = "**{}** conversas desconhecidas"
     STATS_TOTAL = "Total de chats"
     FETCH_INFO = "`Adquirindo informação do utilizador...`"
+    # translation needed
+    INFO_PERSONS_ONLY = ("`This is not a bot or a person. Consider using "
+                         ".chatinfo if the target is a channel or a group`")
     FAILED_FETCH_INFO = "`Falha ao adquirir informações!`"
     UNKNOWN = "Desconhecido"
     DELETED_ACCOUNT = "Conta excluída"
@@ -403,7 +426,6 @@ class SystemUtilitiesText(object):
 
 class GeneralMessages(object):
     ERROR = "ERRO!"
-    CHAT_NOT_USER = "`Canais não são objetos User`"
     # translation needed
     FAIL_FETCH_ENTITY = "`Failed to fetch channel or user`"
     # translation needed
@@ -917,11 +939,11 @@ class ModuleUsages(object):
                             "usage": "Obtém as tuas estatísticas."},
                   "kickme": {"args": None,
                              "usage": "Sais do grupo."},
-                  "userid": {"args": "[opcional: <username>] ou resposta",
-                             "usage": ("Obtém o ID de um utilizador. Se "
-                                       "a mensagem é encaminhada, obtém os "
-                                       "IDs dos dois (autor original e "
-                                       "quem encaminhou).")}}
+                  "id": {"args": "[opcional: <username>] ou resposta",
+                         "usage": ("Obtém o ID de um canal ou utilizador. Se "
+                                   "a mensagem é encaminhada, obtém os "
+                                   "IDs dos dois (autor original e "
+                                   "quem encaminhou).")}}
 
     WEBTOOLS_USAGE = {"dc": {"args": None,
                              "usage": ("Procura o Datacenter do Telegram "
