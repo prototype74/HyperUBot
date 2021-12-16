@@ -290,23 +290,27 @@ def pinger(address: str) -> str:
 
 async def getGitReview():
     """
-    Get the last commit ID from .git inside root directory
+    Get the last commit ID from .git inside root directory. Returns 'None'
+    if git is not detected.
 
     Example:
         commit = getGitReview()
 
     Returns:
-        Commit ID as stiring
+        Commit ID as string else None
     """
-    commit = msgsLang.ERROR
-    if which("git") is not None:
-        ver = await asyncr("git", "describe", "--all", "--long",
-                           stdout=asyncPIPE, stderr=asyncPIPE)
-        stdout, stderr = await ver.communicate()
-        verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
-        verdiv = verout.split("-")
-        commit = verdiv[2]
-    return commit
+    try:
+        if which("git") is not None:
+            ver = await asyncr("git", "describe", "--all", "--long",
+                               stdout=asyncPIPE, stderr=asyncPIPE)
+            stdout, stderr = await ver.communicate()
+            verout = str(
+                stdout.decode().strip()) + str(stderr.decode().strip())
+            verdiv = verout.split("-")
+            commit = verdiv[2]
+        return commit
+    except Exception:
+        return None
 
 
 # Package Manager
