@@ -400,7 +400,6 @@ class SystemUtilitiesText(object):
 
 
 class GeneralMessages(object):
-    ERROR = "ERROR!"
     FAIL_FETCH_ENTITY = "`Failed to fetch channel or user`"
     UNSUPPORTED_ENTITY = "`Entity is not a Channel or an User`"
     PERSON_ANONYMOUS = "Person is anonymous"

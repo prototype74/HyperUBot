@@ -425,7 +425,6 @@ class SystemUtilitiesText(object):
 
 
 class GeneralMessages(object):
-    ERROR = "ERRO!"
     # translation needed
     FAIL_FETCH_ENTITY = "`Failed to fetch channel or user`"
     # translation needed

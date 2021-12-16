@@ -854,8 +854,6 @@ class SystemUtilitiesText(object):
 
 
 class GeneralMessages(object):
-    ERROR = getLangString(
-        lang, _getframe().f_code.co_name, "ERROR")
     FAIL_FETCH_ENTITY = getLangString(
         lang, _getframe().f_code.co_name, "FAIL_FETCH_ENTITY")
     UNSUPPORTED_ENTITY = getLangString(

@@ -427,7 +427,6 @@ class SystemUtilitiesText(object):
 
 
 class GeneralMessages(object):
-    ERROR = "FEHLER!"
     FAIL_FETCH_ENTITY = "`Fehler bei Aufrufen eines Kanals oder Users`"
     UNSUPPORTED_ENTITY = "`Die Entität ist kein Kanal oder User`"
     PERSON_ANONYMOUS = "Person ist anonym"
