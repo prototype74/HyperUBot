@@ -226,7 +226,8 @@ async def _list_pkgs(command: str) -> str:
                     info += f" {no_entry}"
                     if not disabled_module:
                         disabled_module = True
-                elif module not in user_modules:
+                elif (module not in user_modules) or \
+                     (SAFEMODE and module in user_modules):
                     info += f" {negative_cross}"
                     if not installed_not_loaded:
                         installed_not_loaded = True
