@@ -1,0 +1,7 @@
+# Ignore git
+.git/
+
+# python cache
+__pycache__/*
+userbot/__pycache__/*
+userbot/*/__pycache__/*
