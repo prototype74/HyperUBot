@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import _tgclient
+from userbot import _tgclient, SAFEMODE
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (getAllModules,
                                            getBuiltInModules,
@@ -108,6 +108,8 @@ class _ModuleLoader:
         update_all_modules(module)
         if is_usermodule:
             update_user_modules(module)
+            if SAFEMODE:
+                return
         else:
             update_built_in_modules(module)
 
