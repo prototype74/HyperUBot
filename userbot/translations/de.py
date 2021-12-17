@@ -1000,30 +1000,28 @@ class ModuleUsages(object):
                             "usage": ("Prüft nach Releases aus dem "
                                       "angegebenen User/Repo-Kombination.")}}
 
-    MODULES_UTILS_USAGE = {"listcmds": {"args": ("[optional: <Name des "
-                                                 "Befehls>]"),
-                                        "usage": ("Listet alle verfügbare "
-                                                  "und registrierte Befehle")},
-                           "modules": {"args": ("<-Option> [Modulnummer aus "
-                                                "der Liste]"),
-                                       "usage": ("\n`.modules -d [Modulnummer "
-                                                 "aus der Liste]`\n"
-                                                 "Zeigt die Beschreibung des "
-                                                 "jeweiligen Moduls an. Wer "
-                                                 "weiß, vielleicht sind da "
-                                                 "einige Informationen "
-                                                 "versteckt?\n\n"
-                                                 "`.modules -i [Modulnummer "
-                                                 "aus der Liste]`\n"
-                                                 "Zeigt Informationen über "
-                                                 "das jeweilige Modul an z.B. "
-                                                 "der Name, Autor, Version "
-                                                 "usw.\n\n"
-                                                 "`.modules -u [Modulnummer "
-                                                 "aus der Liste]`\n"
-                                                 "Enthüllt die Geheimnisse "
-                                                 "und die Anwendung des "
-                                                 "jeweiligen Moduls")}}
+    MODULES_UTILS_USAGE = {"lcmds": {"args": ("[optional: <Name des Befehls>]"),
+                                     "usage": ("Listet alle verfügbare und "
+                                               "registrierte Befehle")},
+                           "mods": {"args": ("<-Option> [Modulnummer aus der "
+                                             "Liste]"),
+                                    "usage": ("\n`.mods -d [Modulnummer aus "
+                                              "der Liste]`\n"
+                                              "Zeigt die Beschreibung des "
+                                              "jeweiligen Moduls an. Wer "
+                                              "weiß, vielleicht sind da "
+                                              "einige Informationen "
+                                              "versteckt?\n\n"
+                                              "`.mods -i [Modulnummer aus der "
+                                              "Liste]`\n"
+                                              "Zeigt Informationen über das "
+                                              "jeweilige Modul an z.B. der "
+                                              "Name, Autor, Version usw.\n\n"
+                                              "`.mods -u [Modulnummer aus der "
+                                              "Liste]`\n"
+                                              "Enthüllt die Geheimnisse und "
+                                              "die Anwendung des jeweiligen "
+                                              "Moduls")}}
 
     TERMINAL_USAGE = {"shell": {"args": "<Befehl>",
                                 "usage": ("Führt umgehend den gegebenen "

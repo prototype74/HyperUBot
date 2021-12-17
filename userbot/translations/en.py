@@ -912,30 +912,26 @@ class ModuleUsages(object):
                             "usage": ("Checks for releases on the "
                                       "specified user/repo combination.")}}
 
-    MODULES_UTILS_USAGE = {"listcmds": {"args": ("[optional: <name of "
-                                                 "command>]"),
-                                        "usage": ("Lists all available and "
-                                                  "registered commands.")},
-                           "modules": {"args": ("<-option> [number of module "
-                                                "from the list]"),
-                                       "usage": ("\n`.modules -d [number of "
-                                                 "module from the list]`\n"
-                                                 "Shows the description of "
-                                                 "the specific module. "
-                                                 "Maybe some hidden "
-                                                 "information are there, "
-                                                 "who knows?\n\n"
-                                                 "`.modules -i [number of "
-                                                 "module from the list]`\n"
-                                                 "Shows information about "
-                                                 "the specific module like "
-                                                 "the name, author, version "
-                                                 "etc.\n\n"
-                                                 "`.modules -u [number of "
-                                                 "module from the list]`\n"
-                                                 "Reveals the secrets and "
-                                                 "the usage of the specific "
-                                                 "module")}}
+    MODULES_UTILS_USAGE = {"lcmds": {"args": ("[optional: <name of command>]"),
+                                     "usage": ("Lists all available and "
+                                               "registered commands.")},
+                           "mods": {"args": ("<-option> [number of module "
+                                             "from the list]"),
+                                    "usage": ("\n`.mods -d [number of  module "
+                                              "from the list]`\n"
+                                              "Shows the description of "
+                                              "the specific module. Maybe "
+                                              "some hidden information are "
+                                              "there, who knows?\n\n"
+                                              "`.mods -i [number of module "
+                                              "from the list]`\n"
+                                              "Shows information about the "
+                                              "specific module like the name, "
+                                              "author, version etc.\n\n"
+                                              "`.mods -u [number of module "
+                                              "from the list]`\n"
+                                              "Reveals the secrets and the "
+                                              "usage of the specific module")}}
 
     TERMINAL_USAGE = {"shell": {"args": "<command>",
                                 "usage": ("Executes in the server machine "

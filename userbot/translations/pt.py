@@ -922,7 +922,7 @@ class ModuleUsages(object):
                       "storage": {"args": None,
                                   "usage": ("Apresenta informação sobre "
                                             "o armazenamento do servidor")},
-                      "neofetch": {"args": None,  # translation required
+                      "neofetch": {"args": None,  # translation needed
                                    "usage": ("Show all relevant system "
                                              "information (hardware and "
                                              "software) from host. Requires "
@@ -963,31 +963,27 @@ class ModuleUsages(object):
                                       "determinado repositório de um "
                                       "utilizador.")}}
 
-    MODULES_UTILS_USAGE = {"listcmds": {"args": ("[opcional: <nome do "
-                                                 "comando>]"),
-                                        "usage": ("Apresenta todos os "
-                                                  "comandos disponíveis e "
-                                                  "registados")},
-                           "modules": {"args": ("<-option> [number of module "
-                                                "from the list]"),
-                                       "usage": ("\n`.modules -d [number of "
-                                                 "module from the list]`\n"
-                                                 "Shows the description of "
-                                                 "the specific module. "
-                                                 "Maybe some hidden "
-                                                 "information are there, "
-                                                 "who knows?\n\n"
-                                                 "`.modules -i [number of "
-                                                 "module from the list]`\n"
-                                                 "Shows information about "
-                                                 "the specific module like "
-                                                 "the name, author, version "
-                                                 "etc.\n\n"
-                                                 "`.modules -u [number of "
-                                                 "module from the list]`\n"
-                                                 "Reveals the secrets and "
-                                                 "the usage of the specific "
-                                                 "module")}}
+    MODULES_UTILS_USAGE = {"lcmds": {"args": ("[opcional: <nome do comando>]"),
+                                     "usage": ("Apresenta todos os comandos "
+                                               "disponíveis e registados")},
+                           # translation needed
+                           "mods": {"args": ("<-option> [number of module "
+                                             "from the list]"),
+                                    "usage": ("\n`.mods -d [number of  module "
+                                              "from the list]`\n"
+                                              "Shows the description of "
+                                              "the specific module. Maybe "
+                                              "some hidden information are "
+                                              "there, who knows?\n\n"
+                                              "`.mods -i [number of module "
+                                              "from the list]`\n"
+                                              "Shows information about the "
+                                              "specific module like the name, "
+                                              "author, version etc.\n\n"
+                                              "`.mods -u [number of module "
+                                              "from the list]`\n"
+                                              "Reveals the secrets and the "
+                                              "usage of the specific module")}}
 
     TERMINAL_USAGE = {"shell": {"args": "<command>",
                                 "usage": ("Executa na máquina hospedeira o "
