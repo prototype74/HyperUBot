@@ -128,11 +128,11 @@ async def sideload(event):
 
 
 if getConfig("ALLOW_SIDELOAD"):
-    register_cmd_usage("sideload",
-                       usageRep.SIDELOADER_USAGE.get(
-                           "sideload", {}).get("args"),
-                       usageRep.SIDELOADER_USAGE.get(
-                           "sideload", {}).get("usage"))
+    register_cmd_usage(
+        "sideload",
+        usageRep.SIDELOADER_USAGE.get("sideload", {}).get("args"),
+        usageRep.SIDELOADER_USAGE.get("sideload", {}).get("usage")
+    )
 else:
     register_cmd_usage("sideload", None, None)
 

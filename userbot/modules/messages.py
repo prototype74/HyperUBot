@@ -172,9 +172,11 @@ async def pin(event):
     return
 
 for cmd in ("msgs", "pin", "unpin"):
-    register_cmd_usage(cmd,
-                       usageRep.MESSAGES_USAGE.get(cmd, {}).get("args"),
-                       usageRep.MESSAGES_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(
+        cmd,
+        usageRep.MESSAGES_USAGE.get(cmd, {}).get("args"),
+        usageRep.MESSAGES_USAGE.get(cmd, {}).get("usage")
+    )
 
 register_module_desc(descRep.MESSAGES_DESC)
 register_module_info(

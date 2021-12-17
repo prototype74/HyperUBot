@@ -70,9 +70,11 @@ async def randomizer(msg):
 
 
 for cmd in ("coinflip", "dice", "rand"):
-    register_cmd_usage(cmd,
-                       usageRep.MISC_USAGE.get(cmd, {}).get("args"),
-                       usageRep.MISC_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(
+        cmd,
+        usageRep.MISC_USAGE.get(cmd, {}).get("args"),
+        usageRep.MISC_USAGE.get(cmd, {}).get("usage")
+    )
 
 register_module_desc(descRep.MISC_DESC)
 register_module_info(

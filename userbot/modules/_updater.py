@@ -267,10 +267,11 @@ async def updater(event):
     return
 
 
-register_cmd_usage("update",
-                   usageRep.UPDATER_USAGE.get("update", {}).get("args"),
-                   usageRep.UPDATER_USAGE.get("update", {}).get("usage"))
-
+register_cmd_usage(
+    "update",
+    usageRep.UPDATER_USAGE.get("update", {}).get("args"),
+    usageRep.UPDATER_USAGE.get("update", {}).get("usage")
+)
 register_module_desc(descRep.UPDATER_DESC)
 register_module_info(
     name="Updater",

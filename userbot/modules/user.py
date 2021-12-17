@@ -285,9 +285,11 @@ async def fetch_info(user_obj, event):
 
 
 for cmd in ("id", "info", "kickme", "stats"):
-    register_cmd_usage(cmd,
-                       usageRep.USER_USAGE.get(cmd, {}).get("args"),
-                       usageRep.USER_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(
+        cmd,
+        usageRep.USER_USAGE.get(cmd, {}).get("args"),
+        usageRep.USER_USAGE.get(cmd, {}).get("usage")
+    )
 
 register_module_desc(descRep.USER_DESC)
 register_module_info(

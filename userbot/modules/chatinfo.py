@@ -360,9 +360,11 @@ async def chatid(event):
 
 
 for cmd in ("chatinfo", "chatid", "getlink"):
-    register_cmd_usage(cmd,
-                       usageRep.CHATINFO_USAGE.get(cmd, {}).get("args"),
-                       usageRep.CHATINFO_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(
+        cmd,
+        usageRep.CHATINFO_USAGE.get(cmd, {}).get("args"),
+        usageRep.CHATINFO_USAGE.get(cmd, {}).get("usage")
+    )
 
 register_module_desc(descRep.CHATINFO_DESC)
 register_module_info(

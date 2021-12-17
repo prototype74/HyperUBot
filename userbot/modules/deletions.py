@@ -136,12 +136,12 @@ async def purge(event):
     return
 
 
-register_cmd_usage("del",
-                   usageRep.DELETIONS_USAGE.get("del", {}).get("args"),
-                   usageRep.DELETIONS_USAGE.get("del", {}).get("usage"))
-register_cmd_usage("purge",
-                   usageRep.DELETIONS_USAGE.get("purge", {}).get("args"),
-                   usageRep.DELETIONS_USAGE.get("purge", {}).get("usage"))
+for cmd in ("del", "purge"):
+    register_cmd_usage(
+        cmd,
+        usageRep.DELETIONS_USAGE.get(cmd, {}).get("args"),
+        usageRep.DELETIONS_USAGE.get(cmd, {}).get("usage")
+    )
 
 register_module_desc(descRep.DELETIONS_DESC)
 register_module_info(

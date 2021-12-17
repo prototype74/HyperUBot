@@ -224,9 +224,11 @@ async def send_log(event):
 
 
 for cmd in ("status", "storage", "shutdown", "reboot", "neofetch", "sendlog"):
-    register_cmd_usage(cmd,
-                       usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("args"),
-                       usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(
+        cmd,
+        usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("args"),
+        usageRep.SYSTOOLS_USAGE.get(cmd, {}).get("usage")
+    )
 
 register_module_desc(descRep.SYSTOOLS_DESC)
 register_module_info(

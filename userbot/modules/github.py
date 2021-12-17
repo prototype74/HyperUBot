@@ -58,10 +58,11 @@ async def get_release(event):
     return
 
 
-register_cmd_usage("git",
-                   usageRep.GITHUB_USAGE.get("git", {}).get("args"),
-                   usageRep.GITHUB_USAGE.get("git", {}).get("usage"))
-
+register_cmd_usage(
+    "git",
+    usageRep.GITHUB_USAGE.get("git", {}).get("args"),
+    usageRep.GITHUB_USAGE.get("git", {}).get("usage")
+)
 register_module_desc(descRep.GITHUB_DESC)
 register_module_info(
     name="GitHub",

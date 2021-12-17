@@ -91,10 +91,11 @@ async def terminal(event):
     return
 
 
-register_cmd_usage("shell",
-                   usageRep.TERMINAL_USAGE.get("shell", {}).get("args"),
-                   usageRep.TERMINAL_USAGE.get("shell", {}).get("usage"))
-
+register_cmd_usage(
+    "shell",
+    usageRep.TERMINAL_USAGE.get("shell", {}).get("args"),
+    usageRep.TERMINAL_USAGE.get("shell", {}).get("usage")
+)
 register_module_desc(descRep.TERMINAL_DESC)
 register_module_info(
     name="Terminal",

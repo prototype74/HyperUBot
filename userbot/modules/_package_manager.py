@@ -780,10 +780,11 @@ async def package_manager(event):
     return
 
 
-register_cmd_usage("pkg",
-                   usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("args"),
-                   usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("usage"))
-
+register_cmd_usage(
+    "pkg",
+    usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("args"),
+    usageRep.PACKAGE_MANAGER_USAGE.get("pkg", {}).get("usage")
+)
 register_module_desc(descRep.PACKAGE_MANAGER_DESC)
 register_module_info(
     name="Package Manager",

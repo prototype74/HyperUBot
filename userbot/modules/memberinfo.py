@@ -396,10 +396,11 @@ async def memberinfo(event):
     return
 
 
-register_cmd_usage("minfo",
-                   usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("args"),
-                   usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("usage"))
-
+register_cmd_usage(
+    "minfo",
+    usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("args"),
+    usageRep.MEMBERINFO_USAGE.get("minfo", {}).get("usage")
+)
 register_module_desc(descRep.MEMBERINFO_DESC)
 register_module_info(
     name="Member Info",

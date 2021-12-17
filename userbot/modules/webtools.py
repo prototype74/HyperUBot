@@ -167,9 +167,11 @@ async def speedtest(event):
 
 
 for cmd in ("dc", "ping", "rtt", "speedtest"):
-    register_cmd_usage(cmd,
-                       usageRep.WEBTOOLS_USAGE.get(cmd, {}).get("args"),
-                       usageRep.WEBTOOLS_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(
+        cmd,
+        usageRep.WEBTOOLS_USAGE.get(cmd, {}).get("args"),
+        usageRep.WEBTOOLS_USAGE.get(cmd, {}).get("usage")
+    )
 
 register_module_desc(descRep.WEBTOOLS_DESC)
 register_module_info(

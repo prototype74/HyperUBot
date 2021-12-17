@@ -329,9 +329,11 @@ async def cc(event):
 
 
 for cmd in ("trt", "tts", "stt", "scrlang", "setlang", "currency"):
-    register_cmd_usage(cmd,
-                       usageRep.SCRAPPERS_USAGE.get(cmd, {}).get("args"),
-                       usageRep.SCRAPPERS_USAGE.get(cmd, {}).get("usage"))
+    register_cmd_usage(
+        cmd,
+        usageRep.SCRAPPERS_USAGE.get(cmd, {}).get("args"),
+        usageRep.SCRAPPERS_USAGE.get(cmd, {}).get("usage")
+    )
 
 register_module_desc(descRep.SCRAPPERS_DESC)
 register_module_info(
