@@ -28,7 +28,7 @@ MODULES_LISTED = {}
 _attempts = 0
 
 
-@ehandler.on(command="listcmds", alt="help", hasArgs=True, outgoing=True)
+@ehandler.on(command="lcmds", alt="help", hasArgs=True, outgoing=True)
 async def list_commands(event):
     arg_from_event = event.pattern_match.group(1)
     cmd_not_found = False
@@ -78,7 +78,7 @@ async def list_commands(event):
     all_cmds = f"**{msgRep.LISTCMDS_TITLE} ({cmds_amount})**\n\n"
     if cmd_not_found:
         all_cmds += msgRep.CMD_NOT_FOUND.format(arg_from_event) + "\n"
-    all_cmds += msgRep.LISTCMDS_USAGE.format("`.listcmds`/`.help`") + "\n\n"
+    all_cmds += msgRep.LISTCMDS_USAGE.format("`.lcmds`/`.help`") + "\n\n"
     for cmd, value in cmds_dict.items():
         alt_cmd = value.get("alt_cmd")
         if alt_cmd:
@@ -136,7 +136,7 @@ def modules_listing(error_text: str = None) -> str:
         global _attempts
         modules_listed += f"{error_text}\n"
         if _attempts >= 2:
-            modules_listed += f"{msgRep.MOD_HELP.format('`.help modules`')}\n"
+            modules_listed += f"{msgRep.MOD_HELP.format('`.help mods`')}\n"
         modules_listed += "\n"
 
     sys_count, user_count = installed_modules()
@@ -281,7 +281,7 @@ def module_usage(name_of_module: str, module: str) -> str:
     raise IndexError
 
 
-@ehandler.on(command="modules", alt="module", hasArgs=True, outgoing=True)
+@ehandler.on(command="mods", alt="mod", hasArgs=True, outgoing=True)
 async def modules(event):
     args_from_event = event.pattern_match.group(1).split(" ", 1)
     if len(args_from_event) == 2:
@@ -337,13 +337,9 @@ async def modules(event):
     return
 
 
-register_cmd_usage("listcmds",
-                   usageRep.MODULES_UTILS_USAGE.get(
-                       "listcmds", {}).get("args"),
-                   usageRep.MODULES_UTILS_USAGE.get(
-                       "listcmds", {}).get("usage"))
-register_cmd_usage("modules",
-                   usageRep.MODULES_UTILS_USAGE.get(
-                       "modules", {}).get("args"),
-                   usageRep.MODULES_UTILS_USAGE.get(
-                       "modules", {}).get("usage"))
+for cmd in ("lcmds", "mods"):
+    register_cmd_usage(
+        cmd,
+        usageRep.MODULES_UTILS_USAGE.get(cmd, {}).get("args"),
+        usageRep.MODULES_UTILS_USAGE.get(cmd, {}).get("usage")
+    )
