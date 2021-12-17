@@ -131,8 +131,8 @@ async def send_welcome_msg(client, ownerID: int):
     from userbot.include.language_processor import WelcomeText as msg
     log.info("Welcome to HyperUBot! You made it to run HyperUBot on your "
              "machine. What's next? Get surprised by running the following "
-             "commands in any chat: .status, .help or .modules. Need help "
-             "with your new userbot? Check out our wiki "
+             "commands in any chat: .status, .help or .mods. Need help with "
+             "your new userbot? Check out our wiki "
              "'https://github.com/prototype74/HyperUBot/wiki' or chat with "
              "us in our support group 'https://t.me/HyperUBotSupport'. "
              "Have fun!")
@@ -144,9 +144,9 @@ async def send_welcome_msg(client, ownerID: int):
     text = f"**{msg.WELCOME_TO_HYPERUBOT}** {robo_face}\n\n"
     text += (f"{msg.INFO}:\n\n")
     text += (f"{pager_emoji} `.status` - __{msg.INFO_STATUS}__\n\n")
-    text += (f"{page_emoji} `.listcmds` (__{msg.INFO_OR}__ `.help`) - "
+    text += (f"{page_emoji} `.lcmds` (__{msg.INFO_OR}__ `.help`) - "
              f"__{msg.INFO_HELP.format('`.help status`')}__\n\n")
-    text += (f"{disk_emoji} `.modules` - __{msg.INFO_MODULES}__\n\n")
+    text += (f"{disk_emoji} `.mods` - __{msg.INFO_MODULES}__\n\n")
     text += (f"{pkg_emoji} `.pkg` - __{msg.INFO_PKG}__\n\n")
     supp_link = f"[{msg.INFO_SUPPORT_LINK}](https://t.me/HyperUBotSupport)"
     wiki_link = (f"[{msg.INFO_SUPPORT_WIKI}]"
