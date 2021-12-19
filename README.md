@@ -114,7 +114,7 @@ set up the bot, if you are stuck in a specific step.
 
 ### People, who also contributed to this project
 
-- [AndrzejDwo](https://github.com/Watn3y)
+- [AndrzejDwo](https://github.com/AndrzejDwo)
 - [soulr344](https://github.com/soulr344)
 - [Watn3y](https://github.com/Watn3y)
 
