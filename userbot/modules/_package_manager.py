@@ -171,7 +171,6 @@ async def _update_pkg_list(event, repo_names=None):
 
 
 def _update_needed() -> bool:
-    global _pkg_list
     try:
         last_update = _pkg_list.get("last_updated")
         if not last_update:
@@ -243,7 +242,6 @@ async def _list_pkgs(command: str) -> str:
         else:
             text += f"__{msgRep.NO_MODULES_INSTALLED}__\n"
         text += "\n"
-    global _pkg_list
     pkg_repos = _pkg_list.get("repos", [])
     installed_already = False
     upgradeable = False
