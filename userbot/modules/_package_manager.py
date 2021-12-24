@@ -173,8 +173,10 @@ async def _update_pkg_list(event, repo_names=None):
 def _update_needed() -> bool:
     global _pkg_list
     try:
-        date_diff = datetime.now() - datetime.fromisoformat(
-            _pkg_list.get("last_updated"))
+        last_update = _pkg_list.get("last_updated")
+        if not last_update:
+            return False
+        date_diff = datetime.now() - datetime.fromisoformat(last_update)
         return date_diff > timedelta(hours=1)
     except Exception:
         log.warning("Unable to check required update", exc_info=True)
