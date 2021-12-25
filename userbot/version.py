@@ -6,9 +6,9 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-major = 6
-minor = 3
-micro = 1
+major = 7
+minor = 0
+micro = 0
 
 VERSION = f"{major}.{minor}.{micro}"
 VERSION_TUPLE = (major, minor, micro)
