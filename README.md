@@ -54,9 +54,10 @@ to install HyperUBot on your device. Follow the steps meant for your
 
 > **Important notice**: Do not git clone the repository to install HyperUBot as 
 changes pushed to the repository may not be stable for normal usage. Clone the 
-project only if you want take own changes to the source. Our stable releases 
+project only if you want to take own changes to the source. Our stable releases 
 are available in our [Releases](https://github.com/prototype74/HyperUBot/releases) 
-section which will be automatically picked by the installers in setup wiki.
+section which will be automatically picked by the installers in setup wiki and 
+by the updater in userbot.
 
 ## Read the wiki!
 
