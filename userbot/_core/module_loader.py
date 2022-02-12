@@ -11,7 +11,6 @@ from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (getAllModules,
                                            getBuiltInModules,
                                            getHandlers,
-                                           getLoadModules,
                                            getRegisteredCMDs,
                                            getUserModules,
                                            update_all_modules,
