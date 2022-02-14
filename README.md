@@ -1,4 +1,4 @@
-# ![HyperUBot](https://github.com/prototype74/HyperUBot/wiki/resources/hyperanim2021-2022final_KebapciEBY.gif)
+ # ![HyperUBot](https://github.com/prototype74/HyperUBot/wiki/resources/hyperanim2021final_KebapciEBY.gif)
 
 A customizable, modular Telegram userbot, with innovative components.
 
