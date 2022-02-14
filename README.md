@@ -1,9 +1,9 @@
-# ![HyperUBot](https://github.com/prototype74/HyperUBot/wiki/resources/hyperanim2021final_KebapciEBY.gif)
+# ![HyperUBot](https://github.com/prototype74/HyperUBot/wiki/resources/hyperanim2021-2022final_KebapciEBY.gif)
 
 A customizable, modular Telegram userbot, with innovative components.
 
-Copyright (C) 2020-2021 nunopenim\
-Copyright (C) 2020-2021 prototype74
+Copyright (C) 2020-2022 nunopenim\
+Copyright (C) 2020-2022 prototype74
 
 > Licensed under [PEL](https://github.com/prototype74/HyperUBot/blob/master/LICENSE.md)
 

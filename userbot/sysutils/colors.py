@@ -1,5 +1,5 @@
-# Copyright 2020-2021 nunopenim @github
-# Copyright 2020-2021 prototype74 @github
+# Copyright 2020-2022 nunopenim @github
+# Copyright 2020-2022 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #
