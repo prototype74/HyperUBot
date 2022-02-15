@@ -35,7 +35,6 @@ class _ModuleLoader:
         """
         Initialize the module loader
         """
-        self.__imported_module = None
         self.__not_load_modules = getConfig("NOT_LOAD_MODULES", [])
 
     def _start_language_processor(self):
@@ -48,8 +47,7 @@ class _ModuleLoader:
                         f"(requested by {os.path.basename(caller)})")
             return
         try:
-            self.__imported_module = importlib.import_module(
-                "userbot.include.language_processor")
+            importlib.import_module("userbot.include.language_processor")
         except KeyboardInterrupt:
             raise KeyboardInterrupt
         except ModuleNotFoundError:
@@ -62,8 +60,6 @@ class _ModuleLoader:
             log.critical("Failed to start the language processor "
                          "due to an unhandled exception", exc_info=True)
             raise
-        finally:
-            self.__imported_module = None
         return
 
     def _import_module(self, module: str,
@@ -116,7 +112,7 @@ class _ModuleLoader:
             return
 
         try:
-            self.__imported_module = importlib.import_module(path)
+            importlib.import_module(path)
             update_load_modules(module, True)
             if display_info:
                 log.info(f"Module '{module}' imported successfully")
@@ -127,8 +123,6 @@ class _ModuleLoader:
                       "to an unhandled exception",
                       exc_info=True)
             update_load_modules(module, False)
-        finally:
-            self.__imported_module = None
         return
 
     def _unimport_module(self, module: str):
