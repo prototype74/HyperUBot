@@ -625,6 +625,8 @@ class UpdaterText(object):
     # translation needed
     UPDATE_SUCESS = "HyperUBot updated to {} successfully!"
     UPDATE_FAIL = "Failed to update HyperUBot to {}"  # translation needed
+    NOTIFIER_HEADER = "HyperUBot's Update Notifier"  # translation needed
+    NOTIFIER_INFO = "A new update to {} is available!"  # translation needed
 
 
 class SideloaderText(object):

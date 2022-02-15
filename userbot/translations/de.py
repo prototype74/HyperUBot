@@ -632,6 +632,8 @@ class UpdaterText(object):
                      "jetzt herunterzuladen und zu installieren")
     UPDATE_SUCESS = "HyperUBot wurde erfolgreich auf {} aktualisiert!"
     UPDATE_FAIL = "Die Aktualisierung von HyperUBot auf {} ist fehlgeschlagen"
+    NOTIFIER_HEADER = "HyperUBots Updatemelder"
+    NOTIFIER_INFO = "Ein neues Update auf {} ist verfügbar!"
 
 
 class SideloaderText(object):

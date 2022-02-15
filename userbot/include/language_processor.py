@@ -1193,6 +1193,10 @@ class UpdaterText(object):
         lang, _getframe().f_code.co_name, "UPDATE_SUCESS")
     UPDATE_FAIL = getLangString(
         lang, _getframe().f_code.co_name, "UPDATE_FAIL")
+    NOTIFIER_HEADER = getLangString(
+        lang, _getframe().f_code.co_name, "NOTIFIER_HEADER")
+    NOTIFIER_INFO = getLangString(
+        lang, _getframe().f_code.co_name, "NOTIFIER_INFO")
 
 
 class SideloaderText(object):
