@@ -12,7 +12,7 @@ from userbot.include.git_api import getLatestData
 from userbot.include.language_processor import (UpdaterText as msgRep,
                                                 ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
-from userbot.sysutils.configuration import setConfig
+from userbot.sysutils.configuration import setConfig, getConfig
 from userbot.sysutils.event_handler import EventHandler
 from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
@@ -27,6 +27,17 @@ import os
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
+_update_scheduler = getConfig("UPDATER_ENABLE_SCHEDULER", False)
+
+if _update_scheduler:
+    from userbot import _tgclient
+    from telethon.tl.functions.messages import MarkDialogUnreadRequest
+    from apscheduler.schedulers.asyncio import AsyncIOScheduler
+    from datetime import datetime, timedelta
+    from logging import WARNING
+    from tzlocal import get_localzone
+    _scheduler = AsyncIOScheduler(timezone=str(get_localzone()))
+    getLogger("apscheduler").setLevel(WARNING)
 
 RELEASE_DIR = os.path.join(".", "releases")
 UPDATE_PACKAGE = os.path.join(RELEASE_DIR, "update.zip")
@@ -265,6 +276,54 @@ async def updater(event):
             reply += msgRep.UPDATE_QUEUED
             await event.edit(reply)
     return
+
+
+if _update_scheduler:
+    @_scheduler.scheduled_job("interval",
+                              days=1,
+                              next_run_time=(datetime.now() +
+                                             timedelta(minutes=10)),
+                              id="updater_job_1")
+    async def update_scheduler():
+        try:
+            release_data = getLatestData("prototype74/HyperUBot")
+        except Exception:
+            log.warning("[NOTIFIER] Failed to get latest release")
+            return
+
+        try:
+            tag_version = release_data["tag_name"][1:]
+            release_version = verAsTuple(tag_version)
+        except ValueError:
+            log.warning("[NOTIFIER] Invalid tag version from release")
+            return
+        except Exception:
+            log.warning("[NOTIFIER] Failed to parse tag version from release")
+            return
+
+        if VERSION_TUPLE < release_version:
+            log.info(f"[NOTIFIER] An Update to {tag_version} is available")
+            text = (f"**{msgRep.NOTIFIER_HEADER}**\n\n"
+                    f"__{msgRep.NOTIFIER_INFO.format(tag_version)}__")
+            try:
+                me = await _tgclient.get_me()
+                await _tgclient.send_message(me.id, text)
+                try:
+                    await _tgclient(MarkDialogUnreadRequest(me.id, True))
+                except Exception as e:
+                    log.warning("[NOTIFIER] Failed to set saved messages as "
+                                f"unread: {e}")
+            except Exception as e:
+                log.warning("[NOTIFIER] Failed to send notification "
+                            f"message: {e}")
+            _scheduler.remove_job("updater_job_1")
+            _scheduler.shutdown()
+        return
+
+    try:
+        _scheduler.start()
+    except (BaseException, Exception):
+        _scheduler.shutdown()
 
 
 register_cmd_usage(
