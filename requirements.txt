@@ -1,5 +1,5 @@
 APScheduler>=3.8.1
-certifi>=2021-2022.10.8
+certifi>=2021.10.8
 cffi>=1.15.0
 colorama>=0.4.4; platform_system=="Windows"
 CurrencyConverter>=0.16.3
