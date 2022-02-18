@@ -392,7 +392,7 @@ async def _install_pkgs(event, command: str):
         try:
             r_author, r_name = repo_url.split("/")
         except Exception:
-            text += ("f{warning} {msgRep.INVALID_REPO_URL}: {repo_url}\n")
+            text += (f"{warning} {msgRep.INVALID_REPO_URL}: {repo_url}\n")
             await event.edit(text)
             return
         if not mods:
