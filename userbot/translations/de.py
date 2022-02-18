@@ -545,7 +545,7 @@ class PackageManagerText(object):
                        "COMMUNITY_REPOS-Config bei")
     PACKAGES_UPDATER = "Paketen-Updater"
     INVALID_REPO_URL = "Ungültiges Repository-URL-Format"
-    UPDATING = "Aktualisiere '{}'..."
+    UPDATING_REPO_DATA = "Repository-Daten werden aktualisiert..."
     UPDATE_SUCCESS = "Aktuelle Daten von '{}' erhalten"
     UPDATE_FAILED = "Fehler beim Holen der Daten von '{}'"
     UPDATER_FINISHED = "Updater beendet"
@@ -573,7 +573,8 @@ class PackageManagerText(object):
                           "von einem bestimmten Repository gegeben!")
     UNKNOWN_REPO_URL = "Angegebene Repository-URL ist unbekannt!"
     UNKNOWN_MODULES = "Unbekannte(r) Modul(e)"
-    DOWNLOADING = "Lade '{}' herunter..."
+    INSTALLING_MODULES = ("Module werden installiert. Dieser Prozess könnte "
+                          "eine Weile dauern...")
     DOWN_FAILED = "Download von '{}' ist fehlgeschlagen"
     INSTALL_FAILED = "Fehler beim Installieren von '{}'"
     INSTALL_SUCCESS = "'{}' wurde installiert"
@@ -582,6 +583,7 @@ class PackageManagerText(object):
     INSTALLER_FINISHED = "Installer beendet"
     UNINSTALL_EMPTY = "Keine Modulnamen für die Deinstallation gegeben"
     PACKAGE_UNINSTALLER = "Paketen-Uninstaller"
+    UNINSTALLING_MODULES = "Module werden deinstalliert..."
     UNINSTALL_FAILED = "Deinstallation von '{}' ist fehlgeschlagen"
     UNINSTALL_SUCCESS = "'{}' wurde deinstalliert"
     UNINSTALL_DATA = ("'{}' wurde deinstalliert jedoch konnten dessen Daten "
@@ -592,7 +594,7 @@ class PackageManagerText(object):
     NO_REPO_REMOVE = "Es gibt keine Repositorys zum Entfernen"
     REPO_REMOVER = "Repository-Remover"
     CANNOT_REMOVE_REPO = "'{}' kann nicht entfernt werden (geschützt)"
-    REMOVING = "Entferne '{}'..."
+    REMOVING_REPO_DATA = "Repository-Daten werden entfernt..."
     REMOVE_SUCCESS = "'{}' wurde entfernt"
     REMOVE_FAILED = "Fehler beim Entfernen von '{}'"
     UNKNOWN_REPO = "Unbekannter Repository"

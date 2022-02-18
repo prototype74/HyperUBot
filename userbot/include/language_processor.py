@@ -1042,8 +1042,8 @@ class PackageManagerText(object):
         lang, _getframe().f_code.co_name, "PACKAGES_UPDATER")
     INVALID_REPO_URL = getLangString(
         lang, _getframe().f_code.co_name, "INVALID_REPO_URL")
-    UPDATING = getLangString(
-        lang, _getframe().f_code.co_name, "UPDATING")
+    UPDATING_REPO_DATA = getLangString(
+        lang, _getframe().f_code.co_name, "UPDATING_REPO_DATA")
     UPDATE_SUCCESS = getLangString(
         lang, _getframe().f_code.co_name, "UPDATE_SUCCESS")
     UPDATE_FAILED = getLangString(
@@ -1094,8 +1094,8 @@ class PackageManagerText(object):
         lang, _getframe().f_code.co_name, "UNKNOWN_REPO_URL")
     UNKNOWN_MODULES = getLangString(
         lang, _getframe().f_code.co_name, "UNKNOWN_MODULES")
-    DOWNLOADING = getLangString(
-        lang, _getframe().f_code.co_name, "DOWNLOADING")
+    INSTALLING_MODULES = getLangString(
+        lang, _getframe().f_code.co_name, "INSTALLING_MODULES")
     DOWN_FAILED = getLangString(
         lang, _getframe().f_code.co_name, "DOWN_FAILED")
     INSTALL_FAILED = getLangString(
@@ -1112,6 +1112,8 @@ class PackageManagerText(object):
         lang, _getframe().f_code.co_name, "UNINSTALL_EMPTY")
     PACKAGE_UNINSTALLER = getLangString(
         lang, _getframe().f_code.co_name, "PACKAGE_UNINSTALLER")
+    UNINSTALLING_MODULES = getLangString(
+        lang, _getframe().f_code.co_name, "UNINSTALLING_MODULES")
     UNINSTALL_FAILED = getLangString(
         lang, _getframe().f_code.co_name, "UNINSTALL_FAILED")
     UNINSTALL_SUCCESS = getLangString(
@@ -1132,8 +1134,8 @@ class PackageManagerText(object):
         lang, _getframe().f_code.co_name, "REPO_REMOVER")
     CANNOT_REMOVE_REPO = getLangString(
         lang, _getframe().f_code.co_name, "CANNOT_REMOVE_REPO")
-    REMOVING = getLangString(
-        lang, _getframe().f_code.co_name, "REMOVING")
+    REMOVING_REPO_DATA = getLangString(
+        lang, _getframe().f_code.co_name, "REMOVING_REPO_DATA")
     REMOVE_SUCCESS = getLangString(
         lang, _getframe().f_code.co_name, "REMOVE_SUCCESS")
     REMOVE_FAILED = getLangString(
