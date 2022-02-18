@@ -109,8 +109,10 @@ async def _update_pkg_list(event, repo_names=None):
     text = f"**{msgRep.PACKAGES_UPDATER}**\n\n"
     red_cross = u"\u274C"  # red cross mark emoji
     check_mark = u"\u2705"  # check mark emoji
-    down = u"\u2B07"  # down emoji
     warning = u"\u26A0"  # warning emoji
+
+    if event:
+        await event.edit(f"{text}__{msgRep.UPDATING_REPO_DATA}__")
 
     for r in repos:
         try:
@@ -118,46 +120,35 @@ async def _update_pkg_list(event, repo_names=None):
         except Exception:
             log.warning(f"[UPDATE] Invalid repo URL format: {r}")
             text += f"{warning} {msgRep.INVALID_REPO_URL}: {r}\n"
-            if event:
-                await event.edit(text)
             continue
-        text += f"{down} {msgRep.UPDATING.format(r_name)}\n"
-        if event:
-            await event.edit(text)
         for i, repo in enumerate(pkg_repos):
             if r_author == repo.get("author", "Unknown") and \
                r_name == repo.get("name", "Unknown"):
                 new_data = _get_release(f"{r_author}/{r_name}")
                 if new_data:
                     pkg_repos[i] = new_data
-                    text = text.replace(
-                        f"{down} {msgRep.UPDATING.format(r_name)}",
-                        f"{check_mark} {msgRep.UPDATE_SUCCESS.format(r_name)}")
+                    text += (f"{check_mark} "
+                             f"{msgRep.UPDATE_SUCCESS.format(r_name)}\n")
                     if not list_modified:
                         list_modified = True
                 else:
                     log.error("[UPDATE] Failed to get release "
                               f"data from {r_name}")
-                    text = text.replace(
-                        f"{down} {msgRep.UPDATING.format(r_name)}",
-                        f"{red_cross} {msgRep.UPDATE_FAILED.format(r_name)}")
+                    text += (f"{red_cross} "
+                             f"{msgRep.UPDATE_FAILED.format(r_name)}\n")
                 break
         else:
             new_data = _get_release(f"{r_author}/{r_name}")
             if new_data:
                 pkg_repos.append(new_data)
-                text = text.replace(
-                    f"{down} {msgRep.UPDATING.format(r_name)}",
-                    f"{check_mark} {msgRep.UPDATE_SUCCESS.format(r_name)}")
+                text += (f"{check_mark} "
+                         f"{msgRep.UPDATE_SUCCESS.format(r_name)}\n")
                 if not list_modified:
                     list_modified = True
             else:
                 log.error(f"[UPDATE] Failed to get release data from {r_name}")
-                text = text.replace(
-                    f"{down} {msgRep.UPDATING.format(r_name)}",
-                    f"{red_cross} {msgRep.UPDATE_FAILED.format(r_name)}")
-        if event:
-            await event.edit(text)
+                text += (f"{red_cross} "
+                         f"{msgRep.UPDATE_FAILED.format(r_name)}\n")
     if list_modified:
         _pkg_list["last_updated"] = str(datetime.now())
         _pkg_list["repos"] = pkg_repos
@@ -386,7 +377,6 @@ async def _install_pkgs(event, command: str):
     text = f"**{msgRep.PACKAGE_INSTALLER}**\n\n"
     red_cross = u"\u274C"  # red cross mark emoji
     check_mark = u"\u2705"  # check mark emoji
-    down = u"\u2B07"  # down emoji
     warning = u"\u26A0"  # warning emoji
 
     if first_arg.lower() == "-repo":  # check specific repo
@@ -498,6 +488,7 @@ async def _install_pkgs(event, command: str):
     pkg_mod_sources = _pkg_list.get("module_sources", [])
     do_update_mod_list = False
     installed_modules = []
+    await event.edit(f"{text}__{msgRep.INSTALLING_MODULES}__")
     for queue in queued_mod_to_install:
         repo_author = queue.get("repo_author")
         repo_name = queue.get("repo_name")
@@ -506,8 +497,6 @@ async def _install_pkgs(event, command: str):
         list_of_mods = queue.get("modules")
         for module, size in list_of_mods.items():
             curr_module = module[:-3]  # without .py
-            text += f"{down} {msgRep.DOWNLOADING.format(curr_module)}\n"
-            await event.edit(text)
             module_path = os.path.join(".", "userbot", "modules_user", module)
             try:
                 log.info(f"[INSTALL] Downloading module '{module}'...")
@@ -517,16 +506,12 @@ async def _install_pkgs(event, command: str):
                 log.error("[INSTALL] Unable to download "
                           f"module '{module}': {e}",
                           exc_info=True)
-                text = text.replace(
-                    f"{down} {msgRep.DOWNLOADING.format(curr_module)}",
-                    f"{red_cross} {msgRep.DOWN_FAILED.format(curr_module)}")
-                await event.edit(text)
+                text += (f"{red_cross} "
+                         f"{msgRep.DOWN_FAILED.format(curr_module)}\n")
                 continue
             if not _validate_code(module_path):
-                text = text.replace(
-                    f"{down} {msgRep.DOWNLOADING.format(curr_module)}",
-                    f"{red_cross} {msgRep.INSTALL_FAILED.format(curr_module)}")
-                await event.edit(text)
+                text += (f"{red_cross} "
+                         f"{msgRep.INSTALL_FAILED.format(curr_module)}\n")
                 try:
                     os.remove(module_path)
                 except Exception:
@@ -553,19 +538,14 @@ async def _install_pkgs(event, command: str):
                     pkg_mod_sources.append(new_data)
                 if not do_update_mod_list:
                     do_update_mod_list = True
-                text = text.replace(
-                    f"{down} {msgRep.DOWNLOADING.format(curr_module)}",
-                    f"{check_mark} "
-                    f"{msgRep.INSTALL_SUCCESS.format(curr_module)}")
+                text += (f"{check_mark} "
+                         f"{msgRep.INSTALL_SUCCESS.format(curr_module)}\n")
             except Exception as e:
                 log.warning("[INSTALL] Failed to update source data "
                             f"for module '{module}'",
                             exc_info=True)
-                down_text = msgRep.DOWNLOADING.format(curr_module)
-                fail_text = msgRep.UPDATE_DATA_FAIL.format(curr_module)
-                text = text.replace(f"{down} {down_text}",
-                                    f"{warning} {fail_text}")
-            await event.edit(text)
+                text += (f"{warning} "
+                         f"{msgRep.UPDATE_DATA_FAIL.format(curr_module)}\n")
     if do_update_mod_list:
         _pkg_list["module_sources"] = pkg_mod_sources
         _pkg_manager._save_json(_pkg_list)
@@ -596,6 +576,7 @@ async def _uninstall_pkgs(event, module_names: str):
     warning = u"\u26A0"  # warning emoji
     unkwn = u"\u2754"  # grey question mark emoji
     uninstalled_modules = []
+    await event.edit(f"{text}__{msgRep.UNINSTALLING_MODULES}__")
     for module in modules_from_arg:
         if module in user_modules:
             try:
@@ -607,7 +588,6 @@ async def _uninstall_pkgs(event, module_names: str):
                           exc_info=True)
                 text += (f"{red_cross} "
                          f"{msgRep.UNINSTALL_FAILED.format(module)}\n")
-                await event.edit(text)
                 continue
             if module not in uninstalled_modules:
                 uninstalled_modules.append(module)
@@ -633,7 +613,6 @@ async def _uninstall_pkgs(event, module_names: str):
         else:
             log.info(f"[UNINSTALL] Module '{module}' not installed")
             text += f"{unkwn} {msgRep.MODULE_NOT_INSTALL.format(module)}\n"
-        await event.edit(text)
     if do_update_mod_list:
         _pkg_list["module_sources"] = pkg_mod_sources
         _pkg_manager._save_json(_pkg_list)
@@ -663,7 +642,6 @@ async def _rm_repo(event, repo_names=None):
     text = f"**{msgRep.REPO_REMOVER}**\n\n"
     red_cross = u"\u274C"  # red cross mark emoji
     check_mark = u"\u2705"  # check mark emoji
-    recycle = u"\u267B"  # recycling emoji
     warning = u"\u26A0"  # warning emoji
     unkwn = u"\u2754"  # grey question mark emoji
 
@@ -679,40 +657,34 @@ async def _rm_repo(event, repo_names=None):
             except Exception:
                 pass  # just ignore
 
+    await event.edit(f"{text}__{msgRep.REMOVING_REPO_DATA}__")
+
     for r in repos:
         try:
             r_author, r_name = r.split("/")
         except Exception:
             log.warning(f"[RMREPO] Invalid repo URL format: {r}")
             text += f"{warning} {msgRep.INVALID_REPO_URL}: {r}\n"
-            await event.edit(text)
             continue
         if r in protected_repos:
             text += f"{warning} {msgRep.CANNOT_REMOVE_REPO.format(r_name)}\n"
-            await event.edit(text)
             continue
-        text += f"{recycle} {msgRep.REMOVING.format(r_name)}\n"
-        await event.edit(text)
         for i, repo in enumerate(pkg_repos):
             if r_author == repo.get("author", "Unknown") and \
                r_name == repo.get("name", "Unknown"):
                 try:
                     pkg_repos.pop(i)
-                    text = text.replace(
-                        f"{recycle} {msgRep.REMOVING.format(r_name)}",
-                        f"{check_mark} {msgRep.REMOVE_SUCCESS.format(r_name)}")
+                    text += (f"{check_mark} "
+                             f"{msgRep.REMOVE_SUCCESS.format(r_name)}\n")
                     if not list_modified:
                         list_modified = True
                 except Exception:
                     log.error(f"[RMREPO] Failed to remove {r_name} from list")
-                    text = text.replace(
-                        f"{recycle} {msgRep.REMOVING.format(r_name)}",
-                        f"{red_cross} {msgRep.REMOVE_FAILED.format(r_name)}")
+                    text += (f"{red_cross} "
+                             f"{msgRep.REMOVE_FAILED.format(r_name)}\n")
                 break
         else:
-            text = text.replace(f"{recycle} {msgRep.REMOVING.format(r_name)}",
-                                f"{unkwn} {msgRep.UNKNOWN_REPO}: {r}")
-        await event.edit(text)
+            text += f"{unkwn} {msgRep.UNKNOWN_REPO}: {r}\n"
     if list_modified:
         _pkg_list["repos"] = pkg_repos
         _pkg_manager._save_json(_pkg_list)
