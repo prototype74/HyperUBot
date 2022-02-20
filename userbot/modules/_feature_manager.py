@@ -33,8 +33,11 @@ async def disable_feature(event):
         return
     result = _disable_feature(feature)
     if not result:
+        log.warn(f"Feature '{feature}' can't be disabled or "
+                 "it's not a feature")
         await event.edit(msgRep.DISABLE_FTR_FAIL)
         return
+    log.info(f"Feature '{feature}' disabled")
     await event.edit(msgRep.DISABLE_FTR_SUCCESS.format(feature))
     return
 
@@ -56,8 +59,10 @@ async def enable_feature(event):
         return
     result = _enable_feature(feature)
     if not result:
+        log.warn(f"Feature '{feature}' can't be enabled or it's not a feature")
         await event.edit(msgRep.ENABLE_FTR_FAIL)
         return
+    log.info(f"Feature '{feature}' enabled")
     await event.edit(msgRep.ENABLE_FTR_SUCCESS.format(feature))
     return
 
