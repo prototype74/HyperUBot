@@ -61,6 +61,11 @@ def _protectedAccess(module, attrs: list,
 sys.modules[__name__] = _protectedAccess(
     sys.modules[__name__],
     attrs=[],
+    allowed=(join("userbot", "modules", "_feature_manager.py"),
+             join("userbot", "modules", "_package_manager.py"),
+             join("userbot", "modules", "_systools.py"),
+             join("userbot", "modules", "_updater.py"),
+             join("userbot", "modules", "sideloader.py")),
     warn_msg=("Modules are not allowed to use the "
               "Access Controller (requested by {1}:{2})")
 )

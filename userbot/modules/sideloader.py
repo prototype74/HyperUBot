@@ -6,6 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot._core.access_controller import _protectedAccess
 from userbot.include.aux_funcs import event_log
 from userbot.include.language_processor import (SideloaderText as msgRep,
                                                 ModuleDescriptions as descRep,
@@ -19,6 +20,7 @@ from userbot.version import VERSION
 from logging import getLogger
 import json
 import os
+import sys
 
 if getConfig("SIDELOAD_NO_REBOOT"):
     from userbot._core.module_loader import import_module
@@ -141,4 +143,14 @@ register_module_info(
     name="Sideloader",
     authors="nunopenim, prototype74",
     version=VERSION
+)
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=(["_update_module_source", "_validate_code"] +
+           (["import_module"] if getConfig("SIDELOAD_NO_REBOOT") else [])),
+    warn_msg=("Access to protected attribute from Sideloader denied"
+              "(requested by {1}:{2})"),
+    mlogger=log
 )

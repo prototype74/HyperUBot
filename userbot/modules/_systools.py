@@ -7,6 +7,7 @@
 # compliance with the PE License
 
 from userbot import _setprop, PROJECT, SAFEMODE
+from userbot._core.access_controller import _protectedAccess
 from userbot.include.aux_funcs import (event_log, sizeStrMaker, pinger,
                                        getGitReview)
 from userbot.include.language_processor import (SystemToolsText as msgRep,
@@ -31,6 +32,7 @@ from os.path import getsize, isdir, join
 from shutil import disk_usage
 import time
 from os import listdir
+import sys
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
@@ -235,4 +237,13 @@ register_module_info(
     name="System Tools",
     authors="nunopenim, prototpye74",
     version=VERSION
+)
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["_setprop", "setConfig"],
+    warn_msg=("Access to protected attribute from System Tools denied"
+              "(requested by {1}:{2})"),
+    mlogger=log
 )

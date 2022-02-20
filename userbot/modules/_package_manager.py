@@ -7,6 +7,7 @@
 # compliance with the PE License
 
 from userbot import SAFEMODE
+from userbot._core.access_controller import _protectedAccess
 from userbot._core.module_loader import import_module, unimport_module
 from userbot.include.git_api import getLatestData
 from userbot.include.aux_funcs import sizeStrMaker
@@ -28,6 +29,7 @@ from glob import glob
 from logging import getLogger
 from urllib.request import urlretrieve
 import os
+import sys
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
@@ -762,4 +764,16 @@ register_module_info(
     name="Package Manager",
     authors="nunopenim, prototype74",
     version=VERSION
+)
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=[
+        "import_module", "unimport_module", "_PackageManagerJSON",
+        "_pkg_manager", "_pkg_list", "ctrl_modules", "_validate_code"
+    ],
+    warn_msg=("Access to protected attribute from Package Manager denied"
+              "(requested by {1}:{2})"),
+    mlogger=log
 )

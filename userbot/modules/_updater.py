@@ -7,6 +7,7 @@
 # compliance with the PE License
 
 from userbot import _setprop
+from userbot._core.access_controller import _protectedAccess
 from userbot.include.aux_funcs import getGitReview
 from userbot.include.git_api import getLatestData
 from userbot.include.language_processor import (UpdaterText as msgRep,
@@ -24,6 +25,7 @@ from urllib.request import urlretrieve
 from zipfile import BadZipFile, LargeZipFile, ZipFile
 from dateutil.parser import parse
 import os
+import sys
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
@@ -336,4 +338,14 @@ register_module_info(
     name="Updater",
     authors="nunopenim, prototype74",
     version=VERSION
+)
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=(["_setprop", "setConfig", "_set_autoupdate"] +
+           (["_tgclient"] if _update_scheduler else [])),
+    warn_msg=("Access to protected attribute from Updater denied"
+              "(requested by {1}:{2})"),
+    mlogger=log
 )

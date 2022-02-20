@@ -6,6 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot._core.access_controller import _protectedAccess
 from userbot.include.language_processor import (FeatureMgrText as msgRep,
                                                 ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
@@ -18,6 +19,7 @@ from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_info)
 from userbot.version import VERSION
 from logging import getLogger
+import sys
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
@@ -73,4 +75,13 @@ register_module_info(
     name="Feature Manager",
     authors="nunopenim, prototype74",
     version=VERSION
+)
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["_disable_feature", "_enable_feature", "_get_disabled_features"],
+    warn_msg=("Access to protected attribute from Feature Manager denied"
+              "(requested by {1}:{2})"),
+    mlogger=log
 )
