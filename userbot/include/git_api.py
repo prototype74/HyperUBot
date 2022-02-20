@@ -9,6 +9,14 @@ def vercheck() -> str:
     return str(VERSION)
 
 
+def getRateLimit():
+    try:
+        with url.urlopen("https://api.github.com/rate_limit") as data_raw:
+            rateData = json.loads(data_raw.read().decode())
+        return rateData.get("resources")
+    except Exception:
+        return None
+
 # Repo-wise stuff
 
 
