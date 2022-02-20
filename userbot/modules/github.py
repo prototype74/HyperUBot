@@ -58,11 +58,37 @@ async def get_release(event):
     return
 
 
-register_cmd_usage(
-    "git",
-    usageRep.GITHUB_USAGE.get("git", {}).get("args"),
-    usageRep.GITHUB_USAGE.get("git", {}).get("usage")
-)
+@ehandler.on(command="gitrate", alt="gitlimit", outgoing=True)
+async def rate_limit(event):
+    data = api.getRateLimit()
+    if not data:
+        await event.edit(msgRep.GITRATE_NO_DATA)
+        return
+
+    api_naming = {
+        "core": "REST API",
+        "search": "Search API",
+        "graphql": "GraphQL API",
+        "integration_manifest": "GitHub App Manifest"
+    }
+
+    text = "**GitHub API Rate Limit**\n\n"
+    for key, value in data.items():
+        limit = value.get("limit", 0)
+        remaining = value.get("remaining", 0)
+        api_name = api_naming.get(key, "Unknown")
+        text += f"{api_name}: {remaining}/{limit}\n"
+    await event.edit(text)
+    return
+
+
+for cmd in ("git", "gitrate"):
+    register_cmd_usage(
+        cmd,
+        usageRep.GITHUB_USAGE.get(cmd, {}).get("args"),
+        usageRep.GITHUB_USAGE.get(cmd, {}).get("usage")
+    )
+
 register_module_desc(descRep.GITHUB_DESC)
 register_module_info(
     name="GitHub",
