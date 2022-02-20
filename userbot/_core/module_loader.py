@@ -219,7 +219,12 @@ sys.modules[__name__] = _protectedAccess(
         "update_user_modules", "update_handlers", "unregister_module_desc",
         "unregister_module_info", "getHandlers", "unregister_cmd",
     ],
-    allowed=os.path.join("userbot", "modules", "_package_manager.py"),
+    allowed=(
+        (os.path.join("userbot", "modules", "_package_manager.py"),
+         os.path.join("userbot", "modules", "sideloader.py"))
+        if getConfig("SIDELOAD_NO_REBOOT", False)
+        else os.path.join("userbot", "modules", "_package_manager.py")
+    ),
     warn_msg=("Unauthorized module access to protected attribute blocked "
               "(requested by {1}:{2})"),
     mlogger=log
