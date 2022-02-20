@@ -225,7 +225,7 @@ sys.modules[__name__] = _protectedAccess(
         if getConfig("SIDELOAD_NO_REBOOT", False)
         else os.path.join("userbot", "modules", "_package_manager.py")
     ),
-    warn_msg=("Unauthorized module access to protected attribute blocked "
+    warn_msg=("Unauthorized access to protected attribute blocked "
               "(requested by {1}:{2})"),
     mlogger=log
 )
