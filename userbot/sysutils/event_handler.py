@@ -124,7 +124,7 @@ class EventHandler:
                 try:
                     if _is_active(command):
                         await function(event)
-                except Exception as e:
+                except Exception:
                     # This block will be executed if the function, where
                     # the events are being used, has no own
                     # exception handler(s)
@@ -157,7 +157,7 @@ class EventHandler:
                 _tgclient.add_event_handler(func_callback, NewMessage(
                     pattern=cmd_regex, *args, **kwargs))
                 update_handlers(caller_name, func_callback)
-            except Exception as e:
+            except Exception:
                 self.log.error(f"Failed to add command '{command}' to client "
                                f"(in function '{function.__name__}' "
                                f"({caller}))",
@@ -220,7 +220,7 @@ class EventHandler:
             async def func_callback(event):
                 try:
                     await function(event)
-                except Exception as e:
+                except Exception:
                     self.log.error(f"Function '{function.__name__}' stopped "
                                    "due to an unhandled exception",
                                    exc_info=True if self.traceback else False)
@@ -228,7 +228,7 @@ class EventHandler:
                 _tgclient.add_event_handler(func_callback,
                                             ChatAction(*args, **kwargs))
                 update_handlers(caller_name, func_callback)
-            except Exception as e:
+            except Exception:
                 self.log.error(f"Failed to add a chat action feature to "
                                f"client (in function '{function.__name__}')",
                                exc_info=True if self.traceback else False)
@@ -324,7 +324,7 @@ class EventHandler:
                 try:
                     if _is_active(name):
                         await function(event)
-                except Exception as e:
+                except Exception:
                     if not no_cmd:
                         self.log.error(f"Command '{name}' stopped due to "
                                        "an unhandled exception "
@@ -356,7 +356,7 @@ class EventHandler:
                                                        *args,
                                                        **kwargs))
                 update_handlers(caller_name, func_callback)
-            except Exception as e:
+            except Exception:
                 self.log.error(f"Failed to add command/feature '{name}' "
                                f"to client (in function "
                                f"'{function.__name__}' ({caller}))",
