@@ -509,6 +509,8 @@ class GitHubText(object):
     DL_COUNT = "\nNúmero de Downloads: "
     INVALID_ARGS = ("Argumentos inválidos! Certifica-te de que estás a "
                     "introduzir uma combinação user/repo válida!")
+    # translation needed
+    GITRATE_NO_DATA = "There is no data available from GitHub"
 
 
 class TerminalText(object):
@@ -965,7 +967,23 @@ class ModuleUsages(object):
     GITHUB_USAGE = {"git": {"args": "<user>/<repo>",
                             "usage": ("Obtém a release mais recente de "
                                       "determinado repositório de um "
-                                      "utilizador.")}}
+                                      "utilizador.")},
+                    "gitrate": {"args": None,  # translation needed
+                                "usage": ("Get your current rate limit from "
+                                          "GitHub API such as REST API or "
+                                          "Search API.\n\n"
+                                          "As some bot features depend to "
+                                          "GitHub's API Service to get "
+                                          "updates, new modules etc. These "
+                                          "features do rely to GitHub's API "
+                                          "for each call, however, there is a "
+                                          "limit of 60 calls per hour "
+                                          "(REST API). Use this command to "
+                                          "check how many calls to the API "
+                                          "are remaining for you.\n\n"
+                                          "The API information will be "
+                                          "displayed like:\n__API_NAME: "
+                                          "REMAINING/MAX_LIMIT__")}}
 
     MODULES_UTILS_USAGE = {"lcmds": {"args": ("[opcional: <nome do comando>]"),
                                      "usage": ("Apresenta todos os comandos "

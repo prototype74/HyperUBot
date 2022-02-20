@@ -1001,6 +1001,8 @@ class GitHubText(object):
         lang, _getframe().f_code.co_name, "DL_COUNT")
     INVALID_ARGS = getLangString(
         lang, _getframe().f_code.co_name, "INVALID_ARGS")
+    GITRATE_NO_DATA = getLangString(
+        lang, _getframe().f_code.co_name, "GITRATE_NO_DATA")
 
 
 class TerminalText(object):

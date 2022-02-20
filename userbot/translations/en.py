@@ -482,6 +482,7 @@ class GitHubText(object):
     DL_COUNT = "\nDownload Count: "
     INVALID_ARGS = ("Invalid arguments! Make sure you are typing a valid "
                     "combination of user/repo")
+    GITRATE_NO_DATA = "There is no data available from GitHub"
 
 
 class TerminalText(object):
@@ -914,7 +915,23 @@ class ModuleUsages(object):
 
     GITHUB_USAGE = {"git": {"args": "<user>/<repo>",
                             "usage": ("Checks for releases on the "
-                                      "specified user/repo combination.")}}
+                                      "specified user/repo combination.")},
+                    "gitrate": {"args": None,
+                                "usage": ("Get your current rate limit from "
+                                          "GitHub API such as REST API or "
+                                          "Search API.\n\n"
+                                          "As some bot features depend to "
+                                          "GitHub's API Service to get "
+                                          "updates, new modules etc. These "
+                                          "features do rely to GitHub's API "
+                                          "for each call, however, there is a "
+                                          "limit of 60 calls per hour "
+                                          "(REST API). Use this command to "
+                                          "check how many calls to the API "
+                                          "are remaining for you.\n\n"
+                                          "The API information will be "
+                                          "displayed like:\n__API_NAME: "
+                                          "REMAINING/MAX_LIMIT__")}}
 
     MODULES_UTILS_USAGE = {"lcmds": {"args": ("[optional: <name of command>]"),
                                      "usage": ("Lists all available and "
