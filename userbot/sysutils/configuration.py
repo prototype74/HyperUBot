@@ -7,9 +7,11 @@
 # compliance with the PE License
 
 from .errors import AccessError
+from userbot._core.access_controller import _protectedAccess
 from inspect import currentframe, getouterframes
 from logging import getLogger
 from os.path import basename, join
+import sys
 
 log = getLogger(__name__)
 
@@ -169,3 +171,14 @@ def getConfig(config: str, default=None):
     except AccessError as ae:
         log.warning(ae)
     return default
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["_sysconfigs", "_SysConfigurations", "addConfig", "setConfig"],
+    warn_msg=("Unauthorized access to protected attribute blocked "
+              "(requested by {1}:{2})"),
+    allowed=(join("userbot", "modules", "_systools.py"),
+             join("userbot", "modules", "_updater.py")),
+    mlogger=log
+)

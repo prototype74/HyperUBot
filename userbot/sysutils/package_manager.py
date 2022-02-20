@@ -6,11 +6,13 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot._core.access_controller import _protectedAccess
 from glob import glob
 from inspect import currentframe, getouterframes
 from logging import getLogger
 import os
 import json
+import sys
 
 log = getLogger(__name__)
 
@@ -176,3 +178,13 @@ class _PackageManagerJSON:
             pkg_list["module_sources"] = module_sources
             self._save_json(pkg_list)
         return pkg_list
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["_PackageManagerJSON"],
+    warn_msg=("Package Manager JSON Component only accessible by "
+              "Package Manager Module (requested by {1}:{2})"),
+    allowed=os.path.join("userbot", "modules", "_package_manager.py"),
+    mlogger=log
+)

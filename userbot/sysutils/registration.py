@@ -6,9 +6,11 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from userbot._core.access_controller import _protectedAccess
 from inspect import getfile, currentframe, getouterframes
 from logging import getLogger
 from os.path import basename, join
+import sys
 
 log = getLogger(__name__)
 
@@ -530,3 +532,18 @@ def getRegisteredCMDs():
     Returns all registered commands in a sorted dictionary
     """
     return _reg_cmd._getRegisteredCMDs()
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=[
+        "update_all_modules", "update_built_in_modules", "update_load_modules",
+        "update_user_modules", "update_handlers", "unregister_module_desc",
+        "unregister_module_info", "getHandlers", "unregister_cmd",
+        "_RegisterModules", "_RegisterCMD", "_reg_mod", "_reg_cmd",
+        "pre_register_cmd"
+    ],
+    warn_msg=("Illegal access to core attribute '{0}' blocked "
+              "(requested by {1}:{2})"),
+    mlogger=log
+)

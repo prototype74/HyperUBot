@@ -8,10 +8,12 @@
 
 from .colors import Color, setColorText
 from .sys_funcs import isWindows, os_name
+from userbot._core.access_controller import _protectedAccess
 from inspect import currentframe, getouterframes
 from logging import getLogger, shutdown
 from sys import executable
 import os
+import sys
 
 log = getLogger(__name__)
 
@@ -188,3 +190,12 @@ class _SysServices:
                     print(setColorText("Invalid input. Try again...",
                                        Color.YELLOW))
         return 0
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["_SysServices"],
+    warn_msg=("SysServices is accessible by core service "
+              "only (requested by {1}:{2})"),
+    mlogger=log
+)

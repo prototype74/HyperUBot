@@ -7,10 +7,12 @@
 # compliance with the PE License
 
 from .sys_funcs import isWindows, strlist_to_list
+from userbot._core.access_controller import _protectedAccess
 from configparser import ConfigParser
 from inspect import currentframe, getouterframes
 from logging import getLogger
 import os
+import sys
 
 log = getLogger(__name__)
 
@@ -390,3 +392,11 @@ class _SysProperties:
                     except ValueError:
                         pass
         return value
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["_SysProperties"],
+    warn_msg="SysProp reserved for core service only (requested by {1}:{2})",
+    mlogger=log
+)

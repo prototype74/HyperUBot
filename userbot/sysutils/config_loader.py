@@ -11,11 +11,13 @@ from .configuration import addConfig
 from .errors import UnauthorizedAccessError
 from .getpass import getpass
 from .sys_funcs import isWindows
+from userbot._core.access_controller import _protectedAccess
 from configparser import ConfigParser
 from inspect import currentframe, getouterframes
 from logging import getLogger
 from pyAesCrypt import decryptFile
 import os
+import sys
 
 
 log = getLogger(__name__)
@@ -389,3 +391,12 @@ class _SecureConfigLoader:
 
     def _load_cfg_failed(self) -> bool:
         return self.__load_cfg_failed
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["_ConfigLoader", "_SecureConfigLoader", "addConfig"],
+    warn_msg=("Unauthorized access to config loader blocked "
+              "(requested by {1}:{2})"),
+    mlogger=log
+)

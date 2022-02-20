@@ -6,6 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from .access_controller import _protectedAccess
 from userbot import _tgclient, SAFEMODE
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (getAllModules,
@@ -207,3 +208,19 @@ def import_module(module: str, is_usermodule: bool, display_info: bool = True):
 def unimport_module(module: str):
     _moduleloader._unimport_module(module)
     return
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=[
+        "_tgclient", "_moduleloader", "_ModuleLoader",
+        "start_language_processor", "import_module", "unimport_module",
+        "update_all_modules", "update_built_in_modules", "update_load_modules",
+        "update_user_modules", "update_handlers", "unregister_module_desc",
+        "unregister_module_info", "getHandlers", "unregister_cmd",
+    ],
+    allowed=os.path.join("userbot", "modules", "_package_manager.py"),
+    warn_msg=("Unauthorized module access to protected attribute blocked "
+              "(requested by {1}:{2})"),
+    mlogger=log
+)

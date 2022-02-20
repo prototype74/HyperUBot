@@ -6,11 +6,13 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
+from .access_controller import _protectedAccess
 from telethon import TelegramClient
 from inspect import currentframe, getouterframes
 from logging import getLogger
 import glob
 import os
+import sys
 
 log = getLogger(__name__)
 
@@ -84,3 +86,10 @@ class HyperClient(TelegramClient):
                 return
         super(HyperClient, self).__setattr__(attr, value)
         return
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["HyperClient"],
+    mlogger=log
+)

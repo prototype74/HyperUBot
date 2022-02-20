@@ -7,23 +7,23 @@
 # compliance with the PE License
 
 from userbot.sysutils.colors import Color, setColorText
-from sys import argv, version_info
+import sys
 
 # Check Python version
-if (version_info.major, version_info.minor) < (3, 8):
+if (sys.version_info.major, sys.version_info.minor) < (3, 8):
     print(setColorText("HyperUBot requires at least Python v3.8! "
                        "Please update Python to v3.8 or newer "
                        "(current version is {}.{}.{})".format(
-                           version_info.major, version_info.minor,
-                           version_info.micro), Color.RED))
+                           sys.version_info.major, sys.version_info.minor,
+                           sys.version_info.micro), Color.RED))
     quit(1)
 
 PROJECT = "HyperUBot"
 SAFEMODE = False
 
 # Check safe mode from command line
-if len(argv) >= 2:
-    if argv[1].lower() == "-safemode":
+if len(sys.argv) >= 2:
+    if sys.argv[1].lower() == "-safemode":
         SAFEMODE = True
 
 from telethon import version as tl_version  # noqa: E402
@@ -37,6 +37,7 @@ if verAsTuple(tl_version.__version__) < (1, 24, 0):
                        Color.RED))
     quit(1)
 
+from userbot._core.access_controller import _protectedAccess  # noqa: E402
 from userbot._core.client import HyperClient  # noqa: E402
 from userbot.sysutils.config_loader import (_ConfigLoader,
                                             _SecureConfigLoader)  # noqa: E402
@@ -51,7 +52,7 @@ from os import path, mkdir  # noqa: E402
 # Start file and terminal logging
 log = getLogger(__name__)
 __hyper_logger__ = _UserbotLogger(log)
-__hyper_logger__._initialize_logfile(PROJECT, SAFEMODE, version_info,
+__hyper_logger__._initialize_logfile(PROJECT, SAFEMODE, sys.version_info,
                                      tl_version)
 __hyper_logger__._setup_logger()
 
@@ -117,8 +118,8 @@ if __scfg_loader__._load_cfg_failed():
             if option == 1:
                 _services._start_scfg_updater()
             elif option == 2:
-                log.info(pip_text.format(f"python{version_info.major}."
-                                         f"{version_info.minor}"))
+                log.info(pip_text.format(f"python{sys.version_info.major}."
+                                         f"{sys.version_info.minor}"))
             elif option == 3:
                 log.info(contact_text)
     except KeyboardInterrupt:
@@ -280,3 +281,18 @@ except Exception as e:
         print()
         log.info("Exiting...")
     quit(1)
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=[
+        "addConfig", "HyperClient", "_ConfigLoader", "_SecureConfigLoader",
+        "_services", "_setprop", "_SysProperties", "_SysServices", "_tgclient",
+        "_UserbotLogger", "__cfg_loader__", "__hyper_logger__",
+        "__scfg_loader__"
+    ],
+    warn_msg="Illegal access to '{0}' blocked (requested by {1}:{2})",
+    allowed=(path.join("userbot", "modules", "_systools.py"),
+             path.join("userbot", "modules", "_updater.py")),
+    mlogger=log
+)

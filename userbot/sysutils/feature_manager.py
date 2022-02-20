@@ -7,10 +7,12 @@
 # compliance with the PE License
 
 from .registration import getRegisteredCMDs
+from userbot._core.access_controller import _protectedAccess
 from inspect import currentframe, getouterframes
 from logging import getLogger
 import os
 import json
+import sys
 
 log = getLogger(__name__)
 
@@ -164,5 +166,19 @@ def _enable_feature(feature) -> bool:
 def _get_disabled_features() -> str:
     return _featureMgr._get_disabled_features()
 
+
 def _is_active(feature) -> bool:
     return _featureMgr._is_active(feature)
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=[
+        "_featureMgr", "_disable_feature", "_enable_feature",
+        "_get_disabled_features", "_is_active"
+    ],
+    warn_msg=("Only Feature Manager Module is allowed to access these "
+              "attributes (requested by {1}:{2})"),
+    allowed=os.path.join("userbot", "modules", "_feature_manager.py"),
+    mlogger=log
+)

@@ -8,11 +8,13 @@
 
 from .colors import Color, ColorBG, setColorText, setColorTextBG
 from .sys_funcs import os_name
+from userbot._core.access_controller import _protectedAccess
 from userbot.version import VERSION
 from inspect import currentframe, getouterframes
 from platform import platform, machine, processor
 import logging
 import os
+import sys
 
 
 class LogFileFormatter(logging.Formatter):
@@ -130,3 +132,11 @@ class _UserbotLogger:
         if self.__shandler:
             self.__shandler.close()
         return
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["_UserbotLogger"],
+    warn_msg=("Main logger is reserved for core service only "
+              "(requested by {1}:{2})")
+)

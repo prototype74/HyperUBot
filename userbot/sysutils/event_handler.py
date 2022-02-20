@@ -8,6 +8,7 @@
 
 from .feature_manager import _is_active
 from .registration import pre_register_cmd, update_handlers
+from userbot._core.access_controller import _protectedAccess
 from inspect import currentframe, getouterframes
 from os.path import basename
 from userbot import _tgclient
@@ -15,6 +16,7 @@ from userbot.include.language_processor import SystemUtilitiesText as msgResp
 from telethon.events import ChatAction, MessageEdited, NewMessage
 from logging import getLogger, Logger
 from re import match
+import sys
 
 
 class EventHandler:
@@ -362,3 +364,11 @@ class EventHandler:
                 return None
             return func_callback
         return decorator
+
+
+sys.modules[__name__] = _protectedAccess(
+    sys.modules[__name__],
+    attrs=["_tgclient", "_is_active", "pre_register_cmd", "update_handlers"],
+    warn_msg=("A module tried to access attribute '{0}' in an unauthorized "
+              "way (requested by {1}:{2})"),
+)
