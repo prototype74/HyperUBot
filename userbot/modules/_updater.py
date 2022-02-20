@@ -206,7 +206,7 @@ async def updater(event):
         return
 
     if VERSION_TUPLE == release_version:
-        log.info(f"Already up-to-date ({VERSION} == {tag_version})")
+        log.info(f"Already up-to-date")
         reply = f"**{msgRep.ALREADY_UP_TO_DATE}**\n\n"
         if git_repo:
             reply += f"{warn_emoji} __{msgRep.GIT_REPO}__\n\n"
@@ -234,7 +234,7 @@ async def updater(event):
         _LATEST_VER["zip"] = release_data.get("zipball_url")
         release_url = release_data.get("html_url")
         publish_date = _parse_datetime(release_data["published_at"])
-        log.info(f"Update available ({VERSION} < {tag_version})")
+        log.info(f"An Update to {tag_version} is available")
         reply = f"**{msgRep.UPDATE_AVAILABLE}**\n\n"
         if git_repo:
             reply += f"{warn_emoji} __{msgRep.GIT_REPO}__\n\n"
