@@ -117,8 +117,8 @@ async def check_last_reboot(client):
         if chat_id and msg_id and msg:
             try:
                 await client.edit_message(chat_id, msg_id, msg)
-            except:
-                log.warning("Failed to edit (reboot) message")
+            except Exception as e:
+                log.warning(f"Failed to edit (reboot) message: {e}")
         # reset props
         _setprop("reboot", False)
         _setprop("rebootchatid", 0)
