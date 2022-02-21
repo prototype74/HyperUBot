@@ -209,8 +209,6 @@ class AdminText(object):
         lang, _getframe().f_code.co_name, "NOT_USER")
     CANNOT_PROMOTE_SELF = getLangString(
         lang, _getframe().f_code.co_name, "CANNOT_PROMOTE_SELF")
-    ADMIN_ALREADY_SELF = getLangString(
-        lang, _getframe().f_code.co_name, "ADMIN_ALREADY_SELF")
     ADMIN_ALREADY = getLangString(
         lang, _getframe().f_code.co_name, "ADMIN_ALREADY")
     ADMIN_NOT_ENOUGH_PERMS = getLangString(

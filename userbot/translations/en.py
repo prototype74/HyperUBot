@@ -48,7 +48,6 @@ class AdminText(object):
     NO_ONE_TO_PROMOTE = "`There is no one to promote`"
     NOT_USER = "`Given username or ID isn't an User`"
     CANNOT_PROMOTE_SELF = "`I can't promote myself`"
-    ADMIN_ALREADY_SELF = "`I am immortal already`"
     ADMIN_ALREADY = "`This person is immortal already`"
     ADMIN_NOT_ENOUGH_PERMS = ("`I don't have enough admin rights to "
                               "promote this person`")

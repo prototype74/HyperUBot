@@ -51,7 +51,6 @@ class AdminText(object):
     NOT_USER = ("`Der angegebene Benutzername oder die angegebene ID ist "
                 "kein User`")
     CANNOT_PROMOTE_SELF = "`Ich kann mich selbst nicht befördern`"
-    ADMIN_ALREADY_SELF = "`Ich bin bereits unsterblich`"
     ADMIN_ALREADY = "`Diese Person ist bereits unsterblich`"
     ADMIN_NOT_ENOUGH_PERMS = ("`Ich hab nicht genung an "
                               "Administratoren-Rechte, um diese Person "

@@ -54,7 +54,6 @@ class AdminText(object):
     NO_ONE_TO_PROMOTE = "`Não há ninguém para promover!`"
     NOT_USER = "`O Username ou ID dado não é um utilizador!`"
     CANNOT_PROMOTE_SELF = "`Não me posso promover a mim próprio!`"
-    ADMIN_ALREADY_SELF = "`Já sou imortal!`"
     ADMIN_ALREADY = "`Esta pessoa já é imortal!`"
     ADMIN_NOT_ENOUGH_PERMS = ("`Não tenho direitos de administração "
                               "suficientes para promover esta pessoa!`")
