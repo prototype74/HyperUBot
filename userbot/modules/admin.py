@@ -334,13 +334,13 @@ async def promote(event):
         await event.edit(msgRep.NOT_USER)
         return
 
-    if user.is_self:
-        await event.edit(msgRep.CANNOT_PROMOTE_SELF)
-        return
-
     chat = await event.get_chat()
     if isinstance(chat, User):
         await event.edit(msgRep.NO_GROUP_CHAN)
+        return
+
+    if user.is_self:
+        await event.edit(msgRep.CANNOT_PROMOTE_SELF)
         return
 
     if isinstance(chat, Channel):
