@@ -69,7 +69,7 @@ async def list_commands(event):
             else:
                 cmd_info = f"`{cmd_prefix}{command}`{space}{cmd_args}\n"
             cmd_info += "\n"
-            cmd_info += f"{msgRep.USAGE}: {cmd_usage}\n\n"
+            cmd_info += f"**{msgRep.USAGE}**: {cmd_usage}\n\n"
             await event.edit(cmd_info)
             return
         cmd_not_found = True
@@ -273,7 +273,7 @@ def module_usage(name_of_module: str, module: str) -> str:
                     else:
                         usage += f"`{cmd_prefix}{cmd}`{space}{cmd_args}\n"
 
-                    usage += f"{msgRep.USAGE}: {cmd_usage}\n\n"
+                    usage += f"**{msgRep.USAGE}**: {cmd_usage}\n\n"
         if not cmds_usage_registered:
             usage += msgRep.MODULE_NO_USAGE
         return usage
