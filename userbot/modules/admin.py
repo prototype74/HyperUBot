@@ -348,10 +348,7 @@ async def promote(event):
             event.client.iter_participants(chat.id,
                                            filter=ChannelParticipantsAdmins)):
             if user.id == member.id:
-                if user.is_self:
-                    await event.edit(msgRep.ADMIN_ALREADY_SELF)
-                else:
-                    await event.edit(msgRep.ADMIN_ALREADY)
+                await event.edit(msgRep.ADMIN_ALREADY)
                 return
 
     try:
