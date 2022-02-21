@@ -133,7 +133,6 @@ def modules_listing(error_text: str = None) -> str:
     modules_listed = f"**{msgRep.MOD_UTILS}**\n\n"
 
     if error_text:
-        global _attempts
         modules_listed += f"{error_text}\n"
         if _attempts >= 2:
             modules_listed += f"{msgRep.MOD_HELP.format('`.help mods`')}\n"
@@ -315,7 +314,6 @@ async def modules(event):
 
     if sec_arg:
         modules_list = update_list()
-        global MODULES_LISTED
         name_of_module = None
         module_to_load = MODULES_LISTED.get(sec_arg)
         for module_name, module in [modules[:-1] for modules in modules_list]:
