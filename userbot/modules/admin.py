@@ -343,7 +343,7 @@ async def promote(event):
         await event.edit(msgRep.NO_GROUP_CHAN)
         return
 
-    try:
+    if isinstance(chat, Channel):
         async for member in (
             event.client.iter_participants(chat.id,
                                            filter=ChannelParticipantsAdmins)):
@@ -353,8 +353,6 @@ async def promote(event):
                 else:
                     await event.edit(msgRep.ADMIN_ALREADY)
                 return
-    except Exception:
-        pass
 
     try:
         if chat.creator:
@@ -447,7 +445,7 @@ async def demote(event):
         await event.edit(msgRep.CANNOT_DEMOTE_SELF)
         return
 
-    try:
+    if isinstance(chat, Channel):
         admins = []
         async for member in (
             event.client.iter_participants(chat.id,
@@ -457,8 +455,8 @@ async def demote(event):
             await event.edit(msgRep.DEMOTED_ALREADY)
             return
         user_is_admin = True if user.id in admins else False
-    except Exception:
-        pass
+    else:
+        user_is_admin = False
 
     try:
         rm_admin_perms = ChatAdminRights(add_admins=None,
