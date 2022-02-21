@@ -648,8 +648,9 @@ async def delaccs(event):
                     await event.client.kick_participant(chat.id, member.id)
                     await sleep(0.2)
                     rem_del_accounts += 1
-                except Exception:
-                    pass
+                except Exception as e:
+                    log.warn(f"Failed to kick ID '{member.id}' "
+                             f"from chat '{chat.title}': {e}")
 
     remote = isRemoteCMD(event, chat.id)
 
