@@ -53,6 +53,7 @@ async def list_commands(event):
             cmd_no_command = command_value.get("no_cmd")
             cmd_args = command_value.get("args")
             cmd_usage = command_value.get("usage")
+            cmd_origin = command_value.get("module_name")
             space = "" if cmd_no_space_arg else " "
             if cmd_no_command:
                 cmd_args = ""
@@ -70,6 +71,7 @@ async def list_commands(event):
                 cmd_info = f"`{cmd_prefix}{command}`{space}{cmd_args}\n"
             cmd_info += "\n"
             cmd_info += f"**{msgRep.USAGE}**: {cmd_usage}\n\n"
+            cmd_info += f"**{msgRep.LISTCMDS_ORIGIN_FEATURE}**: {cmd_origin}"
             await event.edit(cmd_info)
             return
         cmd_not_found = True
