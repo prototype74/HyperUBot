@@ -925,6 +925,8 @@ class ModulesUtilsText(object):
         lang, _getframe().f_code.co_name, "LISTCMDS_TITLE")
     LISTCMDS_USAGE = getLangString(
         lang, _getframe().f_code.co_name, "LISTCMDS_USAGE")
+    LISTCMDS_ORIGIN_FEATURE = getLangString(
+        lang, _getframe().f_code.co_name, "LISTCMDS_ORIGIN_FEATURE")
     ARGS_NOT_REQ = getLangString(
         lang, _getframe().f_code.co_name, "ARGS_NOT_REQ")
     ARGS_NOT_AVAILABLE = getLangString(

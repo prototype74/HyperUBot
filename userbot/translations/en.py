@@ -435,9 +435,10 @@ class ModulesUtilsText(object):
     VERSION = "Version"
     SIZE = "Size"
     INSTALL_DATE = "Installation date"
-    LISTCMDS_TITLE = "All available commands"
-    LISTCMDS_USAGE = ("Use '{} <name of command>' to get further information "
-                      "about a specific command.")
+    LISTCMDS_TITLE = "All available commands/features"
+    LISTCMDS_USAGE = ("Use '{} <name of command/feature>' to get further "
+                      "information about a specific command.")
+    LISTCMDS_ORIGIN_FEATURE = "Origin of this command/feature"
     ARGS_NOT_REQ = "no arguments required"  # lower if possible
     ARGS_NOT_AVAILABLE = "no arguments available"  # lower if possible
     CMD_NOT_FOUND = "Command '{}' not found!"

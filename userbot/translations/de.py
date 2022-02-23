@@ -462,9 +462,11 @@ class ModulesUtilsText(object):
     VERSION = "Version"
     SIZE = "Größe"
     INSTALL_DATE = "Installationsdatum"
-    LISTCMDS_TITLE = "Alle verfügbare Befehle"
-    LISTCMDS_USAGE = ("Führe '{} <Name des Befehls>' aus, um auf weitere "
-                      "Informationen über ein bestimmten Befehl zu erhalten.")
+    LISTCMDS_TITLE = "Alle verfügbare Befehle/Features"
+    LISTCMDS_USAGE = ("Führe '{} <Name des Befehls/Features>' aus, um auf "
+                      "weitere Informationen über ein bestimmten Befehl zu "
+                      "erhalten.")
+    LISTCMDS_ORIGIN_FEATURE = "Ursprung des Befehls/Features"
     ARGS_NOT_REQ = "keine Argumente nötig"
     ARGS_NOT_AVAILABLE = "keine Argumente verfügbar"
     CMD_NOT_FOUND = "Befehl '{}' wurde nicht gefunden!"
