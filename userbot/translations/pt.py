@@ -462,9 +462,10 @@ class ModulesUtilsText(object):
     VERSION = "Versão"
     SIZE = "Tamanho"
     INSTALL_DATE = "Data de instalação"
-    LISTCMDS_TITLE = "Comandos disponíveis"
-    LISTCMDS_USAGE = ("Usa '{} <nome do comando>' para obter mais "
+    LISTCMDS_TITLE = "Todos os comandos/recursos"
+    LISTCMDS_USAGE = ("Usa '{} <nome do comando/recurso>' para obter mais "
                       "informação sobre o comando")
+    LISTCMDS_ORIGIN_FEATURE = "Origem do comando/recurso"
     ARGS_NOT_REQ = "sem argumentos obrigatórios"
     ARGS_NOT_AVAILABLE = "sem argumentos"
     CMD_NOT_FOUND = "O comando '{}' não foi encontrado!"
