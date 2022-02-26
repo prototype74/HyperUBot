@@ -560,7 +560,8 @@ def _optional_configs(config_file: str, lang_code: str) -> bool:
                        'CLIENT_CONNECT_RETRIES = 5\n'
                        'CLIENT_RETRY_DELAY = 1\n'
                        'SIDELOAD_NO_REBOOT = False\n'
-                       'TERMINAL_USE_BIN_BASH = False\n')
+                       'TERMINAL_USE_BIN_BASH = False\n'
+                       'UPDATER_ENABLE_SCHEDULER = False\n')
         elif config_file.endswith(".ini"):
             configs = ('[CONFIGS]\n'
                        f'UBOT_LANG = {lang_code}\n'
@@ -574,7 +575,8 @@ def _optional_configs(config_file: str, lang_code: str) -> bool:
                        'CLIENT_CONNECT_RETRIES = 5\n'
                        'CLIENT_RETRY_DELAY = 1\n'
                        'SIDELOAD_NO_REBOOT = no\n'
-                       'TERMINAL_USE_BIN_BASH = no\n')
+                       'TERMINAL_USE_BIN_BASH = no\n'
+                       'UPDATER_ENABLE_SCHEDULER = no\n')
         else:  # py script
             configs = ('class ConfigClass(object):\n'
                        f'{"":4}UBOT_LANG = "{lang_code}"\n'
@@ -588,7 +590,8 @@ def _optional_configs(config_file: str, lang_code: str) -> bool:
                        f'{"":4}CLIENT_CONNECT_RETRIES = 5\n'
                        f'{"":4}CLIENT_RETRY_DELAY = 1\n'
                        f'{"":4}SIDELOAD_NO_REBOOT = False\n'
-                       f'{"":4}TERMINAL_USE_BIN_BASH = False\n')
+                       f'{"":4}TERMINAL_USE_BIN_BASH = False\n'
+                       f'{"":4}UPDATER_ENABLE_SCHEDULER = False\n')
         with open(config_file, "w") as cfg_file:
             print(f"Writing optional configuration file in {config_file}")
             cfg_file.write(configs)
