@@ -69,6 +69,13 @@ class ConfigClass(object):
     SIDELOAD_NO_REBOOT = False
 
     #
+    # POSIX only: use Bash (/bin/bash) as shell executor instead of sh 
+    # (/bin/sh) in terminal module. This config has no effect on
+    # Windows (PowerShell)
+    #
+    TERMINAL_USE_BIN_BASH = False
+
+    #
     # Check for bot updates once each day. If there is a new update available
     # the update scheduler will notify the user about it by sending a message
     # to it's saved messages.
