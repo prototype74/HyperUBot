@@ -305,9 +305,7 @@ class MessagesText(object):
                         "Kanälen abfragen!`")
     FAIL_COUNT_MSG = "`Fehler beim zählen der Nachrichten`"
     USER_HAS_SENT = "{} hat `{}` Nachrichten in diesem Chat geschickt"
-    USER_HAS_SENT_REMOTE = "{} hat `{}` Nachrichten in **{}** geschickt"
     CANNOT_COUNT_MSG = "`Kann nicht Nachrichten in diesem Chat zählen!`"
-    CANNOT_COUNT_MSG_REMOTE = "`Kann nicht Nachrichtens in {} zählen!`"
     PIN_REPLY_TO_MSG = "`Antworte auf eine Nachricht, um sie anzuheften`"
     PIN_SUCCESS = "`Nachricht erfolgreich angeheftet`"
     PIN_FAILED = "`Fehler beim anheften der Nachricht`"
@@ -897,14 +895,13 @@ class ModuleUsages(object):
                                             "Informationen eines Mitglieds "
                                             "aus einer Supergruppe.")}}
 
-    MESSAGES_USAGE = {"msgs": {"args": ("[optional: <Benutzername/ID> "
-                                        "<Gruppe>] oder als Antwort"),
+    MESSAGES_USAGE = {"msgs": {"args": ("[optional: <Benutzername/ID>] "
+                                        "oder als Antwort"),
                                "usage": ("Holt die Anzahl an gesendete "
                                          "Nachrichten von einem User "
                                          "(enthält jegliche Nachricht wie "
                                          "Textnachrichten, "
-                                         "Sprachnachrichten, Videos usw.).\n"
-                                         "Funktioniert auch aus der Ferne.")},
+                                         "Sprachnachrichten, Videos usw.).")},
                       "pin": {"args": ("[optionales Argument \"loud\" um "
                                        "alle Mitglieder zu informieren] "
                                        "oder als Antwort"),

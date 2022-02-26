@@ -644,12 +644,8 @@ class MessagesText(object):
         lang, _getframe().f_code.co_name, "FAIL_COUNT_MSG")
     USER_HAS_SENT = getLangString(
         lang, _getframe().f_code.co_name, "USER_HAS_SENT")
-    USER_HAS_SENT_REMOTE = getLangString(
-        lang, _getframe().f_code.co_name, "USER_HAS_SENT_REMOTE")
     CANNOT_COUNT_MSG = getLangString(
         lang, _getframe().f_code.co_name, "CANNOT_COUNT_MSG")
-    CANNOT_COUNT_MSG_REMOTE = getLangString(
-        lang, _getframe().f_code.co_name, "CANNOT_COUNT_MSG_REMOTE")
     PIN_REPLY_TO_MSG = getLangString(
         lang, _getframe().f_code.co_name, "PIN_REPLY_TO_MSG")
     PIN_SUCCESS = getLangString(

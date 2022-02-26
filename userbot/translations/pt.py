@@ -303,9 +303,7 @@ class MessagesText(object):
     FAIL_COUNT_MSG = ("`Não posso fazer query de mensagens encaminhadas "
                       "por um canal!`")
     USER_HAS_SENT = "{} enviou `{}` mensagens neste chat!"
-    USER_HAS_SENT_REMOTE = "{} enviou `{}` messagens em **{}**"
     CANNOT_COUNT_MSG = "`Não consigo contar mensagens neste chat`"
-    CANNOT_COUNT_MSG_REMOTE = "`Não consigo contar mensagens em {}!`"
     PIN_REPLY_TO_MSG = "`Responde a uma mensagem para a fixar.`"
     PIN_SUCCESS = "`Mensagem fixada com sucesso.`"
     PIN_FAILED = "`Falha ao fixar a mensagem!`"
@@ -872,13 +870,12 @@ class ModuleUsages(object):
                                             "informações sobre um membro de "
                                             "um grupo.")}}
 
-    MESSAGES_USAGE = {"msgs": {"args": ("[opcional: <username/id> <group>] "
-                                        "ou resposta"),
+    MESSAGES_USAGE = {"msgs": {"args": ("[opcional: <username/id>] ou "
+                                        "resposta"),
                                "usage": ("Obtém o total de mensagens d "
                                          "eum utilizador (inclui "
                                          "qualquer mensagem, como texto, "
-                                         "voz, imagens, videos, etc...).\n"
-                                         "Funciona remotamente também")},
+                                         "voz, imagens, videos, etc...).")},
                       "pin": {"args": ("[argumento opcional \"loud\" para "
                                        "notificar todos os membros] ou "
                                        "resposta"),

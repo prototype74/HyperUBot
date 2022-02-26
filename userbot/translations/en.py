@@ -282,10 +282,7 @@ class MessagesText(object):
     FAIL_COUNT_MSG = "`Can't query forwarded messages from a channel`"
     # userlink, msg count
     USER_HAS_SENT = "{} has sent `{}` messages in this chat"
-    # userlink, msg count, chat title
-    USER_HAS_SENT_REMOTE = "{} has sent `{}` messages in **{}**"
     CANNOT_COUNT_MSG = "`Can't count messages in this chat!`"
-    CANNOT_COUNT_MSG_REMOTE = "`Can't count messages in {}!`"
     PIN_REPLY_TO_MSG = "`Reply to a message to pin it`"
     PIN_SUCCESS = "`Message pinned successfully`"
     PIN_FAILED = "`Failed to pin this message`"
@@ -824,13 +821,11 @@ class ModuleUsages(object):
                                   "usage": ("Get (remotely) info of a member "
                                             "in a supergroup.")}}
 
-    MESSAGES_USAGE = {"msgs": {"args": ("[optional: <username/id> <group>] "
-                                        "or reply"),
+    MESSAGES_USAGE = {"msgs": {"args": ("[optional: <username/id>] or reply"),
                                "usage": ("Gets the amount of sent messages "
                                          "from an user (includes any "
                                          "message like text messages, voice "
-                                         "notes, videos etc.).\n"
-                                         "Works remotely too.")},
+                                         "notes, videos etc.).")},
                       "pin": {"args": ("[optional argument \"loud\" to "
                                        "notify all members] or reply"),
                               "usage": ("Reply to someone's message to pin "
