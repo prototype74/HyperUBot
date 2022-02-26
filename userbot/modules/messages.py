@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot.include.aux_funcs import event_log, fetch_entity, isRemoteCMD
+from userbot.include.aux_funcs import event_log, fetch_entity
 from userbot.include.language_processor import (MessagesText as msgRep,
                                                 ModuleDescriptions as descRep,
                                                 ModuleUsages as usageRep)
@@ -29,7 +29,8 @@ LOGGING = getConfig("LOGGING")
 
 @ehandler.on(command="msgs", hasArgs=True, outgoing=True)
 async def countmessages(event):
-    user, chat = await fetch_entity(event, get_chat=True)
+    user = await fetch_entity(event)
+    chat = await event.get_chat()
 
     if not user:
         return
@@ -41,8 +42,6 @@ async def countmessages(event):
     if not isinstance(user, (Channel, User)):
         await event.edit(msgRep.CHANNEL_PERSONS_ONLY)
         return
-
-    remote = isRemoteCMD(event, chat.id)
 
     try:
         msg_info = await event.client(
@@ -75,18 +74,10 @@ async def countmessages(event):
     user_link = "@" + user.username if user.username else name
 
     if hasattr(msg_info, "count"):
-        if remote:
-            await event.edit(msgRep.USER_HAS_SENT_REMOTE.format(user_link,
-                                                                msg_info.count,
-                                                                chat.title))
-        else:
-            await event.edit(msgRep.USER_HAS_SENT.format(user_link,
-                                                         msg_info.count))
+        await event.edit(
+            msgRep.USER_HAS_SENT.format(user_link, msg_info.count))
     else:
-        if remote:
-            await event.edit(msgRep.CANNOT_COUNT_MSG_REMOTE.format(chat.title))
-        else:
-            await event.edit(msgRep.CANNOT_COUNT_MSG)
+        await event.edit(msgRep.CANNOT_COUNT_MSG)
     return
 
 
