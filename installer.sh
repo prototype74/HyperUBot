@@ -28,7 +28,7 @@ fi
 os_name=$(setColor $RED "Unsupported")
 
 # Check OS
-if [ "$OSTYPE" == "linux-android" ]; then
+if [ "$OSTYPE" == "linux-android" || "$OSTYPE" == "linux-androideabi" ]; then
     os_name="Android"
 elif [ "$OSTYPE" == "linux-gnu" ]; then
     if [ -f "/etc/debian_version" ]; then
