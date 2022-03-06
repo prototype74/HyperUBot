@@ -41,55 +41,55 @@ Write-Output ""
 
 # Python --version >=3.8
 try {
-    Write-Output "Checking for Python..."
+    Write-Output "-- Checking for Python..."
     $py_ver_str = python --version
 }
 catch [System.Management.Automation.CommandNotFoundException] {
-    throw "Python is not installed. Please install Python from 'https://www.python.org' or from Microsoft Store"
+    throw "-- Python is not installed. Please install Python from 'https://www.python.org' or from Microsoft Store"
 }
 
 if ( -not $py_ver_str ) {
-    throw "Python is not installed. Please install Python from 'https://www.python.org' or from Microsoft Store"
+    throw "-- Python is not installed. Please install Python from 'https://www.python.org' or from Microsoft Store"
 }
 
 $py_ver_str = $py_ver_str.split(" ")[1]
 $py_ver = [Version]::new($py_ver_str)
 
 if ( $py_ver -lt [Version]::new(3, 8)) {
-    Write-Host -ForegroundColor Yellow "HyperUBot requires at least Python v3.8! Current version is '$py_ver_str'"
+    Write-Host -ForegroundColor Yellow "-- HyperUBot requires at least Python v3.8! Current version is '$py_ver_str'"
     exit 1
 }
 
-Write-Output "Python $py_ver_str is installed!"
+Write-Output "-- Python $py_ver_str is installed!"
 
 # Scoop Package Manager for Windows
 try {
-    Write-Output "Checking for Scoop Package Manager..."
+    Write-Output "-- Checking for Scoop Package Manager..."
     scoop | Out-Null
 }
 catch [System.Management.Automation.CommandNotFoundException] {
-    Write-Output "Installing Scoop Package Manager..."
+    Write-Output "-- Installing Scoop Package Manager..."
     try {
         # From https://scoop.sh/
         Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
     }
     catch {
-        Write-Host -ForegroundColor Red "Failed to install the Scoop Package Manager"
+        Write-Host -ForegroundColor Red "-- Failed to install the Scoop Package Manager"
         throw $PSItem.Exception.Message
     }
 }
 
 # Install scoop packages
-Write-Output "Installing pre-requisites packages..."
+Write-Output "-- Installing pre-requisites packages..."
 scoop update
 scoop install git neofetch ffmpeg-shared flac
 
 try {
-    Write-Output "Fetching latest release from HyperUBot's Repository..."
+    Write-Output "-- Fetching latest release from HyperUBot's Repository..."
     $get_release = Invoke-WebRequest -Uri "https://api.github.com/repos/prototype74/HyperUBot/releases/latest"
 }
 catch [System.Net.WebException] {
-    Write-Host -ForegroundColor Yellow "Failed to fetch release from HyperUBot's Repository"
+    Write-Host -ForegroundColor Yellow "-- Failed to fetch release from HyperUBot's Repository"
     throw $PSItem.Exception.Message
 }
 
@@ -100,22 +100,22 @@ $curr_path = (Get-Location).Path
 $dir_name = "HyperUBot"
 
 try {
-    Write-Output "Downloading HyperUBot ($release_ver)..."
+    Write-Output "-- Downloading HyperUBot ($release_ver)..."
     Invoke-WebRequest $tar_pkg -OutFile .\HyperUBot.tar.gz
 }
 catch [System.Net.WebException] {
-    Write-Host -ForegroundColor Yellow "Failed to download HyperUBot"
+    Write-Host -ForegroundColor Yellow "-- Failed to download HyperUBot"
     throw $PSItem.Exception.Message
 }
 
-Write-Output "Creating HyperUBot's directory in '$curr_path'..."
+Write-Output "-- Creating HyperUBot's directory in '$curr_path'..."
 New-Item -Path . -Name $dir_name -ItemType "directory" | Out-Null
 
-Write-Output "Installing HyperUBot..."
+Write-Output "-- Installing HyperUBot..."
 tar -xf .\HyperUBot.tar.gz --directory .\$dir_name --strip-components=1
 
 if ( $LASTEXITCODE -ne 0 ) {
-    Write-Host -ForegroundColor Red "Installation failed!"
+    Write-Host -ForegroundColor Red "-- Installation failed!"
     exit 1
 }
 Remove-Item -Path .\HyperUBot.tar.gz -Force
@@ -123,24 +123,24 @@ Remove-Item -Path .\HyperUBot.tar.gz -Force
 if ( ( Test-Path -Path ".\$dir_name\*" ) -and
      ( Test-Path -Path ".\$dir_name\userbot\__init__.py" ) -and
      ( Test-Path -Path ".\$dir_name\userbot\__main__.py" ) ) {
-    Write-Output "HyperUBot has been installed successfully!"
+    Write-Output "-- HyperUBot has been installed successfully!"
 }
 else {
-    Write-Host -ForegroundColor Red "Installation was not successful!"
+    Write-Host -ForegroundColor Red "-- Installation was not successful!"
     exit 1
 }
 
 Set-Location $dir_name
 
-Write-Output "Upgrading pip and setuptools..."
+Write-Output "-- Upgrading pip and setuptools..."
 python -m pip install --upgrade pip setuptools
 
-Write-Output "Installing required pip packages..."
+Write-Output "-- Installing required pip packages..."
 while($true) {
     python -m pip install -r requirements.txt
     if ( $LASTEXITCODE -ne 0 ) {
         Write-Output ""
-        Write-Host -ForegroundColor Yellow "pip installation was not successful. If pip is not installed, install it manually. For all other cases it may be possible that a pre-requisites package is missing. Install the package/lib/app the pip package does require. Finally, try the pip installation again..."
+        Write-Host -ForegroundColor Yellow "-- pip installation was not successful. If pip is not installed, install it manually. For all other cases it may be possible that a pre-requisites package is missing. Install the package/lib/app the pip package does require. Finally, try the pip installation again..."
         Write-Output ""
         while($true) {
             $user_input = Read-Host -Prompt "Re-try pip installation? (y/n)"
@@ -148,7 +148,7 @@ while($true) {
                 break
             }
             elseif ( $user_input.ToLower() -eq "n") {
-                Write-Host -ForegroundColor Red "Installer cancelled"
+                Write-Host -ForegroundColor Red "-- Installer cancelled"
                 Set-Location ..
                 Remove-Item -Path .\$dir_name -Recurse -Force
                 exit 1
@@ -163,7 +163,7 @@ while($true) {
     }
 }
 
-Write-Host -ForegroundColor Green "Installer finished successfully!"
+Write-Host -ForegroundColor Green "-- Installer finished successfully!"
 Write-Output ""
 
 while($true) {

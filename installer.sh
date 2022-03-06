@@ -89,13 +89,13 @@ case "$os_name" in
         release=$(getprop ro.build.version.release)
         release_sdk=$(getprop ro.build.version.sdk)
         printf "Release: %s (API: %s)\n\n" $release $release_sdk
-        printf "Installing pre-requisites packages...\n"
+        printf "%s\n" "-- Installing pre-requisites packages..."
         pkg update
         pkg install python git rust neofetch ffmpeg flac libffi
         ;;
     "Debian")
         printRelease
-        printf "Installing pre-requisites packages (sudo needed)...\n"
+        printf "%s\n" "-- Installing pre-requisites packages (sudo needed)..."
         sudo apt-get update
         curr_py_bin=$(getLatestPyBin)
         if [[ -z $curr_py_bin || $(ver_lt $($curr_py_bin --version | cut -d " " -f2) "3.7."*) == "3.7."* ]]; then
@@ -112,12 +112,12 @@ case "$os_name" in
         ;;
     "Arch Linux")
         printf "\n"
-        printf "Installing pre-requisites packages (sudo needed)...\n"
+        printf "%s\n" "-- Installing pre-requisites packages (sudo needed)..."
         sudo pacman -Sy python3 python-pip git neofetch ffmpeg flac libffi
         ;;
     "Red Hat")
         printRelease
-        printf "Installing pre-requisites packages (sudo needed)...\n"
+        printf "%s\n" "-- Installing pre-requisites packages (sudo needed)..."
         sudo dnf update
         is_fedora=$(cat /etc/redhat-release | grep "Fedora")
         if [ ! -z "$is_fedora" ]; then
@@ -147,18 +147,18 @@ case "$os_name" in
     "macOS")
         release=$(sw_vers -productVersion)
         printf "Release: %s\n\n" $release
-        printf "Checking for Homebrew Package Manager...\n"
+        printf "%s\n" "-- Checking for Homebrew Package Manager..."
         if [ -z $(command -v brew) ]; then
-            printf "Installing Homebrew Package Manager (sudo needed)...\n"
+            printf "%s\n" "-- Installing Homebrew Package Manager (sudo needed)..."
             # From https://brew.sh/
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         fi
-        printf "Installing pre-requisites packages...\n"
+        printf "%s\n" "-- Installing pre-requisites packages..."
         brew install git python3 ffmpeg flac neofetch libffi
         ;;
     "Alpine Linux")
         printRelease
-        printf "Installing pre-requisites packages (sudo needed)...\n"
+        printf "%s\n" "-- Installing pre-requisites packages (sudo needed)..."
         sudo apk update
         sudo apk add git gcc python3 py3-pip python3-dev libffi-dev musl-dev openssl-dev cargo libressl-dev ffmpeg flac neofetch
         ;;
@@ -169,30 +169,30 @@ case "$os_name" in
 esac
 
 # Python --version >=3.8
-printf "Checking for Python...\n"
+printf "%s\n" "-- Checking for Python..."
 py_exec=$(getLatestPyBin)
 
 if [ -z $py_exec ]; then
-    printf "$(setColor $RED 'Python is not installed')\n"
+    printf "$(setColor $RED '%s')\n" "-- Python is not installed"
     exit 1
 fi
 
 py_ver_str=$($py_exec --version | cut -d " " -f2)
 
 if [ $(ver_lt $py_ver_str "3.7."*) == "3.7."* ]; then
-    printf "$(setColor $YELLOW 'HyperUBot requires at least Python v3.8! Latest installed version is %s')\n" "$py_ver_str"
+    printf "$(setColor $YELLOW '%s %s')\n" "-- HyperUBot requires at least Python v3.8! Latest installed version is" "$py_ver_str"
     exit 1
 fi
 
-printf "Python $py_ver_str is installed!\n"
+printf "%s\n" "-- Python $py_ver_str is installed!"
 
-printf "Fetching latest release from HyperUBot's Repository...\n"
+printf "%s\n" "-- Fetching latest release from HyperUBot's Repository..."
 get_release=$(curl --silent -H "Accept: application/json" "https://api.github.com/repos/prototype74/HyperUBot/releases/latest")
 
 tar_pkg=$(grep '"tarball_url"' <<< "$get_release" | cut -d '"' -f4)
 if [ -z $tar_pkg ]; then
     message=$(grep '"message"' <<< "$get_release" | cut -d '"' -f4)
-    printf "$(setColor $RED 'Failed to download HyperUBot: %s')\n" "$message"
+    printf "$(setColor $RED '%s: %s')\n" "-- Failed to download HyperUBot" "$message"
     exit 1
 fi
 
@@ -200,22 +200,22 @@ release_ver=$(grep '"tag_name"' <<< "$get_release" | cut -d '"' -f4)
 curr_path=$(pwd)
 dir_name="HyperUBot"
 
-printf "Downloading HyperUBot ($release_ver)...\n"
-curl -L --silent "$tar_pkg" --output HyperUBot.tar.gz || { printf "$(setColor $RED 'Failed to download HyperUBot')\n" && exit 1; }
+printf "%s\n" "-- Downloading HyperUBot ($release_ver)..."
+curl -L --silent "$tar_pkg" --output HyperUBot.tar.gz || { printf "$(setColor $RED '%s')\n" "-- Failed to download HyperUBot" && exit 1; }
 
-printf "Creating HyperUBot's directory in '$curr_path'...\n"
-mkdir $dir_name || { printf "$(setColor $RED 'Failed to create directory')\n" && exit 1; }
+printf "%s\n" "-- Creating HyperUBot's directory in '$curr_path'..."
+mkdir $dir_name || { printf "$(setColor $RED '%s')\n" "-- Failed to create directory" && exit 1; }
 
-printf "Installing HyperUBot...\n"
-tar -xf ./HyperUBot.tar.gz --directory ./$dir_name --strip-components=1 || { printf "$(setColor $RED 'Installation failed!')\n" && exit 1; }
+printf "%s\n" "-- Installing HyperUBot..."
+tar -xf ./HyperUBot.tar.gz --directory ./$dir_name --strip-components=1 || { printf "$(setColor $RED '%s')\n" "-- Installation failed!" && exit 1; }
 rm -f ./HyperUBot.tar.gz
 
 if [ -d $dir_name ] && \
    [ -f $dir_name/userbot/__init__.py ] && \
    [ -f $dir_name/userbot/__main__.py ]; then
-    printf "HyperUBot has been installed successfully!\n"
+    printf "%s\n" "-- HyperUBot has been installed successfully!"
 else
-    printf "$(setColor $RED 'Installation was not successful!')\n"
+    printf "$(setColor $RED '%s')\n" "-- Installation was not successful!"
     exit 1
 fi
 
@@ -231,7 +231,7 @@ if [ "$os_name" == "Android" ]; then
         "i686" | "x86") arch_type="i686-linux-android" ;;
         "x86_64") arch_type="x86_64-linux-android" ;;
         *)
-            printf "$(setColor $YELLOW 'Could not detect hardware ABI automatically!')\n\n"
+            printf "$(setColor $YELLOW '%s')\n\n" "-- Could not detect hardware ABI automatically!"
             printf "Please select the hardware ABI of your device:\n"
             select choice in "arm64-v8a (AArch64)" "armeabi-v7a" "armeabi" "x86 (i686)" "x86_64";
             do
@@ -249,22 +249,22 @@ if [ "$os_name" == "Android" ]; then
     export CARGO_BUILD_TARGET=$arch_type
 fi
 
-printf "Upgrading pip and setuptools...\n"
+printf "%s\n" "-- Upgrading pip and setuptools..."
 $py_exec -m pip install --upgrade pip setuptools
 
-printf "Installing required pip packages...\n"
+printf "%s\n" "-- Installing required pip packages..."
 while true; do
     $py_exec -m pip install -r requirements.txt
     if [ $? -ne 0 ]; then
         printf "\n"
-        printf "$(setColor $YELLOW 'pip installation was not successful. If pip is not installed, install it manually. For all other cases it may be possible that a pre-requisites package is missing. Install the package/lib/app the pip package does require. Finally, try the pip installation again...')\n"
+        printf "$(setColor $YELLOW '%s')\n" "-- pip installation was not successful. If pip is not installed, install it manually. For all other cases it may be possible that a pre-requisites package is missing. Install the package/lib/app the pip package does require. Finally, try the pip installation again..."
         printf "\n"
         while true; do
             read -p "Re-try pip installation? (y/n): " user_input
             if [[ $user_input =~ ^[yY]$ ]]; then
                 break
             elif [[ $user_input =~ ^[nN]$ ]]; then
-                printf "$(setColor $RED 'Installer cancelled...')\n"
+                printf "$(setColor $RED '%s')\n" "-- Installer cancelled..."
                 cd ..
                 rm -rf $dir_name
                 exit 1
@@ -277,7 +277,7 @@ while true; do
     fi
 done
 
-printf "$(setColor $GREEN 'Installer finished successfully!')\n"
+printf "$(setColor $GREEN '%s')\n" "-- Installer finished successfully!"
 printf "\n"
 
 while true; do
