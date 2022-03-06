@@ -221,6 +221,34 @@ fi
 
 cd $dir_name
 
+# As supported by Android ABIs: https://developer.android.com/ndk/guides/abis#sa
+if [ "$os_name" == "Android" ]; then
+    arch_type=""
+    case $(uname -m) in
+        "aarch64") arch_type="aarch64-linux-android" ;;
+        "armv7l") arch_type="armv7-linux-androideabi" ;;
+        "arm")  arch_type="arm-linux-androideabi" ;;
+        "i686" | "x86") arch_type="i686-linux-android" ;;
+        "x86_64") arch_type="x86_64-linux-android" ;;
+        *)
+            printf "$(setColor $YELLOW 'Could not detect hardware ABI automatically!')\n\n"
+            printf "Please select the hardware ABI of your device:\n"
+            select choice in "arm64-v8a (AArch64)" "armeabi-v7a" "armeabi" "x86 (i686)" "x86_64";
+            do
+                case $choice in
+                    "arm64-v8a (AArch64)") arch_type="aarch64-linux-android" ; break ;;
+                    "armeabi-v7a") arch_type="armv7-linux-androideabi" ; break ;;
+                    "armeabi")  arch_type="arm-linux-androideabi" ; break ;;
+                    "x86 (i686)") arch_type="i686-linux-android" ; break ;;
+                    "x86_64") arch_type="x86_64-linux-android" ; break ;;
+                esac
+            done
+            printf "\n"
+    esac
+    # Required for rust compiler
+    export CARGO_BUILD_TARGET=$arch_type
+fi
+
 printf "Upgrading pip and setuptools...\n"
 $py_exec -m pip install --upgrade pip setuptools
 
