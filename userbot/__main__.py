@@ -10,7 +10,8 @@ from userbot import (_tgclient, log, __hyper_logger__, _services,
                      _getprop, _setprop, PROJECT, SAFEMODE)
 from userbot._core.module_loader import import_module, start_language_processor
 from userbot.sysutils.configuration import getConfig
-from userbot.sysutils.registration import getAllModules, getLoadModules
+from userbot.sysutils.registration import (getAllModules, getLoadModules,
+                                           getRegisteredCMDs)
 from userbot.sysutils.sys_funcs import isWindows, verAsTuple
 from userbot.version import VERSION, VERSION_TUPLE
 from telethon.errors.rpcerrorlist import (ApiIdInvalidError,
@@ -96,11 +97,16 @@ def start_modules():
         if is_running:
             load_modules_count += 1
     sum_modules = len(getAllModules())
-    if not load_modules_count:
-        log.warning("No modules started!")
-    elif load_modules_count > 0:
+    reg_features = len(getRegisteredCMDs())
+    if load_modules_count > 0:
         log.info(f"Modules ({load_modules_count}/{sum_modules}) "
                  "started and ready!")
+    else:
+        log.warning("No modules started!")
+    if reg_features > 0:
+        log.info(f"A total of {reg_features} features were registered")
+    else:
+        log.info(f"No features were registered")
     return
 
 
