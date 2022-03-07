@@ -257,7 +257,9 @@ async def _list_pkgs(command: str) -> str:
             if assets:
                 for asset in assets:
                     module_name = asset.get("name")[:-3]
-                    module_size = sizeStrMaker(asset.get("size", 0))
+                    module_size = asset.get("size", 0)
+                    # convert size to human readable
+                    module_size_conv = sizeStrMaker(module_size)
                     info = ""
                     if module_name in user_module_list:
                         for mod_src in module_sources:
@@ -295,7 +297,7 @@ async def _list_pkgs(command: str) -> str:
                                             if not equal_module:
                                                 equal_module = True
                                             break
-                    text += f"- `{module_name}` ({module_size}){info}\n"
+                    text += f"- `{module_name}` ({module_size_conv}){info}\n"
             else:
                 text += f"__{msgRep.REPO_NO_MODULES}__\n"
             text += "\n"
