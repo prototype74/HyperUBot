@@ -73,10 +73,10 @@ class _Recovery:
     def __init__(self):
         self.__recovery_mode = "NORMAL"
 
-    def start_userbot(self, safemode: bool = False):
+    def start_userbot(self, option: str = ""):
         try:
-            if safemode:
-                tcmd = [PY_EXEC, "-m", "userbot", "-safemode"]
+            if option in ("safemode", "safemode2", "nomods"):
+                tcmd = [PY_EXEC, "-m", "userbot", f"-{option}"]
             else:
                 tcmd = [PY_EXEC, "-m", "userbot"]
             os.execle(PY_EXEC, *tcmd, os.environ)
@@ -723,11 +723,7 @@ _option_table = {
     "boot":      {"enabled": True,
                   "status": 0,
                   "name": "Start HyperUBot",
-                  "func": (lambda r: r.start_userbot())},
-    "boot_safe": {"enabled": True,
-                  "status": 0,
-                  "name": "Start HyperUBot (safe mode)",
-                  "func": (lambda r: r.start_userbot(True))},
+                  "func": (lambda r: _start_userbot_options(r))},
     "clear":     {"enabled": True,
                   "status": 0,
                   "name": "Clear caches",
@@ -763,7 +759,7 @@ def _update_option_table(recovery: _Recovery):
     bot_installed = recovery.userbot_installed()
     is_git_repo = recovery.detect_git()
     for i, (key, val) in enumerate(_option_table.items(), start=1):
-        if key in ("boot", "boot_safe", "clear", "update", "backup"):
+        if key in ("boot", "clear", "update", "backup"):
             if not bot_installed:
                 if val.get("enabled"):
                     _option_table[key]["enabled"] = False
@@ -771,7 +767,7 @@ def _update_option_table(recovery: _Recovery):
             elif not val.get("enabled"):  # reset error
                 _option_table[key]["enabled"] = True
                 _option_table[key]["status"] = 0
-        if IS_WINDOWS and key in ("boot", "boot_safe"):
+        if IS_WINDOWS and key == "boot":
             # Disable boot options as os.execle isn't working
             # well on Windows due to missing fork+exec support.
             # More info: https://bugs.python.org/issue9148
@@ -809,6 +805,41 @@ def _update_info(recovery: _Recovery, show_version: bool = True):
 
 
 _modified = False  # in case of modifications
+
+
+def _start_userbot_options(recovery: _Recovery):
+    start_options = {
+        "1": {"name": "Normal", "option": None},
+        "2": {"name": "Safe mode", "option": "safemode"},
+        "3": {"name": "Advanced safe mode", "option": "safemode2"},
+        "4": {"name": "Core only mode", "option": "nomods"},
+    }
+    option_text = ""
+    for key, val in start_options.items():
+        name = val.get("name")
+        option_text += f"[{key}] {name}\n"
+    print(option_text)
+    temp = None
+    try:
+        while True:
+            temp = input("Your input (or 'X' to cancel): ")
+            if temp.lower() == "x":
+                raise KeyboardInterrupt
+            if temp.isnumeric():
+                if temp in start_options.keys():
+                    break
+            print(
+                setColorText("Invalid input. Try again", Colors.YELLOW))
+    except KeyboardInterrupt:
+        print()
+        return
+    selected_option = start_options.get(temp, {}).get("option")
+    if selected_option:
+        recovery.start_userbot(selected_option)
+    else:
+        # default start option
+        recovery.start_userbot()
+    return
 
 
 def _apply_update(auto: bool, commit_id=None):
@@ -1064,17 +1095,16 @@ def _menues(recovery: _Recovery):
         for key in _option_table.keys():
             if num == _get_option(key, "num") and \
                _get_option(key, "enabled"):
-                if key in ("boot", "boot_safe"):
-                    _get_option(key, "func")(recovery)
-                    return  # leave menu
-                else:
-                    func = _get_option(key, "func")
-                    if callable(func):
-                        opt_name = _get_option(key, "name")
-                        print(f"\nMain Menu > {opt_name}")
+                func = _get_option(key, "func")
+                if callable(func):
+                    opt_name = _get_option(key, "name")
+                    print(f"\nMain Menu > {opt_name}")
+                    if key == "boot":
+                        func(recovery)
+                    else:
                         func()
-                    elif func.lower() == "x":
-                        raise KeyboardInterrupt
+                elif func.lower() == "x":
+                    raise KeyboardInterrupt
                 break
         else:
             print(setColorText("Invalid input!", Colors.YELLOW))
