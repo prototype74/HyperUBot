@@ -20,11 +20,18 @@ if (sys.version_info.major, sys.version_info.minor) < (3, 8):
 
 PROJECT = "HyperUBot"
 SAFEMODE = False
+SAFEMODE2 = False
+NO_MODS = False
 
-# Check safe mode from command line
+# Check command line
 if len(sys.argv) >= 2:
-    if sys.argv[1].lower() == "-safemode":
+    if sys.argv[1].lower() == "-safemode":  # safe mode
         SAFEMODE = True
+    elif sys.argv[1].lower() == "-safemode2":  # advanced safe mode
+        SAFEMODE = True
+        SAFEMODE2 = True
+    elif sys.argv[1].lower() == "-nomods":  # core services only
+        NO_MODS = True
 
 from telethon import version as tl_version  # noqa: E402
 from userbot.sysutils.sys_funcs import isWindows, verAsTuple  # noqa: E402
@@ -52,8 +59,8 @@ from os import path, mkdir  # noqa: E402
 # Start file and terminal logging
 log = getLogger(__name__)
 __hyper_logger__ = _UserbotLogger(log)
-__hyper_logger__._initialize_logfile(PROJECT, SAFEMODE, sys.version_info,
-                                     tl_version)
+__hyper_logger__._initialize_logfile(PROJECT, SAFEMODE, SAFEMODE2, NO_MODS,
+                                     sys.version_info, tl_version)
 __hyper_logger__._setup_logger()
 
 try:
@@ -76,8 +83,13 @@ __cfg_loader__ = _ConfigLoader()
 __scfg_loader__ = _SecureConfigLoader()
 __cfg_loader__._initialize_configs()
 
-if SAFEMODE:
-    log.info(setColorText("Booting in SAFE MODE", Color.GREEN))
+if NO_MODS:
+    log.info(setColorText("Booting in CORE ONLY MODE", Color.MAGENTA))
+elif SAFEMODE:
+    if SAFEMODE2:
+        log.info(setColorText("Booting in ADVANCED SAFE MODE", Color.GREEN))
+    else:
+        log.info(setColorText("Booting in SAFE MODE", Color.GREEN))
     log.info("Loading required configurations")
 else:
     log.info("Loading configurations")
@@ -224,21 +236,23 @@ if not API_KEY or not API_HASH or not STRING_SESSION:
         log.info("Exiting...")
     quit(1)
 
-try:
-    __cfg_loader__._load_configs(SAFEMODE)  # optional configs
-except KeyboardInterrupt:
-    log.info("Exiting...")
-    quit()
-except Exception:
-    log.error("Unable to load optional configurations", exc_info=True)
+if not NO_MODS:
+    try:
+        __cfg_loader__._load_configs(SAFEMODE)  # optional configs
+    except KeyboardInterrupt:
+        log.info("Exiting...")
+        quit()
+    except Exception:
+        log.error("Unable to load optional configurations", exc_info=True)
 
-if SAFEMODE and not getConfig("UBOT_LANG"):
+if (SAFEMODE or NO_MODS) and not getConfig("UBOT_LANG"):
     addConfig("UBOT_LANG", "en")
 
 if not getConfig("TEMP_DL_DIR"):
     addConfig("TEMP_DL_DIR", path.join(".", "downloads"))
 
-log.info("Configurations loaded")
+if not NO_MODS:
+    log.info("Configurations loaded")
 
 try:
     if not path.exists(getConfig("TEMP_DL_DIR")):

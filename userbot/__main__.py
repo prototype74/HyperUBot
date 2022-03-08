@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 from userbot import (_tgclient, log, __hyper_logger__, _services,
-                     _getprop, _setprop, PROJECT, SAFEMODE)
+                     _getprop, _setprop, PROJECT, SAFEMODE, SAFEMODE2, NO_MODS)
 from userbot._core.module_loader import import_module, start_language_processor
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (getAllModules, getLoadModules,
@@ -23,6 +23,8 @@ import os
 
 
 def init_load_modules():
+    if NO_MODS:
+        return
     built_in_modules_path = sorted(
         glob(os.path.join(os.path.dirname(__file__), "modules", "*.py")))
     user_modules_path = sorted(
@@ -44,9 +46,13 @@ def init_load_modules():
 
 def start_modules():
     if SAFEMODE:
-        log.info("Starting built-in modules only...")
+        if SAFEMODE2:
+            log.info("Starting core built-in modules only...")
+        else:
+            log.info("Starting built-in modules only...")
     else:
-        log.info("Starting modules...")
+        if not NO_MODS:
+            log.info("Starting modules...")
     try:
         init_load_modules()
     except KeyboardInterrupt:

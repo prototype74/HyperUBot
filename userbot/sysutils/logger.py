@@ -78,6 +78,7 @@ class _UserbotLogger:
         return
 
     def _initialize_logfile(self, project_name: str, is_safemode: bool,
+                            is_safemode2: bool, is_core_only: bool,
                             python_version, telethon_version):
         caller = getouterframes(currentframe(), 2)[1].filename
         valid_caller = os.path.join("userbot", "__init__.py")
@@ -94,8 +95,15 @@ class _UserbotLogger:
             sys_string = "======= SYS INFO\n\n"
             sys_string += "Project: {}\n".format(project_name)
             sys_string += "Version: {}\n".format(VERSION)
-            sys_string += "Safe mode: {}\n".format("On"
-                                                   if is_safemode else "Off")
+            if is_core_only:
+                safe_mode_out = "Core services only"
+            elif is_safemode:
+                safe_mode_out = "On"
+                if is_safemode2:
+                    safe_mode_out += " (Advanced)"
+            else:
+                safe_mode_out = "Off"
+            sys_string += "Safe mode: {}\n".format(safe_mode_out)
             sys_string += "Operating System: {}\n".format(os_name())
             sys_string += "Platform: {}\n".format(platform())
             sys_string += "Machine: {}\n".format(machine())

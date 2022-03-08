@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 from .access_controller import _protectedAccess
-from userbot import _tgclient, SAFEMODE
+from userbot import _tgclient, SAFEMODE, SAFEMODE2, NO_MODS
 from userbot.sysutils.configuration import getConfig
 from userbot.sysutils.registration import (getAllModules,
                                            getBuiltInModules,
@@ -86,6 +86,9 @@ class _ModuleLoader:
             log.warning(f"Not a valid caller (requested by {caller})")
             return
 
+        if NO_MODS:
+            return
+
         if module.startswith("__"):
             log.warning(f"Illegal module name '{module}'")
             return
@@ -108,6 +111,14 @@ class _ModuleLoader:
                 return
         else:
             update_built_in_modules(module)
+
+        if SAFEMODE2:
+            core_mods = [
+                "_feature_manager", "_modules_utils", "_package_manager",
+                "_systools", "_updater"
+            ]
+            if module not in core_mods:
+                return
 
         if module in self.__not_load_modules:
             return
@@ -145,6 +156,9 @@ class _ModuleLoader:
             caller = getouterframes(currentframe(), 2)[2]
             caller = f"{os.path.basename(caller.filename)}:{caller.lineno}"
             log.warning(f"Not a valid caller (requested by {caller})")
+            return
+
+        if NO_MODS:
             return
 
         if module.startswith("__"):
