@@ -6,7 +6,7 @@
 # You may not use this file or any of the content within it, unless in
 # compliance with the PE License
 
-from userbot import SAFEMODE
+from userbot import SAFEMODE, SAFEMODE2
 from userbot.include.aux_funcs import sizeStrMaker
 from userbot.include.language_processor import (ModulesUtilsText as msgRep,
                                                 ModuleUsages as usageRep)
@@ -122,11 +122,19 @@ def installed_modules() -> tuple:
     userpath = join(".", "userbot", "modules_user")
 
     sys_count, user_count = (0,)*2
+    core_mods = [
+        "_feature_manager", "_modules_utils", "_package_manager",
+        "_systools", "_updater"
+    ]
 
     for module in getAllModules():
         if exists(join(syspath, (module + ".py"))):
-            sys_count += 1
-        elif exists(join(userpath, (module + ".py"))):
+            if SAFEMODE2:
+                if module in core_mods:
+                    sys_count += 1
+            else:
+                sys_count += 1
+        elif not SAFEMODE and exists(join(userpath, (module + ".py"))):
             user_count += 1
     return (sys_count, user_count)
 
