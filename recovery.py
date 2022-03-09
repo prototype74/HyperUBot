@@ -181,14 +181,14 @@ class _Recovery:
         ver_py = os.path.join(".", "userbot", "version.py")
         version = None
         try:
+            ver_attr = {}
             if os.path.exists(ver_py) and os.path.isfile(ver_py):
-                ver_attr = {}
                 with open(ver_py, "r") as ver_file:
                     code = ast.parse(ver_file.read())
                     exec(compile(code, "", "exec"), ver_attr)
-                    version = ver_attr.get(
-                        "VERSION", setColorText("Unknown", Colors.YELLOW))
                 ver_file.close()
+            version = ver_attr.get(
+                "VERSION", setColorText("Unknown", Colors.YELLOW))
         except Exception:
             version = setColorText("Unknown", Colors.YELLOW)
         return version
