@@ -1069,6 +1069,39 @@ def _print_table():
     return
 
 
+def _get_available_opt(opt_length: int):
+    options_str = ""
+    min_num = ""
+    max_num = ""
+
+    def add_to_str():
+        nonlocal min_num, max_num, options_str
+        if min_num and max_num:
+            if options_str:
+                options_str += "|"
+            options_str += f"{min_num}-{max_num}"
+        elif min_num:
+            if options_str:
+                options_str += "|"
+            options_str += f"{min_num}"
+        min_num = ""
+        max_num = ""
+        return
+
+    for i, val in enumerate(_option_table.values(), start=1):
+        is_enabled = val.get("enabled")
+        number = val.get("num")
+        if not min_num and is_enabled:
+            min_num = number
+        elif is_enabled:
+            max_num = number
+            if i == opt_length:  # last element
+                add_to_str()
+        else:
+            add_to_str()
+    return options_str
+
+
 def _menues(recovery: _Recovery):
     while True:
         # update table
@@ -1083,12 +1116,11 @@ def _menues(recovery: _Recovery):
         print()
         opt_length = len(_option_table)
         if opt_length >= 1:
-            opt_min = list(_option_table.items())[0][-1].get("num")
-            if opt_length == 1:
-                num = input(f"Your input [{opt_min}]: ")
-            else:
-                opt_max = list(_option_table.items())[-1][-1].get("num")
-                num = input(f"Your input [{opt_min}-{opt_max}]: ")
+            try:
+                num = input(f"Your input [{_get_available_opt(opt_length)}]: ")
+            except KeyboardInterrupt:
+                print()
+                raise KeyboardInterrupt
         else:
             print(setColorText("No options available!", Colors.RED))
             return
