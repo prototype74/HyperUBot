@@ -125,6 +125,7 @@ async def speedtest(event):
         return
 
     if share_as_pic:
+        png_file = path.join(getConfig("TEMP_DL_DIR"), "speedtest.png")
         try:
             await event.edit(process + "\n\n" + f"{msgRep.SPD_PROCESSING}...")
             request = Request(result["share"])
@@ -133,7 +134,6 @@ async def speedtest(event):
                               "AppleWebKit/605.1.15 (KHTML, like Gecko) "
                               "Version/14.0 Safari/605.1.15"
             )
-            png_file = path.join(getConfig("TEMP_DL_DIR"), "speedtest.png")
             response = urlopen(request)
             with open(png_file, "wb") as output:
                 output.write(response.read())
@@ -141,10 +141,15 @@ async def speedtest(event):
             response.close()
             await event.client.send_file(chat.id, png_file)
             await event.delete()
-            remove(png_file)
         except Exception as e:
             log.error(e)
             await event.edit(msgRep.SPD_FAIL_SEND_RESULT)
+
+        try:
+            if path.exists(png_file):
+                remove(png_file)
+        except Exception as e:
+            log.error(e, exc_info=True)
     else:
         # Convert speed to Mbit/s
         down_in_mbits = round(result["download"] / 10**6, 2)
