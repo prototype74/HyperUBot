@@ -21,7 +21,7 @@ from dateutil.parser import parse
 from logging import getLogger
 from os import path, remove
 from speedtest import Speedtest
-from urllib.request import urlretrieve
+from urllib.request import Request, urlopen
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
@@ -127,8 +127,18 @@ async def speedtest(event):
     if share_as_pic:
         try:
             await event.edit(process + "\n\n" + f"{msgRep.SPD_PROCESSING}...")
+            request = Request(result["share"])
+            request.add_header(
+                "User-Agent", "Mozilla/5.0 (X11; Linux x86_64) "
+                              "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                              "Version/14.0 Safari/605.1.15"
+            )
             png_file = path.join(getConfig("TEMP_DL_DIR"), "speedtest.png")
-            urlretrieve(result["share"], png_file)
+            response = urlopen(request)
+            with open(png_file, "wb") as output:
+                output.write(response.read())
+            output.close()
+            response.close()
             await event.client.send_file(chat.id, png_file)
             await event.delete()
             remove(png_file)
