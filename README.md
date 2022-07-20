@@ -45,12 +45,10 @@ HyperUBot's saved data and settings. So it's recommended to use
 [bind mounts](https://docs.docker.com/storage/bind-mounts/) to keep your data 
 permanently.
 
-## Install HyperUBot
+## Get HyperUBot
 
-Follow the instructions in our 
-[Setup wiki](https://github.com/prototype74/HyperUBot/wiki/Installation-and-setup) 
-to install HyperUBot on your device. Follow the steps meant for your 
-**Operating System** where you want to install HyperUBot.
+[![Get it for Androd/Linux/macOS](https://dabuttonfactory.com/button.png?t=Get+it+for+Android%2FLinux%2FmacOS&f=Ubuntu-Bold&ts=15&tc=fff&hp=40&vp=20&c=round&bgt=unicolored&bgc=15d798)](https://github.com/prototype74/HyperUBot/wiki/Installation-and-Setup#installation-on-posix-systems-local) [![Get it for Windows](https://dabuttonfactory.com/button.png?t=Get+it+for+Windows&f=Ubuntu-Bold&ts=15&tc=fff&hp=40&vp=20&c=round&bgt=unicolored&bgc=6fa8dc)](https://github.com/prototype74/HyperUBot/wiki/Installation-and-Setup#installation-on-windows-local) [![Setup in Docker](https://dabuttonfactory.com/button.png?t=Setup+in+Docker&f=Ubuntu-Bold&ts=15&tc=fff&hp=40&vp=20&c=round&bgt=unicolored&bgc=f00)](https://github.com/prototype74/HyperUBot/wiki/Installation-and-Setup#setup-in-docker-cloud-platform-or-local)
+
 
 > **Important notice**: Do not git clone the repository to install HyperUBot as 
 changes pushed to the repository may not be stable for normal usage. Clone the 
