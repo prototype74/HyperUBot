@@ -142,7 +142,7 @@ async def speedtest(event):
             await event.client.send_file(chat.id, png_file)
             await event.delete()
         except Exception as e:
-            log.error(e)
+            log.error(e, exc_info=True)
             await event.edit(msgRep.SPD_FAIL_SEND_RESULT)
 
         try:
