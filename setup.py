@@ -55,6 +55,7 @@ class Colors:
     YELLOW = "\033[93m"
     CYAN = "\033[96m"
     RED_BG = "\033[101m"
+    BLUE_BG = "\033[104m"
     END = "\033[0m"
 
 
@@ -272,7 +273,9 @@ def _start_userbot():
 
 
 def _greetings():
-    print(setColorText("Welcome to HyperUBot's Setup Assistant!", Colors.CYAN))
+    print(
+        setColorText(
+            "Welcome to HyperUBot's Setup Assistant!", Colors.BLUE_BG))
     print("The Setup Assistant will guide you through all required "
           "processes to run HyperUBot on your device properly. It may "
           "be possible that the Setup Assistant will install some pip "
