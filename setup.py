@@ -484,7 +484,7 @@ def _select_language() -> str:
              "2": {"text": "German/Deutsch", "code": "de"},
              "3": {"text": "Portuguese/Português", "code": "pt"}}
 
-    lang_text = ("\nHyperUBot knows some different languages, not much "
+    lang_text = ("HyperUBot knows some different languages, not much "
                  "but still it does.\n"
                  "Please select your preferred language:\n\n")
 
@@ -649,6 +649,10 @@ def main():
         print(setColorText("HyperUBot is not installed", Colors.RED_BG))
         return
 
+    print()
+    print(setColorText("1. Checking for pre-requisites", Colors.CYAN))
+    print(setColorText("##############################", Colors.CYAN))
+
     if not NOPIP:
         print()
         check_setup_req = _check_setup_req()
@@ -666,6 +670,9 @@ def main():
                            Colors.RED))
         return
 
+    print(setColorText("2. Generate String Session", Colors.CYAN))
+    print(setColorText("##########################", Colors.CYAN))
+    print()
     _pre_procedure()
 
     api_key, api_hash, string_session = _generateStringSession()
@@ -684,7 +691,9 @@ def main():
         return
 
     print()
-
+    print(setColorText("3. Secure configurations", Colors.CYAN))
+    print(setColorText("########################", Colors.CYAN))
+    print()
     set_pwd = _post_procedure()
 
     password = ""
@@ -693,8 +702,19 @@ def main():
         password = _setup_password()
 
     print()
+    print(setColorText("4. Optional configurations", Colors.CYAN))
+    print(setColorText("##########################", Colors.CYAN))
+    print()
     config_file = _select_config_type()
+    print()
+    print(setColorText("5. Select preferred language", Colors.CYAN))
+    print(setColorText("############################", Colors.CYAN))
+    print()
     lang_code = _select_language()
+    print()
+    print(setColorText("6. Finishing Setup Assistant", Colors.CYAN))
+    print(setColorText("############################", Colors.CYAN))
+    print()
 
     print(f"Writing configuration files...")
     cfg_secured = _secure_configs(api_key, api_hash, string_session, password)
