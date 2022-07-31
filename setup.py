@@ -404,7 +404,8 @@ def _post_procedure() -> bool:
 
 def _setup_password() -> str:
     print("Your password must have at least a length of 4 characters. "
-          "Maximum length is 1024 characters.")
+          "Maximum length is 1024 characters. You can anytime skip this by "
+          "typing \"S\" as single character password.")
     print()
     while True:
         try:
@@ -414,6 +415,10 @@ def _setup_password() -> str:
             raise KeyboardInterrupt
         if len(password) >= 4 and len(password) <= 1024:
             break
+        elif password.lower() == "s":
+            print(setColorText("Continuing without password...",
+                               Colors.YELLOW))
+            return ""
         elif len(password) < 4:
             print(setColorText("Password too short.", Colors.YELLOW))
         elif len(password) > 1024:
@@ -429,6 +434,10 @@ def _setup_password() -> str:
             raise KeyboardInterrupt
         if password == retype_pwd:
             break
+        elif retype_pwd.lower() == "s":
+            print(setColorText("Continuing without password...",
+                               Colors.YELLOW))
+            return ""
         else:
             print(setColorText("Passwords did not match. Try again...",
                                Colors.YELLOW))
