@@ -8,7 +8,7 @@
 
 major = 7
 minor = 1
-micro = 0
+micro = 1
 
 VERSION = f"{major}.{minor}.{micro}"
 VERSION_TUPLE = (major, minor, micro)
