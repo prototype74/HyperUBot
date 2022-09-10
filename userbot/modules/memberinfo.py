@@ -20,13 +20,23 @@ from telethon.tl.types import (ChannelParticipantCreator,
                                ChannelParticipantAdmin,
                                ChannelParticipantBanned,
                                ChannelParticipantSelf, ChannelParticipant,
-                               UserFull)
+                               User)
+from telethon.tl.types.users import UserFull
 from telethon.errors import ChannelInvalidError, UserNotParticipantError
 from datetime import datetime
 from logging import getLogger
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
+
+
+# copy from user module
+def _getUserObjFromFullUser(fulluser_obj, user_id) -> User:
+    if fulluser_obj and hasattr(fulluser_obj, "users") and fulluser_obj.users:
+        for user in fulluser_obj.users:
+            if user_id == user.id:
+                return user
+    return None
 
 
 @ehandler.on(command="minfo", alt="member", hasArgs=True, outgoing=True)
@@ -49,13 +59,14 @@ async def memberinfo(event):
         return
 
     try:
-        member_id = member_info.user.id
-        member_is_self = member_info.user.is_self
-        member_deleted = member_info.user.deleted
-        member_name = (member_info.user.first_name
+        member_id = member_info.full_user.id
+        user_obj = _getUserObjFromFullUser(member_info, member_id)
+        member_is_self = user_obj.is_self
+        member_deleted = user_obj.deleted
+        member_name = (user_obj.first_name
                        if not member_deleted else msgRep.DELETED_ACCOUNT)
-        member_username = (member_info.user.username
-                           if member_info.user.username else None)
+        member_username = (user_obj.username
+                           if user_obj.username else None)
         member_name_link = (f"<a href=\"tg://user?id={member_id}\""
                             f">{member_name}</a>")
     except Exception as e:

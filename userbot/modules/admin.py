@@ -23,7 +23,8 @@ from telethon.tl.functions.channels import EditBannedRequest, EditAdminRequest
 from telethon.tl.types.messages import ChatFull
 from telethon.tl.types import (ChatAdminRights, ChatBannedRights,
                                ChannelParticipantsAdmins, User, Channel,
-                               PeerUser, PeerChannel, UserFull)
+                               PeerUser, PeerChannel)
+from telethon.tl.types.users import UserFull
 from asyncio import sleep
 from logging import getLogger
 
@@ -77,6 +78,15 @@ async def adminlist(event):
     return
 
 
+# copy from user module
+def _getUserObjFromFullUser(fulluser_obj, user_id) -> User:
+    if fulluser_obj and hasattr(fulluser_obj, "users") and fulluser_obj.users:
+        for user in fulluser_obj.users:
+            if user_id == user.id:
+                return user
+    return None
+
+
 @ehandler.on(command="ban", hasArgs=True, outgoing=True)
 async def ban(event):
     entity, chat = await fetch_entity(event, full_obj=True, get_chat=True)
@@ -121,12 +131,13 @@ async def ban(event):
         entity_id = f"-100{entity_id}"
         entity_id = int(entity_id)
     elif isinstance(entity, UserFull):
-        if entity.user.is_self:
+        entity_id = entity.full_user.id
+        user_obj = _getUserObjFromFullUser(entity, entity_id)
+        if user_obj.is_self:
             await event.edit(msgRep.CANNOT_BAN_SELF)
             return
-        entity_id = entity.user.id
-        name = (f"[{entity.user.first_name}](tg://user?id={entity_id})"
-                if entity.user.first_name else msgRep.DELETED_ACCOUNT)
+        name = (f"[{user_obj.first_name}](tg://user?id={entity_id})"
+                if not user_obj.deleted else msgRep.DELETED_ACCOUNT)
     else:
         await event.edit(msgRep.UNKNOWN_THING)
         log.warning("Ban failed: target is not a channel or an user")
@@ -144,7 +155,7 @@ async def ban(event):
             await event.edit(msgRep.BAN_SUCCESS.format(name))
         if LOGGING:
             if isinstance(entity, UserFull):
-                entity_username = entity.user.username
+                entity_username = user_obj.username
             else:
                 entity_username = chatinfo.username
             await event_log(event, "BAN", user_name=name,
@@ -200,12 +211,13 @@ async def unban(event):
         entity_id = f"-100{entity_id}"
         entity_id = int(entity_id)
     elif isinstance(entity, UserFull):
-        if entity.user.is_self:
-            await event.edit(msgRep.CANNOT_BAN_SELF)
+        entity_id = entity.full_user.id
+        user_obj = _getUserObjFromFullUser(entity, entity_id)
+        if user_obj.is_self:
+            await event.edit(msgRep.CANNOT_UNBAN_SELF)
             return
-        entity_id = entity.user.id
-        name = (f"[{entity.user.first_name}](tg://user?id={entity_id})"
-                if entity.user.first_name else msgRep.DELETED_ACCOUNT)
+        name = (f"[{user_obj.first_name}](tg://user?id={entity_id})"
+                if not user_obj.deleted else msgRep.DELETED_ACCOUNT)
     else:
         await event.edit(msgRep.UNKNOWN_THING)
         log.warning("Unban failed: target is not a channel or an user")
@@ -221,7 +233,7 @@ async def unban(event):
             await event.edit(msgRep.UNBAN_SUCCESS.format(name))
         if LOGGING:
             if isinstance(entity, UserFull):
-                entity_username = entity.user.username
+                entity_username = user_obj.username
             else:
                 entity_username = chatinfo.username
             await event_log(event, "UNBAN", user_name=name,

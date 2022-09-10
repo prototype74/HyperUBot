@@ -16,8 +16,8 @@ from userbot.sysutils.registration import (register_cmd_usage,
                                            register_module_desc,
                                            register_module_info)
 from userbot.version import VERSION
-from telethon.tl.types import (User, Chat, Channel, PeerChannel, PeerChat,
-                               UserFull)
+from telethon.tl.types import User, Chat, Channel, PeerChannel, PeerChat
+from telethon.tl.types.users import UserFull
 from telethon.tl.functions.contacts import GetBlockedRequest
 from telethon.tl.functions.photos import GetUserPhotosRequest
 from logging import getLogger
@@ -222,14 +222,26 @@ async def info(event):
     except Exception as e:
         log.error(e)
         await event.edit(msgRep.FAILED_FETCH_INFO)
-
     return
 
 
-async def fetch_info(user_obj, event):
+def _getUserObjFromFullUser(fulluser_obj, user_id) -> User:
+    if fulluser_obj and hasattr(fulluser_obj, "users") and fulluser_obj.users:
+        for user in fulluser_obj.users:
+            if user_id == user.id:
+                return user
+    return None
+
+
+async def fetch_info(full_user_obj, event):
+    user_id = full_user_obj.full_user.id
+    user_obj = _getUserObjFromFullUser(full_user_obj, user_id)
+    if not user_obj:
+        # makes no sense to keep fetching infos if 80% of them will be missing
+        raise Exception("UserFull does not include target User object")
     try:
         user_pfps = await event.client(
-            GetUserPhotosRequest(user_id=user_obj.user.id,
+            GetUserPhotosRequest(user_id=user_id,
                                  offset=42,
                                  max_id=0,
                                  limit=80))
@@ -237,25 +249,24 @@ async def fetch_info(user_obj, event):
                            if hasattr(user_pfps, "count") else 0)
     except Exception:
         user_pfps_count = 0
-    user_id = user_obj.user.id
-    user_deleted = user_obj.user.deleted
-    user_self = user_obj.user.is_self
-    first_name = (user_obj.user.first_name
+    user_deleted = user_obj.deleted
+    user_self = user_obj.is_self
+    first_name = (user_obj.first_name
                   if not user_deleted else msgRep.DELETED_ACCOUNT)
-    last_name = user_obj.user.last_name if user_obj.user.last_name else None
+    last_name = user_obj.last_name if user_obj.last_name else None
     dc_id = msgRep.UNKNOWN
-    if user_obj.profile_photo:
-        if hasattr(user_obj.profile_photo, "dc_id"):
-            dc_id = user_obj.profile_photo.dc_id
-    common_chat = user_obj.common_chats_count
-    username = user_obj.user.username
-    user_bio = user_obj.about
-    is_bot = f"<b>{msgRep.YES}</b>" if user_obj.user.bot else msgRep.NO
-    scam = f"<b>{msgRep.YES}</b>" if user_obj.user.scam else msgRep.NO
+    if full_user_obj.full_user.profile_photo:
+        if hasattr(full_user_obj.full_user.profile_photo, "dc_id"):
+            dc_id = full_user_obj.full_user.profile_photo.dc_id
+    common_chat = full_user_obj.full_user.common_chats_count
+    username = user_obj.username
+    user_bio = full_user_obj.full_user.about
+    is_bot = f"<b>{msgRep.YES}</b>" if user_obj.bot else msgRep.NO
+    scam = f"<b>{msgRep.YES}</b>" if user_obj.scam else msgRep.NO
     restricted = (f"<b>{msgRep.YES}</b>"
-                  if user_obj.user.restricted else msgRep.NO)
+                  if user_obj.restricted else msgRep.NO)
     verified = (f"<b>{msgRep.YES}</b>"
-                if user_obj.user.verified else msgRep.NO)
+                if user_obj.verified else msgRep.NO)
     username = "@{}".format(username) if username else None
     user_bio = msgRep.USR_NO_BIO if not user_bio else user_bio
     profile_link = f"<a href=\"tg://user?id={user_id}\">link</a>"
