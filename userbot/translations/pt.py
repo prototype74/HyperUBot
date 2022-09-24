@@ -400,6 +400,7 @@ class UserText(object):
     PROF_PIC_COUNT = "Número de fotos de perfil"
     PROF_LINK = "Link permanente para o perfil"
     ISBOT = "Bot"
+    PREMIUM = "Premium"
     SCAMMER = "Conta Falsa"
     ISRESTRICTED = "Limitado"
     ISVERIFIED = "Verificado pelo Telegram"

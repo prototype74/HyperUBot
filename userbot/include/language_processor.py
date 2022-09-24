@@ -810,6 +810,8 @@ class UserText(object):
         lang, _getframe().f_code.co_name, "PROF_LINK")
     ISBOT = getLangString(
         lang, _getframe().f_code.co_name, "ISBOT")
+    PREMIUM = getLangString(
+        lang, _getframe().f_code.co_name, "PREMIUM")
     SCAMMER = getLangString(
         lang, _getframe().f_code.co_name, "SCAMMER")
     ISRESTRICTED = getLangString(
