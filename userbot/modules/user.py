@@ -262,6 +262,7 @@ async def fetch_info(full_user_obj, event):
     username = user_obj.username
     user_bio = full_user_obj.full_user.about
     is_bot = f"<b>{msgRep.YES}</b>" if user_obj.bot else msgRep.NO
+    premium = f"<b>{msgRep.YES}</b>" if user_obj.premium else msgRep.NO
     scam = f"<b>{msgRep.YES}</b>" if user_obj.scam else msgRep.NO
     restricted = (f"<b>{msgRep.YES}</b>"
                   if user_obj.restricted else msgRep.NO)
@@ -284,6 +285,7 @@ async def fetch_info(full_user_obj, event):
     if not user_deleted:
         caption += f"{msgRep.PROF_LINK}: {profile_link}\n"
     caption += f"{msgRep.ISBOT}: {is_bot}\n"
+    caption += f"{msgRep.PREMIUM}: {premium}\n"
     caption += f"{msgRep.SCAMMER}: {scam}\n"
     caption += f"{msgRep.ISRESTRICTED}: {restricted}\n"
     caption += f"{msgRep.ISVERIFIED}: {verified}\n\n"
