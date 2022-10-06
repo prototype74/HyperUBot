@@ -20,7 +20,7 @@ from telethon import functions
 from dateutil.parser import parse
 from logging import getLogger
 from os import path, remove
-from speedtest import Speedtest
+from speedtest import Speedtest, build_user_agent
 from urllib.request import Request, urlopen
 
 log = getLogger(__name__)
@@ -129,11 +129,16 @@ async def speedtest(event):
         try:
             await event.edit(process + "\n\n" + f"{msgRep.SPD_PROCESSING}...")
             request = Request(result["share"])
-            request.add_header(
-                "User-Agent", "Mozilla/5.0 (X11; Linux x86_64) "
+            try:
+                # use the user agent built by speedtest-cli
+                user_agent = build_user_agent()
+            except Exception:
+                # fallback to static user agent in case anything changes in new
+                # speedtest-cli releases
+                user_agent = ("Mozilla/5.0 (X11; Linux x86_64) "
                               "AppleWebKit/605.1.15 (KHTML, like Gecko) "
-                              "Version/14.0 Safari/605.1.15"
-            )
+                              "Version/14.0 Safari/605.1.15")
+            request.add_header("User-Agent", user_agent)
             response = urlopen(request)
             with open(png_file, "wb") as output:
                 output.write(response.read())
