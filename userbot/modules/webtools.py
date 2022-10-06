@@ -20,8 +20,11 @@ from telethon import functions
 from dateutil.parser import parse
 from logging import getLogger
 from os import path, remove
-from speedtest import Speedtest, build_user_agent
-from urllib.request import Request, urlopen
+try:
+    from speedtest import Speedtest, build_user_agent
+except Exception:
+    from speedtest import Speedtest
+from urllib.request import Request, urlopen  # noqa: E402
 
 log = getLogger(__name__)
 ehandler = EventHandler(log)
