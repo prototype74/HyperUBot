@@ -109,19 +109,14 @@ async def speedtest(event):
         log.error(me)
         if not all_test_passed:
             process = process[:-3] + f" {warning}"
-            await event.edit(process + "\n\n" +
-                             f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_MEMORY}`")
-        else:
-            await event.edit(process + "\n\n" +
-                             f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_MEMORY}`")
+        await event.edit(process + "\n\n" +
+                         f"`{msgRep.SPD_FAILED}: {msgRep.SPD_NO_MEMORY}`")
         return
     except Exception as e:
         log.error(e)
         if not all_test_passed:
             process = process[:-3] + f" {warning}"
-            await event.edit(process + "\n\n" + msgRep.SPD_FAILED)
-        else:
-            await event.edit(process + "\n\n" + msgRep.SPD_FAILED)
+        await event.edit(process + "\n\n" + msgRep.SPD_FAILED)
         return
 
     if share_as_pic:
