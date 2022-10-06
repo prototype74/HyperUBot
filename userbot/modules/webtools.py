@@ -80,7 +80,7 @@ async def speedtest(event):
         process = (f"**Speedtest by Ookla**\n\n"
                    f"- {msgRep.SPD_TEST_SELECT_SERVER}...")
         await event.edit(process)
-        s = Speedtest()
+        s = Speedtest(secure=True)
         s.get_best_server()
         process = (f"**Speedtest by Ookla**\n\n"
                    f"- {msgRep.SPD_TEST_SELECT_SERVER} {check_mark}\n"
