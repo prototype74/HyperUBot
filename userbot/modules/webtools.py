@@ -123,7 +123,11 @@ async def speedtest(event):
         png_file = path.join(getConfig("TEMP_DL_DIR"), "speedtest.png")
         try:
             await event.edit(process + "\n\n" + f"{msgRep.SPD_PROCESSING}...")
-            request = Request(result["share"])
+            url_to_png = result["share"]
+            if url_to_png.startswith("http://"):
+                # secure connection
+                url_to_png = url_to_png.replace("http://", "https://", 1)
+            request = Request(url_to_png)
             try:
                 # use the user agent built by speedtest-cli
                 user_agent = build_user_agent()
