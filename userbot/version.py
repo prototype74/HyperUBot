@@ -7,8 +7,8 @@
 # compliance with the PE License
 
 major = 7
-minor = 1
-micro = 1
+minor = 2
+micro = 0
 
 VERSION = f"{major}.{minor}.{micro}"
 VERSION_TUPLE = (major, minor, micro)
