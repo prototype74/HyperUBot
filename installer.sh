@@ -30,7 +30,7 @@ os_name=$(setColor $RED "Unsupported")
 # Check OS
 if [[ "$OSTYPE" == "linux-android" || "$OSTYPE" == "linux-androideabi" ]]; then
     os_name="Android"
-elif [ "$OSTYPE" == "linux-gnu" ]; then
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     if [ -f "/etc/debian_version" ]; then
         os_name="Debian"
     elif [ -f "/etc/arch-release" ]; then
