@@ -39,7 +39,7 @@ class HyperClient(TelegramClient):
                             f"{os.path.basename(c_name)}:{c_line})")
                 return None
         elif attr in ("session", "api_id", "api_hash", "_init_request",
-                      "_sender"):
+                      "_sender", "_event_builders"):
             # Filter unwanted requests from the userbot. HyperUBot doesn't
             # need these attributes in any way from the client after
             # initialization. So if a program or module calls them after
@@ -55,7 +55,8 @@ class HyperClient(TelegramClient):
                                    "api_id": "App api_id",
                                    "api_hash": "App api_hash",
                                    "_init_request": "InitConnectionRequest",
-                                   "_sender": "MTProtoSender"}
+                                   "_sender": "MTProtoSender",
+                                   "_event_builders": "Event Builders"}
                 blocked_attr = protected_attrs.get(attr)
                 log.warning(f"Blocked access to '{blocked_attr}' (requested "
                             f"by {os.path.basename(c_name)}:{c_line})")
@@ -68,7 +69,7 @@ class HyperClient(TelegramClient):
         these attributes.
         """
         if attr in ("session", "api_id", "api_hash", "_init_request",
-                    "_sender"):
+                    "_sender", "_event_builders"):
             all_pys = tuple(glob.glob(os.path.join("userbot", "*.py")) +
                             glob.glob(os.path.join("userbot", "*", "*.py")))
             caller = getouterframes(currentframe(), 2)[1]
@@ -79,7 +80,8 @@ class HyperClient(TelegramClient):
                                    "api_id": "App api_id",
                                    "api_hash": "App api_hash",
                                    "_init_request": "InitConnectionRequest",
-                                   "_sender": "MTProtoSender"}
+                                   "_sender": "MTProtoSender",
+                                   "_event_builders": "Event Builders"}
                 blocked_attr = protected_attrs.get(attr)
                 log.warning(f"Blocked access to '{blocked_attr}' (requested "
                             f"by {os.path.basename(c_name)}:{c_line})")
