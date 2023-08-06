@@ -125,3 +125,4 @@ set up the bot, if you are stuck in a specific step.
 
 - [nunopenim](https://github.com/nunopenim) [Portuguese translation]
 - [prototype74](https://github.com/prototype74) [German translation]
+- [PawiX25](https://github.com/PawiX25) [Polish translation]
