@@ -1,7 +1,7 @@
 # German Language file
 #
-# Copyright 2021-2022 nunopenim @github
-# Copyright 2021-2022 prototype74 @github
+# Copyright 2021-2023 nunopenim @github
+# Copyright 2021-2023 prototype74 @github
 #
 # Licensed under the PEL (Penim Enterprises License), v1.0
 #

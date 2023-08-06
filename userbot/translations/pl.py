@@ -1,7 +1,7 @@
 # Polish Language file
 #
-# Copyright 2020-2022 nunopenim @github
-# Copyright 2020-2022 prototype74 @github
+# Copyright 2020-2023 nunopenim @github
+# Copyright 2020-2023 prototype74 @github
 # Copyright 2020-2023 pawix25 @github
 
 #
