@@ -485,7 +485,8 @@ def _select_config_type() -> str:
 def _select_language() -> str:
     langs = {"1": {"text": "English/English", "code": "en"},
              "2": {"text": "German/Deutsch", "code": "de"},
-             "3": {"text": "Portuguese/Português", "code": "pt"}}
+             "3": {"text": "Polish/Polski", "code": "pl"},
+             "4": {"text": "Portuguese/Português", "code": "pt"}}
 
     lang_text = ("HyperUBot knows some different languages, not much "
                  "but still it does.\n"
