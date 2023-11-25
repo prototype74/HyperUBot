@@ -1,16 +1,18 @@
-APScheduler>=3.8.1
-certifi>=2021.10.8
-cffi>=1.15.0
-colorama>=0.4.4; platform_system=="Windows"
-CurrencyConverter>=0.16.3
+APScheduler>=3.10.4
+certifi>=2023.11.17
+cffi>=1.16.0
+colorama>=0.4.6; platform_system=="Windows"
+CurrencyConverter>=0.17.13
 googletrans>=3.0.0,==4.0.0rc1
-gTTS>=2.2.3
-icmplib>=3.0
-pyAesCrypt>=6.0.0
+gTTS>=2.4.0
+icmplib>=3.0.4
+pyAesCrypt>=6.1.1
 pydub>=0.25.1
 python-dateutil>=2.8.2
-python-dotenv>=0.19.1
-SpeechRecognition>=3.8.1
+python-dotenv>=1.0.0
+setuptools>=69.0.2
+SpeechRecognition>=3.10.0
 speedtest-cli>=2.1.3
-Telethon>=1.25.0
+Telethon>=1.32.1
+tzdata>=2023.3
 uptime>=3.0.1
