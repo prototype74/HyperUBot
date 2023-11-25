@@ -63,6 +63,8 @@ async def outputAsFile(event, output_text) -> bool:
 async def terminal(event):
     full_cmd_str = event.pattern_match.group(1)
     cmd_output = None
+    if not full_cmd_str:
+        return
     try:
         if isWindows():
             full_cmd_str = f"powershell {full_cmd_str}"
