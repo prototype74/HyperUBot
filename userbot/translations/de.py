@@ -370,7 +370,6 @@ class UserText(object):
     STATS_PROCESSING = "`Berechne die Statistiken...`"
     STATS_HEADER = "Meine Telegram-Statistiken"
     STATS_USERS = "PM-Konversationen mit **{}** Personen"
-    STATS_BLOCKED = "**{}** von Ihnen blockiert"
     STATS_BOTS = "**{}** Bots gestartet"
     STATS_BLOCKED_TOTAL = "**{}** Bots/Personen insgesamt blockiert"
     STATS_GROUPS = "Teilnehmer in **{}** Gruppen"

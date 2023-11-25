@@ -128,8 +128,7 @@ async def kickme(leave):
 async def stats(event):
     (groups, channels, super_groups, bots, users, unknown, total,
      group_owner, group_admin, super_group_owner, super_group_admin,
-     bot_blocked, user_blocked, total_blocks, channel_owner,
-     channel_admin) = (0,)*16
+     total_blocks, channel_owner, channel_admin) = (0,)*14
 
     await event.edit(msgRep.STATS_PROCESSING)
 
@@ -171,20 +170,14 @@ async def stats(event):
         elif isinstance(dialog.entity, User):
             if dialog.entity.bot:
                 bots += 1
-                if dialog.entity.id in blocked_ids:
-                    bot_blocked += 1
             else:
                 users += 1
-                if dialog.entity.id in blocked_ids:
-                    user_blocked += 1
         else:
             unknown += 1
 
     result = f"**{msgRep.STATS_HEADER}**\n\n"
     result += msgRep.STATS_USERS.format(users) + "\n"
-    result += "> " + msgRep.STATS_BLOCKED.format(user_blocked) + "\n\n"
     result += msgRep.STATS_BOTS.format(bots) + "\n"
-    result += "> " + msgRep.STATS_BLOCKED.format(bot_blocked) + "\n\n"
     result += msgRep.STATS_BLOCKED_TOTAL.format(total_blocks) + "\n\n"
     result += msgRep.STATS_GROUPS.format(groups) + "\n"
     result += "> " + msgRep.STATS_SGC_OWNER.format(group_owner) + "\n"

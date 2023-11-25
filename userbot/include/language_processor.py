@@ -754,8 +754,6 @@ class UserText(object):
         lang, _getframe().f_code.co_name, "STATS_HEADER")
     STATS_USERS = getLangString(
         lang, _getframe().f_code.co_name, "STATS_USERS")
-    STATS_BLOCKED = getLangString(
-        lang, _getframe().f_code.co_name, "STATS_BLOCKED")
     STATS_BOTS = getLangString(
         lang, _getframe().f_code.co_name, "STATS_BOTS")
     STATS_BLOCKED_TOTAL = getLangString(
