@@ -7,7 +7,7 @@
 # compliance with the PE License
 
 major = 7
-minor = 2
+minor = 3
 micro = 0
 
 VERSION = f"{major}.{minor}.{micro}"
